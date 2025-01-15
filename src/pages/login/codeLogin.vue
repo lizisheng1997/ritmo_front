@@ -5,7 +5,8 @@
     <!--  -->
     <view class="form flex pb40">
       <view class="sign">
-        +83<u-icon class="ml10" name="arrow-down-fill" color="#232322" size="14"></u-icon>
+        <u-icon class="icon" name="plus" color="#232322" size="16"></u-icon>
+        83<u-icon class="icon ml10" name="arrow-down-fill" color="#232322" size="14"></u-icon>
       </view>
       <input class="uni-input ml25" type="number" maxlength="11" v-model="state.phone" placeholder="请输入手机号" />
     </view>
@@ -24,6 +25,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { routerTo } from '/@/utils/currentFun'
 const { t } = useI18n()
 
 // 引入组件
@@ -41,6 +43,7 @@ const submit = () => {
     return
   }
   console.log(111);
+  routerTo(`/pages/login/inputCode?phone=13280525799`)
   
 }
 // 打开弹窗
@@ -90,7 +93,7 @@ const textPopupRefresh = (show: boolean) => {
       font-weight: 400;
       line-height: 32rpx;
       border-right: 2rpx solid #D7D4CF;
-      .ml10 {
+      .icon {
         vertical-align: middle;
         margin-top: -5rpx;
       }

@@ -218,8 +218,7 @@
 
 	.u-char-flex {
 		@include vue-flex;
-		justify-content: center;
-		flex-wrap: wrap;
+    justify-content: space-between;
 		position: relative;
 	}
 
@@ -239,7 +238,7 @@
 		position: relative;
 		width: 90rpx;
 		height: 90rpx;
-		margin: 10rpx 10rpx;
+		// margin: 10rpx 10rpx;
 		font-size: 60rpx;
 		font-weight: bold;
 		color: $u-main-color;
@@ -255,8 +254,9 @@
 
 	.u-box {
 		box-sizing: border-box;
-		border: 2rpx solid #cccccc;
-		border-radius: 6rpx;
+		// border: 2rpx solid #cccccc;
+    background-color: #F5F3EF;
+    border-radius: 15rpx;
 	}
 
 	.u-box-active {
