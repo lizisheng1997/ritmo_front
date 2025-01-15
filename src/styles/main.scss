@@ -1,0 +1,78 @@
+// 一行多余省略
+.oneEllipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// 两行多余省略
+.twoEllipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}
+.flex {
+  display: flex;
+}
+
+// 三行多余省略
+.threeEllipsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+}
+
+@for $i from 0 through 100 {
+  .m#{$i} {
+    margin: #{$i}rpx;
+  }
+  .m#{$i}-0 {
+    margin: #{$i}rpx 0;
+  }
+  .m0-#{$i} {
+    margin: 0 #{$i}rpx;
+  }
+  .mt#{$i} {
+    margin-top: #{$i}rpx;
+  }
+  .mr#{$i} {
+    margin-right: #{$i}rpx;
+  }
+  .mb#{$i} {
+    margin-bottom: #{$i}rpx !important;
+  }
+  .ml#{$i} {
+    margin-left: #{$i}rpx;
+  }
+
+  .p#{$i} {
+    padding: #{$i}rpx;
+  }
+  .p0-#{$i} {
+    padding: 0 #{$i}rpx;
+  }
+  .p#{$i}-0 {
+    padding: #{$i}rpx 0;
+  }
+  .pt#{$i} {
+    padding-top: #{$i}rpx;
+  }
+  .pr#{$i} {
+    padding-right: #{$i}rpx;
+  }
+  .pb#{$i} {
+    padding-bottom: #{$i}rpx !important;
+  }
+  .pl#{$i} {
+    padding-left: #{$i}rpx;
+  }
+}
+.imageW100 {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}

@@ -1,4 +1,5 @@
 {
-  "hello":"Helloa",
-  "welcome":"Welcomea"
+  "oneLogin": "OneClickLogin",
+  "codeLogin": "codeLogin",
+  "userAgreement": "userAgreement"
 }

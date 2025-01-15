@@ -1,4 +1,5 @@
 {
-  "hello":"哈喽1",
-  "welcome":"欢迎"
+  "oneLogin":"一键登录",
+  "codeLogin":"验证码登录",
+  "userAgreement": "用户协议"
 }

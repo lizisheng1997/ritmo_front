@@ -1,16 +1,78 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
+	"pages": [ 
+    {
+			"path": "pages/home/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/login/index",
+			"style": {
+          "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/login/codeLogin",
+			"style": {
+				"navigationBarTitleText": "Ritmohub"
+			}
+		},
+    {
+			"path": "pages/space/index",
+			"style": {
+				"navigationBarTitleText": "空间"
+			}
+		},
+    {
+			"path": "pages/community/index",
+			"style": {
+				"navigationBarTitleText": "社区"
+			}
+		},
+    {
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "我的"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
-	}
+		"navigationBarTitleText": "节奏空间",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
+	},
+
+  "tabBar": {
+    "selectedColor": "#232322",
+    "color": "#898784",
+    "backgroundColor": "#FFFFFF",		
+    "list": [			
+      {
+        "pagePath": "pages/home/index",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home1.png",				
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/space/index",
+        "iconPath": "static/tabbar/space.png",
+        "selectedIconPath": "static/tabbar/space1.png",
+        "text": "空间"
+      },			
+      {
+        "pagePath": "pages/community/index",
+        "iconPath": "static/tabbar/community.png",
+        "selectedIconPath": "static/tabbar/community1.png",		
+        "text": "社区"
+      },			
+      {
+        "pagePath": "pages/user/index",
+        "iconPath": "static/tabbar/user.png",
+        "selectedIconPath": "static/tabbar/user1.png",			
+        "text": "我的"
+      }
+    ]
+  }
 }
