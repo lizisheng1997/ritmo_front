@@ -55,7 +55,7 @@
 			}
 		},
     {
-			"path": "pages/user/personalData",
+			"path": "pages/user/editData",
 			"style": {
 				"navigationBarTitleText": ""
 			}
