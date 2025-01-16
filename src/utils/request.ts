@@ -1,6 +1,6 @@
 import type { T } from './types';
 
-let baseUrl = 'http://3p96dn.natappfree.cc/';
+let baseUrl = 'http://47.116.190.37:8000/api';
 // baseUrl = 'http://192.168.7.79:8000/gateway/'; 
 // console.log(baseUrl);
 
@@ -14,9 +14,9 @@ export default class Request {
         method: options.method,
         data: options.data,
         header: {
-          Authorization: uni.getStorageSync('token')
-            ? `Bearer ${uni.getStorageSync('token')}`
-            : uni.getStorageSync('token')
+          refresh_token: uni.getStorageSync('accessToken')
+            ? uni.getStorageSync('accessToken')
+            : ''
         },
         success(res: T) {
           if (res.data.code == 101 || res.data.code == 204) {

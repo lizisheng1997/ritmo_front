@@ -18,19 +18,24 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { routerTo } from '/@/utils/currentFun';
+import { routerTo, showTips } from '/@/utils/currentFun';
+import Login from '/@/api/login';
+const loginApi = new Login();
 const { t } = useI18n()
 
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   state.phone = query!.phone;
+  state.areaCode = query!.areaCode;
   sendMobileCode()
 });
 // 参数
 const state = reactive({
   phone: '', // 手机号
+  areaCode: '', // 
   code: '', // 
+  debugCode: '', // 获取的验证码
   second: 60, // 秒
   counting: false, // 是否正在倒计时
   select: false, // 
@@ -40,23 +45,55 @@ const codeChange = (e: string) => {
   state.code = e
 }
 // 发送验证码
-const sendMobileCode = () => {
-  state.counting = true
-  const timer = setInterval(() => {
-    state.second--;
-    if ( state.second <= 0 ) {
-      clearInterval(timer);
-      state.counting = false;
-      state.second = 60; // 重置倒计时时长
-    }
-  }, 1000)
+const sendMobileCode = async() => {
+  await loginApi
+    .sendCoded({
+      phone: state.phone,
+      area_code: state.areaCode,
+      code: ''
+    })
+    .then((res: any) => {
+      console.log(res);
+      showTips(res.message)
+      state.debugCode = res.debug_code
+      state.counting = true
+      const timer = setInterval(() => {
+        state.second--;
+        if ( state.second <= 0 ) {
+          clearInterval(timer);
+          state.counting = false;
+          state.second = 60; // 重置倒计时时长
+        }
+      }, 1000)
+    });
+  
 }
 // 
-const submit = () => {
-  if( state.phone.length != 11 ) {
+const submit = async() => {
+  if( state.code.length != 4 ) {
+    showTips('请输入验证码')
     return
   }
-  routerTo(`/pages/user/information`)
+  if( state.code != state.debugCode ) {
+    showTips('验证码不正确')
+    return
+  }
+  // 
+  await loginApi
+    .getLogin({
+      phone: state.phone,
+      area_code: state.areaCode,
+      code: state.code
+    })
+    .then((res: any) => {
+      console.log(res);
+      uni.setStorageSync('accessToken', res.access_token);
+      uni.setStorageSync('refreshToken', res.refresh_token);
+      uni.setStorageSync('tokenType', res.token_type);
+      // showTips(res.message)
+      routerTo(`/pages/user/information`)
+    });
+  
   
 }
 </script>

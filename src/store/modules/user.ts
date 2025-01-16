@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { T, useUserType } from '/@/utils/types';
+import type { T, useUserType } from '../../utils/types';
 
 import ClientCode from '/@/api/oneClientOneCode';
 const clientCode = new ClientCode();

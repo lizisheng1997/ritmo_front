@@ -6,7 +6,7 @@
     <view class="form flex pb40">
       <view class="sign">
         <u-icon class="icon" name="plus" color="#232322" size="16"></u-icon>
-        83<u-icon class="icon ml10" name="arrow-down-fill" color="#232322" size="14"></u-icon>
+        {{ state.areaCode }}<u-icon class="icon ml10" name="arrow-down-fill" color="#232322" size="14"></u-icon>
       </view>
       <input class="uni-input ml25" type="number" maxlength="11" v-model="state.phone" placeholder="请输入手机号" />
     </view>
@@ -14,8 +14,8 @@
     <view class="btn" :class=" state.phone.length == 11 ? '' : 'btnNull' " @click="submit">发送验证码</view>
     <!--  -->
     <view class="tips mt30 flex">
-      <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select"></image>
-      <image class="icon mr10" src="/@/static/selectIcon.png" v-else></image>
+      <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
+      <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
       同意Ritmohub <text class="" @click="openPupup">《用户协议》</text>、<text class="">《隐私政策》</text>
     </view>
   </view>
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { routerTo } from '/@/utils/currentFun'
+import { routerTo, showTips } from '/@/utils/currentFun'
 const { t } = useI18n()
 
 // 引入组件
@@ -35,6 +35,7 @@ const textPopup = defineAsyncComponent(
 // 参数
 const state = reactive({
   phone: '', // 手机号
+  areaCode: '86', // 
   select: false, // 
 })
 // 
@@ -42,8 +43,12 @@ const submit = () => {
   if( state.phone.length != 11 ) {
     return
   }
-  console.log(111);
-  routerTo(`/pages/login/inputCode?phone=13280525799`)
+  if( !state.select ) {
+    showTips('请同意协议')
+    return
+  }
+  // console.log(111);
+  routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}`)
   
 }
 // 打开弹窗
