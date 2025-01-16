@@ -1,5 +1,4 @@
-import { useCurrentStore } from "../store/modules/current"
-import pinia from '../store/index';
+
 
 // 成功提示
 export const showTips = (title: string) => {

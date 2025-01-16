@@ -18,4 +18,17 @@ export default class Login extends Request {
       data
     });
   }
+  // 刷新token
+  getAuthRefresh(data: object) {
+    return this.post({
+      url: '/v1/auth/refresh',
+      data
+    });
+  }
+  // 获取认证信息
+  getAuthUser() {
+    return this.get({
+      url: '/v1/auth/me'
+    });
+  }
 }

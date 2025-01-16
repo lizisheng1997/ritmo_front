@@ -18,9 +18,11 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '/@/store/modules/user';
 import { routerTo, showTips } from '/@/utils/currentFun';
 import Login from '/@/api/login';
 const loginApi = new Login();
+const user = useUserStore();
 const { t } = useI18n()
 
 
@@ -86,15 +88,31 @@ const submit = async() => {
       code: state.code
     })
     .then((res: any) => {
-      console.log(res);
+      // console.log(res);
+      showTips(res.message)
       uni.setStorageSync('accessToken', res.access_token);
       uni.setStorageSync('refreshToken', res.refresh_token);
       uni.setStorageSync('tokenType', res.token_type);
-      // showTips(res.message)
-      routerTo(`/pages/user/information`)
+      getAuthUser()
+      // 
     });
   
   
+}
+// 获取用户信息
+const getAuthUser = async() => {
+  await loginApi
+    .getAuthUser()
+    .then((res: any) => {
+      console.log(res);
+      showTips(res.message)
+      // user.setUserInfo(res.data);
+      // if( res.nickname ) {
+      //   routerTo(`/pages/home/idnex`)
+      // } else {
+      //   routerTo(`/pages/user/information`)
+      // }
+    });
 }
 </script>
 
