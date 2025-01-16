@@ -2,7 +2,13 @@
   <view class="content" :style="{
     paddingTop: state.navAllHeight + 'rpx' 
   }">
-    <swiper class="swiper home-swiper m0-35" circular indicator-dots autoplay >
+    <view class="nav">
+      Ritmohub
+    </view>
+    <!--  -->
+    <swiper class="swiper home-swiper m0-35" circular indicator-dots autoplay  :style="{
+      marginTop: state.navAllHeight  + 'rpx' 
+    }">
       <swiper-item>
         <image class="imageW100" src="/@/static/loginBg.png"></image>
       </swiper-item>
@@ -106,6 +112,19 @@ page {
 </style>
 <style lang="scss" scoped>
 .content {
+  position: relative;
+  .nav {
+    font-size: 28rpx;
+    font-weight: 900;
+    line-height: 88rpx;
+    text-align: center;
+    z-index: 999;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    background-color: #F5F3EF;
+  }
   .reserves {
     justify-content: space-between;
     .item {
