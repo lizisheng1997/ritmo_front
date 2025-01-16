@@ -1,6 +1,7 @@
+// @ts-ignore
 import type { T } from './types';
 
-let baseUrl = 'http://47.116.190.37:8000/api';
+export const baseUrl = 'http://47.116.190.37:8000/api';
 // baseUrl = 'http://192.168.7.79:8000/gateway/'; 
 // console.log(baseUrl);
 
@@ -14,9 +15,9 @@ export default class Request {
         method: options.method,
         data: options.data,
         header: {
-          refresh_token: uni.getStorageSync('accessToken')
-            ? uni.getStorageSync('accessToken')
-            : ''
+          'refresh_token': uni.getStorageSync('refreshToken')
+            ? uni.getStorageSync('refreshToken')
+            : '',
         },
         success(res: T) {
           if (res.data.code == 101 || res.data.code == 204) {
@@ -43,6 +44,10 @@ export default class Request {
   }
   async post(options: T) {
     options.method = 'POST';
+    return await this.request(options);
+  }
+  async put(options: T) {
+    options.method = 'PUT';
     return await this.request(options);
   }
   async delete(options: T) {

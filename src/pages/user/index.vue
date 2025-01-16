@@ -8,7 +8,7 @@
         </view>
         <view class="right">
           <image class="head" src="/@/static/home/head.png"></image>
-          <image class="icon" src="/@/static/rightBlack.png"></image>
+          <image class="icon" src="/@/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`)"></image>
         </view>
       </view>
       <view class="vip flex m0-35">
@@ -139,6 +139,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
+import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 

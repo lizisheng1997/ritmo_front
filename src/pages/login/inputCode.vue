@@ -90,14 +90,26 @@ const submit = async() => {
     .then((res: any) => {
       // console.log(res);
       showTips(res.message)
-      uni.setStorageSync('accessToken', res.access_token);
       uni.setStorageSync('refreshToken', res.refresh_token);
-      uni.setStorageSync('tokenType', res.token_type);
-      getAuthUser()
+      getAuthRefresh(res.access_token, res.refresh_token, res.token_type)
       // 
     });
   
   
+}
+// 
+const getAuthRefresh = async(accessToken: string, refreshToken: string, tokenType: string) => {
+  await loginApi
+    .getAuthRefresh({
+      refresh_token: refreshToken,
+    })
+    .then((res: any) => {
+      console.log(res);
+      uni.setStorageSync('accessToken', res.access_token);
+      uni.setStorageSync('refreshToken', res.refresh_token);
+      uni.setStorageSync('tokenType', res.token_type);
+      getAuthUser()
+    });
 }
 // 获取用户信息
 const getAuthUser = async() => {
@@ -108,9 +120,9 @@ const getAuthUser = async() => {
       showTips(res.message)
       // user.setUserInfo(res.data);
       // if( res.nickname ) {
-      //   routerTo(`/pages/home/idnex`)
+      //   routerTo(`/pages/home/index`)
       // } else {
-      //   routerTo(`/pages/user/information`)
+      //   routerTo(`/pages/login/information`)
       // }
     });
 }

@@ -25,6 +25,12 @@
 			}
 		},
     {
+			"path": "pages/login/information",
+			"style": {
+				"navigationBarTitleText": "Ritmohub"
+			}
+		},
+    {
 			"path": "pages/space/index",
 			"style": {
 				"navigationBarTitleText": "空间"
@@ -43,9 +49,45 @@
 			}
 		},
     {
-			"path": "pages/user/information",
+			"path": "pages/user/personalData",
 			"style": {
-				"navigationBarTitleText": "Ritmohub"
+				"navigationBarTitleText": "编辑资料"
+			}
+		},
+    {
+			"path": "pages/user/personalData",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+    {
+			"path": "pages/user/agreement",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+    {
+			"path": "pages/user/setUp",
+			"style": {
+				"navigationBarTitleText": "设置"
+			}
+		},
+    {
+			"path": "pages/user/record",
+			"style": {
+				"navigationBarTitleText": "权益时长变更记录"
+			}
+		},
+    {
+			"path": "pages/user/memberMana",
+			"style": {
+				"navigationBarTitleText": "成员管理"
+			}
+		},
+    {
+			"path": "pages/user/editMember",
+			"style": {
+				"navigationBarTitleText": ""
 			}
 		}
 	],

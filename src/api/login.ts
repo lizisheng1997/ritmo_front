@@ -28,7 +28,7 @@ export default class Login extends Request {
   // 获取认证信息
   getAuthUser() {
     return this.get({
-      url: '/v1/auth/me'
+      url: '/v1/users/me'
     });
   }
 }
