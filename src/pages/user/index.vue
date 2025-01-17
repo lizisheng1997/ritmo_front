@@ -35,7 +35,7 @@
       </view>
       <view class="record">
         变更记录
-        <image class="icon" src="/@/static/rightAsh.png"></image>
+        <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/user/record`)"></image>
       </view>
     </view>
     <view class="interestsList p0-35 flex mt35">
@@ -104,7 +104,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
+      <view class="li flex" @click="routerTo(`/pages/user/memberMana`)">
         <view class="left">
           <image class="icon" src="/@/static/user/menu4.png"></image>
           成员管理

@@ -103,3 +103,33 @@
     bottom: 30rpx !important;
   }
 }
+// 一个按钮
+.footerOne {
+  width: 100%;
+  line-height: 88rpx;
+  border-radius: 20rpx;
+  background-color: #FFCF00;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  color: #232322;
+}
+// 两个按钮
+.footerTwo {
+  justify-content: space-between;
+  .btn {
+    width: 320rpx;
+    line-height: 90rpx;
+    text-align: center;
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #232322;
+    border-radius: 20rpx;
+  }
+  .btn1 {
+    background-color: #F5F3EF;
+  }
+  .btn2 {
+    background-color: #FFCF00;
+  }
+}
