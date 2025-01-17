@@ -123,7 +123,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
+      <view class="li flex" @click="routerTo(`/pages/user/setUp`)">
         <view class="left">
           <image class="icon" src="/@/static/user/menu6.png"></image>
           设置
