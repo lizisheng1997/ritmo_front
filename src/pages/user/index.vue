@@ -114,7 +114,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
+      <view class="li flex" @click="routerTo(`/pages/user/myOrder`)">
         <view class="left">
           <image class="icon" src="/@/static/user/menu5.png"></image>
           我的订单

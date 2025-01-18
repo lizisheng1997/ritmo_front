@@ -101,6 +101,18 @@
 			"style": {
 				"navigationBarTitleText": "语言"
 			}
+		},
+    {
+			"path": "pages/user/myOrder",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+    {
+			"path": "pages/user/orderDetails",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
 		}
 	],
 	"globalStyle": {
