@@ -177,3 +177,12 @@
     }
   }
 }
+// 成员扩展样式
+.memberManaTabs {
+  .u-tab-item {
+    line-height: 200rpx;
+    font-weight: 700;
+    border-radius: 20rpx;
+    padding: 0 !important;
+  }
+}

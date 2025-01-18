@@ -91,6 +91,12 @@
 			}
 		},
     {
+			"path": "pages/user/memberOrder",
+			"style": {
+				"navigationBarTitleText": "成员扩容"
+			}
+		},
+    {
 			"path": "pages/user/language",
 			"style": {
 				"navigationBarTitleText": "语言"

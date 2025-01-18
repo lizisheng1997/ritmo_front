@@ -5,7 +5,7 @@
         机构成员： 
         <text class="">5/6</text>
       </view>
-      <view class="btn">
+      <view class="btn" @click="openMemberExpansion">
         <image class="icon" src="/@/static/user/addMember.png"></image>
         成员扩容
       </view>
@@ -43,21 +43,31 @@
     <view class="footerOne" @click="routerTo(`/pages/user/editMember?type=0`)">
       新增成员
     </view>
+    <memberExpansion ref="memberExpansionRef" />
   </view>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { defineAsyncComponent, reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
+// 引入组件
+const memberExpansion = defineAsyncComponent( 
+  () => import('/@/components/memberExpansion.vue')
+)
 // 参数
 const state = reactive({
   phone: '', // 手机号
   select: false, // 
   image: '',
 })
+// 
+const memberExpansionRef = ref()
+const openMemberExpansion = () => {
+  memberExpansionRef.value.openDialog(4)
+}
 </script>
 
 <style scoped>
