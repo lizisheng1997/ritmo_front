@@ -113,6 +113,18 @@
 			"style": {
 				"navigationBarTitleText": "订单详情"
 			}
+		},
+    {
+			"path": "pages/user/myReservation",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+    {
+			"path": "pages/user/reservationDetails",
+			"style": {
+				"navigationBarTitleText": "预约详情"
+			}
 		}
 	],
 	"globalStyle": {

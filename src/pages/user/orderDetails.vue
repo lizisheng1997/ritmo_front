@@ -6,7 +6,7 @@
           <!-- <view class="card mr25">会员</view> -->
           <image class="banner mr25" src="/@/static/addHead.png"></image>
           <view class="info">
-            <view class="title mb15">
+            <view class="title mb10">
               <text class="text">工位</text>
               <text class="grade ml15">初级</text>
             </view>

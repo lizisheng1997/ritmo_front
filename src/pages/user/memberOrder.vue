@@ -3,7 +3,7 @@
     <view class="card p35">
       <view class="count flex p0-55">
         <text class="num">4人</text>
-        <image class="icon mt25" src="/@/static/iconT.png"></image>
+        <image class="icon mt25" src="/@/static/user/memberOrderCradD.png"></image>
         <text class="num">8人</text>
       </view>
       <view class="fub">扩容</view>
@@ -73,8 +73,10 @@ page {
 .content {
   .card {
     height: 668rpx;
-    background-color: #fff;
-    box-shadow: 0px 2px 10px 0px #0000001A;
+    background-image: url('/@/static/user/memberOrderCardBg.png.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    // box-shadow: 0px 2px 10px 0px #0000001A;
     .count {
       justify-content: space-between;
       .num {
@@ -87,7 +89,7 @@ page {
       .icon {
         display: inline-block;
         width: 140rpx;
-        height: 16rpx;
+        height: 24rpx;
         vertical-align: middle;
       }
     }
@@ -96,13 +98,14 @@ page {
       font-weight: 400;
       text-align: center;
       color: #232322;
-      margin-top: -15rpx;
+      margin-top: -10rpx;
       vertical-align: top;
     }
     .title {
       line-height: 100rpx;
       border-radius: 10rpx;
       background: #FFCF001A;
+      border: 1px solid #FFCF00;
       text-align: center;
       color: #232322;
       font-size: 28rpx;
@@ -123,7 +126,9 @@ page {
       color: #232322;
     }
     .info {
-      margin-top: 80rpx;
+      margin-top: 100rpx;
+      padding-top: 15rpx;
+      border-top: 1PX dashed #D7D4CF;
       .li {
         justify-content: space-between;
         .label {

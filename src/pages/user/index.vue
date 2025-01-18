@@ -94,7 +94,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
+      <view class="li flex" @click="routerTo(`/pages/user/myReservation`)">
         <view class="left">
           <image class="icon" src="/@/static/user/menu4.png"></image>
           我的预约
