@@ -89,6 +89,12 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		},
+    {
+			"path": "pages/user/language",
+			"style": {
+				"navigationBarTitleText": "语言"
+			}
 		}
 	],
 	"globalStyle": {

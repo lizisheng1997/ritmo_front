@@ -133,3 +133,47 @@
     background-color: #FFCF00;
   }
 }
+// 表单样式
+.menuForm {
+  .li {
+    justify-content: space-between;
+    border-bottom: 1PX solid #F5F3EF;
+    padding-bottom: 30rpx;
+    margin-top: 30rpx;
+    .left {
+      font-size: 32rpx;
+      font-weight: 500;
+      line-height: 40rpx;
+      color: #232322;
+      .icon {
+        display: inline-block;
+        width: 40rpx;
+        height: 40rpx;
+        vertical-align: middle;
+      }
+    }
+    .right {
+      text {
+        display: inline-block;
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 40rpx;
+      }
+      .text1 {
+        color: #FF3434;
+      }
+      .text2 {
+        color: #232322;
+      }
+      .textTwoEllipsis {
+        display: -webkit-box !important;
+        width: 460rpx;
+      }
+      .icon {
+        display: inline-block;
+        width: 40rpx;
+        height: 40rpx;
+      }
+    }
+  }
+}

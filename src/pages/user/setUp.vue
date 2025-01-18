@@ -1,6 +1,6 @@
 <template>
   <view class="content">
-    <view class="menu mt35 p0-35">
+    <view class="menuForm mt35 p0-35">
       <view class="li flex">
         <view class="left">
           评价
@@ -9,8 +9,8 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
-        <view class="left">
+      <view class="li flex" @click="routerTo(`/pages/user/language`)">
+        <view class="left" >
           语言
         </view>
         <view class="right">
@@ -96,38 +96,6 @@ const openBottomOperation = (type: number) => {
 
 <style lang="scss" scoped>
 .content {
-  .menu {
-    .li {
-      justify-content: space-between;
-      border-bottom: 1PX solid #F5F3EF;
-      padding-bottom: 30rpx;
-      margin-top: 30rpx;
-      .left {
-        font-size: 32rpx;
-        font-weight: 500;
-        line-height: 40rpx;
-        color: #232322;
-      }
-      .right {
-        text {
-          display: inline-block;
-          font-size: 24rpx;
-          font-weight: 500;
-          line-height: 40rpx;
-        }
-        .text1 {
-          color: #FF3434;
-        }
-        .text2 {
-          color: #232322;
-        }
-        .icon {
-          display: inline-block;
-          width: 40rpx;
-          height: 40rpx;
-        }
-      }
-    }
-  }
+  
 }
 </style>
