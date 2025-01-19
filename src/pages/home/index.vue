@@ -3,7 +3,7 @@
     paddingTop: state.navAllHeight + 'rpx'
   }">
     <view class="nav" :style="{ top: 0, paddingTop: (state.navAllHeight - 90) + 'rpx'   }">
-      Ritmohub
+      RITMOHUB
     </view>
     <!--  -->
     <swiper class="swiper home-swiper m35" circular indicator-dots autoplay >

@@ -18,4 +18,19 @@ export default class User extends Request {
       data
     });
   }
+
+  // 更新人脸
+  getUpdateUserFace(data: object) {
+    return this.uploadFile({
+      url: '/v1/users/face',
+      data
+    });
+  }
+  // 上传头像
+  getUpdateUserAvatar(data: object) {
+    return this.uploadFile({
+      url: '/v1/users/avatar',
+      data
+    });
+  }
 }

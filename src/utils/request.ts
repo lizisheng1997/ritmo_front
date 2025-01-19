@@ -17,8 +17,8 @@ export default class Request {
         method: options.method,
         data: options.data,
         header: {
-          'refresh_token': uni.getStorageSync('refreshToken')
-            ? uni.getStorageSync('refreshToken')
+          'Authorization': uni.getStorageSync('accessToken')
+            ? `Bearer ${uni.getStorageSync('accessToken')}`
             : '',
         },
         success(res: T) {
@@ -66,25 +66,28 @@ export default class Request {
     return new Promise((resolve, reject) => {
       uni.uploadFile({
         url: baseUrl + options.url,
-        filePath: options.filePath,
+        filePath: options.data.filePath,
         name: 'file',
-        formData: options.data,
+        
+        header: {
+          'Authorization': uni.getStorageSync('accessToken')
+            ? `Bearer ${uni.getStorageSync('accessToken')}`
+            : '',
+        },
         success(res: T) {
           const json = JSON.parse(res.data);
-          if (res.data.code == 300) {
-            showTips(res.message)
+          console.log(json);
+          showTips(json.message)
+          if (json.code == 300) {
             setTimeout(() => {
               uni.reLaunch({
                 url: '/pages/login/index'
               });
             }, 1000)
             reject(res);
-          } else if (json.data.code == 200) {
-            const data = JSON.parse(json.data);
-            const url = data.data.downloadUrl;
-            resolve(url);
+          } else if (json.code == 200) {
+            resolve(json.data.face_url);
           } else {
-            showTips(res.data.message)
             reject(json);
           }
         },

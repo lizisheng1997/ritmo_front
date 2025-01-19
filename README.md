@@ -1,2 +1,2 @@
 # ritmo_front
-ritmohub前端
+RITMOHUB前端

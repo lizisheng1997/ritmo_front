@@ -4,13 +4,15 @@
     <view class="fub mt20">已发送验证码至{{ state.phone }}</view>
     <!--  -->
     <view class="form pb40">
-      <u-message-input mode="box" maxlength="4" :value="state.code" width="120"  @change="codeChange"></u-message-input>
+      <u-message-input mode="box" maxlength="6" :value="state.code" width="90"  @change="codeChange"></u-message-input>
     </view>
-    <view class="second" :style="{ color: state.counting == true ? '#898784' : '#232322' }">
+    <view class="second" :style="{ color: state.counting == true ? '#898784' : '#232322' }" @click="() => {
+      if( !state.counting ) sendMobileCode();
+    }">
       {{ state.counting == true ? `${state.second}秒后可重新获取` : '重新发送' }}
     </view>
     <!--  -->
-    <view class="btn" :class=" state.code.length == 4 ? '' : 'btnNull' " @click="submit">注册并登录</view>
+    <view class="btn" :class=" state.code.length == 6 ? '' : 'btnNull' " @click="submit">注册并登录</view>
   </view>
 </template>
 
@@ -37,7 +39,6 @@ const state = reactive({
   phone: '', // 手机号
   areaCode: '', // 
   code: '', // 
-  debugCode: '', // 获取的验证码
   second: 60, // 秒
   counting: false, // 是否正在倒计时
   select: false, // 
@@ -52,7 +53,6 @@ const sendMobileCode = async() => {
     .sendCoded({
       phone: state.phone,
       area_code: state.areaCode,
-      code: ''
     })
     .then((res: any) => {
       console.log(res);
@@ -71,7 +71,7 @@ const sendMobileCode = async() => {
 }
 // 
 const submit = async() => {
-  if( state.code.length != 4 ) {
+  if( state.code.length != 6 ) {
     showTips('请输入验证码')
     return
   }
@@ -82,11 +82,11 @@ const submit = async() => {
       area_code: state.areaCode,
       code: state.code
     })
-    .then((res: any) => {
+    .then( async(res: any) => {
       // console.log(res);
       showTips(res.message)
-      uni.setStorageSync('refreshToken', res.refresh_token);
-      getAuthUser()
+      uni.setStorageSync('accessToken', res.data.access_token);
+      await getAuthUser()
       // 
     });
   
@@ -97,14 +97,14 @@ const getAuthUser = async() => {
   await loginApi
     .getAuthUser()
     .then((res: any) => {
-      console.log(res);
+      // console.log(res);
       showTips(res.message)
-      // user.setUserInfo(res.data);
-      // if( res.nickname ) {
-      //   routerTo(`/pages/home/index`)
-      // } else {
-      //   routerTo(`/pages/login/information`)
-      // }
+      user.setUserInfo(res.data);
+      if( res.data.is_new_user ) {
+        routerTo(`/pages/login/information`)
+      } else {
+        routerTo(`/pages/home/index`)
+      }
     });
 }
 </script>

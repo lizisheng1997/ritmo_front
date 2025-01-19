@@ -16,7 +16,7 @@
     <view class="tips mt30 flex">
       <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
       <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
-      同意Ritmohub <text class="" @click="openPupup">《用户协议》</text>、<text class="">《隐私政策》</text>
+      同意RITMOHUB <text class="" @click="openPupup">《用户协议》</text>、<text class="">《隐私政策》</text>
     </view>
   </view>
   <textPopup ref="textPopupRef" @refresh="textPopupRefresh"/>

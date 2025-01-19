@@ -1,5 +1,7 @@
 
 
+import User from '/@/api/user';
+const userApi = new User();
 import { baseUrl } from './request'
 // 成功提示
 export const showTips = (title: string) => {
@@ -81,14 +83,27 @@ export const burrentChooseImage = (type: number, count: number) => {
         // console.log(tempFilePaths);
         
         for( let i of tempFilePaths ) {
-          await burrentUploadImgFile(type, i).then((resChild: any) => {
+          // await burrentUploadImgFile(type, i).then((resChild: any) => {
             
-            if( resChild.code == 0 ) {
-              str.push(resChild.data)
-            }
-          }).catch((err) => {
-            reject(err)
-          })
+          //   if( resChild.code == 0 ) {
+          //     str.push(resChild.data)
+          //   }
+          // }).catch((err) => {
+          //   reject(err)
+          // })
+          if( type == 0 ) {
+            userApi.getUpdateUserFace({ filePath: i }).then((resChild: any) => {
+              str.push(resChild)
+            }).catch((err) => {
+              reject(err)
+            })
+          } else if( type == 1 ) {
+            userApi.getUpdateUserAvatar({ filePath: i }).then((resChild: any) => {
+              str.push(resChild)
+            }).catch((err) => {
+              reject(err)
+            })
+          }
         }
         await resolve(str) 
         uni.hideLoading()

@@ -15,6 +15,7 @@ export const useUserStore = defineStore({
     // 存储用户信息
     setUserInfo(data: T) {
       this.userInfo = data;
+      uni.setStorageSync('userInfo', data);
     },
     
   }

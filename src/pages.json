@@ -33,19 +33,19 @@
     {
 			"path": "pages/login/codeLogin",
 			"style": {
-				"navigationBarTitleText": "Ritmohub"
+				"navigationBarTitleText": "RITMOHUB"
 			}
 		},
     {
 			"path": "pages/login/inputCode",
 			"style": {
-				"navigationBarTitleText": "Ritmohub"
+				"navigationBarTitleText": "RITMOHUB"
 			}
 		},
     {
 			"path": "pages/login/information",
 			"style": {
-				"navigationBarTitleText": "Ritmohub"
+				"navigationBarTitleText": "RITMOHUB"
 			}
 		},
     {

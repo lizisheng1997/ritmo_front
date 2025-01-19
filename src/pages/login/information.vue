@@ -7,19 +7,19 @@
         <view class="text">
           昵称
         </view>
-        <input class="uni-input ml25" maxlength="5" v-model="state.phone" placeholder="请输入昵称或姓名" />
+        <input class="uni-input ml25" maxlength="5" v-model="form.nickname" placeholder="请输入昵称或姓名" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
           邮箱
         </view>
-        <input class="uni-input ml25" v-model="state.phone" placeholder="请输入邮箱" />
+        <input class="uni-input ml25" v-model="form.email" placeholder="请输入邮箱" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
           邀请码
         </view>
-        <input class="uni-input ml25" maxlength="5" v-model="state.phone" placeholder="非必填" />
+        <input class="uni-input ml25" maxlength="8" v-model="form.intro" placeholder="非必填" />
       </view>
     </view>
     <!--  -->
@@ -31,10 +31,10 @@
       若暂不设置，也可以后续到个人中心设置人脸
     </view>
     <view class="headImage">
-      <image class="imageW100" :src=" state.image ? state.image : '../../static/addHead.png' "></image>
+      <image class="imageW100" :src=" form.avatarUrl ? form.avatarUrl : '../../static/addHead.png' " @click="uploadImage"></image>
     </view>
     <!--  -->
-    <view class="btn" :class=" state.phone.length == 11 ? '' : 'btnNull' ">
+    <view class="btn" :class=" ( form.nickname && form.email && form.avatarUrl ) ? '' : 'btnNull' " @click="submit()">
       完善并开始使用
     </view>
   </view>
@@ -42,15 +42,61 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { routerTo, showTips, burrentChooseImage } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '/@/store/modules/user';
+import User from '/@/api/user';
+import Login from '/@/api/login';
+const loginApi = new Login();
+const userApi = new User();
+const user = useUserStore();
 const { t } = useI18n()
 
 // 参数
-const state = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+const form = reactive({
+  nickname: '', // 昵称
+  email: '', // 邮箱
+  intro: '', // 邀请码
+  avatarUrl: '',
 })
+// 上传人脸
+const uploadImage = async() => {
+  await burrentChooseImage(0, 1).then((res: any) => {
+    form.avatarUrl = res[0]
+  })
+}
+// 
+const submit = async() => {
+  if(!form.nickname && !form.email && !form.avatarUrl) {
+    return;
+  }
+  let { nickname, email, intro, avatarUrl } = form
+  await userApi.getUpdateUser({
+    nickname,
+    email,
+    intro,
+    avatar_url: avatarUrl
+  }).then((res: any) => {
+    console.log(res);
+    showTips(res.message)
+    getAuthUser()
+  })
+}
+// 更新缓存
+const getAuthUser = async() => {
+  await loginApi
+    .getAuthUser()
+    .then((res: any) => {
+      // console.log(res);
+      showTips(res.message)
+      user.setUserInfo(res.data);
+      setTimeout(() => {
+        uni.reLaunch({
+          url: '/pages/home/index'
+        });
+      }, 1000);
+    });
+}
 </script>
 
 <style lang="scss" scoped>
