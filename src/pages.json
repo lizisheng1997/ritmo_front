@@ -6,6 +6,24 @@
           "navigationStyle": "custom"
 			}
 		},
+    {
+			"path": "pages/home/institutions",
+			"style": {
+				"navigationBarTitleText": "机构列表"
+			}
+		},
+    {
+			"path": "pages/home/addInstitutions",
+			"style": {
+				"navigationBarTitleText": "创建机构"
+			}
+		},
+    {
+			"path": "pages/home/institutionsDetails",
+			"style": {
+				"navigationBarTitleText": "机构详情"
+			}
+		},
 		{
 			"path": "pages/login/index",
 			"style": {

@@ -69,7 +69,7 @@
           <view class="name mt10">段誉</view>
         </template>
       </view>
-      <view class="right">
+      <view class="right" @click="routerTo(`/pages/home/institutions`)">
         <image class="icon" src="/@/static/home/switch.png"></image>
         切换
       </view>
@@ -104,7 +104,7 @@ const state = reactive({
 })
 </script>
 
-<style scoped>
+<style>
 page {
   background-color: #F5F3EF;
 }
