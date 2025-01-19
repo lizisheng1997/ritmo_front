@@ -1,14 +1,12 @@
 <template>
   <view class="content" :style="{
-    paddingTop: state.navAllHeight + 'rpx' 
+    paddingTop: state.navAllHeight + 'rpx'
   }">
-    <view class="nav">
+    <view class="nav" :style="{ top: 0, paddingTop: (state.navAllHeight - 90) + 'rpx'   }">
       Ritmohub
     </view>
     <!--  -->
-    <swiper class="swiper home-swiper m0-35" circular indicator-dots autoplay  :style="{
-      marginTop: state.navAllHeight  + 'rpx' 
-    }">
+    <swiper class="swiper home-swiper m35" circular indicator-dots autoplay >
       <swiper-item>
         <image class="imageW100" src="/@/static/loginBg.png"></image>
       </swiper-item>
@@ -61,7 +59,7 @@
       <image class="head " src="/@/static/home/head.png"></image>
       <view class="center mr20">
         <template v-if=" state.status == 0 ">
-          <view class="not">暂未登录</view>
+          <view class="not"  @click="routerTo(`/pages/login/index`)">暂未登录</view>
         </template>
         <template v-if=" state.status == 1 ">
           <view class="company flex mt30">
@@ -77,7 +75,7 @@
       </view>
     </view>
     <!--  -->
-    <view class="list m0-35">
+    <view class="list">
       <view class="li mt35">
         <image class="imageW100" src="/@/static/loginBg.png"></image>
       </view>
@@ -90,13 +88,14 @@
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
+import { routerTo, showTips } from '/@/utils/currentFun';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 onLoad(() => {
   // @ts-ignore
-  state.navAllHeight = getApp().globalData.navAllHeight + 68;
+  state.navAllHeight = getApp().globalData.navAllHeight + 90;
 })
 // 参数
 const state = reactive({
@@ -121,7 +120,6 @@ page {
     z-index: 999;
     position: fixed;
     left: 0;
-    top: 0;
     width: 100%;
     background-color: #F5F3EF;
   }
@@ -246,6 +244,7 @@ page {
     }
   }
   .list {
+    padding: 0 35rpx 35rpx ;
     .li {
       height: 340rpx;
       border-radius: 20rpx;

@@ -1,6 +1,8 @@
 <template>
   <view class="content">
-    <view class="info">
+    <view class="info" :style="{
+            paddingTop: state.navAllHeight + 'rpx'
+          }">
       <view class="user flex p0-35">
         <view class="left">
           <view class="name oneEllipsis">Hacker</view>
@@ -144,17 +146,21 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 onLoad(() => {
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight + 88;
+  console.log(state.navAllHeight);
+  
 })
 // 参数
 const state = reactive({
   status: 0, //  
+  navAllHeight: 0,
 })
 </script>
 
 <style lang="scss" scoped>
 .content {
   .info {
-    height: 440rpx;
     background-color: #F5F3EF;
     position: relative;
     .bg {
@@ -165,7 +171,6 @@ const state = reactive({
       bottom: -5rpx;
     }
     .user {
-      padding-top: 120rpx;
       justify-content: space-between;
       .left {
         .name {
@@ -195,7 +200,7 @@ const state = reactive({
     .vip {
       margin-top: 38rpx;
       height: 160rpx;
-      background-image: url('/@/static/user/vip1.png');
+      background-image: url('../../static/user/vip1.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       justify-content: space-between;
@@ -269,7 +274,7 @@ const state = reactive({
     .card {
       width: 150rpx;
       height: 200rpx;
-      background-image: url('/@/static/user/interestsListBg.png');
+      background-image: url('../../static/user/interestsListBg.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       margin-right: 26rpx;

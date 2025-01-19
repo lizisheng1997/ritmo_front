@@ -89,7 +89,7 @@ const state = reactive({
 })
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #F5F3EF;
 }
@@ -119,7 +119,7 @@ page {
   }
   .card {
     height: 668rpx;
-    background-image: url('/@/static/user/memberOrderCardBg.png');
+    background-image: url('../../static/user/memberOrderCardBg.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     // box-shadow: 0px 2px 10px 0px #0000001A;

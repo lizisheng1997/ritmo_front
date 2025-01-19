@@ -56,8 +56,7 @@ const sendMobileCode = async() => {
     })
     .then((res: any) => {
       console.log(res);
-      showTips(res.message)
-      state.debugCode = res.debug_code
+      // showTips(res.message)
       state.counting = true
       const timer = setInterval(() => {
         state.second--;
@@ -76,10 +75,6 @@ const submit = async() => {
     showTips('请输入验证码')
     return
   }
-  if( state.code != state.debugCode ) {
-    showTips('验证码不正确')
-    return
-  }
   // 
   await loginApi
     .getLogin({
@@ -91,25 +86,11 @@ const submit = async() => {
       // console.log(res);
       showTips(res.message)
       uni.setStorageSync('refreshToken', res.refresh_token);
-      getAuthRefresh(res.access_token, res.refresh_token, res.token_type)
+      getAuthUser()
       // 
     });
   
   
-}
-// 
-const getAuthRefresh = async(accessToken: string, refreshToken: string, tokenType: string) => {
-  await loginApi
-    .getAuthRefresh({
-      refresh_token: refreshToken,
-    })
-    .then((res: any) => {
-      console.log(res);
-      uni.setStorageSync('accessToken', res.access_token);
-      uni.setStorageSync('refreshToken', res.refresh_token);
-      uni.setStorageSync('tokenType', res.token_type);
-      getAuthUser()
-    });
 }
 // 获取用户信息
 const getAuthUser = async() => {

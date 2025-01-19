@@ -9,10 +9,10 @@
       <view class="phone">132****2336</view>
       <view class="provider mt30">中国联通提供认证服务</view>
       <view class="btn btnOne mt50">{{ t('oneLogin') }}</view>
-      <view class="btn btnCode mt30" @click="routerTo('/pages/login/codeLogin')">{{ t('codeLogin') }}</view>
+      <view class="btn btnCode mt30" @click="codeLoginTo">{{ t('codeLogin') }}</view>
       <view class="tips mt30 flex">
-        <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select"></image>
-        <image class="icon mr10" src="/@/static/selectIcon.png" v-else></image>
+        <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
+        <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
         同意Ritmohub <text class="" @click="openPupup">《用户协议》</text>、<text class="">《隐私政策》</text> 并使用本机号码进行登录
       </view>
     </view>
@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
-import { routerTo } from '/@/utils/currentFun';
+import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
@@ -42,13 +42,20 @@ const openPupup = () => {
 const textPopupRefresh = (show: boolean) => {
   state.select = show
 }
+const codeLoginTo = () => {
+  if( !state.select ) {
+    showTips('请勾选协议')
+    return
+  }
+  routerTo('/pages/login/codeLogin')
+}
 </script>
 
 <style lang="scss" scoped>
 .content {
   height: 100vh;
   width: 100%;
-  background-image: url('/@/static/loginBg.png');
+  background: url('../../static/loginBg.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: relative;

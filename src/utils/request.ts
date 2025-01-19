@@ -1,7 +1,9 @@
+
+import { showTips } from './currentFun';
 // @ts-ignore
 import type { T } from './types';
 
-export const baseUrl = 'http://47.116.190.37:8000/api';
+export const baseUrl = 'http://47.116.190.37:8002/api';
 // baseUrl = 'http://192.168.7.79:8000/gateway/'; 
 // console.log(baseUrl);
 
@@ -20,16 +22,21 @@ export default class Request {
             : '',
         },
         success(res: T) {
-          if (res.data.code == 101 || res.data.code == 204) {
-            uni.showToast({
-              title: res.data.msg,
-              icon: 'none',
-              duration: 1000,
-              mask: true
-            });
+          // console.log(res);
+          
+          if (res.data.code == 300) {
+            showTips(res.data.message)
+            setTimeout(() => {
+              uni.reLaunch({
+                url: '/pages/login/index'
+              });
+            }, 1000)
             reject(res.data);
-          } else {
+          } else if( res.data.code == 200 ) {
             reslove(res.data);
+          } else {
+            showTips(res.data.message)
+            reject(res.data);
           }
         },
         fail(err: T) {
@@ -54,6 +61,7 @@ export default class Request {
     options.method = 'DELETE';
     return await this.request(options);
   }
+  // 文件上传
   async uploadFile(options: T): Promise<string> {
     return new Promise((resolve, reject) => {
       uni.uploadFile({
@@ -63,18 +71,21 @@ export default class Request {
         formData: options.data,
         success(res: T) {
           const json = JSON.parse(res.data);
-          if (json.code == 101 || json.code == 204) {
-            uni.showToast({
-              title: json.msg,
-              icon: 'none',
-              duration: 1000,
-              mask: true
-            });
-            reject(json);
-          } else {
+          if (res.data.code == 300) {
+            showTips(res.message)
+            setTimeout(() => {
+              uni.reLaunch({
+                url: '/pages/login/index'
+              });
+            }, 1000)
+            reject(res);
+          } else if (json.data.code == 200) {
             const data = JSON.parse(json.data);
             const url = data.data.downloadUrl;
             resolve(url);
+          } else {
+            showTips(res.data.message)
+            reject(json);
           }
         },
         fail(err: T) {
