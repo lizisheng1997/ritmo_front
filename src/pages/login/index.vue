@@ -10,10 +10,10 @@
       <view class="provider mt30">中国联通提供认证服务</view>
       <view class="btn btnOne mt50">{{ t('oneLogin') }}</view>
       <view class="btn btnCode mt30" @click="codeLoginTo">{{ t('codeLogin') }}</view>
-      <view class="tips mt30 flex">
+      <view class="tips mt30">
         <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
         <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
-        同意RITMOHUB <text class="" @click="openPupup">《用户协议》</text>、<text class="">《隐私政策》</text> 并使用本机号码进行登录
+        同意RITMOHUB<text class="" @click="openPupup">《用户协议》</text>、<text class="">《隐私政策》</text> 并使用本机号码进行登录
       </view>
     </view>
     <textPopup ref="textPopupRef" @refresh="textPopupRefresh"/>
@@ -117,6 +117,8 @@ const codeLoginTo = () => {
       font-size: 20rpx;
       line-height: 28rpx;
       color: #F5F3EF;
+      white-space: normal; /* 保留空白符序列，但是正常换行 */
+      word-break: break-all; /* 允许在单词内换行 */
       text {
         color: #FFCF00;
       }

@@ -4,7 +4,7 @@
     <view class="fub mt20">已发送验证码至{{ state.phone }}</view>
     <!--  -->
     <view class="form pb40">
-      <u-message-input mode="box" maxlength="6" :value="state.code" width="90"  @change="codeChange"></u-message-input>
+      <u-message-input mode="box" maxlength="4" :value="state.code" width="120"  @change="codeChange"></u-message-input>
     </view>
     <view class="second" :style="{ color: state.counting == true ? '#898784' : '#232322' }" @click="() => {
       if( !state.counting ) sendMobileCode();
@@ -12,7 +12,7 @@
       {{ state.counting == true ? `${state.second}秒后可重新获取` : '重新发送' }}
     </view>
     <!--  -->
-    <view class="btn" :class=" state.code.length == 6 ? '' : 'btnNull' " @click="submit">注册并登录</view>
+    <view class="btn" :class=" state.code.length == 4 ? '' : 'btnNull' " @click="submit">注册并登录</view>
   </view>
 </template>
 
@@ -48,7 +48,10 @@ const codeChange = (e: string) => {
   state.code = e
 }
 // 发送验证码
+const timer = ref()
 const sendMobileCode = async() => {
+  console.log(state);
+  state.code = ''
   await loginApi
     .sendCoded({
       phone: state.phone,
@@ -58,10 +61,10 @@ const sendMobileCode = async() => {
       console.log(res);
       // showTips(res.message)
       state.counting = true
-      const timer = setInterval(() => {
+      timer.value = setInterval(() => {
         state.second--;
         if ( state.second <= 0 ) {
-          clearInterval(timer);
+          clearInterval( timer.value);
           state.counting = false;
           state.second = 60; // 重置倒计时时长
         }
@@ -71,7 +74,7 @@ const sendMobileCode = async() => {
 }
 // 
 const submit = async() => {
-  if( state.code.length != 6 ) {
+  if( state.code.length != 4 ) {
     showTips('请输入验证码')
     return
   }
@@ -97,13 +100,21 @@ const getAuthUser = async() => {
   await loginApi
     .getAuthUser()
     .then((res: any) => {
-      // console.log(res);
       showTips(res.message)
-      user.setUserInfo(res.data);
+      // user.setUserInfo(res.data);
+      clearInterval( timer.value);
+      state.counting = false;
+      state.second = 60; // 重置倒计时时长
       if( res.data.is_new_user ) {
         routerTo(`/pages/login/information`)
       } else {
-        routerTo(`/pages/home/index`)
+        // routerTo(`/pages/home/index`)
+        user.setUserInfo(res.data);
+        setTimeout(() => {
+          uni.reLaunch({
+            url: '/pages/home/index'
+          });
+        }, 1000);
       }
     });
 }

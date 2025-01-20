@@ -60,9 +60,17 @@ const form = reactive({
   avatarUrl: '',
 })
 // 上传人脸
-const uploadImage = async() => {
-  await burrentChooseImage(0, 1).then((res: any) => {
-    form.avatarUrl = res[0]
+const uploadImage = () => {
+   burrentChooseImage(0, 1).then((res: any) => {
+    // console.log(res);
+    
+    // form.avatarUrl = res[0]
+    userApi.getUpdateUserFace({ filePath: res[0] }).then((res: any) => {
+      // console.log(res);
+      
+      form.avatarUrl = res.face_url
+    }).catch((err) => {
+    })
   })
 }
 // 

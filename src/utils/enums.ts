@@ -1,5 +1,6 @@
-export enum invoiceStatusEnums {
-  // 开票中 = 1,
-  // 已开票,
-  // 已驳回
+export enum userLevelEnums {
+  普通成员 = 0,
+  初级会员,
+  高级会员,
+  机构会员
 }

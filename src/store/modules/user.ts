@@ -6,16 +6,23 @@ import type { T, useUserType } from '../../utils/types';
 export const useUserStore = defineStore({
   id: 'user-store',
   state: (): useUserType => ({
-    userInfo: {
-      userId: ''
-    } as any,
+    userInfo: {} as any,
+    formInput: {
+      key: 0,
+      value: ''
+    }
   }),
   getters: {},
   actions: {
     // 存储用户信息
     setUserInfo(data: T) {
       this.userInfo = data;
-      uni.setStorageSync('userInfo', data);
+      // console.log(data);
+      
+      uni.setStorageSync('userInfos', data);
+    },
+    setFormInput(data: T) {
+      this.formInput = data;
     },
     
   }

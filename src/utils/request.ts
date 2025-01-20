@@ -86,7 +86,7 @@ export default class Request {
             }, 1000)
             reject(res);
           } else if (json.code == 200) {
-            resolve(json.data.face_url);
+            resolve(json.data);
           } else {
             reject(json);
           }

@@ -3,7 +3,6 @@ import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
 import { defineComponent } from "vue";
 export default defineComponent({
   globalData: {
-    userInfo: null,
     navigationBarHeight: 0,  // 获取导航栏（标题栏高度）高度
     navAllHeight: 0, // 总体高度 = 状态栏高度+导航栏高度
   } as any,

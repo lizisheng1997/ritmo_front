@@ -16,7 +16,7 @@
         <text class="num">{{ state.value.length }}/300</text>
       </view>
     </view>
-    <view class="footerOne">
+    <view class="footerOne" @click="submit">
       确认修改
     </view>
   </view>
@@ -25,7 +25,10 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
+import { useUserStore } from '/@/store/modules/user';
 import { useI18n } from 'vue-i18n'
+import { routerBack } from '/@/utils/currentFun';
+const user = useUserStore();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
@@ -34,6 +37,7 @@ onLoad((query?: AnyObject | undefined): void => {
     title: query!.type == '0' ? '修改昵称' : query!.type == '1' ? '修改个人简介' : query!.type == '2' ? '修改常驻空间' : '修改邮箱'
   });
   state.type = query!.type
+  state.value = query!.value
 });
 // 参数
 const state = reactive({
@@ -41,6 +45,17 @@ const state = reactive({
   valueLeng: '',
   value: '',
 })
+// 
+const submit = () => {
+  if( !state.value ) {
+    return
+  }
+  user.setFormInput({
+    key: state.type,
+    value: state.value
+  })
+  routerBack(1)
+}
 </script>
 
 <style lang="scss" scoped>

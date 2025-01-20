@@ -49,27 +49,30 @@
         <image class="icon" src="/@/static/home/card3.png"></image>
         <view class="text mt10">邀请好友</view>
       </view>
-      <view class="item">
+      <view class="item" @click="routerTo(`/pages/user/myReservation`, true)">
         <image class="icon" src="/@/static/home/card4.png"></image>
         <view class="text mt10">我的预约</view>
       </view>
     </view>
     <!--  -->
     <view class="user m0-35 flex">
-      <image class="head " src="/@/static/home/head.png"></image>
+      <image class="head " :src=" state.avatarUrl ? state.avatarUrl : '../../static/home/head.png' "></image>
       <view class="center mr20">
-        <template v-if=" state.status == 0 ">
+        <template v-if=" state.userId">
+          <view class="company flex mt30">
+            <text class="text oneEllipsis">{{ state.nickname }}</text>
+            <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
+            <image class="icon ml10" src="/@/static/home/vip1.png" v-else-if="state.level == 0"></image>
+            <image class="icon ml10" src="/@/static/home/vip2.png" v-else-if="state.level == 0"></image>
+            <image class="icon ml10" src="/@/static/home/vip3.png" v-else-if="state.level == 0"></image>
+          </view>
+          <view class="name mt10" v-if="state.userId">ID：{{ state.userId }}</view>
+        </template>
+        <template v-else>
           <view class="not"  @click="routerTo(`/pages/login/index`)">暂未登录</view>
         </template>
-        <template v-if=" state.status == 1 ">
-          <view class="company flex mt30">
-            <text class="text oneEllipsis">杭州大鱼网络科技有限公司</text>
-            <image class="icon ml10" src="/@/static/home/vip1.png"></image>
-          </view>
-          <view class="name mt10">段誉</view>
-        </template>
       </view>
-      <view class="right" @click="routerTo(`/pages/home/institutions`)">
+      <view class="right" @click="routerTo(`/pages/home/institutions`)" v-if="state.level">
         <image class="icon" src="/@/static/home/switch.png"></image>
         切换
       </view>
@@ -87,21 +90,43 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
+import { onLoad, onShow } from '@dcloudio/uni-app';
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+const userApi = new User();
 const { t } = useI18n()
 
 onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
 })
+onShow(() => {
+  if(uni.getStorageSync('accessToken') && uni.getStorageSync('userInfos')) {
+    getUserInfo()
+  }
+})
 // 参数
 const state = reactive({
   status: 0, // 
   navAllHeight: 0,
+  nickname: '', // 名称
+  avatarUrl: '', // 头像
+  userId: '',
+  level: 0, // 0：非会员, 1: 初级会员, 2: 高级会员, 3: 企业会员
+  isNewUser: true, // 是否是新用户
 })
+// 获取用户资料
+const getUserInfo = async() => {
+  await userApi.getUserInfo({}).then((res: any) => {
+    console.log(res);
+    state.nickname = res.data.nickname
+    state.avatarUrl = res.data.avatar? res.data.avatar.url : ''
+    state.userId = res.data.id
+    state.level = res.data.vip.level
+  })
+}
 </script>
 
 <style>
@@ -212,7 +237,7 @@ page {
         color: #232322;
         .text {
           display: inline-block;
-          width: calc( 100% - 126rpx );
+          max-width: calc( 100% - 126rpx );
         }
         .icon {
           display: inline-block;

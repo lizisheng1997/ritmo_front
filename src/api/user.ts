@@ -6,7 +6,7 @@ export default class User extends Request {
   }
   // 获取用户信息
   getUserInfo(data: object) {
-    return this.post({
+    return this.get({
       url: '/v1/users/me',
       data
     });

@@ -15,29 +15,48 @@ export const showTips = (title: string) => {
 /**
  * 路由跳转
  * @param url 路径
- * @param type  返回几页
  * @param auth  是否需要验证登录
  */
-export const routerTo = ( url: string = '', type: number = 0, auth: boolean = false ) => {
-  if( !auth && !url && !type ) {
+export const routerTo = ( url: string = '', auth: boolean = false ) => {
+  if( !auth && !url ) {
     return
   }
-  // console.log(url, type)
-  if( url == '' ) {
-    uni.navigateBack({
-      delta: type,
-    })
-  } else {
-    if( auth ) {
-      // 此处为登录跳转校验
+  if( auth ) {
+    // 此处为登录跳转校验
+    if(!uni.getStorageSync('userInfos')) {
+      showTips('请先登录')
+      setTimeout(() => {
+        uni.navigateTo({
+          url: '/pages/login/index',
+        })
+      }, 1000);
+      return
     } else {
-      uni.navigateTo({
-        url,
-      })
+      if( uni.getStorageSync('userInfos').is_new_user  == true ) {
+        showTips('请先完善资料')
+        setTimeout(() => {
+          uni.navigateTo({
+            url: '/pages/login/information',
+          })
+        }, 1000);
+        return
+      } else {
+        uni.navigateTo({
+          url,
+        })
+      }
     }
+  } else {
+    uni.navigateTo({
+      url,
+    })
   }
 }
-
+export const routerBack = (count: number) => {
+  uni.navigateBack({
+    delta: count
+  })
+}
 /**
  * 图片上传
  */
@@ -59,53 +78,7 @@ export const burrentChooseImage = (type: number, count: number) => {
         if( res.errMsg != 'chooseImage:ok' ) {
           return
         }
-        const tempFilePaths = res.tempFilePaths
-        // if(lowerStr != 'png' && lowerStr !== 'jpg' && lowerStr !== 'jpeg' && lowerStr !== 'bmp') {
-        //     uni.showToast({
-        //         title: '请上传PNG、JPG、JPEG、BMP格式的图片',
-        //         icon: 'none',
-        //         duration: 3000
-        //     });
-        //     return;
-        // }
-        // if(res.tempFiles[0]['size']>15*1024*1024){
-        //     uni.showToast({
-        //         title: '图片大小不能超过15M',
-        //         icon: 'none',
-        //         duration: 3000
-        //     });
-        //     return;
-        // }
-        uni.showLoading({
-          title:'上传中...'
-        }) 
-        let str: any[] = []
-        // console.log(tempFilePaths);
-        
-        for( let i of tempFilePaths ) {
-          // await burrentUploadImgFile(type, i).then((resChild: any) => {
-            
-          //   if( resChild.code == 0 ) {
-          //     str.push(resChild.data)
-          //   }
-          // }).catch((err) => {
-          //   reject(err)
-          // })
-          if( type == 0 ) {
-            userApi.getUpdateUserFace({ filePath: i }).then((resChild: any) => {
-              str.push(resChild)
-            }).catch((err) => {
-              reject(err)
-            })
-          } else if( type == 1 ) {
-            userApi.getUpdateUserAvatar({ filePath: i }).then((resChild: any) => {
-              str.push(resChild)
-            }).catch((err) => {
-              reject(err)
-            })
-          }
-        }
-        await resolve(str) 
+        resolve(res.tempFilePaths) 
         uni.hideLoading()
       },
       fail: function(err) {

@@ -4,26 +4,26 @@
             paddingTop: state.navAllHeight + 'rpx'
           }">
       <view class="user flex p0-35">
-        <view class="left">
-          <view class="name oneEllipsis">Hacker</view>
-          <view class="id mt10">ID：3721881923</view>
+        <view class="left" @click="">
+          <view class="name oneEllipsis" @click="loginTo">{{ state.nickname ? state.nickname : '请登录' }}</view>
+          <view class="id mt10" v-if="state.userId">ID：{{ state.userId }}</view>
         </view>
         <view class="right">
-          <image class="head" src="/@/static/home/head.png"></image>
-          <image class="icon" src="/@/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`)"></image>
+          <image class="head" :src=" state.avatarUrl ? state.avatarUrl : '../../static/home/head.png' "></image>
+          <image class="icon" src="/@/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`)" v-if="state.userId"></image>
         </view>
       </view>
-      <view class="vip flex m0-35">
+      <view class="vip flex m0-35" :class=" state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : state.level == 3 ? 'vip3' : '' ">
         <view class="left ml35">
           <view class="grade mt35">
-            普通成员
-            <image class="icon" src="/@/static/rightBlack.png"></image>
+            {{ userLevelEnums[state.level] }}
+            <image class="icon" src="/@/static/rightBlack.png" v-if="state.level != 0"></image>
           </view>
           <view class="date mt15">
-            开通会员最高享受10项专属权益
+            {{ state.level ? '有效期至 2024-05-25' : '开通会员最高享受10项专属权益' }}
           </view>
         </view>
-        <view class="right mt45 mr45">
+        <view class="right mt45 mr45" v-if="state.level == 0">
           开通会员
         </view>
       </view>
@@ -33,14 +33,14 @@
     <view class="interests mt55 flex p0-35">
       <view class="title">
         <text class="text">我的权益</text>
-        <text class="fub ml15">暂无可用权益</text>
+        <text class="fub ml15" v-if="state.level == 0">暂无可用权益</text>
       </view>
-      <view class="record">
+      <view class="record" v-if="state.level != 0">
         变更记录
-        <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/user/record`)"></image>
+        <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/user/record`, true)"></image>
       </view>
     </view>
-    <view class="interestsList p0-35 flex mt35">
+    <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
       <view class="card">
         <view class="num mt30">16</view>
         <view class="text mt15">小时</view>
@@ -58,6 +58,7 @@
       </view>
     </view>
     <view class="menuForm mt35 p0-35">
+      <!-- v-if="state.level != 2" -->
       <view class="li flex">
         <view class="left">
           <image class="icon" src="/@/static/home/switch.png"></image>
@@ -67,6 +68,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
+      <!-- v-if="state.level == 2" -->
       <view class="li flex">
         <view class="left">
           <image class="icon" src="/@/static/user/menu7.png"></image>
@@ -77,7 +79,8 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
+      <!-- v-if="state.level != 2" -->
+      <view class="li flex" >
         <view class="left">
           <image class="icon" src="/@/static/user/menu2.png"></image>
           图片上传 
@@ -87,6 +90,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
+      <!--  -->
       <view class="li flex">
         <view class="left">
           <image class="icon" src="/@/static/user/menu3.png"></image>
@@ -96,7 +100,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="routerTo(`/pages/user/myReservation`)">
+      <view class="li flex" @click="routerTo(`/pages/user/myReservation`, true)">
         <view class="left">
           <image class="icon" src="/@/static/user/menu4.png"></image>
           我的预约
@@ -106,7 +110,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="routerTo(`/pages/user/memberMana`)">
+      <view class="li flex" @click="routerTo(`/pages/user/memberMana`, true)">
         <view class="left">
           <image class="icon" src="/@/static/user/menu4.png"></image>
           成员管理
@@ -116,7 +120,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="routerTo(`/pages/user/myOrder`)">
+      <view class="li flex" @click="routerTo(`/pages/user/myOrder`, true)">
         <view class="left">
           <image class="icon" src="/@/static/user/menu5.png"></image>
           我的订单
@@ -139,10 +143,13 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
+import { onLoad, onShow } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
+import { userLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+const userApi = new User();
 const { t } = useI18n()
 
 onLoad(() => {
@@ -151,15 +158,45 @@ onLoad(() => {
   console.log(state.navAllHeight);
   
 })
+onShow(() => {
+  if(uni.getStorageSync('accessToken') && uni.getStorageSync('userInfos')) {
+    getUserInfo()
+  }
+})
 // 参数
 const state = reactive({
+  nickname: '', // 名称
+  avatarUrl: '', // 头像
+  userId: '', // 
+  level: 0, // 0：非会员, 1: 初级会员, 2: 高级会员, 3: 企业会员
+
+  // 
   status: 0, //  
   navAllHeight: 0,
+
 })
+// 获取用户资料
+const getUserInfo = async() => {
+  await userApi.getUserInfo({}).then((res: any) => {
+    // console.log(res);
+    state.nickname = res.data.nickname
+    state.avatarUrl = res.data.avatar? res.data.avatar.url : ''
+    state.userId = res.data.id
+    state.level = res.data.vip.level
+  })
+}
+// 去登录页
+const loginTo = () => {
+  if( state.userId ) {
+    return
+  }
+  routerTo(`/pages/user/personalData`)
+}
 </script>
 
 <style lang="scss" scoped>
 .content {
+  background-color: #fff;
   .info {
     background-color: #F5F3EF;
     position: relative;
@@ -200,7 +237,7 @@ const state = reactive({
     .vip {
       margin-top: 38rpx;
       height: 160rpx;
-      background-image: url('../../static/user/vip1.png');
+      background-image: url('../../static/user/vip0.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       justify-content: space-between;
@@ -236,6 +273,15 @@ const state = reactive({
         color: #232322;
         background-color: #fff;
       }
+    }
+    .vip1 {
+      background-image: url('../../static/user/vip1.png') !important;
+    }
+    .vip2 {
+      background-image: url('../../static/user/vip2.png') !important;
+    }
+    .vip3 {
+      background-image: url('../../static/user/vip3.png') !important;
     }
   }
   .interests {
