@@ -143,7 +143,26 @@
 			"style": {
 				"navigationBarTitleText": "预约详情"
 			}
-		}
+		},
+    {
+			"path": "pages/user/membersIntroduction",
+			"style": {
+        "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/user/openIntroduction",
+			"style": {
+        "navigationStyle": "custom"
+			}
+		},
+    {
+      "path": "uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper",
+      "style": {
+        "navigationBarTitleText": "头像裁剪",
+        "navigationBarBackgroundColor": "#000000"
+      }
+    }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -163,18 +182,18 @@
         "selectedIconPath": "static/tabbar/home1.png",				
         "text": "首页"
       },
-      {
-        "pagePath": "pages/space/index",
-        "iconPath": "static/tabbar/space.png",
-        "selectedIconPath": "static/tabbar/space1.png",
-        "text": "空间"
-      },			
-      {
-        "pagePath": "pages/community/index",
-        "iconPath": "static/tabbar/community.png",
-        "selectedIconPath": "static/tabbar/community1.png",		
-        "text": "社区"
-      },			
+      // {
+      //   "pagePath": "pages/space/index",
+      //   "iconPath": "static/tabbar/space.png",
+      //   "selectedIconPath": "static/tabbar/space1.png",
+      //   "text": "空间"
+      // },			
+      // {
+      //   "pagePath": "pages/community/index",
+      //   "iconPath": "static/tabbar/community.png",
+      //   "selectedIconPath": "static/tabbar/community1.png",		
+      //   "text": "社区"
+      // },			
       {
         "pagePath": "pages/user/index",
         "iconPath": "static/tabbar/user.png",

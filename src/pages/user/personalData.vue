@@ -3,7 +3,7 @@
     <view class="head">
       <view class="picture">
         <image class="imageW100" :src="form.avatarUrl"></image>
-        <image class="icon" src="/@/static/user/uploadImg.png" @click="uploadImage()"></image>
+        <image class="icon" src="/@/static/user/uploadImg.png" @click="avatarCropper()"></image>
       </view>
     </view>
     <!--  -->
@@ -31,18 +31,18 @@
           常驻空间
         </view>
         <view class="right flex">
-          <text class="text2">杭州·顺丰中心节奏空间</text>
-          <image class="icon" src="/@/static/rightAsh.png"  @click="routerTo(`/pages/user/editData?type=2&value=${form.email}`)"></image>
+          <text class="text2">{{ state.defaultSpaceName ? state.defaultSpaceName : '请选择' }}</text>
+          <image class="icon" src="/@/static/rightAsh.png"  @click="state.availableShow = true"></image>
         </view>
       </view>
     </view>
     <!--  -->
     <view class="hide flex">
-      <text class="text">隐藏手机号和邮箱</text>
-      <u-switch v-model="state.checked" active-color="#FF3434" inactive-color="#D7D4CF"></u-switch>
+      <text class="text">隐藏手机号</text>
+      <u-switch v-model="form.showPhone" active-color="#FF3434" inactive-color="#D7D4CF"></u-switch>
     </view>
     <!--  -->
-    <view class="menuForm mt35" v-if="!state.checked">
+    <view class="menuForm mt35" v-if="!form.showPhone">
       <view class="li flex">
         <view class="left">
           手机号
@@ -51,6 +51,14 @@
           <text class="text2">+{{ form.areaCode }} {{ form.phone }}</text>
         </view>
       </view>
+    </view>
+    <!--  -->
+    <view class="hide flex">
+      <text class="text">隐藏邮箱</text>
+      <u-switch v-model="form.showEmail" active-color="#FF3434" inactive-color="#D7D4CF"></u-switch>
+    </view>
+    <!--  -->
+    <view class="menuForm mt35" v-if="!form.showEmail">
       <view class="li flex">
         <view class="left">
           邮箱
@@ -64,6 +72,8 @@
     <view class="footerOne" @click="submit">
       确认修改
     </view>
+    <!-- 选择空间 -->
+    <u-select v-model="state.availableShow" :list="state.list" @confirm="availableConfirm" value-name="code" label-name="name" title="选择空间"></u-select>
   </view>
 </template>
 
@@ -74,14 +84,17 @@ import { burrentChooseImage, routerBack, routerTo, showTips } from '/@/utils/cur
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '/@/store/modules/user';
 import User from '/@/api/user';
-import Login from '/@/api/login';
-const loginApi = new Login();
 const userApi = new User();
 const { t } = useI18n()
 const user = useUserStore();
 
 onLoad(() => {
   getUserInfo()
+  uni.$on('uAvatarCropper', path => {
+    // console.log(path);
+    form.avatarUrl = ''
+    uploadImage(path)
+  })
 })
 onShow(() => {
   // console.log(user.formInput);
@@ -98,9 +111,9 @@ onShow(() => {
 })
 // 参数
 const state = reactive({
-  checked: false,
-  select: false, // 
-  image: '',
+  list: [],
+  availableShow: false,
+  defaultSpaceName: '', // 
 })
 const form = reactive({
   userId: '',
@@ -109,13 +122,15 @@ const form = reactive({
   phone: '', // 手机号
   email: '', // 邮箱
   intro: '', // 个人介绍
-  // intro: '', // 个人介绍
-  areaCode: ''
+  showPhone: true, // 隐藏手机号
+  showEmail: true,  // 隐藏邮箱
+  areaCode: '',
+  defaultSpace: '', // 空间选择
 })
 // 获取用户资料
 const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
-    console.log(res.data);
+    console.log(res.data    );
     form.userId = res.data.id
     form.nickname = res.data.nickname
     form.intro = res.data.intro
@@ -123,20 +138,32 @@ const getUserInfo = async() => {
     form.phone = res.data.phone
     form.areaCode = res.data.area_code
     form.email = res.data.email
+    form.showEmail = res.data.ui_flags.show_email
+    form.showPhone = res.data.ui_flags.show_phone
+    state.list = res.data.spaces.available
+    form.defaultSpace = res.data.spaces.default_space.code
+    state.defaultSpaceName = res.data.spaces.default_space.name
+  })
+}
+// 选择空间
+const availableConfirm = (e: any[]) => {
+  console.log(e);
+  state.defaultSpaceName = e[0].label
+  form.defaultSpace = e[0].value
+  
+}
+const avatarCropper = () => {
+  uni.navigateTo({
+    url: `/uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper?rectWidth=300&fileType='png'`
   })
 }
 // 上传图片
-const uploadImage = () => {
-   burrentChooseImage(0, 1).then((res: any) => {
-    // console.log(res);
+const uploadImage = (url: string) => {
+  userApi.getUpdateUserAvatar({ filePath: url }).then((res: any) => {
+    console.log(res);
     
-    // form.avatarUrl = res[0]
-    userApi.getUpdateUserAvatar({ filePath: res[0] }).then((res: any) => {
-      console.log(res);
-      
-      // form.avatarUrl = res
-    }).catch((err) => {
-    })
+    form.avatarUrl = res.avatar_url
+  }).catch((err) => {
   })
 }
 // 
@@ -145,12 +172,15 @@ const submit = async() => {
     showTips('请填写资料')
     return;
   }
-  let { nickname, email, intro, avatarUrl } = form
+  let { nickname, email, intro, avatarUrl, showPhone, showEmail, defaultSpace } = form
   await userApi.getUpdateUser({
     nickname,
     email,
     intro,
-    avatar_url: avatarUrl
+    avatar_url: avatarUrl,
+    show_email: showPhone,
+    show_phone: showEmail,
+    default_space: defaultSpace
   }).then((res: any) => {
     console.log(res);
     showTips(res.message)
@@ -172,7 +202,7 @@ const getAuthUser = async() => {
 }
 </script>
 
-<style >
+<style scoped>
 page {
   background-color: #ffffff;
 }

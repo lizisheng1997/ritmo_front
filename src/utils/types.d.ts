@@ -14,5 +14,5 @@ declare interface requestRes {
 }
 // 通用store
 declare interface useUserType<T = any> {
-  userInfo: T,
+  userInfos: T,
 }

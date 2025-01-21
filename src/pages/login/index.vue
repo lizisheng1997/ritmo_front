@@ -13,7 +13,7 @@
       <view class="tips mt30">
         <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
         <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
-        同意RITMOHUB<text class="" @click="openPupup">《用户协议》</text>、<text class="">《隐私政策》</text> 并使用本机号码进行登录
+        同意RITMOHUB<text class="" @click="openPupup(0)">《用户协议》</text>、<text class="" @click="openPupup(1)">《隐私政策》</text> 并使用本机号码进行登录
       </view>
     </view>
     <textPopup ref="textPopupRef" @refresh="textPopupRefresh"/>
@@ -36,8 +36,8 @@ const state = reactive({
 })
 // 打开弹窗
 const textPopupRef = ref()
-const openPupup = () => {
-  textPopupRef.value.openDialog()
+const openPupup = (type: number) => {
+  textPopupRef.value.openDialog(type)
 }
 const textPopupRefresh = (show: boolean) => {
   state.select = show
@@ -55,7 +55,7 @@ const codeLoginTo = () => {
 .content {
   height: 100vh;
   width: 100%;
-  background: url('../../static/loginBg.png');
+  background: url('http://47.116.190.37:8002/static/loginBg.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: relative;

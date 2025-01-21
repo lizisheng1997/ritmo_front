@@ -17,14 +17,14 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
+      <!-- <view class="li flex">
         <view class="left">
           清除缓存
         </view>
         <view class="right">
           <text class="text2">2Mb</text>
         </view>
-      </view>
+      </view> -->
       <view class="li flex" @click="openBottomOperation(0)">
         <view class="left">
           退出登录
@@ -57,14 +57,14 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex">
+      <!-- <view class="li flex">
         <view class="left">
           去更新
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
-      </view>
+      </view> -->
       
     </view>
     <bottomOperation ref="bottomOperationRef" />
@@ -75,6 +75,8 @@
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import Login from '/@/api/login';
+const loginApi = new Login();
 const { t } = useI18n()
 
 // 引入组件
@@ -87,10 +89,15 @@ const state = reactive({
   select: false, // 
   image: '',
 })
+const operatePopupRef = ref()
 // 
 const bottomOperationRef = ref()
 const openBottomOperation = (type: number) => {
   bottomOperationRef.value.openDialog(type)
+}
+// 退出登录
+const loginOut = async() => {
+
 }
 </script>
 

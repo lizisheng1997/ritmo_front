@@ -5,7 +5,7 @@
         {{ state.isType == 0 ? '退出账号' : '确认删除账户' }}
       </view>
       <view class="text mt35" v-if="state.isType == 0">
-        文案内容：
+        是否退出当前账号？
       </view>
       <view class="textAsh mt35" v-else>
         确认删除后，相关信息将无法还原
@@ -21,6 +21,9 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Login from '/@/api/login';
+import { showTips } from '../utils/currentFun';
+const loginApi = new Login();
 const { t } = useI18n()
 
 // 参数
@@ -35,8 +38,27 @@ const openDialog = (isType: number) => {
   state.isShow = true;
 };
 defineExpose({ openDialog });
-const sumbit = (type: number) => {
-  state.isShow = false
+const sumbit = async(type: number) => {
+  // 
+  if( type ) {
+    if( state.isType == 0 ) {
+      await loginApi.getLogout({}).then((res: any) => {
+        showTips(res.message)
+        uni.removeStorageSync('accessToken');
+        uni.removeStorageSync('userInfos');
+        setTimeout(() => {
+          uni.reLaunch({
+            url: '/pages/home/index'
+          });
+          state.isShow = false
+        }, 1000);
+      })
+    }
+  } else {
+    state.isShow = false
+
+  }
+
 }
 </script>
 

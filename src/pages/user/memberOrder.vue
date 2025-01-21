@@ -73,7 +73,7 @@ page {
 .content {
   .card {
     height: 668rpx;
-    background-image: url('../../static/user/memberOrderCardBg.png.png');
+    background-image: url('http://47.116.190.37:8002/static/user/memberOrderCardBg.png.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     // box-shadow: 0px 2px 10px 0px #0000001A;

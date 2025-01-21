@@ -23,7 +23,7 @@
             {{ state.level ? '有效期至 2024-05-25' : '开通会员最高享受10项专属权益' }}
           </view>
         </view>
-        <view class="right mt45 mr45" v-if="state.level == 0">
+        <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/membersIntroduction`)">
           开通会员
         </view>
       </view>
@@ -58,8 +58,8 @@
       </view>
     </view>
     <view class="menuForm mt35 p0-35">
-      <!-- v-if="state.level != 2" -->
-      <view class="li flex">
+      <!--  -->
+      <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`)">
         <view class="left">
           <image class="icon" src="/@/static/home/switch.png"></image>
           切换身份
@@ -68,8 +68,8 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <!-- v-if="state.level == 2" -->
-      <view class="li flex">
+      <!--  -->
+      <view class="li flex" v-if="state.level == 2">
         <view class="left">
           <image class="icon" src="/@/static/user/menu7.png"></image>
           我的人脸 
@@ -79,8 +79,8 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <!-- v-if="state.level != 2" -->
-      <view class="li flex" >
+      <!--  -->
+      <view class="li flex" v-if="state.level != 2">
         <view class="left">
           <image class="icon" src="/@/static/user/menu2.png"></image>
           图片上传 
@@ -180,17 +180,22 @@ const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
     // console.log(res);
     state.nickname = res.data.nickname
-    state.avatarUrl = res.data.avatar? res.data.avatar.url : ''
+    state.avatarUrl = res.data.avatar ? res.data.avatar.url : ''
+    // console.log(state.avatarUrl);
+    
     state.userId = res.data.id
     state.level = res.data.vip.level
   })
 }
 // 去登录页
 const loginTo = () => {
+  // console.log(state.userId);
+  
   if( state.userId ) {
-    return
+    routerTo(`/pages/user/personalData`)
+  } else {
+    routerTo(`/pages/login/index`)
   }
-  routerTo(`/pages/user/personalData`)
 }
 </script>
 
@@ -237,7 +242,7 @@ const loginTo = () => {
     .vip {
       margin-top: 38rpx;
       height: 160rpx;
-      background-image: url('../../static/user/vip0.png');
+      background-image: url('http://47.116.190.37:8002/static/user/vip0.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       justify-content: space-between;
@@ -275,13 +280,13 @@ const loginTo = () => {
       }
     }
     .vip1 {
-      background-image: url('../../static/user/vip1.png') !important;
+      background-image: url('http://47.116.190.37:8002/static/user/vip1.png') !important;
     }
     .vip2 {
-      background-image: url('../../static/user/vip2.png') !important;
+      background-image: url('http://47.116.190.37:8002/static/user/vip2.png') !important;
     }
     .vip3 {
-      background-image: url('../../static/user/vip3.png') !important;
+      background-image: url('http://47.116.190.37:8002/static/user/vip3.png') !important;
     }
   }
   .interests {
@@ -320,7 +325,7 @@ const loginTo = () => {
     .card {
       width: 150rpx;
       height: 200rpx;
-      background-image: url('../../static/user/interestsListBg.png');
+      background-image: url('http://47.116.190.37:8002/static/user/interestsListBg.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       margin-right: 26rpx;

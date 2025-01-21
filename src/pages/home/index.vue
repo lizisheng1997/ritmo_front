@@ -72,7 +72,7 @@
           <view class="not"  @click="routerTo(`/pages/login/index`)">暂未登录</view>
         </template>
       </view>
-      <view class="right" @click="routerTo(`/pages/home/institutions`)" v-if="state.level">
+      <view class="right" @click="routerTo(`/pages/home/institutions`)" v-if="state.userId && state.level != 2">
         <image class="icon" src="/@/static/home/switch.png"></image>
         切换
       </view>
@@ -128,8 +128,7 @@ const getUserInfo = async() => {
   })
 }
 </script>
-
-<style>
+<style scoped>
 page {
   background-color: #F5F3EF;
 }

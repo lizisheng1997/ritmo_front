@@ -2,14 +2,14 @@
   <u-popup v-model="state.isShow" mode="center" border-radius="20" width="630">
     <view class="popup pb35">
       <view class="title">
-        {{ state.type == 0 ? t('userAgreement') : '隐私政策' }}
+        提示
       </view>
-      <view class="text ">
-        <rich-text :nodes="state.content"></rich-text>
+      <view class="text mb35">
+        是否{{ props.isType == 0 ? '切换语言，切换完毕后下次进入生效。' : '' }}
       </view>
       <view class="footerPopup p0-35" v-if="props.isType == 0">
-        <view class="btn left" @click="sumbit(false)">不同意并退出</view>
-        <view class="btn right" @click="sumbit(true)">同意</view>
+        <view class="btn left" @click="sumbit(false)">取消</view>
+        <view class="btn right" @click="sumbit(true)">确定</view>
       </view>
     </view>
   </u-popup>
@@ -18,12 +18,10 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import User from '/@/api/user';
-const userApi = new User();
 const { t } = useI18n()
 
 const props = defineProps({
-  
+  // 0切换语言
   isType: {
     type: Number,
     default: () => 0
@@ -31,36 +29,19 @@ const props = defineProps({
 })
 // 参数
 const state = reactive({
-  isShow: false, // 0用户协议
-  type: 0, // 
-  content: '',
+  isShow: false, // 
 })
 // 打开弹窗
-const openDialog = (type: number) => {
+const openDialog = () => {
   // console.log(rows)
-  state.type = type
-  getInfo()
   state.isShow = true;
 };
 defineExpose({ openDialog });
-// 参数
-const getInfo = () => {
-  if( state.type == 0 ) {
-    userApi.getAgreementsTerms().then((res: any) => {
-      // console.log(res);
-      state.content = res.data.content
-    })
-  } else if( state.type == 1 ) {
-    userApi.getAgreementsPrivacy().then((res: any) => {
-      // console.log(res);
-      state.content = res.data.content
-    })
-  }
-}
 const emit = defineEmits(['refresh']);
 const sumbit = (show: boolean) => {
   state.isShow = false
   emit('refresh', show)
+  
 }
 </script>
 

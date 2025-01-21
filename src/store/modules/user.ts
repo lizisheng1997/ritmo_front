@@ -6,7 +6,7 @@ import type { T, useUserType } from '../../utils/types';
 export const useUserStore = defineStore({
   id: 'user-store',
   state: (): useUserType => ({
-    userInfo: {} as any,
+    userInfos: {} as any,
     formInput: {
       key: 0,
       value: ''
@@ -16,7 +16,7 @@ export const useUserStore = defineStore({
   actions: {
     // 存储用户信息
     setUserInfo(data: T) {
-      this.userInfo = data;
+      this.userInfos = data;
       // console.log(data);
       
       uni.setStorageSync('userInfos', data);

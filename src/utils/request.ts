@@ -3,7 +3,8 @@ import { showTips } from './currentFun';
 // @ts-ignore
 import type { T } from './types';
 
-export const baseUrl = 'http://47.116.190.37:8002/api';
+// 记得全局更换background-image地址
+export const baseUrl = 'http://47.116.190.37:8002/api'; // 测试环境
 // baseUrl = 'http://192.168.7.79:8000/gateway/'; 
 // console.log(baseUrl);
 

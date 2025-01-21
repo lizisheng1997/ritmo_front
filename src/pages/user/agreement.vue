@@ -1,6 +1,6 @@
 <template>
   <view class="content p35">
-    各种协议
+    <rich-text :nodes="state.content"></rich-text>
   </view>
 </template>
 
@@ -8,6 +8,8 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
@@ -15,14 +17,27 @@ onLoad((query?: AnyObject | undefined): void => {
   uni.setNavigationBarTitle({
     title: query!.type == '0' ? '用户协议' : '隐私协议'
   });
-  // state.id = query!.id
+  state.type = query!.type
+  getInfo()
 });
 // 参数
 const state = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+  type: 0, // 
+  content: '',
 })
+const getInfo = () => {
+  if( state.type == 0 ) {
+    userApi.getAgreementsTerms().then((res: any) => {
+      // console.log(res);
+      state.content = res.data.content
+    })
+  } else if( state.type == 1 ) {
+    userApi.getAgreementsPrivacy().then((res: any) => {
+      // console.log(res);
+      state.content = res.data.content
+    })
+  }
+}
 </script>
 
 <style lang="scss" scoped>

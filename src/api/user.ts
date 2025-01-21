@@ -33,4 +33,16 @@ export default class User extends Request {
       data
     });
   }
+  // 隐私协议
+  getAgreementsPrivacy() {
+    return this.get({
+      url: `/v1/agreements/privacy`,
+    });
+  }
+  // 用户协议
+  getAgreementsTerms() {
+    return this.get({
+      url: `/v1/agreements/terms`,
+    });
+  }
 }

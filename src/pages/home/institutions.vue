@@ -6,7 +6,7 @@
           <image class="head mr30" src="/@/static/home/head.png"></image>
           <view class="center mr20">
             <view class="company flex">
-              <text class="text oneEllipsis">杭州大鱼网络科技有限公司</text>
+              <text class="text oneEllipsis" style="max-width: 64%;">杭州大鱼网络科技有限公司</text>
               <image class="icon ml10" src="/@/static/home/vip1.png"></image>
             </view>
             <view class="name mt10">段誉</view>
@@ -51,31 +51,44 @@
     </view>
     <!--  -->
     <view class="footerOne mt35" @click="routerTo(`/pages/home/addInstitutions`)">
-      创建组织
+      创建机构
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
+import { onLoad, onShow } from '@dcloudio/uni-app';
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Home from '/@/api/home';
+const hemoApi = new Home();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   // state.id = query!.id
+  
 });
+onShow(() => {
+  getList()
+})
 // 参数
 const state = reactive({
   phone: '', // 手机号
   select: false, // 
   image: '',
 })
+// 获取列表
+const getList = async() => {
+  await hemoApi.getMyOrganizations({}).then((res: any) => {
+    console.log(res);
+    
+  })
+}
 </script>
 
-<style>
+<style scoped>
 page {
   background-color: #F5F3EF;
 }

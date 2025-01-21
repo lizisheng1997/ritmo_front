@@ -72,7 +72,7 @@ const scrolltolower = () => {
     .card {
       width: 150rpx;
       height: 200rpx;
-      background-image: url('../../static/user/interestsListBg.png');
+      background-image: url('http://47.116.190.37:8002/static/user/interestsListBg.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       margin-right: 26rpx;
@@ -103,7 +103,7 @@ const scrolltolower = () => {
       }
     }
     .cardAsh {
-      background-image: url('../../static/user/interestsListBgAsh.png');
+      background-image: url('http://47.116.190.37:8002/static/user/interestsListBgAsh.png');
     }
     .cardAfter {
       &::after {

@@ -65,16 +65,30 @@
 </template>
 
 <script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Home from '/@/api/home';
+const homeApi = new Home();
 const { t } = useI18n()
 
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  state.id = query!.id
+  getInfo
+});
 // 参数
 const state = reactive({
-  phone: '', // 手机号
+  id: '', // 
   select: false, // 
   image: '',
 })
+const getInfo = async() => {
+  await homeApi.getOrganizationsInfo(state.id).then((res: any) => {
+    console.log(res);
+    
+  })
+}
 </script>
 
 <style lang="scss" scoped>

@@ -31,4 +31,11 @@ export default class Login extends Request {
       url: '/v1/auth/me'
     });
   }
+  // 退出登录
+  getLogout(data: object) {
+    return this.post({
+      url: '/v1/auth/logout',
+      data
+    });
+  }
 }
