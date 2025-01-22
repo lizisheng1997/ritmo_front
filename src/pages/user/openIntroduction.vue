@@ -14,9 +14,11 @@
           <view class="name mt10">有效期至 2024-05-25</view>
         </view>
       </view>
-      <view class="tabs flex">
-        <view class="text" :class=" state.tabsIdx == 0 ? 'textAct' : '' " @click=" state.tabsIdx = 0 ">初级空间</view>
+      <view class="tabs ">
+        <view class="div flex">
+          <view class="text" :class=" state.tabsIdx == 0 ? 'textAct' : '' " @click=" state.tabsIdx = 0 ">初级空间</view>
         <view class="text " :class=" state.tabsIdx == 1 ? 'textAct' : '' " @click=" state.tabsIdx = 1 ">高级控件</view>
+        </view>
       </view>
     </view>
     <!--  -->
@@ -177,6 +179,7 @@ const getUserInfo = async() => {
   .top {
     height: 440rpx;
     background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg2.png');
+    // background-image: url('/@/static/user/membersIntroductionBannerBg2.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
@@ -185,10 +188,16 @@ const getUserInfo = async() => {
       left: 0;
       bottom: 0;
       width: 100%;
-      justify-content: space-between;
-      background: #000000;
-      opacity: 0.7;
+      height: 80rpx;
+      background: rgba(0, 0, 0, 0.5);
       border-radius: 20rpx 20rpx 0 0;
+      .div {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        justify-content: space-between;
+      }
       .text {
         width: 50%;
         text-align: center;

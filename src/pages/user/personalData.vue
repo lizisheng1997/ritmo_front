@@ -92,8 +92,8 @@ onLoad(() => {
   getUserInfo()
   uni.$on('uAvatarCropper', path => {
     // console.log(path);
-    form.avatarUrl = ''
-    uploadImage(path)
+    form.avatarUrl = path
+    // uploadImage(path)
   })
 })
 onShow(() => {
@@ -159,12 +159,7 @@ const avatarCropper = () => {
 }
 // 上传图片
 const uploadImage = (url: string) => {
-  userApi.getUpdateUserAvatar({ filePath: url }).then((res: any) => {
-    console.log(res);
-    
-    form.avatarUrl = res.avatar_url
-  }).catch((err) => {
-  })
+  
 }
 // 
 const submit = async() => {
@@ -172,20 +167,29 @@ const submit = async() => {
     showTips('请填写资料')
     return;
   }
-  let { nickname, email, intro, avatarUrl, showPhone, showEmail, defaultSpace } = form
-  await userApi.getUpdateUser({
-    nickname,
-    email,
-    intro,
-    avatar_url: avatarUrl,
-    show_email: showPhone,
-    show_phone: showEmail,
-    default_space: defaultSpace
-  }).then((res: any) => {
+  // 先上传头像
+  userApi.getUpdateUserAvatar({ filePath: form.avatarUrl }).then(async (res: any) => {
     console.log(res);
-    showTips(res.message)
-    getAuthUser()
+    
+    // form.avatarUrl = res.avatar_url
+
+    let { nickname, email, intro, avatarUrl, showPhone, showEmail, defaultSpace } = form
+    await userApi.getUpdateUser({
+      nickname,
+      email,
+      intro,
+      avatar_url: res.avatar_url,
+      show_email: showPhone,
+      show_phone: showEmail,
+      default_space: defaultSpace
+    }).then((res: any) => {
+      console.log(res);
+      showTips(res.message)
+      getAuthUser()
+    })
+  }).catch((err) => {
   })
+  
 }
 // 更新缓存
 const getAuthUser = async() => {
