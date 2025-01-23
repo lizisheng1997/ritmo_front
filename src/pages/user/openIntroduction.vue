@@ -1,6 +1,7 @@
 <template>
   <view class="content membersIntroduction">
     <view class="top">
+      <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)"></image>
       <view class="user flex">
         <image
           class="head"
@@ -265,8 +266,9 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue';
+import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
-import User from '../../api/user';
+import User from '/@/api/user';
 const userApi = new User();
 const { t } = useI18n();
 
@@ -311,6 +313,14 @@ const getUserInfo = async () => {
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
+    .back {
+      display: inline-block;
+      width: 68rpx;
+      height: 68rpx;
+      position: absolute;
+      left: 35rpx;
+      top: 8%;
+    }
     .tabs {
       position: absolute;
       left: 0;

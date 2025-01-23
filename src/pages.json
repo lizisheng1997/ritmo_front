@@ -55,6 +55,48 @@
 			}
 		},
     {
+			"path": "pages/space/distributionMap",
+			"style": {
+				"navigationBarTitleText": "分布图"
+			}
+		},
+    {
+			"path": "pages/space/spaceDetails",
+			"style": {
+        "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/space/details",
+			"style": {
+        "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/space/album",
+			"style": {
+				"navigationBarTitleText": "相册"
+			}
+		},
+    {
+			"path": "pages/space/reserveRoom",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+    {
+			"path": "pages/space/reserveOrder",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+    {
+			"path": "pages/space/reserveOfficial",
+			"style": {
+				"navigationBarTitleText": "我要预约"
+			}
+		},
+    {
 			"path": "pages/community/index",
 			"style": {
 				"navigationBarTitleText": "社区"

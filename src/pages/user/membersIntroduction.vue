@@ -1,6 +1,7 @@
 <template>
   <view class="content membersIntroduction">
     <view class="top">
+      <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)"></image>
       <view class="user flex">
         <image class="head" :src="state.avatarUrl"></image>
         <view class="center">
@@ -75,7 +76,7 @@
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
-import { routerTo, showTips } from '/@/utils/currentFun';
+import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
@@ -118,6 +119,15 @@ const getUserInfo = async() => {
     background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg1.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    position: relative;
+    .back {
+      display: inline-block;
+      width: 68rpx;
+      height: 68rpx;
+      position: absolute;
+      left: 35rpx;
+      top: 8%;
+    }
   }
   .news {
     .icon {

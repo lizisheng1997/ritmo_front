@@ -4,15 +4,15 @@
     <!--  -->
     <view class="interface">
       <view class="logo">
-        <image class="imageW100" src="http://47.116.190.37:8002/static/logo.png"></image>
+        <image class="imageW100" src="/@/static/logo.png"></image>
       </view>
       <view class="phone">132****2336</view>
       <view class="provider mt30">中国联通提供认证服务</view>
       <view class="btn btnOne mt50">{{ t('oneLogin') }}</view>
       <view class="btn btnCode mt30" @click="codeLoginTo">{{ t('codeLogin') }}</view>
       <view class="tips mt30">
-        <image class="icon mr10" src="http://47.116.190.37:8002/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
-        <image class="icon mr10" src="http://47.116.190.37:8002/static/selectIcon.png" @click="state.select = false" v-else></image>
+        <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
+        <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
         同意RITMOHUB<text class="" @click="openPupup(0)">《用户协议》</text>、<text class="" @click="openPupup(1)">《隐私政策》</text> 并使用本机号码进行登录
       </view>
     </view>
