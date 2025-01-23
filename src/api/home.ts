@@ -24,5 +24,13 @@ export default class Home extends Request {
       url: `/v1/organizations/id`,
     });
   }
+  // 上传营业执照
+  getUpdateLicenses(data: object) {
+    return this.uploadFile({
+      url: '/v1/uploads/licenses',
+      data
+    });
+  }
+
 
 }

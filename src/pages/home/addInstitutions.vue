@@ -20,8 +20,8 @@
           营业执照
         </view>
         <view class="yyzz ml30">
-          <image class="icon imageW100" :src=" form.businessLicenseUrl ? form.businessLicenseUrl : '../../static/home/yyzz.png'"></image>
-          <image class="delete" src="../../static/home/delete.png"></image>
+          <image class="icon imageW100" :src=" form.businessLicenseUrl ? form.businessLicenseUrl : 'http://47.116.190.37:8002/static/home/yyzz.png'" @click="uploadImage"></image>
+          <image class="delete" src="http://47.116.190.37:8002/static/home/delete.png" @click=" form.businessLicenseUrl = '' "></image>
         </view>
       </view>
     </view>
@@ -53,7 +53,7 @@ import { reactive, ref } from 'vue'
 import { burrentChooseImage, routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import Home from '/@/api/home';
-const hemoApi = new Home();
+const homeApi = new Home();
 const { t } = useI18n()
 
 // 参数
@@ -72,13 +72,12 @@ const uploadImage = () => {
    burrentChooseImage(0, 1).then((res: any) => {
     // console.log(res);
     
-    // form.avatarUrl = res[0]
-    // userApi.getUpdateUserAvatar({ filePath: res[0] }).then((res: any) => {
-    //   console.log(res);
+    homeApi.getUpdateLicenses({ filePath: res[0] }).then((res: any) => {
+      // console.log(res);
       
-    //   form.businessLicenseUrl = res[0].avatar_url
-    // }).catch((err) => {
-    // })
+      form.businessLicenseUrl = res.url
+    }).catch((err) => {
+    })
   })
 }
 // @click="routerTo(`/pages/home/institutionsDetails`)"
@@ -88,7 +87,7 @@ const submit = async() => {
   //   return;
   // }
   // let { nickname, email, intro, avatarUrl, showPhone, showEmail, defaultSpace } = form
-  await hemoApi.getAddOrganizations({
+  await homeApi.getAddOrganizations({
     // nickname,
     // email,
     // intro,

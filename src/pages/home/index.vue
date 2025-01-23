@@ -62,9 +62,9 @@
           <view class="company flex mt30">
             <text class="text oneEllipsis">{{ state.nickname }}</text>
             <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png" v-else-if="state.level == 0"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip2.png" v-else-if="state.level == 0"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-else-if="state.level == 0"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png" v-else-if="state.level == 1"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip2.png" v-else-if="state.level == 2"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-else-if="state.level == 3"></image>
           </view>
           <view class="name mt10" v-if="state.userId">ID：{{ state.userId }}</view>
         </template>
@@ -72,7 +72,7 @@
           <view class="not"  @click="routerTo(`/pages/login/index`)">暂未登录</view>
         </template>
       </view>
-      <view class="right" @click="routerTo(`/pages/home/institutions`)" v-if="state.userId && state.level != 2">
+      <view class="right" @click="routerTo(`/pages/home/institutions`)" v-if="state.userId && state.level == 2">
         <image class="icon" src="http://47.116.190.37:8002/static/home/switch.png"></image>
         切换
       </view>

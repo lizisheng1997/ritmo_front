@@ -45,4 +45,11 @@ export default class User extends Request {
       url: `/v1/agreements/terms`,
     });
   }
+  // 创建会员订单
+  getOrdersAdd(data: object) {
+    return this.post({
+      url: `/v1/vip/orders`,
+      data
+    });
+  }
 }

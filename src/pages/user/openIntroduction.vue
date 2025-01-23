@@ -38,14 +38,14 @@
         <view class="div flex">
           <view
             class="text"
-            :class="state.tabsIdx == 0 ? 'textAct' : ''"
-            @click="state.tabsIdx = 0"
+            :class="state.tabsIdx == 1 ? 'textAct' : ''"
+            @click="state.tabsIdx = 1"
             >初级空间</view
           >
           <view
             class="text"
-            :class="state.tabsIdx == 1 ? 'textAct' : ''"
-            @click="state.tabsIdx = 1"
+            :class="state.tabsIdx == 2 ? 'textAct' : ''"
+            @click="state.tabsIdx = 2"
             >高级空间</view
           >
         </view>
@@ -57,10 +57,10 @@
       <scroll-view
         class="interests-roll  mt35"
         scroll-x="true"
-        scroll-left="120"
+        scroll-left="0"
         :enable-flex="true"
         style="">
-        <template v-if=" state.tabsIdx == 0 ">
+        <template v-if=" state.tabsIdx == 1 ">
 					<view class="item">
             <image class="icon" src="http://47.116.190.37:8002/static/vip/1.png"></image>
             <view class="text oneEllipsis">静音舱</view>
@@ -165,64 +165,37 @@
       <scroll-view
         class="interests-roll mt35"
         scroll-x="true"
-        scroll-left="120"
+        scroll-left="0"
         :enable-flex="true"
         style="height: 240rpx">
-        <view class="card mr35 cardAct">
-          <view class="hot">推荐</view>
-          <view class="name mt35">季卡</view>
-          <view class="price mt20">
-            <text style="font-size: 28rpx">￥</text>300
+        <template v-if="state.tabsIdx == 1">
+          <view class="card mr35 " :class=" state.selectVip == item.key ? 'cardAct' : '' " @click="state.selectVip = item.key" v-for="item in basicList" :key="item.key">
+            <!-- <view class="hot">推荐</view> -->
+            <view class="name mt35">{{ item.name }}</view>
+            <view class="price mt20">
+              <text style="font-size: 28rpx">￥</text>
+              {{ item.price }}
+            </view>
+            <view class="fub mt20">日均仅{{ item.day }}元</view>
           </view>
-          <view class="fub mt20">日均仅3元</view>
-        </view>
-        <view class="card mr35">
-          <view class="name mt35">季卡</view>
-          <view class="price mt20">
-            <text style="font-size: 28rpx">￥</text>300
+        </template>
+        <template v-else>
+          <view class="card mr35 " :class=" state.selectVip == item.key ? 'cardAct' : '' " @click="state.selectVip = item.key" v-for="item in premiumList" :key="item.key">
+            <!-- <view class="hot">推荐</view> -->
+            <view class="name mt35">{{ item.name }}</view>
+            <view class="price mt20">
+              <text style="font-size: 28rpx">￥</text>
+              {{ item.price }}
+            </view>
+            <view class="fub mt20">日均仅{{ item.day }}元</view>
           </view>
-          <view class="fub mt20">日均仅3元</view>
-        </view>
-        <view class="card mr35">
-          <view class="name mt35">季卡</view>
-          <view class="price mt20">
-            <text style="font-size: 28rpx">￥</text>300
-          </view>
-          <view class="fub mt20">日均仅3元</view>
-        </view>
-        <view class="card mr35">
-          <view class="name mt35">季卡</view>
-          <view class="price mt20">
-            <text style="font-size: 28rpx">￥</text>300
-          </view>
-          <view class="fub mt20">日均仅3元</view>
-        </view>
-        <view class="card mr35">
-          <view class="name mt35">季卡</view>
-          <view class="price mt20">
-            <text style="font-size: 28rpx">￥</text>300
-          </view>
-          <view class="fub mt20">日均仅3元</view>
-        </view>
-        <view class="card mr35">
-          <view class="name mt35">季卡</view>
-          <view class="price mt20">
-            <text style="font-size: 28rpx">￥</text>300
-          </view>
-          <view class="fub mt20">日均仅3元</view>
-        </view>
-        <view class="card mr35">
-          <view class="name mt35">季卡</view>
-          <view class="price mt20">
-            <text style="font-size: 28rpx">￥</text>300
-          </view>
-          <view class="fub mt20">日均仅3元</view>
-        </view>
+        </template>
+        
       </scroll-view>
     </view>
     <!--  -->
     <view class="p35">
-      <view class="footerOne"> 确认购买 </view>
+      <view class="footerOne" @click="submit"> 确认购买 </view>
     </view>
     <view class="tips mb50 ml35">
       <image
@@ -280,14 +253,26 @@ onLoad((query?: AnyObject | undefined): void => {
   state.languageType = uni.getStorageSync('languageType');
 });
 // 参数
+// 初级套餐
+const basicList = ref([
+  { key: 1, name: '月卡', price: 0, day: 0 },
+  { key: 6, name: '季卡', price: 0, day: 0 },
+  { key: 12, name: '年费', price: 0, day: 0 },
+])
+const premiumList = ref([
+  { key: 1, name: '月卡', price: 0, day: 0 },
+  { key: 6, name: '季卡', price: 0, day: 0 },
+  { key: 12, name: '年费', price: 0, day: 0 },
+])
 const state = reactive({
   languageType: '', //
+  selectVip: 1, //
 
   nickname: '', //
   avatarUrl: '', //
   userId: '', //
   level: 0, //
-  tabsIdx: 0,
+  tabsIdx: 1,
   expireTime: '',
   select: false
 });
@@ -300,8 +285,47 @@ const getUserInfo = async () => {
     state.userId = res.data.id;
     state.level = res.data.vip.level;
     state.expireTime = res.data.vip.expire_time;
+    console.log(res.data.vip.prices);
+    console.log(res.data.vip.prices.basic.year / 365);
+    
+    basicList.value[0].price = res.data.vip.prices.basic.month
+    basicList.value[0].day = Math.floor(basicList.value[0].price / 30)
+    basicList.value[1].price = res.data.vip.prices.basic.quarter * 6
+    basicList.value[1].day = Math.floor(basicList.value[1].price / 90)
+    basicList.value[2].price = res.data.vip.prices.basic.year * 12
+    basicList.value[2].day = Math.floor(basicList.value[2].price / 365)
+    // 
+    premiumList.value[0].price = res.data.vip.prices.premium.month
+    premiumList.value[0].day = Math.floor(res.data.vip.prices.premium.month / 30)
+    premiumList.value[1].price = res.data.vip.prices.premium.quarter * 6
+    premiumList.value[1].day = Math.floor(premiumList.value[1].price / 90)
+    premiumList.value[2].price = res.data.vip.prices.premium.year * 12
+    premiumList.value[2].day = Math.floor(premiumList.value[2].price / 365)
   });
 };
+// 提交
+const submit = () => {
+  if( !state.select ) {
+    showTips('请先同意服务协议')
+    return
+  }
+  let obj: any = {}
+  if( state.tabsIdx == 1 ) {
+    basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
+  } else {
+    premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
+  }
+
+  userApi.getOrdersAdd({
+    vip_level: state.tabsIdx,
+    duration: state.selectVip,
+    amount: obj.price,
+  }).then((res: any) => {
+    showTips(res.message)
+    console.log(res.data);
+    
+  })
+}
 </script>
 
 <style lang="scss" scoped>

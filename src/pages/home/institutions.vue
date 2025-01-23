@@ -1,6 +1,6 @@
 <template>
   <view class="content p35">
-    <view class="list">
+    <view class="list" v-for="( item, index ) in state.list" :key="index">
       <view class="user mb25 flex p25">
         <view class="left flex">
           <image class="head mr30" src="http://47.116.190.37:8002/static/home/head.png"></image>
@@ -49,6 +49,7 @@
         </view>
       </view>
     </view>
+    <u-empty text="暂无数据" mode="list" icon-size="400" src="../..//static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
     <!--  -->
     <view class="footerOne mt35" @click="routerTo(`/pages/home/addInstitutions`)">
       创建机构
@@ -62,7 +63,7 @@ import { routerTo, showTips } from '/@/utils/currentFun';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Home from '/@/api/home';
-const hemoApi = new Home();
+const homeApi = new Home();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
@@ -75,13 +76,15 @@ onShow(() => {
 })
 // 参数
 const state = reactive({
+  list: [],
+
   phone: '', // 手机号
   select: false, // 
   image: '',
 })
 // 获取列表
 const getList = async() => {
-  await hemoApi.getMyOrganizations({}).then((res: any) => {
+  await homeApi.getMyOrganizations({status: ''}).then((res: any) => {
     console.log(res);
     
   })

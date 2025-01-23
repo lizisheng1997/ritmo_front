@@ -17,10 +17,10 @@
         <view class="left ml35">
           <view class="grade mt35">
             {{ userLevelEnums[state.level] }}
-            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0"></image>
+            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0" @click="routerTo(`/pages/user/openIntroduction`)"></image>
           </view>
           <view class="date mt15">
-            {{ state.level ? '有效期至 2024-05-25' : '开通会员最高享受10项专属权益' }}
+            {{ state.level ? `有效期至 ${state.expireTime}` : '开通会员最高享受10项专属权益' }}
           </view>
         </view>
         <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/membersIntroduction`)">
@@ -169,7 +169,7 @@ const state = reactive({
   avatarUrl: '', // 头像
   userId: '', // 
   level: 0, // 0：非会员, 1: 初级会员, 2: 高级会员, 3: 企业会员
-
+  expireTime: '', // 到期时间
   // 
   status: 0, //  
   navAllHeight: 0,
@@ -185,6 +185,7 @@ const getUserInfo = async() => {
     
     state.userId = res.data.id
     state.level = res.data.vip.level
+    state.expireTime = res.data.vip.expire_time
   })
 }
 // 去登录页
@@ -283,10 +284,10 @@ const loginTo = () => {
       background-image: url('http://47.116.190.37:8002/static/user/vip1.png') !important;
     }
     .vip2 {
-      background-image: url('http://47.116.190.37:8002/static/user/vip2.png') !important;
+      background-image: url('http://47.116.190.37:8002/static/user/vip3.png') !important;
     }
     .vip3 {
-      background-image: url('http://47.116.190.37:8002/static/user/vip3.png') !important;
+      background-image: url('http://47.116.190.37:8002/static/user/vip4.png') !important;
     }
   }
   .interests {

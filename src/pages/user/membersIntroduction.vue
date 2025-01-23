@@ -19,7 +19,7 @@
     <!--  -->
     <view class="interests">
       <view class="title">会员机构权益</view>
-        <scroll-view class="interests-roll mt35" scroll-x="true"  scroll-left="120" :enable-flex="true" style="">
+        <scroll-view class="interests-roll mt35" scroll-x="true"  scroll-left="0" :enable-flex="true" style="">
 					<view class="item">
             <image class="icon" src="http://47.116.190.37:8002/static/vip/1.png"></image>
             <view class="text oneEllipsis">静音舱</view>
