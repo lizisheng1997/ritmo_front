@@ -4,20 +4,20 @@
       <div class="p0-35">
         <view class="name mb10">
           杭州·顺丰中心节奏空间
-          <image class="icon" src="/@/static/rightBlack.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png"></image>
         </view>
         <view class="distance">
           距您200m
         </view>
         <swiper class="swiper mt15" circular indicator-dots autoplay >
           <swiper-item>
-            <image class="imageW100" src="/@/static/loginBg.png"></image>
+            <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
           </swiper-item>
           <swiper-item>
-            <image class="imageW100" src="/@/static/loginBg.png"></image>
+            <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
           </swiper-item>
           <swiper-item>
-            <image class="imageW100" src="/@/static/loginBg.png"></image>
+            <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
           </swiper-item>
         </swiper>
         <view class="distance m15-0">杭州市拱康路1号顺丰中心A座13楼1304室</view>
@@ -30,11 +30,11 @@
         </view>
         <view class="cards mt25">
           <view class="card mr15">
-            <image class="icon mr5" src="/@/static/space/icon (1).png"></image>
+            <image class="icon mr5" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
             <text class="text">WIFI</text>
           </view>
           <view class="card mr15">
-            <image class="icon mr5" src="/@/static/space/icon (1).png"></image>
+            <image class="icon mr5" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
             <text class="text">WIFI</text>
           </view>
           <view class="card ">

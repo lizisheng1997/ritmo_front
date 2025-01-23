@@ -6,7 +6,7 @@
           评价
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/language`)">
@@ -14,7 +14,7 @@
           语言
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <!-- <view class="li flex">
@@ -30,7 +30,7 @@
           退出登录
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="openBottomOperation(1)">
@@ -38,7 +38,7 @@
           删除账号
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/agreement?type=0`)">
@@ -46,7 +46,7 @@
           用户协议
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/agreement?type=1`)">
@@ -54,7 +54,7 @@
           隐私协议
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <!-- <view class="li flex">
@@ -62,7 +62,7 @@
           去更新
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view> -->
       

@@ -6,7 +6,7 @@
         <text class="">5/6</text>
       </view>
       <view class="btn" @click="openMemberExpansion">
-        <image class="icon" src="/@/static/user/addMember.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/user/addMember.png"></image>
         成员扩容
       </view>
     </view>
@@ -14,7 +14,7 @@
     <view class="list">
       <view class="li flex mt35 p35">
         <view class="left flex">
-          <image class="head mr25" src="/@/static/home/head.png"></image>
+          <image class="head mr25" src="http://47.116.190.37:8002/static/home/head.png"></image>
           <view class="info">
             <view class="name mb10">段誉</view>
             <view class="phone">13299997777</view>
@@ -22,19 +22,19 @@
         </view>
         <view class="right mt15">
           <view class="card">超管</view>
-          <image class="icon" src="/@/static/user/delete.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/delete.png"></image>
         </view>
       </view>
       <view class="li flex mt35 p35">
         <view class="left flex">
-          <image class="head mr25" src="/@/static/home/head.png"></image>
+          <image class="head mr25" src="http://47.116.190.37:8002/static/home/head.png"></image>
           <view class="info">
             <view class="name mb10">段誉</view>
             <view class="phone">13299997777</view>
           </view>
         </view>
         <view class="right mt15">
-          <image class="icon" src="/@/static/user/editMember.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/editMember.png"></image>
         </view>
       </view>
       <!--  -->

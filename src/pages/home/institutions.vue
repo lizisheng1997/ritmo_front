@@ -3,17 +3,17 @@
     <view class="list">
       <view class="user mb25 flex p25">
         <view class="left flex">
-          <image class="head mr30" src="/@/static/home/head.png"></image>
+          <image class="head mr30" src="http://47.116.190.37:8002/static/home/head.png"></image>
           <view class="center mr20">
             <view class="company flex">
               <text class="text oneEllipsis" style="max-width: 64%;">杭州大鱼网络科技有限公司</text>
-              <image class="icon ml10" src="/@/static/home/vip1.png"></image>
+              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png"></image>
             </view>
             <view class="name mt10">段誉</view>
           </view>
         </view>
         <view class="right">
-          <image class="select" src="/@/static/selectIcon.png"></image>
+          <image class="select" src="http://47.116.190.37:8002/static/selectIcon.png"></image>
         </view>
       </view>
       <!--  -->
@@ -22,7 +22,7 @@
           <view class="center mr20 centerW100">
             <view class="company flex">
               <text class="text oneEllipsis">杭州大鱼网络科技有限公司</text>
-              <image class="icon ml10" src="/@/static/home/vip1.png"></image>
+              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png"></image>
             </view>
             <view class="name mt10">段誉</view>
           </view>
@@ -38,7 +38,7 @@
           <view class="center mr20 centerW100">
             <view class="company flex">
               <text class="text oneEllipsis">杭州大鱼网络科技有限公司</text>
-              <image class="icon ml10" src="/@/static/home/vip1.png"></image>
+              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png"></image>
             </view>
             <view class="name mt10">段誉</view>
           </view>

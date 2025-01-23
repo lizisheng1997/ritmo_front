@@ -3,7 +3,7 @@
     <view class="myOrderList">
       <view class="li mt35 flex" @click="routerTo(`/pages/user/orderDetails`)">
         <view class="left flex">
-          <image class="banner mr25" src="/@/static/addHead.png"></image>
+          <image class="banner mr25" src="http://47.116.190.37:8002/static/addHead.png"></image>
           <view class="info">
             <view class="title mb10">
               <text class="text">工位</text>

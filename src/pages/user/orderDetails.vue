@@ -4,7 +4,7 @@
       <view class="li flex">
         <view class="left flex">
           <!-- <view class="card mr25">会员</view> -->
-          <image class="banner mr25" src="/@/static/addHead.png"></image>
+          <image class="banner mr25" src="http://47.116.190.37:8002/static/addHead.png"></image>
           <view class="info">
             <view class="title mb10">
               <text class="text">工位</text>
@@ -24,7 +24,7 @@
         <!-- "margin-top: 25rpx; -->
         <view class="pay flex" style="margin-top: 35rpx;">
           <view class="name mr15">相关预约</view>
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
     </view>

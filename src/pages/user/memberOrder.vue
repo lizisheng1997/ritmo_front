@@ -3,7 +3,7 @@
     <view class="card p35">
       <view class="count flex p0-55">
         <text class="num">4人</text>
-        <image class="icon mt25" src="/@/static/user/memberOrderCradD.png"></image>
+        <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
         <text class="num">8人</text>
       </view>
       <view class="fub">扩容</view>

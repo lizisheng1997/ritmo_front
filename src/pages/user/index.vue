@@ -10,14 +10,14 @@
         </view>
         <view class="right">
           <image class="head" :src=" state.avatarUrl ? state.avatarUrl : '../../static/home/head.png' "></image>
-          <image class="icon" src="/@/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`)" v-if="state.userId"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`)" v-if="state.userId"></image>
         </view>
       </view>
       <view class="vip flex m0-35" :class=" state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : state.level == 3 ? 'vip3' : '' ">
         <view class="left ml35">
           <view class="grade mt35">
             {{ userLevelEnums[state.level] }}
-            <image class="icon" src="/@/static/rightBlack.png" v-if="state.level != 0"></image>
+            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0"></image>
           </view>
           <view class="date mt15">
             {{ state.level ? '有效期至 2024-05-25' : '开通会员最高享受10项专属权益' }}
@@ -27,7 +27,7 @@
           开通会员
         </view>
       </view>
-      <image class="bg" src="/@/static/user/userBotBg.png"></image>
+      <image class="bg" src="http://47.116.190.37:8002/static/user/userBotBg.png"></image>
     </view>
     <!--  -->
     <view class="interests mt55 flex p0-35">
@@ -37,7 +37,7 @@
       </view>
       <view class="record" v-if="state.level != 0">
         变更记录
-        <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/user/record`, true)"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png" @click="routerTo(`/pages/user/record`, true)"></image>
       </view>
     </view>
     <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
@@ -61,81 +61,81 @@
       <!--  -->
       <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`)">
         <view class="left">
-          <image class="icon" src="/@/static/home/switch.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/home/switch.png"></image>
           切换身份
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <!--  -->
       <view class="li flex" v-if="state.level == 2">
         <view class="left">
-          <image class="icon" src="/@/static/user/menu7.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/menu7.png"></image>
           我的人脸 
         </view>
         <view class="right flex">
           <text class="text1">暂无图片</text>
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <!--  -->
       <view class="li flex" v-if="state.level != 2">
         <view class="left">
-          <image class="icon" src="/@/static/user/menu2.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/menu2.png"></image>
           图片上传 
         </view>
         <view class="right flex">
           <text class="text1">暂无图片</text>
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <!--  -->
       <view class="li flex">
         <view class="left">
-          <image class="icon" src="/@/static/user/menu3.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/menu3.png"></image>
           邀请好友
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/myReservation`, true)">
         <view class="left">
-          <image class="icon" src="/@/static/user/menu4.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
           我的预约
         </view>
         <view class="right flex">
           <text class="text2">2 待使用</text>
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/memberMana`, true)">
         <view class="left">
-          <image class="icon" src="/@/static/user/menu4.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
           成员管理
         </view>
         <view class="right flex">
           <text class="text2">2/10</text>
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/myOrder`, true)">
         <view class="left">
-          <image class="icon" src="/@/static/user/menu5.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/menu5.png"></image>
           我的订单
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/setUp`)">
         <view class="left">
-          <image class="icon" src="/@/static/user/menu6.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/menu6.png"></image>
           设置
         </view>
         <view class="right">
-          <image class="icon" src="/@/static/rightAsh.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
     </view>

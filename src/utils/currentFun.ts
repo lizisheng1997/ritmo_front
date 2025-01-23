@@ -1,7 +1,5 @@
 
 
-import User from '/@/api/user';
-const userApi = new User();
 import { baseUrl } from './request'
 // 成功提示
 export const showTips = (title: string) => {

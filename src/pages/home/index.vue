@@ -8,29 +8,29 @@
     <!--  -->
     <swiper class="swiper home-swiper m35" circular indicator-dots autoplay >
       <swiper-item>
-        <image class="imageW100" src="/@/static/loginBg.png"></image>
+        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
       </swiper-item>
       <swiper-item>
-        <image class="imageW100" src="/@/static/loginBg.png"></image>
+        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
       </swiper-item>
       <swiper-item>
-        <image class="imageW100" src="/@/static/loginBg.png"></image>
+        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
       </swiper-item>
     </swiper>
     <!--  -->
     <view class="reserves p0-35 flex">
       <view class="item">
-        <image class="icon" src="/@/static/home/reserves1.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/reserves1.png"></image>
         <view class="title mt20">工位预定</view>
         <view class="text p0-10 oneEllipsis mt10">配文</view>
       </view>
       <view class="item">
-        <image class="icon" src="/@/static/home/reserves2.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/reserves2.png"></image>
         <view class="title mt20">会议室预定</view>
         <view class="text p0-10 oneEllipsis mt10">配文配文配文配文配文配文</view>
       </view>
       <view class="item">
-        <image class="icon" src="/@/static/home/reserves3.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/reserves3.png"></image>
         <view class="title mt20 textColor">办公室预定</view>
         <view class="text p0-10 oneEllipsis mt10 textColor">暂未开放</view>
       </view>
@@ -38,19 +38,19 @@
     <!--  -->
     <view class="cards flex ">
       <view class="item">
-        <image class="icon" src="/@/static/home/card1.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/card1.png"></image>
         <view class="text mt10">活动室</view>
       </view>
       <view class="item">
-        <image class="icon" src="/@/static/home/card2.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/card2.png"></image>
         <view class="text mt10">展示柜</view>
       </view>
       <view class="item">
-        <image class="icon" src="/@/static/home/card3.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/card3.png"></image>
         <view class="text mt10">邀请好友</view>
       </view>
       <view class="item" @click="routerTo(`/pages/user/myReservation`, true)">
-        <image class="icon" src="/@/static/home/card4.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/card4.png"></image>
         <view class="text mt10">我的预约</view>
       </view>
     </view>
@@ -61,10 +61,10 @@
         <template v-if=" state.userId">
           <view class="company flex mt30">
             <text class="text oneEllipsis">{{ state.nickname }}</text>
-            <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
-            <image class="icon ml10" src="/@/static/home/vip1.png" v-else-if="state.level == 0"></image>
-            <image class="icon ml10" src="/@/static/home/vip2.png" v-else-if="state.level == 0"></image>
-            <image class="icon ml10" src="/@/static/home/vip3.png" v-else-if="state.level == 0"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png" v-else-if="state.level == 0"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip2.png" v-else-if="state.level == 0"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-else-if="state.level == 0"></image>
           </view>
           <view class="name mt10" v-if="state.userId">ID：{{ state.userId }}</view>
         </template>
@@ -73,17 +73,17 @@
         </template>
       </view>
       <view class="right" @click="routerTo(`/pages/home/institutions`)" v-if="state.userId && state.level != 2">
-        <image class="icon" src="/@/static/home/switch.png"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/home/switch.png"></image>
         切换
       </view>
     </view>
     <!--  -->
     <view class="list">
       <view class="li mt35">
-        <image class="imageW100" src="/@/static/loginBg.png"></image>
+        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
       </view>
       <view class="li mt35">
-        <image class="imageW100" src="/@/static/loginBg.png"></image>
+        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
       </view>
     </view>
   </view>
