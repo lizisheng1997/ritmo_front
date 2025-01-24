@@ -24,14 +24,12 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
+import textPopup from '/@/components/textPopup.vue'
 import { useI18n } from 'vue-i18n'
 import { routerTo, showTips } from '/@/utils/currentFun'
 const { t } = useI18n()
 
 // 引入组件
-const textPopup = defineAsyncComponent( 
-  () => import('/@/components/textPopup.vue')
-)
 // 参数
 const state = reactive({
   phone: '', // 手机号

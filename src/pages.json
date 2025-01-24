@@ -99,7 +99,31 @@
     {
 			"path": "pages/community/index",
 			"style": {
-				"navigationBarTitleText": "社区"
+          "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/community/homepage",
+			"style": {
+          "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/community/details",
+			"style": {
+          "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/community/addCommunity",
+			"style": {
+          "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/community/selectTags",
+			"style": {
+				"navigationBarTitleText": "选择标签"
 			}
 		},
     {
@@ -230,12 +254,12 @@
         "selectedIconPath": "static/tabbar/space1.png",
         "text": "空间"
       },			
-      // {
-      //   "pagePath": "pages/community/index",
-      //   "iconPath": "static/tabbar/community.png",
-      //   "selectedIconPath": "static/tabbar/community1.png",		
-      //   "text": "社区"
-      // },			
+      {
+        "pagePath": "pages/community/index",
+        "iconPath": "static/tabbar/community.png",
+        "selectedIconPath": "static/tabbar/community1.png",		
+        "text": "社区"
+      },			
       {
         "pagePath": "pages/user/index",
         "iconPath": "static/tabbar/user.png",

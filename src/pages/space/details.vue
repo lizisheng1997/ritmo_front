@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="back" @click="routerBack(1)">
-      <image class="icon" src="/@/static/icon_left_black@2x.png"></image>
+      <image class="icon" src="http://47.116.190.37:8002/static/icon_left_black@2x.png"></image>
     </view>
     <swiper class="swiper" circular indicator-dots autoplay >
       <swiper-item>
@@ -38,23 +38,23 @@
       <!--  -->
       <view class="cards">
         <view class="card m10">
-          <image class="icon mt15" src="/@/static/space/icon (1).png"></image>
+          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
           <view class="text">WIFI</view>
         </view>
         <view class="card m10">
-          <image class="icon mt15" src="/@/static/space/icon (1).png"></image>
+          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
           <view class="text">WIFI</view>
         </view>
         <view class="card m10">
-          <image class="icon mt15" src="/@/static/space/icon (1).png"></image>
+          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
           <view class="text">WIFI</view>
         </view>
         <view class="card m10">
-          <image class="icon mt15" src="/@/static/space/icon (1).png"></image>
+          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
           <view class="text">WIFI</view>
         </view>
         <view class="card m10">
-          <image class="icon mt15" src="/@/static/space/icon (1).png"></image>
+          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
           <view class="text">WIFI</view>
         </view>
       </view>
@@ -97,7 +97,7 @@ const getInfo = () => {
 }
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #F1F1EF;
 }

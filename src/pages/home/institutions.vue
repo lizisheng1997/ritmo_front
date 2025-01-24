@@ -3,66 +3,61 @@
     <view class="list" v-for="( item, index ) in state.list" :key="index">
       <view class="user mb25 flex p25">
         <view class="left flex">
-          <image class="head mr30" src="http://47.116.190.37:8002/static/home/head.png"></image>
+          <image class="head mr30" :src="item.business_license_url"></image>
           <view class="center mr20">
             <view class="company flex">
-              <text class="text oneEllipsis" style="max-width: 64%;">杭州大鱼网络科技有限公司</text>
+              <text class="text oneEllipsis" :class=" item.status != 1 ? 'statusAsh' : '' " style="max-width: 64%;">{{ item.name }}</text>
               <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png"></image>
             </view>
-            <view class="name mt10">段誉</view>
+            <view class="name mt10">{{ item.admin_name }}</view>
           </view>
         </view>
         <view class="right">
-          <image class="select" src="http://47.116.190.37:8002/static/selectIcon.png"></image>
+          <!-- 
+            0: 待审核 (新创建的机构默认状态)
+            1: 正常 (管理员审核通过)
+            2: 已拒绝 (管理员审核未通过)
+            3: 已禁用 (管理员手动禁用)
+          -->
+          <!--  -->
+           <template v-if="item.status == 0 ">
+            <view class="status mb5">审核中</view>
+            <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">详情></view>
+           </template>
+           <template v-else-if="item.status == 1 ">
+            <image class="select" src="http://47.116.190.37:8002/static/selectIcon.png" v-if="item.id == state.currentOrg"></image>
+            <image class="select" src="http://47.116.190.37:8002/static/select.png" v-else @click="() => {
+              operatePopupRef.openDialog('是否切换机构', item.id)
+            }"></image>
+           </template>
+           <template v-else>
+            <view class="status statusRed mb5">{{ item.status == 2 ? '已驳回' : '已禁用' }}</view>
+            <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">详情></view>
+           </template>
         </view>
       </view>
       <!--  -->
-      <view class="user mb25 flex p25">
-        <view class="left flex">
-          <view class="center mr20 centerW100">
-            <view class="company flex">
-              <text class="text oneEllipsis">杭州大鱼网络科技有限公司</text>
-              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png"></image>
-            </view>
-            <view class="name mt10">段誉</view>
-          </view>
-        </view>
-        <view class="right">
-          <view class="status mb5">审核中</view>
-          <view class="details">详情></view>
-        </view>
-      </view>
-      <!--  -->
-      <view class="user mb25 flex p25">
-        <view class="left flex">
-          <view class="center mr20 centerW100">
-            <view class="company flex">
-              <text class="text oneEllipsis">杭州大鱼网络科技有限公司</text>
-              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png"></image>
-            </view>
-            <view class="name mt10">段誉</view>
-          </view>
-        </view>
-        <view class="right">
-          <view class="status statusRed mb5">已驳回</view>
-          <view class="details">详情></view>
-        </view>
-      </view>
     </view>
     <u-empty text="暂无数据" mode="list" icon-size="400" src="../..//static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
     <!--  -->
     <view class="footerOne mt35" @click="routerTo(`/pages/home/addInstitutions`)">
       创建机构
     </view>
+    <operatePopup ref="operatePopupRef" :isType="1" @refresh="getSelect"></operatePopup>
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app';
+import { baseUrl } from '/@/utils/request'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { reactive, ref } from 'vue'
+
+import operatePopup from '/@/components/operatePopup.vue'
 import { useI18n } from 'vue-i18n'
 import Home from '/@/api/home';
+import User from '/@/api/user';
+const userApi = new User();
 const homeApi = new Home();
 const { t } = useI18n()
 
@@ -73,25 +68,43 @@ onLoad((query?: AnyObject | undefined): void => {
 });
 onShow(() => {
   getList()
+  // getUserInfo()
 })
 // 参数
 const state = reactive({
-  list: [],
-
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+  list: [] as any[],
+  currentOrg: '',
 })
 // 获取列表
-const getList = async() => {
-  await homeApi.getMyOrganizations({status: ''}).then((res: any) => {
+const getList = () => {
+  homeApi.getMyOrganizations({status: ''}).then((res: any) => {
     console.log(res);
-    
+    state.currentOrg = res.data.current_org.id
+    state.list = res.data.organizations
   })
 }
+// 切换机构
+const operatePopupRef = ref()
+const getSelect = (show: boolean, id: string) => {
+  if( show ) {
+    homeApi.getSwithOrganizations(id).then((res: any) => {
+      console.log(res);
+      showTips(res.message)
+      state.list = []
+      state.currentOrg = ''
+      getList()
+    })
+  }
+}
+// 获取用户资料
+// const getUserInfo = async() => {
+//   await userApi.getUserInfo({}).then((res: any) => {
+//     console.log(res);
+//   })
+// }
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #F5F3EF;
 }
@@ -159,9 +172,6 @@ page {
           line-height: 36rpx;
           color: #898784;
         }
-        .statusRed {
-          color: #FF3434 !important;
-        }
         .details {
           font-size: 24rpx;
           font-weight: 500;
@@ -171,8 +181,12 @@ page {
       }
     }
   }
-  .textColorAsh {
+  
+  .statusAsh {
     color: #898784 !important;
+  }
+  .statusRed {
+    color: #FF3434 !important;
   }
 }
 </style>

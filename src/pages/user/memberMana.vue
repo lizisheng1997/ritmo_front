@@ -49,14 +49,12 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
+import memberExpansion from '/@/components/memberExpansion.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 // 引入组件
-const memberExpansion = defineAsyncComponent( 
-  () => import('/@/components/memberExpansion.vue')
-)
 // 参数
 const state = reactive({
   phone: '', // 手机号
@@ -70,7 +68,7 @@ const openMemberExpansion = () => {
 }
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #F5F3EF;
 }

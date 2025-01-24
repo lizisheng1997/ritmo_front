@@ -55,11 +55,11 @@
         </template>
         <view class="grade p0-25 mr15" style="color: #232322;" @click="routerTo('/pages/space/distributionMap')">
           查看分布图
-          <image class="icon" src="/@/static/space/imgs.png"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/space/imgs.png"></image>
         </view>
         <view class="grade p0-25 mr15" style="color: #232322;">
           筛选
-          <image class="down" src="/@/static/icon_down_black@2x.png"></image>
+          <image class="down" src="http://47.116.190.37:8002/static/icon_down_black@2x.png"></image>
         </view>
       </view>
       <view class="filterDate flex mt30 " v-if="state.tabsIdx <= 1">
@@ -121,7 +121,7 @@
             <view class="room flex">
               <view class="left flex" @click="routerTo(`/pages/space/details?type=1`)">
                 <view class="banner mr20">
-                  <image class="imageW100" src="/@/static/addHead.png"></image>
+                  <image class="imageW100" src="http://47.116.190.37:8002/static/addHead.png"></image>
                 </view>
                 <view class="info">
                   <view class="name mb10">001会议室</view>
@@ -149,7 +149,7 @@
           <view class="li mt20 flex pt20" @click="routerTo(`/pages/space/reserveOfficial?type=2`)">
             <view class="btn">预约</view>
             <view class="banner mr20">
-              <image class="imageW100" src="/@/static/addHead.png"></image>
+              <image class="imageW100" src="http://47.116.190.37:8002/static/addHead.png"></image>
             </view>
             <view class="info" @click="routerTo(`/pages/space/details?type=2`)">
               <view class="name">001办公室</view>
@@ -159,7 +159,7 @@
           </view>
           <view class="li mt20 flex pt20">
             <view class="banner mr20">
-              <image class="imageW100" src="/@/static/addHead.png"></image>
+              <image class="imageW100" src="http://47.116.190.37:8002/static/addHead.png"></image>
             </view>
             <view class="info">
               <view class="name">001办公室</view>
@@ -176,7 +176,7 @@
         <view class="list">
           <view class="li mt20 flex pt20" @click="routerTo(`/pages/space/reserveOfficial?type=3`)">
             <view class="banner mr20">
-              <image class="imageW100" src="/@/static/addHead.png"></image>
+              <image class="imageW100" src="http://47.116.190.37:8002/static/addHead.png"></image>
             </view>
             <view class="info" @click="routerTo(`/pages/space/details?type=3`)">
               <view class="name">001展示柜</view>

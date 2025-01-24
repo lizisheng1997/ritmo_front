@@ -2,7 +2,9 @@
   <view class="content membersIntroduction">
     <view class="top">
       <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)"></image>
-      <view class="user flex">
+      <view class="user flex" :style="{
+            paddingTop: state.navAllHeight + 'rpx'
+          }">
         <image
           class="head"
           :src="state.avatarUrl"></image>
@@ -246,6 +248,8 @@ const userApi = new User();
 const { t } = useI18n();
 
 onLoad((query?: AnyObject | undefined): void => {
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight + 88;
   // console.log(query);
   // state.id = query!.id
   getUserInfo();
@@ -267,7 +271,7 @@ const premiumList = ref([
 const state = reactive({
   languageType: '', //
   selectVip: 1, //
-
+  navAllHeight: 0, // 
   nickname: '', //
   avatarUrl: '', //
   userId: '', //
@@ -285,8 +289,7 @@ const getUserInfo = async () => {
     state.userId = res.data.id;
     state.level = res.data.vip.level;
     state.expireTime = res.data.vip.expire_time;
-    console.log(res.data.vip.prices);
-    console.log(res.data.vip.prices.basic.year / 365);
+    state.tabsIdx = res.data.vip.level ? res.data.vip.level : 1
     
     basicList.value[0].price = res.data.vip.prices.basic.month
     basicList.value[0].day = Math.floor(basicList.value[0].price / 30)
@@ -343,7 +346,7 @@ const submit = () => {
       height: 68rpx;
       position: absolute;
       left: 35rpx;
-      top: 8%;
+      top: 22%;
     }
     .tabs {
       position: absolute;

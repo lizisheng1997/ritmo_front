@@ -128,7 +128,7 @@ const getUserInfo = async() => {
   })
 }
 </script>
-<style scoped>
+<style >
 page {
   background-color: #F5F3EF;
 }

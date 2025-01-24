@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="back" @click="routerBack(1)">
-      <image class="icon" src="/@/static/icon_left_black@2x.png"></image>
+      <image class="icon" src="http://47.116.190.37:8002/static/icon_left_black@2x.png"></image>
     </view>
     <swiper class="swiper" circular indicator-dots autoplay >
       <swiper-item>
@@ -17,7 +17,7 @@
     <!--  -->
     <view class="album pl5" @click="routerTo('/pages/space/album')">
       相册
-      <image class="icon" src="/@/static/iconLeftW.png"> </image>
+      <image class="icon" src="http://47.116.190.37:8002/static/iconLeftW.png"> </image>
     </view>
     <!--  -->
     <view class="center p35">
@@ -35,20 +35,20 @@
       <!--  -->
       <view class="cards">
         <view class="card m10">
-          <image class="icon mt15" src="/@/static/space/icon (1).png"></image>
+          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
           <view class="text">WIFI</view>
         </view>
       </view>
       <!--  -->
       <view class="info mt35">
         <view class="title mb25">初级工位</view>
-        <image class="banner mb25" src="/@/static/addHead.png"></image>
+        <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
         <view class="text">配备人体工学椅，27寸4k显示器，每个桌面配备插座供电，有贴心的照明系统。</view>
       </view>
       <!--  -->
       <view class="info mt35">
         <view class="title mb25">高级工位</view>
-        <image class="banner mb25" src="/@/static/addHead.png"></image>
+        <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
         <view class="text">配备人体工学椅，27寸4k显示器，每个桌面配备插座供电，有贴心的照明系统。</view>
       </view>
       <!--  -->
@@ -108,7 +108,7 @@ const getInfo = () => {
 }
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #F1F1EF;
 }

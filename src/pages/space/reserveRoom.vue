@@ -6,7 +6,7 @@
           <view class="room flex">
             <view class="left flex" @click="routerTo(`/pages/space/details?type=1`)">
               <view class="banner mr20">
-                <image class="imageW100" src="/@/static/addHead.png"></image>
+                <image class="imageW100" src="http://47.116.190.37:8002/static/addHead.png"></image>
               </view>
               <view class="info">
                 <view class="name mb10">001会议室</view>
@@ -20,7 +20,7 @@
               </view>
             </view>
             <view class="right" @click="routerTo(`/pages/space/details?type=${state.type}`)">
-              <image class="icon" src="/@/static/rightBlack.png"></image>
+              <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png"></image>
             </view>
           </view>
         </view>
@@ -32,7 +32,7 @@
         <text class="title">选择预约日期</text>
       </view>
       <view class="card p15 mt25">
-        <image class="icon" src="/@/static/rightAsh.png" @click="state.calendarShow = true"></image>
+        <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png" @click="state.calendarShow = true"></image>
         <view class="title">日期</view>
         <view class="date mt20">{{ state.date }}</view>
       </view>
@@ -157,7 +157,7 @@ const addSelect = (time: string) => {
 }
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #F1F1EF;
 }

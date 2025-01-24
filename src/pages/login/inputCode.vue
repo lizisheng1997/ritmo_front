@@ -119,7 +119,7 @@ const getAuthUser = async() => {
     });
 }
 </script>
-<style scoped>
+<style >
 page {
   background-color: #ffffff;
 }

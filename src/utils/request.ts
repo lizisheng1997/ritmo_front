@@ -4,8 +4,7 @@ import { showTips } from './currentFun';
 import type { T } from './types';
 
 // 记得全局更换background-image地址
-export const baseUrl = 'http://47.116.190.37:8002/api'; // 测试环境
-// baseUrl = 'http://192.168.7.79:8000/gateway/'; 
+export const baseUrl = 'http://47.116.190.37:8002'; // 测试环境
 // console.log(baseUrl);
 
 export default class Request {
@@ -14,7 +13,7 @@ export default class Request {
   request(options: T) {
     return new Promise((reslove, reject) => {
       uni.request({
-        url: baseUrl + options.url,
+        url: baseUrl + '/api' + options.url,
         method: options.method,
         data: options.data,
         header: {

@@ -13,7 +13,7 @@ export default class Home extends Request {
   }
   // 创建机构
   getAddOrganizations(data: object) {
-    return this.get({
+    return this.post({
       url: '/v1/organizations',
       data
     });
@@ -21,7 +21,7 @@ export default class Home extends Request {
   // 获取机构详情
   getOrganizationsInfo(id: string) {
     return this.get({
-      url: `/v1/organizations/id`,
+      url: `/v1/organizations/${id}`,
     });
   }
   // 上传营业执照
@@ -29,6 +29,12 @@ export default class Home extends Request {
     return this.uploadFile({
       url: '/v1/uploads/licenses',
       data
+    });
+  }
+  // 切换机构
+  getSwithOrganizations(id: string) {
+    return this.post({
+      url: `/v1/organizations/switch/${id}`,
     });
   }
 

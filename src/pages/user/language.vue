@@ -30,15 +30,12 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
+import operatePopup from '/@/components/operatePopup.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import { onLoad } from '@dcloudio/uni-app';
 const { t } = useI18n()
 
-// 引入组件
-const operatePopup = defineAsyncComponent( 
-  () => import('/@/components/operatePopup.vue')
-)
 onLoad(() => {
   state.idx = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   // 

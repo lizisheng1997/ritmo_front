@@ -5,9 +5,9 @@
         提示
       </view>
       <view class="text mb35">
-        是否{{ props.isType == 0 ? '切换语言，切换完毕后下次进入生效。' : '' }}
+        是否{{ props.isType == 0 ? '切换语言，切换完毕后下次进入生效。' : state.text }}
       </view>
-      <view class="footerPopup p0-35" v-if="props.isType == 0">
+      <view class="footerPopup p0-35">
         <view class="btn left" @click="sumbit(false)">取消</view>
         <view class="btn right" @click="sumbit(true)">确定</view>
       </view>
@@ -21,26 +21,30 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
 const props = defineProps({
-  // 0切换语言
+  // 0切换语言  1询问窗
   isType: {
     type: Number,
     default: () => 0
-  }
+  },
 })
 // 参数
 const state = reactive({
   isShow: false, // 
+  text: '', // 提示字
+  id: '', // 弹窗携带的id
 })
 // 打开弹窗
-const openDialog = () => {
+const openDialog = (text?:string, id?:string) => {
   // console.log(rows)
+  state.text = text ? text : ''
+  state.id = id ? id : ''
   state.isShow = true;
 };
 defineExpose({ openDialog });
 const emit = defineEmits(['refresh']);
 const sumbit = (show: boolean) => {
   state.isShow = false
-  emit('refresh', show)
+  emit('refresh', show, state.id)
   
 }
 </script>

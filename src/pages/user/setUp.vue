@@ -73,6 +73,7 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
+import bottomOperation from '/@/components/bottomOperation.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import Login from '/@/api/login';
@@ -80,9 +81,6 @@ const loginApi = new Login();
 const { t } = useI18n()
 
 // 引入组件
-const bottomOperation = defineAsyncComponent( 
-  () => import('/@/components/bottomOperation.vue')
-)
 // 参数
 const state = reactive({
   phone: '', // 手机号

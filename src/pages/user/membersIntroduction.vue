@@ -126,7 +126,7 @@ const getUserInfo = async() => {
       height: 68rpx;
       position: absolute;
       left: 35rpx;
-      top: 8%;
+      top: 22%;
     }
   }
   .news {

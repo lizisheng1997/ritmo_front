@@ -1,11 +1,11 @@
 <template>
-  <view class="content p35">
+  <view class="content p35" v-if="state.info">
     <view class="examine pb35" style="border-bottom: 1PX solid #D7D4CF;">
-      <view class="status">审核中</view>
-      <view class="status statusRed">已驳回</view>
-      <view class="remark flex mt35">
+      <view class="status" v-if="state.info.status == 0">审核中</view>
+      <view class="status statusRed" v-else-if="state.info.status == 2">已驳回</view>
+      <view class="remark flex mt35" v-if="state.info.status == 2">
         <view class="label">拒绝理由：</view>
-        <view class="text">营业执照与机构名称不符合营业执照与机构名称不符合营业执照与机构名称不符</view>
+        <view class="text">{{ state.info.reject_reason }}</view>
       </view>
     </view>
     <!--  -->
@@ -17,7 +17,7 @@
           机构名称
         </view>
         <view class="value">
-          大鱼网络科技有限公司
+          {{ state.info.name }}
         </view>
       </view>
       <view class="item flex pb35 ">
@@ -25,7 +25,7 @@
           统一信用代码
         </view>
         <view class="value">
-          321783921789421
+          {{ state.info.social_credit_code }}
         </view>
       </view>
       <view class="item flex pb35 ">
@@ -33,7 +33,7 @@
           营业执照
         </view>
         <view class="yyzz ml30">
-          <image class="icon imageW100" src="../../static/home/yyzz.png"></image>
+          <image class="icon imageW100" :src="state.info.business_license_url"></image>
         </view>
       </view>
     </view>
@@ -45,7 +45,7 @@
           管理员
         </view>
         <view class="value">
-          讲道理
+          {{ state.info.admin_name }}
         </view>
       </view>
       <view class="item flex pb35 ">
@@ -53,7 +53,7 @@
           联系方式
         </view>
         <view class="value">
-          13299990000
+          {{ state.info.admin_phone }}
         </view>
       </view>
     </view>
@@ -67,6 +67,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
+import { baseUrl } from '/@/utils/request'
 import { useI18n } from 'vue-i18n'
 import Home from '/@/api/home';
 const homeApi = new Home();
@@ -75,22 +76,26 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   state.id = query!.id
-  getInfo
+  getInfo()
 });
 // 参数
 const state = reactive({
   id: '', // 
-  select: false, // 
-  image: '',
+  info: {} as any
 })
 const getInfo = async() => {
   await homeApi.getOrganizationsInfo(state.id).then((res: any) => {
     console.log(res);
-    
+    state.info = res.data
   })
 }
 </script>
 
+<style >
+page {
+  background-color: #ffffff;
+}
+</style>
 <style lang="scss" scoped>
 .content {
   .examine {

@@ -64,7 +64,7 @@ const state = reactive({
 })
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #F5F3EF;
 }

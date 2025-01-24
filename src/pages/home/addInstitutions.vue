@@ -13,7 +13,7 @@
         <view class="text">
           统一信用代码
         </view>
-        <input class="uni-input ml25" v-model="form.socialRreditCode" placeholder="请输入统一信用代码" />
+        <input class="uni-input ml25" v-model="form.socialCreditCode" placeholder="请输入统一信用代码" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
@@ -32,17 +32,17 @@
         <view class="text">
           管理员
         </view>
-        <input class="uni-input ml25" maxlength="5" v-model="form.legalPerson" placeholder="请输入管理员" />
+        <input class="uni-input ml25" maxlength="5" v-model="form.adminName" placeholder="请输入管理员" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
           联系方式
         </view>
-        <input class="uni-input ml25" maxlength="5" v-model="form.phone" placeholder="请输入联系方式" />
+        <input class="uni-input ml25" type="number" maxlength="11" v-model="form.adminPhone" placeholder="请输入联系方式" />
       </view>
     </view>
     <!--  -->
-    <view class="btn" :class=" form.phone.length == 11 ? '' : 'btnNull' " @click="submit">
+    <view class="btn" :class=" form.name && form.socialCreditCode && form.businessLicenseUrl && form.adminName && form.adminPhone.length == 11 ? '' : 'btnNull' " @click="submit">
       确认创建
     </view>
   </view>
@@ -53,19 +53,24 @@ import { reactive, ref } from 'vue'
 import { burrentChooseImage, routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import Home from '/@/api/home';
+import { onLoad } from '@dcloudio/uni-app';
 const homeApi = new Home();
 const { t } = useI18n()
 
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  form.id = query!.type ? query!.type : ''
+});
 // 参数
 const form = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
-
+  id: '',
   name: '', // 机构名称
-  socialRreditCode: '', // 统一信用代码
-  legalPerson: '', // 管理员
+  socialCreditCode: '', // 统一信用代码
+  legalPerson: '',
   businessLicenseUrl: '', // 营业执照
+  adminName: '', // 管理员
+  adminPhone: '', // 联系方式
+  // legal_person
 })
 // 上传图片
 const uploadImage = () => {
@@ -82,19 +87,18 @@ const uploadImage = () => {
 }
 // @click="routerTo(`/pages/home/institutionsDetails`)"
 const submit = async() => {
-  // if(!form.nickname && !form.email && !form.intro) {
-  //   showTips('请填写资料')
-  //   return;
-  // }
-  // let { nickname, email, intro, avatarUrl, showPhone, showEmail, defaultSpace } = form
+  
+  let { id, name, socialCreditCode, businessLicenseUrl, adminName, adminPhone } = form
+  if(!name && !socialCreditCode && !businessLicenseUrl && !adminName && !adminPhone) {
+    showTips('请填写资料')
+    return;
+  }
   await homeApi.getAddOrganizations({
-    // nickname,
-    // email,
-    // intro,
-    // avatar_url: avatarUrl,
-    // show_email: showPhone,
-    // show_phone: showEmail,
-    // default_space: defaultSpace
+    name,
+    social_credit_code: socialCreditCode,
+    business_license_url: businessLicenseUrl,
+    admin_name: adminName,
+    admin_phone: adminPhone,
   }).then((res: any) => {
     console.log(res);
     showTips(res.message)
@@ -105,7 +109,7 @@ const submit = async() => {
 }
 </script>
 
-<style scoped>
+<style >
 page {
   background-color: #ffffff;
 }
