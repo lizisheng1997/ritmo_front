@@ -3,11 +3,11 @@
     <view class="list" v-for="( item, index ) in state.list" :key="index">
       <view class="user mb25 flex p25">
         <view class="left flex">
-          <image class="head mr30" :src="item.business_license_url"></image>
-          <view class="center mr20">
+          <image class="head mr30" :src="item.business_license_url" v-if="item.business_license_url"></image>
+          <view class="center mr20" :class=" item.business_license_url ? '' : 'centerW100' ">
             <view class="company flex">
               <text class="text oneEllipsis" :class=" item.status != 1 ? 'statusAsh' : '' " style="max-width: 64%;">{{ item.name }}</text>
-              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png"></image>
+              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-if="item.is_vip"></image>
             </view>
             <view class="name mt10">{{ item.admin_name }}</view>
           </view>

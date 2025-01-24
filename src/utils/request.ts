@@ -13,7 +13,7 @@ export default class Request {
   request(options: T) {
     return new Promise((reslove, reject) => {
       uni.request({
-        url: baseUrl + '/api' + options.url,
+        url: baseUrl+ '/api' + options.url,
         method: options.method,
         data: options.data,
         header: {
@@ -65,7 +65,7 @@ export default class Request {
   async uploadFile(options: T): Promise<string> {
     return new Promise((resolve, reject) => {
       uni.uploadFile({
-        url: baseUrl + options.url,
+        url: baseUrl + '/api' + options.url,
         filePath: options.data.filePath,
         name: 'file',
         

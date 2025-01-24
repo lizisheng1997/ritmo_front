@@ -43,7 +43,7 @@
     </view>
     <!--  -->
     <view class="btn" :class=" form.name && form.socialCreditCode && form.businessLicenseUrl && form.adminName && form.adminPhone.length == 11 ? '' : 'btnNull' " @click="submit">
-      确认创建
+      {{ form.id ? '重新提交' : '确认创建' }}
     </view>
   </view>
 </template>
@@ -59,7 +59,8 @@ const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
-  form.id = query!.type ? query!.type : ''
+  form.id = query!.id ? query!.id : ''
+  if( form.id ) getInfo();
 });
 // 参数
 const form = reactive({
@@ -70,8 +71,18 @@ const form = reactive({
   businessLicenseUrl: '', // 营业执照
   adminName: '', // 管理员
   adminPhone: '', // 联系方式
-  // legal_person
 })
+// 获取详情
+const getInfo = async() => {
+  await homeApi.getOrganizationsInfo(form.id).then((res: any) => {
+    // console.log(res.data);
+    form.name = res.data.name
+    form.socialCreditCode = res.data.social_credit_code
+    form.businessLicenseUrl = res.data.business_license_url
+    form.adminName = res.data.admin_name
+    form.adminPhone = res.data.admin_phone
+  })
+}
 // 上传图片
 const uploadImage = () => {
    burrentChooseImage(0, 1).then((res: any) => {
@@ -93,19 +104,35 @@ const submit = async() => {
     showTips('请填写资料')
     return;
   }
-  await homeApi.getAddOrganizations({
-    name,
-    social_credit_code: socialCreditCode,
-    business_license_url: businessLicenseUrl,
-    admin_name: adminName,
-    admin_phone: adminPhone,
-  }).then((res: any) => {
-    console.log(res);
-    showTips(res.message)
-    setTimeout(() => {
-      routerBack(1)
-    }, 1000);
-  })
+  if(id) {
+    homeApi.getOrganizationsReapply(id, {
+      name,
+      social_credit_code: socialCreditCode,
+      business_license_url: businessLicenseUrl,
+      admin_name: adminName,
+      admin_phone: adminPhone,
+    }).then((res: any) => {
+      console.log(res);
+      showTips(res.message)
+      setTimeout(() => {
+        routerBack(2)
+      }, 1000);
+    })
+  } else {
+    homeApi.getAddOrganizations({
+      name,
+      social_credit_code: socialCreditCode,
+      business_license_url: businessLicenseUrl,
+      admin_name: adminName,
+      admin_phone: adminPhone,
+    }).then((res: any) => {
+      console.log(res);
+      showTips(res.message)
+      setTimeout(() => {
+        routerBack(1)
+      }, 1000);
+    })
+  }
 }
 </script>
 

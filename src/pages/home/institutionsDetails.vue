@@ -58,7 +58,7 @@
       </view>
     </view>
     <!--  -->
-    <view class="btn">
+    <view class="btn" @click="routerTo(`/pages/home/addInstitutions?id=${state.id}`)">
       编辑并重新提审
     </view>
   </view>
@@ -67,6 +67,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
+import { routerTo, showTips } from '/@/utils/currentFun';
 import { baseUrl } from '/@/utils/request'
 import { useI18n } from 'vue-i18n'
 import Home from '/@/api/home';

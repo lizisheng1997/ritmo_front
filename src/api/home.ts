@@ -24,6 +24,13 @@ export default class Home extends Request {
       url: `/v1/organizations/${id}`,
     });
   }
+  // 编辑机构
+  getOrganizationsReapply(id: string, data: object) {
+    return this.put({
+      url: `/v1/organizations/${id}/reapply`,
+      data
+    });
+  }
   // 上传营业执照
   getUpdateLicenses(data: object) {
     return this.uploadFile({
