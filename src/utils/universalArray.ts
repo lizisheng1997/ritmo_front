@@ -66,3 +66,26 @@ export const communityIndexTabs = [
 export const communityHomepageTabs = [
   '我的动态', '我的收藏', '我回复的', '回复我的'
 ]
+
+export const userRecordList = [
+  {
+    key: 0,
+    hours: 0,
+    name: '初级工位'
+  },
+  {
+    key: 1,
+    hours: 0,
+    name: '高级工位'
+  },
+  {
+    key: 2,
+    hours: 0,
+    name: '初级会议室'
+  },
+  {
+    key: 3,
+    hours: 0,
+    name: '高级会议室'
+  },
+]

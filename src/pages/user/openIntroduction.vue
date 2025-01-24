@@ -2,9 +2,7 @@
   <view class="content membersIntroduction">
     <view class="top">
       <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)"></image>
-      <view class="user flex" :style="{
-            paddingTop: state.navAllHeight + 'rpx'
-          }">
+      <view class="user flex">
         <image
           class="head"
           :src="state.avatarUrl"></image>
@@ -32,7 +30,7 @@
           <view
             class="name mt10"
             v-if="state.expireTime"
-            >有效期至{{ state.expireTime }}</view
+            >有效期至{{ dateToLocaleDateString(state.expireTime) }}</view
           >
         </view>
       </view>
@@ -241,7 +239,7 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue';
-import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
+import { routerBack, routerTo, showTips, dateToLocaleDateString } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
 import User from '/@/api/user';
 const userApi = new User();

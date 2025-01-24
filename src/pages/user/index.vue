@@ -13,14 +13,14 @@
           <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`)" v-if="state.userId"></image>
         </view>
       </view>
-      <view class="vip flex m0-35" :class=" state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : state.level == 3 ? 'vip3' : '' ">
+      <view class="vip flex m0-35" :class=" state.isInstitution ? 'vip3' : state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' ">
         <view class="left ml35">
           <view class="grade mt35">
-            {{ userLevelEnums[state.level] }}
+            {{ state.isInstitution ? '会员机构' : userLevelEnums[state.level] }}
             <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0" @click="routerTo(`/pages/user/openIntroduction`)"></image>
           </view>
           <view class="date mt15">
-            {{ state.level ? `有效期至 ${state.expireTime}` : '开通会员最高享受10项专属权益' }}
+            {{ state.level ? `有效期至 ${dateToLocaleDateString(state.expireTime)}` : '开通会员最高享受10项专属权益' }}
           </view>
         </view>
         <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/membersIntroduction`)">
@@ -41,20 +41,10 @@
       </view>
     </view>
     <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
-      <view class="card">
-        <view class="num mt30">16</view>
+      <view class="card" v-for="item in userRecordList" :key="item.key">
+        <view class="num mt30">{{ item.hours }}</view>
         <view class="text mt15">小时</view>
-        <view class="grade mt35">初级工位</view>
-      </view>
-      <view class="card">
-        <view class="num mt30">16</view>
-        <view class="text mt15">小时</view>
-        <view class="grade mt35">初级工位</view>
-      </view>
-      <view class="card">
-        <view class="num mt30">16</view>
-        <view class="text mt15">小时</view>
-        <view class="grade mt35">初级工位</view>
+        <view class="grade mt35">{{ item.name }}</view>
       </view>
     </view>
     <view class="menuForm mt35 p0-35">
@@ -69,7 +59,7 @@
         </view>
       </view>
       <!--  -->
-      <view class="li flex" v-if="state.level == 2">
+      <view class="li flex" v-if="state.level == 2 || state.isInstitution">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu7.png"></image>
           我的人脸 
@@ -80,7 +70,7 @@
         </view>
       </view>
       <!--  -->
-      <view class="li flex" v-if="state.level != 2">
+      <view class="li flex" v-if="state.level == 0 || state.level == 1">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu2.png"></image>
           图片上传 
@@ -110,7 +100,7 @@
           <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="routerTo(`/pages/user/memberMana`, true)">
+      <view class="li flex" @click="routerTo(`/pages/user/memberMana`, true)" v-if="state.isInstitution">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
           成员管理
@@ -145,7 +135,8 @@
 <script setup lang="ts">
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
-import { routerTo, showTips } from '/@/utils/currentFun';
+import { routerTo, showTips, dateToLocaleDateString } from '/@/utils/currentFun';
+import { userRecordList } from '/@/utils/universalArray'
 import { userLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
@@ -155,7 +146,7 @@ const { t } = useI18n()
 onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 88;
-  console.log(state.navAllHeight);
+  // console.log(state.navAllHeight);
   
 })
 onShow(() => {
@@ -173,12 +164,14 @@ const state = reactive({
   // 
   status: 0, //  
   navAllHeight: 0,
+  // 
+  isInstitution: false, // 是否是机构
 
 })
 // 获取用户资料
 const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
-    // console.log(res);
+    console.log(res.data);
     state.nickname = res.data.nickname
     state.avatarUrl = res.data.avatar ? res.data.avatar.url : ''
     // console.log(state.avatarUrl);
@@ -186,6 +179,10 @@ const getUserInfo = async() => {
     state.userId = res.data.id
     state.level = res.data.vip.level
     state.expireTime = res.data.vip.expire_time
+    
+    // state.rights = res.data.rights
+    userRecordList[0].hours = res.data.rights.meeting_room.hours_formatted
+    userRecordList[2].hours = res.data.rights.workspace.hours_formatted
   })
 }
 // 去登录页

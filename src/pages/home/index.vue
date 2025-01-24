@@ -61,10 +61,12 @@
         <template v-if=" state.userId">
           <view class="company flex mt30">
             <text class="text oneEllipsis">{{ state.nickname }}</text>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png" v-else-if="state.level == 1"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip2.png" v-else-if="state.level == 2"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-else-if="state.level == 3"></image>
+            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-if="state.isInstitution"></image>
+            <template v-else >
+              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
+              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png" v-else-if="state.level == 1"></image>
+              <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip2.png" v-else-if="state.level == 2"></image>
+            </template>
           </view>
           <view class="name mt10" v-if="state.userId">ID：{{ state.userId }}</view>
         </template>
@@ -115,7 +117,9 @@ const state = reactive({
   avatarUrl: '', // 头像
   userId: '',
   level: 0, // 0：非会员, 1: 初级会员, 2: 高级会员, 3: 企业会员
+  isInstitution: false, // 是否是机构
   isNewUser: true, // 是否是新用户
+  // 
 })
 // 获取用户资料
 const getUserInfo = async() => {

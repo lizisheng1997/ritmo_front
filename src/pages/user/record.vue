@@ -1,25 +1,15 @@
 <template>
-  <view class="content p35">
+  <view class="content ">
     <!--  -->
-    <view class="interestsList flex mt35">
-      <view class="card" :class="state.idx == 0 ? 'cardAfter' : ''">
-        <view class="num mt30">16</view>
+    <view class="interestsList flex p35">
+      <view class="card" v-for="item in userRecordList" :key="item.key" :class="state.idx == item.key ? 'cardAfter' : ''" @click="bindIdx(item.key) ">
+        <view class="num mt30">{{ item.hours }}</view>
         <view class="text mt15">小时</view>
-        <view class="grade mt35">初级工位</view>
-      </view>
-      <view class="card">
-        <view class="num mt30">16</view>
-        <view class="text mt15">小时</view>
-        <view class="grade mt35">初级工位</view>
-      </view>
-      <view class="card cardAsh">
-        <view class="num mt30">16</view>
-        <view class="text mt15">小时</view>
-        <view class="grade mt35">初级工位</view>
+        <view class="grade mt35">{{ item.name }}</view>
       </view>
     </view>
     <!--  -->
-    <scroll-view class="mt25" scroll-y="true" style="height: 800rpx;" @scrolltolower="scrolltolower">
+    <scroll-view class="p0-35" scroll-y="true" style="height: 74vh; width: calc( 100% - 70rpx );">
       <view class="record ">
         <view class="li flex mt25 pb25">
           <view class="left">
@@ -50,6 +40,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { userRecordList } from '/@/utils/universalArray'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 
@@ -60,9 +51,8 @@ const state = reactive({
   image: '',
 })
 // 底部
-const scrolltolower = () => {
-  console.log('111');
-  
+const bindIdx = ( idx: number ) => {
+  state.idx = idx
 }
 </script>
 
