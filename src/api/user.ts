@@ -52,4 +52,29 @@ export default class User extends Request {
       data
     });
   }
+  // 获取机构成员列表
+  getOrganizationsMembers(id: string) {
+    return this.get({
+      url: `/v1/organizations/${id}/members`,
+    });
+  }
+  // 删除机构成员
+  getOrganizationsMembersDel(id: string, mid: string) {
+    return this.get({
+      url: `/v1/organizations/${id}/members/${mid}`,
+    });
+  }
+  // 修改成员信息
+  getOrganizationsMembersEdit(id: string, mid: string) {
+    return this.put({
+      url: `/v1/organizations/${id}/members/${mid}`,
+    });
+  }
+  // 新增成员信息
+  getOrganizationsMembersAdd(id: string, data: object) {
+    return this.post({
+      url: `/v1/organizations/${id}/members`,
+      data
+    });
+  }
 }

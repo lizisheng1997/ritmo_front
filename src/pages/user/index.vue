@@ -101,7 +101,7 @@
           <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="routerTo(`/pages/user/memberMana`, true)" v-if="state.isInstitution">
+      <view class="li flex" @click="routerTo(`/pages/user/memberMana?id=${state.institutionId}`, true)" v-if="state.isInstitution">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
           成员管理
@@ -167,6 +167,7 @@ const state = reactive({
   navAllHeight: 0,
   // 
   isInstitution: false, // 是否是机构
+  institutionId: '', // 机构id
 
 })
 // 获取用户资料
@@ -185,6 +186,7 @@ const getUserInfo = async() => {
     userRecordList[0].hours = res.data.rights.meeting_room.hours_formatted
     userRecordList[2].hours = res.data.rights.workspace.hours_formatted
     state.isInstitution = res.data.current_org.id == 0 ? false : true
+    state.institutionId = res.data.current_org.id
   })
 }
 // 去登录页

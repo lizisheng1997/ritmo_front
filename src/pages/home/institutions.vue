@@ -38,7 +38,7 @@
       </view>
       <!--  -->
     </view>
-    <u-empty text="暂无数据" mode="list" icon-size="400" src="../..//static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
+    <u-empty text="暂无数据" mode="list" icon-size="400" src="../../static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
     <!--  -->
     <view class="footerOne mt35" @click="routerTo(`/pages/home/addInstitutions`)">
       创建机构

@@ -12,55 +12,79 @@
     </view>
     <!--  -->
     <view class="list">
-      <view class="li flex mt35 p35">
+      <view class="li flex mt35 p35" v-for="item in state.list" :key="item.id">
         <view class="left flex">
           <image class="head mr25" src="http://47.116.190.37:8002/static/home/head.png"></image>
           <view class="info">
-            <view class="name mb10">段誉</view>
-            <view class="phone">13299997777</view>
+            <view class="name mb10">{{ item.nickname }}</view>
+            <view class="phone">{{ item.phone }}</view>
           </view>
         </view>
         <view class="right mt15">
           <view class="card">超管</view>
-          <image class="icon" src="http://47.116.190.37:8002/static/user/delete.png"></image>
+          <image class="icon ml15" src="http://47.116.190.37:8002/static/user/delete.png" @click="operatePopupRef.openDialog('是否删除该成员', item.id)"></image>
+          
+          <image class="icon" src="http://47.116.190.37:8002/static/user/editMember.png" @click="routerTo(`/pages/user/editMember?oid=${state.id}&id=${item.id}&nickname=${item.nickname}&phone=${item.phone}`)"></image>
         </view>
       </view>
-      <view class="li flex mt35 p35">
-        <view class="left flex">
-          <image class="head mr25" src="http://47.116.190.37:8002/static/home/head.png"></image>
-          <view class="info">
-            <view class="name mb10">段誉</view>
-            <view class="phone">13299997777</view>
-          </view>
-        </view>
-        <view class="right mt15">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/editMember.png"></image>
-        </view>
-      </view>
-      <!--  -->
     </view>
+    <u-empty text="暂无数据" mode="list" icon-size="400" src="../../static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
     <!--  -->
-    <view class="footerOne" @click="routerTo(`/pages/user/editMember?type=0`)">
+    <view class="footerOne" @click="routerTo(`/pages/user/editMember?oid=${state.id}`)">
       新增成员
     </view>
     <memberExpansion ref="memberExpansionRef" />
+    <operatePopup ref="operatePopupRef" :isType="1" @refresh="getSelect"></operatePopup>
   </view>
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import memberExpansion from '/@/components/memberExpansion.vue'
+import operatePopup from '/@/components/operatePopup.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import { onLoad, onShow } from '@dcloudio/uni-app';
+import User from '/@/api/user';
+const userApi = new User();
 const { t } = useI18n()
 
-// 引入组件
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  state.id = query!.id
+});
+onShow(() => {
+  getList()
+})
 // 参数
 const state = reactive({
+  id: '', //机构id
+  list: [] as any[],
+
+
   phone: '', // 手机号
   select: false, // 
   image: '',
 })
+// 列表
+const getList = () => {
+  userApi.getOrganizationsMembers(state.id).then((res: any) => {
+    console.log(res.data);
+    state.list = res.data
+  })
+}
+// 删除
+const operatePopupRef = ref()
+const getSelect = (show: boolean, id: string) => {
+  if( show ) {
+    userApi.getOrganizationsMembersDel(state.id, id).then((res: any) => {
+      showTips(res.message)
+      state.list = []
+      getList()
+    })
+  }
+}
+
 // 
 const memberExpansionRef = ref()
 const openMemberExpansion = () => {

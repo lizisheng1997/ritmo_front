@@ -6,29 +6,29 @@
         <view class="text">
           <text class="">*</text>成员名称
         </view>
-        <input class="uni-input ml25" maxlength="5" v-model="state.phone" placeholder="请输入成员名称" />
+        <input class="uni-input ml25" maxlength="5" v-model="state.nickname" placeholder="请输入成员名称" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
           <text class="">*</text>手机号
         </view>
-        <input class="uni-input ml25" v-model="state.phone" placeholder="请输入手机号" />
+        <input class="uni-input ml25" maxlength="11" v-model="state.phone" placeholder="请输入手机号" />
       </view>
-      <view class="item flex pb35 mt35">
+      <!-- <view class="item flex pb35 mt35">
         <view class="text">
           <text class="">*</text>邮箱
         </view>
         <input class="uni-input ml25" maxlength="5" v-model="state.phone" placeholder="请输入邮箱" />
-      </view>
+      </view> -->
     </view>
-    <!-- v-if="state.id" -->
-    <view class="footerTwo flex" >
-      <view class="btn btn1">新增完成</view>
-      <view class="btn btn2">完成并继续新增 </view>
-    </view>
-    <!-- <view class="footerOne" v-else>
+    <!--  -->
+    <view class="footerOne" v-if="state.id" @click="submit(2)">
       保存
-    </view> -->
+    </view>
+    <view class="footerTwo flex" v-else>
+      <view class="btn btn1" @click="submit(0)">新增完成</view>
+      <view class="btn btn2" @click="submit(1)">完成并继续新增 </view>
+    </view>
     <!--  -->
   </view>
 </template>
@@ -37,24 +37,69 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+import { routerBack, showTips } from '/@/utils/currentFun';
+const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   uni.setNavigationBarTitle({
-    title: query!.type == '1' ? '编辑成员' : '新增成员'
+    title: query!.id == '1' ? '编辑成员' : '新增成员'
   });
-  state.id = query!.id
+  state.oid = query!.oid
+  state.id = query!.id ? query!.id : ''
+  if(state.id) {
+    state.nickname = query!.nickname
+    state.phone = query!.phone
+  }
 });
 // 参数
 const state = reactive({
+  oid: '', // 机构id
   id: '',
+  nickname: '',
   phone: '', // 手机号
-  select: false, // 
-  image: '',
 })
+
+// 0新增1继续新增2修改
+const submit = (type: number) => {
+  if( !state.nickname || !state.phone ) {
+    showTips('请填写资料')
+    return
+  }
+  if( type == 2 ) {
+    userApi.getOrganizationsMembersEdit( state.oid, state.id ).then((res: any) => {
+      showTips(res.message)
+      setTimeout(() => {
+        routerBack(1)
+      }, 1000);
+    })
+  } else {
+    userApi.getOrganizationsMembersAdd( state.oid, {
+      nickname: state.nickname,
+      phone: state.phone,
+    } ).then((res: any) => {
+      showTips(res.message)
+      setTimeout(() => {
+        if( type == 0 ) {
+          routerBack(1)
+        } else {
+          state.nickname = ''
+          state.phone = ''
+        }
+      }, 1000);
+      
+    })
+  }
+}
 </script>
 
+<style >
+page {
+  background-color: #FFFFFF;
+}
+</style>
 <style lang="scss" scoped>
 .content {
   .form {
