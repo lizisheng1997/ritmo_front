@@ -2,22 +2,22 @@
   <view class="content p35">
     <view class="card p35">
       <view class="count flex p0-55">
-        <text class="num">4人</text>
+        <text class="num">{{ state.oldLimit }}人</text>
         <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
-        <text class="num">8人</text>
+        <text class="num">{{ state.limit }}人</text>
       </view>
       <view class="fub">扩容</view>
-      <view class="title mt35">大鱼网络有限公司</view>
+      <view class="title mt35">{{ state.orgName }}</view>
       <view class="dateText mt35">扩容时间</view>
-      <view class="day mt25">238天</view>
+      <view class="day mt25">{{ state.day }}天</view>
       <view class="info">
         <view class="li flex mt25">
           <text class="label">操作人：</text>
-          <text class="text">段誉</text>
+          <text class="text">{{ state.nickname }}</text>
         </view>
         <view class="li flex mt25">
           <text class="label">所属机构：</text>
-          <text class="text">大鱼网络有限公司</text>
+          <text class="text">{{ state.orgName }}</text>
         </view>
       </view>
     </view>
@@ -28,14 +28,14 @@
       </view>
       <view class="expansion mb10 flex">
         <view class="text">成员扩容</view>
-        <view class="price">¥3000</view>
+        <view class="price">¥{{ state.price }}</view>
       </view>
       <view class="count">
-        5人 × 238天
+        {{ state.limit-state.oldLimit }}人 × {{ state.day }}天
       </view>
       <view class="all">
         总计
-        <text class="">¥3000</text>
+        <text class="">¥{{ state.price }}</text>
       </view>
     </view>
     <!--  -->
@@ -43,25 +43,85 @@
       <view class="price">
         <text class="all">总计：</text>
         <text class="unit" style="font-size: 28rpx;">￥</text>
-        <text class="unit">3000</text>
+        <text class="unit">{{ state.price }}</text>
       </view>
-      <view class="btn">确认扩容</view>
+      <view class="btn" @click="operatePopupRef.openDialog('是否支付该订单', state.id)">确认扩容</view>
     </view>
+    <operatePopup ref="operatePopupRef" :isType="1" @refresh="submit"></operatePopup>
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
+import operatePopup from '/@/components/operatePopup.vue'
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+import Home from '/@/api/home';
+import { routerBack, showTips } from '/@/utils/currentFun';
+const homeApi = new Home();
+const userApi = new User();
 const { t } = useI18n()
 
+
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  state.id = query!.id
+  state.limit = query!.limit
+  state.day = query!.day
+  state.oldLimit = query!.oldLimit
+  getUserInfo()
+});
 // 参数
 const state = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+  id: '', // 机构id
+  limit: 0, // 扩容数量
+  oldLimit: 0, // 扩容前数量
+  day: 0, // 扩容天数
+  orgName: '', // 所属机构
+  nickname: '', // 操作人
+  price: 0,
 })
+const operatePopupRef = ref()
+// 获取用户资料
+const getUserInfo = async() => {
+  await userApi.getUserInfo({}).then((res: any) => {
+    // console.log(res.data);
+    state.orgName = res.data.current_org.name
+    state.nickname = res.data.nickname
+    // 计算价格
+    let obj:any = res.data.vip.level == 2 ? res.data.vip.prices.premium : res.data.vip.prices.basic 
+    let num = state.limit - state.oldLimit;
+    if( state.day <= 30 ) {
+      state.price = obj.month * num
+    } else if( state.day > 30 && state.day <= 90  ) {
+      state.price = obj.quarter * num
+    } else if( state.day > 90  ) {
+      state.price = obj.year * num
+    }
+  })
+}
+const submit = (show: boolean) => {
+  if(show) {
+    userApi.getOrganizationsMembersExpand(state.id, {
+      new_limit: state.limit,
+      amount: state.day
+    }).then((res: any) => {
+      // console.log(res.data);
+      getOrder(res.data.order_id)
+    })
+  }
+}
+// 支付扩容订单
+const getOrder = (orderId: string) => {
+    userApi.getOrganizationsMembersPay(state.id, orderId).then((res: any) => {
+      // console.log(res.data);
+      showTips(res.message)
+      setTimeout(() => {
+        routerBack(1)
+      }, 1000);
+    })
+}
 </script>
 
 <style >
@@ -73,7 +133,7 @@ page {
 .content {
   .card {
     height: 668rpx;
-    background-image: url('http://47.116.190.37:8002/static/user/memberOrderCardBg.png.png');
+    background-image: url('http://47.116.190.37:8002/static/user/memberOrderCardBg.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     // box-shadow: 0px 2px 10px 0px #0000001A;

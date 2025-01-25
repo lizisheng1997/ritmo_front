@@ -107,6 +107,11 @@ const getAuthUser = async() => {
 }
 </script>
 
+<style >
+page {
+  background-color: #FFFFFF;
+}
+</style>
 <style lang="scss" scoped>
 .content {
   .title {

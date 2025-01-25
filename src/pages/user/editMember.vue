@@ -22,12 +22,12 @@
       </view> -->
     </view>
     <!--  -->
-    <view class="footerOne" v-if="state.id" @click="submit(2)">
+    <view class="footerOne" v-if="state.id" @click="submit(2)" :class=" state.nickname && state.phone ? '' : 'btnNull' ">
       保存
     </view>
     <view class="footerTwo flex" v-else>
-      <view class="btn btn1" @click="submit(0)">新增完成</view>
-      <view class="btn btn2" @click="submit(1)">完成并继续新增 </view>
+      <view class="btn btn1" @click="submit(0)" :class=" state.nickname && state.phone ? '' : 'btnNull' ">新增完成</view>
+      <view class="btn btn2" @click="submit(1)" :class=" state.nickname && state.phone ? '' : 'btnNull' ">完成并继续新增 </view>
     </view>
     <!--  -->
   </view>
@@ -69,7 +69,11 @@ const submit = (type: number) => {
     return
   }
   if( type == 2 ) {
-    userApi.getOrganizationsMembersEdit( state.oid, state.id ).then((res: any) => {
+    userApi.getOrganizationsMembersEdit( state.oid, state.id, {
+      nickname: state.nickname,
+      phone: state.phone,
+      role: 0
+    } ).then((res: any) => {
       showTips(res.message)
       setTimeout(() => {
         routerBack(1)
@@ -128,6 +132,9 @@ page {
   }
   .footerOne, .footerTwo {
     margin-top: 80rpx;
+  }
+  .btnNull {
+    opacity: 0.6;
   }
 }
 </style>

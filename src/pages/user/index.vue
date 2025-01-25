@@ -10,21 +10,21 @@
         </view>
         <view class="right">
           <image class="head" :src=" state.avatarUrl ? state.avatarUrl : '../../static/home/head.png' "></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`)" v-if="state.userId"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`, true)" v-if="state.userId"></image>
         </view>
       </view>
       <view class="vip flex m0-35" :class=" state.isInstitution ? 'vip3' : state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' ">
         <view class="left ml35">
           <view class="grade mt35">
             {{ state.isInstitution ? '会员机构' : userLevelEnums[state.level] }}
-            <image class="icon" src="http://47.116.190.37:8002/static/rightY.png" v-if="state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`)"></image>
-            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0 && !state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`)"></image>
+            <image class="icon" src="http://47.116.190.37:8002/static/rightY.png" v-if="state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
+            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0 && !state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
           </view>
           <view class="date mt15">
             {{ state.level ? `有效期至 ${dateToLocaleDateString(state.expireTime)}` : '开通会员最高享受10项专属权益' }}
           </view>
         </view>
-        <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/membersIntroduction`)">
+        <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/membersIntroduction`, true)">
           开通会员
         </view>
       </view>

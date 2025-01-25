@@ -5,13 +5,21 @@
       <view class="title">
         成员扩容
       </view>
-      <view class="memberManaTabs mt45 p0-45">
-        <u-tabs :list="state.list" :is-scroll="true" v-model="state.current" :show-bar="false" active-color="#333333" inactive-color="#9B9B9B" height="200rpx" :item-width="80" :active-item-style="{
-          background: '#EFEBEB',
-          fontSize: '48rpx',
-        }"></u-tabs>
+      <view class="form mt45">
+        <view class="item flex pb35 mt35">
+          <view class="text">
+            扩容人数
+          </view>
+          <u-number-box class=" ml25" :min="state.oldDay" v-model="state.limit"></u-number-box>
+        </view>
+        <view class="item flex pb35 mt35">
+          <view class="text">
+            扩容天数
+          </view>
+          <u-number-box class=" ml25" :min="state.oldLlimit" v-model="state.day"></u-number-box>
+        </view>
       </view>
-      <view class="footerOne" @click="routerTo(`/pages/user/memberOrder`)">
+      <view class="footerOne" @click="sumbit">
         去扩容
       </view>
     </view>
@@ -26,21 +34,28 @@ const { t } = useI18n()
 
 // 参数
 const state = reactive({
-  current: 0, 
-  list: [ { name: 1 }, { name: 2 }, { name: 3 }, { name: 4 }, { name: 5 }, { name: 6 }, { name: 7 }, { name: 8 }],
+  day: 0, // 扩容人数
+  limit: 0, // 扩容天数
+  oldDay: 0, // 扩容人数
+  oldLlimit: 0, // 扩容天数
   isShow: false, // 
 })
 // 打开弹窗
-const openDialog = (current: number) => {
+const openDialog = (day: number, limit: number) => {
   // console.log(rows)
-  state.current = current
+  state.day = day
+  state.limit = limit
+  state.oldDay = day
+  state.oldLlimit = limit
   state.isShow = true;
 };
 defineExpose({ openDialog });
 const emit = defineEmits(['refresh']);
-const sumbit = (show: boolean) => {
+const sumbit = () => {
   state.isShow = false
-  emit('refresh', show)
+  emit('refresh', state.day, state.limit)
+
+  
 }
 </script>
 
@@ -51,18 +66,22 @@ const sumbit = (show: boolean) => {
   line-height: 44rpx;
   color: #232322;
 }
-.text {
-  font-size: 32rpx;
-  font-weight: 600;
-  line-height: 44rpx;
-  color: #232322;
-}
-.textAsh {
-  font-size: 28rpx;
-  font-weight: 500;
-  line-height: 44rpx;
-  color: #898784;
-}
+
+.form {
+    margin-top: 80rpx;
+    // height: 32rpx;
+    .item {
+      border-bottom: 1PX solid #D7D4CF;
+      .text {
+        color: #232322;
+        width: 125rpx;
+        font-size: 28rpx;
+        font-weight: 500;
+        line-height: 36rpx;
+
+      }
+    }
+  }
 .footerOne {
   margin: 80rpx 0 40rpx 0;
 }

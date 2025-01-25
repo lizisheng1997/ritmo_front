@@ -3,7 +3,7 @@
     <view class="member flex">
       <view class="left">
         机构成员： 
-        <text class="">5/6</text>
+        <text class="">{{ state.list.length }} / {{ state.memberLimit }}</text>
       </view>
       <view class="btn" @click="openMemberExpansion">
         <image class="icon" src="http://47.116.190.37:8002/static/user/addMember.png"></image>
@@ -21,10 +21,10 @@
           </view>
         </view>
         <view class="right mt15">
-          <view class="card">超管</view>
-          <image class="icon ml15" src="http://47.116.190.37:8002/static/user/delete.png" @click="operatePopupRef.openDialog('是否删除该成员', item.id)"></image>
+          <view class="card" v-if=" item.role == 1 ">超管</view>
+          <image class="icon ml15" src="http://47.116.190.37:8002/static/user/delete.png" @click="operatePopupRef.openDialog('是否删除该成员', item.id)" v-if=" item.role != 1 "></image>
           
-          <image class="icon" src="http://47.116.190.37:8002/static/user/editMember.png" @click="routerTo(`/pages/user/editMember?oid=${state.id}&id=${item.id}&nickname=${item.nickname}&phone=${item.phone}`)"></image>
+          <image class="icon" src="http://47.116.190.37:8002/static/user/editMember.png" @click="routerTo(`/pages/user/editMember?oid=${state.id}&id=${item.id}&nickname=${item.nickname}&phone=${item.phone}`)"  v-if=" item.role != 1 "></image>
         </view>
       </view>
     </view>
@@ -33,7 +33,7 @@
     <view class="footerOne" @click="routerTo(`/pages/user/editMember?oid=${state.id}`)">
       新增成员
     </view>
-    <memberExpansion ref="memberExpansionRef" />
+    <memberExpansion ref="memberExpansionRef" @refresh="memberExpansionChange"/>
     <operatePopup ref="operatePopupRef" :isType="1" @refresh="getSelect"></operatePopup>
   </view>
 </template>
@@ -46,6 +46,8 @@ import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import User from '/@/api/user';
+import Home from '/@/api/home';
+const homeApi = new Home();
 const userApi = new User();
 const { t } = useI18n()
 
@@ -55,17 +57,21 @@ onLoad((query?: AnyObject | undefined): void => {
 });
 onShow(() => {
   getList()
+  getInfo()
 })
 // 参数
 const state = reactive({
   id: '', //机构id
   list: [] as any[],
-
-
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+  memberLimit: 0, // 总数
 })
+// 获取机构详情
+const getInfo = () => {
+  homeApi.getOrganizationsInfo(state.id).then((res: any) => {
+    // console.log(res.data);
+    state.memberLimit = res.data.member_limit
+  })
+}
 // 列表
 const getList = () => {
   userApi.getOrganizationsMembers(state.id).then((res: any) => {
@@ -88,7 +94,11 @@ const getSelect = (show: boolean, id: string) => {
 // 
 const memberExpansionRef = ref()
 const openMemberExpansion = () => {
-  memberExpansionRef.value.openDialog(4)
+  memberExpansionRef.value.openDialog(0, state.memberLimit)
+}
+// 扩容订单
+const memberExpansionChange = (day: number, limit: number) => {
+  routerTo(`/pages/user/memberOrder?id=${state.id}&limit=${limit}&oldLimit=${state.memberLimit}&day=${day}`, true)
 }
 </script>
 

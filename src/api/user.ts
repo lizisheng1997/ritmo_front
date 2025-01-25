@@ -60,14 +60,15 @@ export default class User extends Request {
   }
   // 删除机构成员
   getOrganizationsMembersDel(id: string, mid: string) {
-    return this.get({
+    return this.delete({
       url: `/v1/organizations/${id}/members/${mid}`,
     });
   }
   // 修改成员信息
-  getOrganizationsMembersEdit(id: string, mid: string) {
+  getOrganizationsMembersEdit(id: string, mid: string, data: object) {
     return this.put({
       url: `/v1/organizations/${id}/members/${mid}`,
+      data
     });
   }
   // 新增成员信息
@@ -75,6 +76,19 @@ export default class User extends Request {
     return this.post({
       url: `/v1/organizations/${id}/members`,
       data
+    });
+  }
+  // 生成扩容订单
+  getOrganizationsMembersExpand(id: string, data: object) {
+    return this.post({
+      url: `/v1/organizations/${id}/expand`,
+      data
+    });
+  }
+  // 支付扩容订单
+  getOrganizationsMembersPay(id: string, orderId: string) {
+    return this.post({
+      url: `/v1/organizations/${id}/expand/${orderId}/pay`
     });
   }
 }
