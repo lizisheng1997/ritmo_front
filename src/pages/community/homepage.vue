@@ -1,7 +1,7 @@
 <template>
   <view class="content membersIntroduction">
     <view class="top">
-      <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)"></image>
+      <image class="back" src="http://47.116.190.37:8002/static/iconLeftBlack@2x.png" @click="routerBack(1)"></image>
       <view class="user flex">
         <image
           class="head"

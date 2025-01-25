@@ -9,7 +9,7 @@
       <view class="fub">扩容</view>
       <view class="title mt35">{{ state.orgName }}</view>
       <view class="dateText mt35">扩容时间</view>
-      <view class="day mt25">{{ state.day }}天</view>
+      <view class="day mt25">{{ state.memberDay }}天</view>
       <view class="info">
         <view class="li flex mt25">
           <text class="label">操作人：</text>
@@ -31,7 +31,7 @@
         <view class="price">¥{{ state.price }}</view>
       </view>
       <view class="count">
-        {{ state.limit-state.oldLimit }}人 × {{ state.day }}天
+        {{ state.limit-state.oldLimit }}人 × {{ state.memberDay }}天
       </view>
       <view class="all">
         总计
@@ -68,7 +68,7 @@ onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   state.id = query!.id
   state.limit = query!.limit
-  state.day = query!.day
+  state.memberDay = query!.memberDay
   state.oldLimit = query!.oldLimit
   getUserInfo()
 });
@@ -77,7 +77,7 @@ const state = reactive({
   id: '', // 机构id
   limit: 0, // 扩容数量
   oldLimit: 0, // 扩容前数量
-  day: 0, // 扩容天数
+  memberDay: 0, // 扩容天数
   orgName: '', // 所属机构
   nickname: '', // 操作人
   price: 0,
@@ -92,11 +92,11 @@ const getUserInfo = async() => {
     // 计算价格
     let obj:any = res.data.vip.level == 2 ? res.data.vip.prices.premium : res.data.vip.prices.basic 
     let num = state.limit - state.oldLimit;
-    if( state.day <= 30 ) {
+    if( state.memberDay <= 30 ) {
       state.price = obj.month * num
-    } else if( state.day > 30 && state.day <= 90  ) {
+    } else if( state.memberDay > 30 && state.memberDay <= 90  ) {
       state.price = obj.quarter * num
-    } else if( state.day > 90  ) {
+    } else if( state.memberDay > 90  ) {
       state.price = obj.year * num
     }
   })
@@ -105,7 +105,7 @@ const submit = (show: boolean) => {
   if(show) {
     userApi.getOrganizationsMembersExpand(state.id, {
       new_limit: state.limit,
-      amount: state.day
+      new_memberDay: state.memberDay
     }).then((res: any) => {
       // console.log(res.data);
       getOrder(res.data.order_id)

@@ -64,12 +64,14 @@ const state = reactive({
   id: '', //机构id
   list: [] as any[],
   memberLimit: 0, // 总数
+  memberDay: 0, // 天数
 })
 // 获取机构详情
 const getInfo = () => {
   homeApi.getOrganizationsInfo(state.id).then((res: any) => {
     // console.log(res.data);
     state.memberLimit = res.data.member_limit
+    state.memberDay = res.data.member_day
   })
 }
 // 列表
@@ -94,11 +96,11 @@ const getSelect = (show: boolean, id: string) => {
 // 
 const memberExpansionRef = ref()
 const openMemberExpansion = () => {
-  memberExpansionRef.value.openDialog(0, state.memberLimit)
+  memberExpansionRef.value.openDialog(state.memberDay, state.memberLimit)
 }
 // 扩容订单
-const memberExpansionChange = (day: number, limit: number) => {
-  routerTo(`/pages/user/memberOrder?id=${state.id}&limit=${limit}&oldLimit=${state.memberLimit}&day=${day}`, true)
+const memberExpansionChange = (memberDay: number, limit: number) => {
+  routerTo(`/pages/user/memberOrder?id=${state.id}&limit=${limit}&oldLimit=${state.memberLimit}&memberDay=${memberDay}`, true)
 }
 </script>
 

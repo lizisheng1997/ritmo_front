@@ -4,7 +4,7 @@
       height: state.isInstitution ? '360rpx' : '440rpx'
     }">
       <image class="back" src="http://47.116.190.37:8002/static/iconLeftW.png" @click="routerBack(1)" v-if="state.isInstitution"></image>
-      <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)" v-else></image>
+      <image class="back" src="http://47.116.190.37:8002/static/iconLeftBlack@2x.png" @click="routerBack(1)" v-else></image>
       <!-- iconLeftW.png -->
       <view class="user flex">
         <image

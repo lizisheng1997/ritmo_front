@@ -34,10 +34,10 @@ const { t } = useI18n()
 
 // 参数
 const state = reactive({
-  day: 0, // 扩容人数
-  limit: 0, // 扩容天数
-  oldDay: 0, // 扩容人数
-  oldLlimit: 0, // 扩容天数
+  day: 0, // 扩容天数
+  limit: 0, // 扩容人数
+  oldDay: 0, // 扩容前的天数
+  oldLlimit: 0, // 扩容前的人数
   isShow: false, // 
 })
 // 打开弹窗
