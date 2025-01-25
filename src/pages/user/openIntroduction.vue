@@ -1,31 +1,38 @@
 <template>
   <view class="content membersIntroduction">
-    <view class="top">
-      <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)"></image>
+    <view class="top"  :class=" state.isInstitution ? 'vip3' : state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' " :style="{
+      height: state.isInstitution ? '360rpx' : '440rpx'
+    }">
+      <image class="back" src="http://47.116.190.37:8002/static/iconLeftW.png" @click="routerBack(1)" v-if="state.isInstitution"></image>
+      <image class="back" src="http://47.116.190.37:8002/static/icon_left_black@2x.png" @click="routerBack(1)" v-else></image>
+      <!-- iconLeftW.png -->
       <view class="user flex">
         <image
           class="head"
           :src="state.avatarUrl"></image>
         <view class="center">
-          <view class="company flex mt30">
+          <view class="company flex mt30" :style="{ color: state.isInstitution ? '#ffffff' : '#232322' }">
             <text class="text oneEllipsis">{{ state.nickname }}</text>
-            <image
-              class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip0.png"
-              v-if="state.level == 0"
-              style="width: 91rpx"></image>
-            <image
-              class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip1.png"
-              v-else-if="state.level == 0"></image>
-            <image
-              class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip2.png"
-              v-else-if="state.level == 0"></image>
-            <image
-              class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip3.png"
-              v-else-if="state.level == 0"></image>
+            <template v-if=" state.isInstitution ">
+              <image
+                class="icon ml10"
+                src="http://47.116.190.37:8002/static/home/vip3.png"></image>
+            </template>
+            <template v-else>
+              <image
+                class="icon ml10"
+                src="http://47.116.190.37:8002/static/home/vip0.png"
+                v-if="state.level == 0"
+                style="width: 91rpx"></image>
+              <image
+                class="icon ml10"
+                src="http://47.116.190.37:8002/static/home/vip1.png"
+                v-else-if="state.level == 1"></image>
+              <image
+                class="icon ml10"
+                src="http://47.116.190.37:8002/static/home/vip2.png"
+                v-else-if="state.level == 2"></image>
+            </template>
           </view>
           <view
             class="name mt10"
@@ -34,7 +41,7 @@
           >
         </view>
       </view>
-      <view class="tabs">
+      <view class="tabs" v-if=" !state.isInstitution ">
         <view class="div flex">
           <view
             class="text"
@@ -160,7 +167,7 @@
       </scroll-view>
     </view>
     <!--  -->
-    <view class="interests">
+    <view class="interests" v-if=" !state.isInstitution ">
       <view class="title">选择套餐</view>
       <scroll-view
         class="interests-roll mt35"
@@ -194,26 +201,60 @@
       </scroll-view>
     </view>
     <!--  -->
-    <view class="p35">
-      <view class="footerOne" @click="submit"> 确认购买 </view>
-    </view>
-    <view class="tips mb50 ml35">
-      <image
-        class="icon mr10"
-        src="http://47.116.190.37:8002/static/loginSelect.png"
-        v-if="!state.select"
-        @click="state.select = true"></image>
-      <image
-        class="icon mr10"
-        src="http://47.116.190.37:8002/static/selectIcon.png"
-        @click="state.select = false"
-        v-else></image>
-      我已阅读并同意<text class="">《会员服务协议》</text>
-    </view>
+    <template v-if=" !state.isInstitution ">
+      <view class="p35">
+        <view class="footerOne" @click="submit"> 确认购买 </view>
+      </view>
+      <view class="tips mb50 ml35">
+        <image
+          class="icon mr10"
+          src="http://47.116.190.37:8002/static/loginSelect.png"
+          v-if="!state.select"
+          @click="state.select = true"></image>
+        <image
+          class="icon mr10"
+          src="http://47.116.190.37:8002/static/selectIcon.png"
+          @click="state.select = false"
+          v-else></image>
+        我已阅读并同意<text class="">《会员服务协议》</text>
+      </view>
+    </template>
+    <template v-else>
+      <view class="interests">
+        <view class="title">旗下办公室</view>
+        <scroll-view
+        class="interests-roll  mt35"
+        scroll-x="true"
+        scroll-left="0"
+        :enable-flex="true"
+        style="height: 240rpx;">
+          <view class="room mr25">
+            <image class="banner" src="/@/static/addHead.png"></image>
+            <view class="text">XXXX办公室</view>
+          </view>
+          <view class="room mr25">
+            <image class="banner" src="/@/static/addHead.png"></image>
+            <view class="text">XXXX办公室</view>
+          </view>
+          <view class="room mr25">
+            <image class="banner" src="/@/static/addHead.png"></image>
+            <view class="text">XXXX办公室</view>
+          </view>
+          <view class="room mr25">
+            <image class="banner" src="/@/static/addHead.png"></image>
+            <view class="text">XXXX办公室</view>
+          </view>
+          <view class="room mr25">
+            <image class="banner" src="/@/static/addHead.png"></image>
+            <view class="text">XXXX办公室</view>
+          </view>
+        </scroll-view>
+      </view>
+    </template>
     <!--  -->
     <view class="details">
       <view class="title"
-        >-{{ state.tabsIdx == 0 ? '初级' : '高级' }}会员权益-</view
+        >-{{ state.isInstitution ? '机构' : state.tabsIdx == 0 ? '初级' : '高级' }}会员权益-</view
       >
       <view class="news p0-35">
         <template v-if=" state.tabsIdx == 0 ">
@@ -276,7 +317,9 @@ const state = reactive({
   level: 0, //
   tabsIdx: 1,
   expireTime: '',
-  select: false
+  select: false,
+  // 
+  isInstitution: false, // 是否是机构
 });
 // 获取用户资料
 const getUserInfo = async () => {
@@ -302,6 +345,8 @@ const getUserInfo = async () => {
     premiumList.value[1].day = Math.floor(premiumList.value[1].price / 90)
     premiumList.value[2].price = res.data.vip.prices.premium.year * 12
     premiumList.value[2].day = Math.floor(premiumList.value[2].price / 365)
+    // 
+    state.isInstitution = res.data.current_org.id == 0 ? false : true
   });
 };
 // 提交
@@ -332,9 +377,6 @@ const submit = () => {
 <style lang="scss" scoped>
 .content {
   .top {
-    height: 440rpx;
-    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg2.png');
-    // background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg2.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     position: relative;
@@ -378,7 +420,31 @@ const submit = () => {
       }
     }
   }
+  .vip1 {
+    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg2.png');
+  }
+  .vip2 {
+    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg3.png');
+  }
+  .vip3 {
+    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg4.png');
+  }
   .interests {
+    .room {
+      display: inline-block;
+      .banner {
+        display: inline-block;
+        width: 240rpx;
+        height: 160rpx;
+        border-radius: 4rpx;
+      }
+      .text {
+        font-size: 24rpx;
+        font-weight: 500;
+        line-height: 28rpx;
+        color: #232322;
+      }
+    }
     .card {
       display: inline-block;
       width: 210rpx;

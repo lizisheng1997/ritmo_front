@@ -17,7 +17,8 @@
         <view class="left ml35">
           <view class="grade mt35">
             {{ state.isInstitution ? '会员机构' : userLevelEnums[state.level] }}
-            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0" @click="routerTo(`/pages/user/openIntroduction`)"></image>
+            <image class="icon" src="http://47.116.190.37:8002/static/rightY.png" v-if="state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`)"></image>
+            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0 && !state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`)"></image>
           </view>
           <view class="date mt15">
             {{ state.level ? `有效期至 ${dateToLocaleDateString(state.expireTime)}` : '开通会员最高享受10项专属权益' }}
@@ -183,6 +184,7 @@ const getUserInfo = async() => {
     // state.rights = res.data.rights
     userRecordList[0].hours = res.data.rights.meeting_room.hours_formatted
     userRecordList[2].hours = res.data.rights.workspace.hours_formatted
+    state.isInstitution = res.data.current_org.id == 0 ? false : true
   })
 }
 // 去登录页
@@ -285,6 +287,9 @@ const loginTo = () => {
     }
     .vip3 {
       background-image: url('http://47.116.190.37:8002/static/user/vip4.png') !important;
+      .grade {
+        color: #FFCF00 !important;
+      }
     }
   }
   .interests {

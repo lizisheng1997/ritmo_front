@@ -129,6 +129,7 @@ const getUserInfo = async() => {
     state.avatarUrl = res.data.avatar? res.data.avatar.url : ''
     state.userId = res.data.id
     state.level = res.data.vip.level
+    state.isInstitution = res.data.current_org.id == 0 ? false : true
   })
 }
 </script>
