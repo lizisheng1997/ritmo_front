@@ -52,7 +52,7 @@
                     },
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appid" : "",
+                        "appid" : "wx9844bc1e46653f7c",
                         "UniversalLinks" : ""
                     }
                 }

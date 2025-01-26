@@ -6,7 +6,7 @@
           <view class="label"><text class="">*</text>您的目的</view>
           <view class="text">我想参观办公室</view>
         </view>
-        <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png" @click="state.selectShow = true"></image>
+        <image class="icon" src="/@/static/rightAsh.png" @click="state.selectShow = true"></image>
       </view>
       <view class="li flex pb25 mb25">
         <view class="left flex">
@@ -25,7 +25,7 @@
           <view class="label"><text class="">*</text>日期</view>
           <view class="text">{{ state.date ? state.date : '请选择日期' }}</view>
         </view>
-        <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png" @click="state.calendarShow = true"></image>
+        <image class="icon" src="/@/static/rightAsh.png" @click="state.calendarShow = true"></image>
       </view>
       <view class="li flex pb25 mb25">
         <view class="left">

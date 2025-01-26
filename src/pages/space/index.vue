@@ -4,7 +4,7 @@
       <div class="p0-35">
         <view class="name mb10">
           杭州·顺丰中心节奏空间
-          <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" @click="routerTo('/pages/space/spaceDetails')"></image>
+          <image class="icon" src="/@/static/rightBlack.png" @click="selectSpaceRef.openDialog('0')"></image>
         </view>
         <view class="distance">
           距您200m
@@ -20,7 +20,11 @@
             <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
           </swiper-item>
         </swiper>
-        <view class="distance m15-0">杭州市拱康路1号顺丰中心A座13楼1304室</view>
+        <view class="distance m15-0">
+          杭州市拱康路1号顺丰中心A座13楼1304室
+          
+          <image class="icon" src="/@/static/rightAsh.png" @click="routerTo('/pages/space/spaceDetails')"></image>
+        </view>
         <view class="distance">00:00～24:00</view>
         <view class="spaces mt15">
           <text class="text pr15 mr15">156 工位</text>
@@ -59,7 +63,7 @@
         </view>
         <view class="grade p0-25 mr15" style="color: #232322;">
           筛选
-          <image class="down" src="http://47.116.190.37:8002/static/icon_down_black@2x.png"></image>
+          <image class="down" src="/@/static/iconDownBlack.png"></image>
         </view>
       </view>
       <view class="filterDate flex mt30 " v-if="state.tabsIdx <= 1">
@@ -192,6 +196,7 @@
       </view>
     </view>
     <!--  -->
+    <selectSpace ref="selectSpaceRef" />
   </view>
 </template>
 
@@ -199,6 +204,7 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import spaceTimes from '/@/components/spaceTimes.vue'
+import selectSpace from '/@/components/selectSpace.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -224,6 +230,7 @@ const state = reactive({
   day: '',
   sidxs: [ '00:00', '01:00', '03:00', '03:30', '04:00', '12:00', '15:30', '22:00', '22:30'],
 })
+const selectSpaceRef = ref()
 // 获取最近七天日期以及星期
 const getLastSevenDays = () => {
   const today = new Date();
@@ -265,6 +272,12 @@ const getLastSevenDays = () => {
       font-weight: 500;
       line-height: 24rpx;
       color: #898784;
+      .icon {
+        display: inline-block;
+        width: 48rpx;
+        height: 48rpx;
+        vertical-align: middle;
+      }
     }
     .spaces {
       .text {

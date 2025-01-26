@@ -24,7 +24,7 @@
         <!-- "margin-top: 25rpx; -->
         <view class="pay flex" style="margin-top: 35rpx;">
           <view class="name mr15">相关预约</view>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
     </view>

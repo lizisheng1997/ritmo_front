@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <view class="back" @click="routerBack(1)">
-      <image class="icon" src="http://47.116.190.37:8002/static/iconLeftBlack@2x.png"></image>
+      <image class="icon" src="/@/static/iconLeftBlack.png"></image>
     </view>
     <swiper class="swiper" circular indicator-dots autoplay >
       <swiper-item>

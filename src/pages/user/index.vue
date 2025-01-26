@@ -10,15 +10,15 @@
         </view>
         <view class="right">
           <image class="head" :src=" state.avatarUrl ? state.avatarUrl : '../../static/home/head.png' "></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`, true)" v-if="state.userId"></image>
+          <image class="icon" src="/@/static/rightBlack.png" @click="routerTo(`/pages/user/personalData`, true)" v-if="state.userId"></image>
         </view>
       </view>
       <view class="vip flex m0-35" :class=" state.isInstitution ? 'vip3' : state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' ">
         <view class="left ml35">
           <view class="grade mt35">
             {{ state.isInstitution ? '会员机构' : userLevelEnums[state.level] }}
-            <image class="icon" src="http://47.116.190.37:8002/static/rightY.png" v-if="state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
-            <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png" v-if="state.level != 0 && !state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
+            <image class="icon" src="/@/static/rightY.png" v-if="state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
+            <image class="icon" src="/@/static/rightBlack.png" v-if="state.level != 0 && !state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
           </view>
           <view class="date mt15">
             {{ state.level ? `有效期至 ${dateToLocaleDateString(state.expireTime)}` : '开通会员最高享受10项专属权益' }}
@@ -38,7 +38,7 @@
       </view>
       <view class="record" v-if="state.level != 0">
         变更记录
-        <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png" @click="routerTo(`/pages/user/record`, true)"></image>
+        <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/user/record`, true)"></image>
       </view>
     </view>
     <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
@@ -50,35 +50,23 @@
     </view>
     <view class="menuForm mt35 p0-35">
       <!--  -->
-      <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`)">
+      <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/home/switch.png"></image>
           切换身份
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <!--  -->
-      <view class="li flex" v-if="state.level == 2 || state.isInstitution">
-        <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/menu7.png"></image>
-          我的人脸 
-        </view>
-        <view class="right flex">
-          <text class="text1">暂无图片</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
-        </view>
-      </view>
-      <!--  -->
-      <view class="li flex" v-if="state.level == 0 || state.level == 1">
+      <view class="li flex" @click="routerTo(`/pages/user/face`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu2.png"></image>
           图片上传 
         </view>
         <view class="right flex">
-          <text class="text1">暂无图片</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <!--  -->
@@ -88,7 +76,7 @@
           邀请好友
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/myReservation`, true)">
@@ -98,7 +86,7 @@
         </view>
         <view class="right flex">
           <text class="text2">2 待使用</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/memberMana?id=${state.institutionId}`, true)" v-if="state.isInstitution">
@@ -107,8 +95,8 @@
           成员管理
         </view>
         <view class="right flex">
-          <text class="text2">2/10</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <text class="text2">{{ state.institutionCount }} / {{ state.institutionLimit }}</text>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/myOrder`, true)">
@@ -117,7 +105,7 @@
           我的订单
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/setUp`)">
@@ -126,7 +114,7 @@
           设置
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
     </view>
@@ -141,6 +129,8 @@ import { userRecordList } from '/@/utils/universalArray'
 import { userLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
+import Home from '/@/api/home';
+const homeApi = new Home();
 const userApi = new User();
 const { t } = useI18n()
 
@@ -168,6 +158,8 @@ const state = reactive({
   // 
   isInstitution: false, // 是否是机构
   institutionId: '', // 机构id
+  institutionLimit: 0, // 机构扩容人数
+  institutionCount: 0, // 机构目前人数
 
 })
 // 获取用户资料
@@ -187,6 +179,15 @@ const getUserInfo = async() => {
     userRecordList[2].hours = res.data.rights.workspace.hours_formatted
     state.isInstitution = res.data.current_org.id == 0 ? false : true
     state.institutionId = res.data.current_org.id
+    if(state.isInstitution) getOrganInfo()
+  })
+}
+// 机构会员调用机构详情
+const getOrganInfo = () => {
+  homeApi.getOrganizationsInfo(state.institutionId).then((res: any) => {
+    // console.log(res.data);
+    state.institutionLimit = res.data.member_limit
+    // state.institutionCount = res.data.member_count
   })
 }
 // 去登录页

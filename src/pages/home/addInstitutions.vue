@@ -21,7 +21,7 @@
         </view>
         <view class="yyzz ml30">
           <image class="icon imageW100" :src=" form.businessLicenseUrl ? form.businessLicenseUrl : 'http://47.116.190.37:8002/static/home/yyzz.png'" @click="uploadImage"></image>
-          <image class="delete" src="http://47.116.190.37:8002/static/home/delete.png" @click=" form.businessLicenseUrl = '' "></image>
+          <image class="delete" src="/@/static/home/delete.png" @click=" form.businessLicenseUrl = '' "></image>
         </view>
       </view>
     </view>

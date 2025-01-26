@@ -14,8 +14,8 @@
     <view class="btn" :class=" state.phone.length == 11 ? '' : 'btnNull' " @click="submit">发送验证码</view>
     <!--  -->
     <view class="tips mt30 flex">
-      <image class="icon mr10" src="http://47.116.190.37:8002/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
-      <image class="icon mr10" src="http://47.116.190.37:8002/static/selectIcon.png" @click="state.select = false" v-else></image>
+      <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
+      <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
       同意RITMOHUB <text class="" @click="openPupup(0)">《用户协议》</text>、<text class="" @click="openPupup(1)">《隐私政策》</text>
     </view>
   </view>

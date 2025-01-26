@@ -47,13 +47,18 @@
       </view>
       <view class="btn" @click="operatePopupRef.openDialog('是否支付该订单', state.id)">确认扩容</view>
     </view>
+    <!-- (show) => {
+      if(show)payPopupRef.openDialog();
+    } -->
     <operatePopup ref="operatePopupRef" :isType="1" @refresh="submit"></operatePopup>
+    <payPopup ref="payPopupRef" :isType="1" @refresh="submit"></payPopup>
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import operatePopup from '/@/components/operatePopup.vue'
+import payPopup from '/@/components/payPopup.vue'
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
@@ -101,7 +106,8 @@ const getUserInfo = async() => {
     }
   })
 }
-const submit = (show: boolean) => {
+const payPopupRef = ref()
+const submit = (show: boolean, type: number) => {
   if(show) {
     userApi.getOrganizationsMembersExpand(state.id, {
       new_limit: state.limit,
@@ -121,6 +127,19 @@ const getOrder = (orderId: string) => {
         routerBack(1)
       }, 1000);
     })
+}
+const requestPayment = (orderInfo: any) => {
+  uni.requestPayment({
+    "provider": "alipay",   //固定值为"alipay"
+    "orderInfo": orderInfo, //此处为服务器返回的订单信息字符串
+    success: function (res) {
+        var rawdata = JSON.parse(res.rawdata);
+        console.log("支付成功", rawdata);
+    },
+    fail: function (err) {
+        console.log('支付失败:' + JSON.stringify(err));
+    }
+  });
 }
 </script>
 

@@ -20,7 +20,7 @@
               </view>
             </view>
             <view class="right" @click="routerTo(`/pages/space/details?type=${state.type}`)">
-              <image class="icon" src="http://47.116.190.37:8002/static/rightBlack.png"></image>
+              <image class="icon" src="/@/static/rightBlack.png"></image>
             </view>
           </view>
         </view>
@@ -32,7 +32,7 @@
         <text class="title">选择预约日期</text>
       </view>
       <view class="card p15 mt25">
-        <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png" @click="state.calendarShow = true"></image>
+        <image class="icon" src="/@/static/rightAsh.png" @click="state.calendarShow = true"></image>
         <view class="title">日期</view>
         <view class="date mt20">{{ state.date }}</view>
       </view>

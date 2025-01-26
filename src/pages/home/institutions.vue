@@ -25,8 +25,8 @@
             <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">详情></view>
            </template>
            <template v-else-if="item.status == 1 ">
-            <image class="select" src="http://47.116.190.37:8002/static/selectIcon.png" v-if="item.id == state.currentOrg"></image>
-            <image class="select" src="http://47.116.190.37:8002/static/select.png" v-else @click="() => {
+            <image class="select" src="/@/static/selectIcon.png" v-if="item.id == state.currentOrg"></image>
+            <image class="select" src="/@/static/select.png" v-else @click="() => {
               operatePopupRef.openDialog('是否切换机构', item.id)
             }"></image>
            </template>

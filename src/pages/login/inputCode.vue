@@ -1,6 +1,6 @@
 <template>
   <view class="content p35">
-    <view class="title">输入验证码</view>
+    <view class="title">输入验证码: {{ state.oldcode }}</view>
     <view class="fub mt20">已发送验证码至{{ state.phone }}</view>
     <!--  -->
     <view class="form pb40">
@@ -38,6 +38,7 @@ onLoad((query?: AnyObject | undefined): void => {
 const state = reactive({
   phone: '', // 手机号
   areaCode: '', // 
+  oldcode: '',
   code: '', // 
   second: 60, // 秒
   counting: false, // 是否正在倒计时
@@ -50,7 +51,7 @@ const codeChange = (e: string) => {
 // 发送验证码
 const timer = ref()
 const sendMobileCode = async() => {
-  console.log(state);
+  // console.log(state);
   state.code = ''
   await loginApi
     .sendCoded({
@@ -58,7 +59,8 @@ const sendMobileCode = async() => {
       area_code: state.areaCode,
     })
     .then((res: any) => {
-      console.log(res);
+      // console.log(res);
+      state.oldcode = res.data.test_code
       // showTips(res.message)
       state.counting = true
       timer.value = setInterval(() => {

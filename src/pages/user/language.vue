@@ -6,8 +6,8 @@
           简体中文
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/selectIcon.png" v-if="state.idx == 'zh'"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/select.png" @click="state.idx = 'zh'" v-else></image>
+          <image class="icon" src="/@/static/selectIcon.png" v-if="state.idx == 'zh'"></image>
+          <image class="icon" src="/@/static/select.png" @click="state.idx = 'zh'" v-else></image>
         </view>
       </view>
       <view class="li flex">
@@ -15,8 +15,8 @@
           English
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/selectIcon.png" v-if="state.idx == 'en'"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/select.png" @click="state.idx = 'en'" v-else></image>
+          <image class="icon" src="/@/static/selectIcon.png" v-if="state.idx == 'en'"></image>
+          <image class="icon" src="/@/static/select.png" @click="state.idx = 'en'" v-else></image>
         </view>
       </view>
       

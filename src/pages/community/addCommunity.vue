@@ -4,7 +4,7 @@
   }">
     <view class="p0-35">
       <view class="nav flex">
-        <image class="icon" src="/@/static/iconLeftBlack@2x.png"></image>
+        <image class="icon" src="/@/static/iconLeftBlack.png"></image>
         <image class="head mr25 mt10" src="/@/static/addHead.png"></image>
         <text class="name">Jane</text>
       </view>

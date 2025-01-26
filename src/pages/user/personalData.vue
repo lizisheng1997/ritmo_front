@@ -14,7 +14,7 @@
         </view>
         <view class="right flex">
           <text class="text2"> {{ form.nickname }}</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"  @click="routerTo(`/pages/user/editData?type=0&value=${form.nickname}`)"></image>
+          <image class="icon" src="/@/static/rightAsh.png"  @click="routerTo(`/pages/user/editData?type=0&value=${form.nickname}`)"></image>
         </view>
       </view>
       <view class="li flex">
@@ -23,7 +23,7 @@
         </view>
         <view class="right flex">
           <text class="text2 textTwoEllipsis twoEllipsis" style="text-align: right;">{{ form.intro }}</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"  @click="routerTo(`/pages/user/editData?type=1&value=${form.intro}`)"></image>
+          <image class="icon" src="/@/static/rightAsh.png"  @click="routerTo(`/pages/user/editData?type=1&value=${form.intro}`)"></image>
         </view>
       </view>
       <view class="li flex">
@@ -32,7 +32,7 @@
         </view>
         <view class="right flex">
           <text class="text2">{{ state.defaultSpaceName ? state.defaultSpaceName : '请选择' }}</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"  @click="state.availableShow = true"></image>
+          <image class="icon" src="/@/static/rightAsh.png"  @click="state.availableShow = true"></image>
         </view>
       </view>
     </view>
@@ -65,7 +65,7 @@
         </view>
         <view class="right flex">
           <text class="text2">{{ form.email }}</text>
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"  @click="routerTo(`/pages/user/editData?type=3&value=${form.email}`)"></image>
+          <image class="icon" src="/@/static/rightAsh.png"  @click="routerTo(`/pages/user/editData?type=3&value=${form.email}`)"></image>
         </view>
       </view>
     </view>

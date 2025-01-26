@@ -3,14 +3,14 @@
   <view class="flowList p0-20">
     <u-waterfall v-model="props.list" ref="uWaterfall1">
 			<template v-slot:left="{leftList}">
-				<view class="warter" v-for="(item, index) in leftList" :key="index" @click="routerTo('/pages/community/homepage')">
+				<view class="warter" v-for="(item, index) in leftList" :key="index">
 					<!-- 警告：微信小程序中需要hx2.8.11版本才支持在template中结合其他组件，比如下方的lazy-load组件 -->
-					<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
+					<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index" @click="routerTo('/pages/community/details')"></u-lazy-load>
 					<view class="title mt15 twoEllipsis">
 						{{item.title}}
 					</view>
 					<view class="user mt15 flex">
-						<view class="left flex">
+						<view class="left flex" @click="routerTo('/pages/community/homepage')">
               <image class="head mr20" src="http://47.116.190.37:8002/static/addHead.png"></image>
               <view class="info">
                 <view class="name">安徒生</view>
@@ -25,12 +25,12 @@
 				</view>
 			</template>
 			<template v-slot:right="{rightList}">
-				<view class="warter" v-for="(item, index) in rightList" :key="index" @click="routerTo('/pages/community/details')">
-					<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index"></u-lazy-load>
+				<view class="warter" v-for="(item, index) in rightList" :key="index">
+					<u-lazy-load threshold="-450" border-radius="10" :image="item.image" :index="index" @click="routerTo('/pages/community/details')"></u-lazy-load>
 					<view class="title mt15 twoEllipsis">
 						{{item.title}}
 					</view>
-					<view class="user mt15 flex">
+					<view class="user mt15 flex" @click="routerTo('/pages/community/homepage')">
 						<view class="left flex">
               <image class="head mr20" src="http://47.116.190.37:8002/static/addHead.png"></image>
               <view class="info">

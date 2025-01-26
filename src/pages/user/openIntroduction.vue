@@ -3,8 +3,8 @@
     <view class="top"  :class=" state.isInstitution ? 'vip3' : state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' " :style="{
       height: state.isInstitution ? '360rpx' : '440rpx'
     }">
-      <image class="back" src="http://47.116.190.37:8002/static/iconLeftW.png" @click="routerBack(1)" v-if="state.isInstitution"></image>
-      <image class="back" src="http://47.116.190.37:8002/static/iconLeftBlack@2x.png" @click="routerBack(1)" v-else></image>
+      <image class="back" src="/@/static/iconLeftW.png" @click="routerBack(1)" v-if="state.isInstitution"></image>
+      <image class="back" src="/@/static/iconLeftBlack.png" @click="routerBack(1)" v-else></image>
       <!-- iconLeftW.png -->
       <view class="user flex">
         <image
@@ -213,7 +213,7 @@
           @click="state.select = true"></image>
         <image
           class="icon mr10"
-          src="http://47.116.190.37:8002/static/selectIcon.png"
+          src="/@/static/selectIcon.png"
           @click="state.select = false"
           v-else></image>
         我已阅读并同意<text class="">《会员服务协议》</text>

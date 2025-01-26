@@ -6,7 +6,7 @@
           评价
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/language`)">
@@ -14,23 +14,25 @@
           语言
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <!-- <view class="li flex">
+      <!-- #ifdef APP-PLUS || H5 -->
+      <view class="li flex">
         <view class="left">
           清除缓存
         </view>
         <view class="right">
           <text class="text2">2Mb</text>
         </view>
-      </view> -->
+      </view>
+      <!-- #endif -->
       <view class="li flex" @click="openBottomOperation(0)">
         <view class="left">
           退出登录
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="openBottomOperation(1)">
@@ -38,7 +40,7 @@
           删除账号
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/agreement?type=0`)">
@@ -46,7 +48,7 @@
           用户协议
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/agreement?type=1`)">
@@ -54,17 +56,19 @@
           隐私协议
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <!-- <view class="li flex">
+      <!-- #ifdef APP-PLUS || H5 -->
+      <view class="li flex">
         <view class="left">
           去更新
         </view>
         <view class="right">
-          <image class="icon" src="http://47.116.190.37:8002/static/rightAsh.png"></image>
+          <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
-      </view> -->
+      </view>
+      <!-- #endif -->
       
     </view>
     <bottomOperation ref="bottomOperationRef" />
