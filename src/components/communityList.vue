@@ -18,7 +18,7 @@
               </view>
             </view>
 						<view class="right">
-              <image class="icon" src="http://47.116.190.37:8002/static/community/collect.png"></image>
+              <image class="icon" src="/@/static/community/collect.png"></image>
               <view class="count">80</view>
             </view>
 					</view>
@@ -38,7 +38,7 @@
               </view>
             </view>
 						<view class="right">
-              <image class="icon" src="http://47.116.190.37:8002/static/community/collect1.png"></image>
+              <image class="icon" src="/@/static/community/collect1.png"></image>
               <view class="count">80</view>
             </view>
 					</view>
@@ -107,13 +107,13 @@ const emits = defineEmits([])
         text-align: center;
         .icon {
           display: inline-block;
-          width: 40rpx;
-          height: 40rpx;
+          width: 35rpx;
+          height: 35rpx;
         }
         .count {
           font-size: 20rpx;
           font-weight: 400;
-          line-height: 26rpx;
+          line-height: 1;
           color: #898784;
         }
       }

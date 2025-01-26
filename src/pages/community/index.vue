@@ -4,11 +4,11 @@
   }">
     <view class="nav flex p0-35">
       <view class="btn">
-        <image class="icon mr15" src="http://47.116.190.37:8002/static/community/nav1.png"></image>
+        <image class="icon mr15" src="/@/static/community/nav1.png"></image>
         <text class="text">我的主页</text>
       </view>
       <view class="btn">
-        <image class="icon mr15" src="http://47.116.190.37:8002/static/community/nav2.png"></image>
+        <image class="icon mr15" src="/@/static/community/nav2.png"></image>
         <text class="text">回复我的</text>
         <view class="count">3</view>
       </view>

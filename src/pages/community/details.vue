@@ -3,7 +3,7 @@
     paddingTop: (state.navAllHeight + 88) + 'rpx'
   }">
     <view class="nav flex" :style=" { top: state.navAllHeight + 'rpx' } ">
-      <image class="icon" src="/@/static/iconLeftBlack.png"></image>
+      <image class="icon" src="/@/static/iconLeftBlack.png" @click="routerBack(1)"></image>
       <image class="head mr25 mt10" src="/@/static/addHead.png"></image>
       <text class="name">Jane</text>
     </view>
@@ -21,7 +21,7 @@
       <u-icon class="delete" name="trash-fill" size="60"></u-icon>
     </swiper>
     <!--  -->
-    <view class="p35">
+    <view class="" style="padding: 35rpx 35rpx 180rpx;">
       <view class="article pb35">
         <view class="title">今日活动</view>
         <view class="news mt20">
@@ -81,6 +81,22 @@
         </view>
       </view>
     </view>
+    <!--  -->
+    <view class="commentF flex">
+      <input class="input ml35" v-model="state.content" placeholder="说点什么吧..." />
+      <view class="tag">
+        <image class="icon" src="/@/static/community/collect.png"></image>
+        <view class="text">3.2w</view>
+      </view>
+      <view class="tag">
+        <image class="icon" src="/@/static/community/star.png"></image>
+        <view class="text">9999</view>
+      </view>
+      <view class="tag">
+        <image class="icon" src="/@/static/community/share.png"></image>
+        <view class="text">3.2w</view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -89,6 +105,7 @@ import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
+import { routerBack } from '/@/utils/currentFun';
 const userApi = new User();
 const { t } = useI18n()
 
@@ -236,6 +253,40 @@ const getInfo = () => {
           }
         }
       }
+    }
+  }
+}
+.commentF {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 160rpx;
+  background-color: #ffffff;
+  box-shadow: 0px 0px 8px 0px #00000026;
+  padding-top: 35rpx;
+  .input {
+    display: inline-block;
+    width: calc( 100% - 360rpx );
+    background-color: #F5F3EF;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-radius: 6rpx;
+  }
+  .tag {
+    width: 100rpx;
+    height: 100rpx;
+    text-align: center;
+    .icon {
+      display: inline-block;
+      width: 48rpx;
+      height: 48rpx;
+    }
+    .text {
+      font-size: 24rpx;
+      font-weight: 400;
+      line-height: 30rpx;
+      color: #232322;
     }
   }
 }
