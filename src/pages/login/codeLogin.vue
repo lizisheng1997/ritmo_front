@@ -27,12 +27,17 @@ import { defineAsyncComponent, reactive, ref } from 'vue'
 import textPopup from '/@/components/textPopup.vue'
 import { useI18n } from 'vue-i18n'
 import { routerTo, showTips } from '/@/utils/currentFun'
+import { onLoad } from '@dcloudio/uni-app'
 const { t } = useI18n()
 
-// 引入组件
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  state.intro = query!.intro ? query!.intro : '';
+});
 // 参数
 const state = reactive({
   phone: '', // 手机号
+  intro: '', // 
   areaCode: '86', // 
   select: false, // 
 })
@@ -46,7 +51,7 @@ const submit = () => {
     return
   }
   // console.log(111);
-  routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}`)
+  routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}?intro=${state.intro}`)
   
 }
 // 打开弹窗

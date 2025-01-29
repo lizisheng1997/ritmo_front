@@ -30,11 +30,17 @@ import { defineAsyncComponent, reactive, ref } from 'vue'
 import textPopup from '/@/components/textPopup.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import { onLoad } from '@dcloudio/uni-app';
 const { t } = useI18n()
 
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  state.intro = query!.intro ? query!.intro : '';
+});
 // 参数
 const state = reactive({
   select: false, // 
+  intro: '',
 })
 // 打开弹窗
 const textPopupRef = ref()
@@ -49,7 +55,7 @@ const codeLoginTo = () => {
     showTips('请勾选协议')
     return
   }
-  routerTo('/pages/login/codeLogin')
+  routerTo(`/pages/login/codeLogin`)
 }
 </script>
 

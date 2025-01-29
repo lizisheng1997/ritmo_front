@@ -144,3 +144,14 @@ export const dateToLocaleDateString = (dateString: string) => {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   
 }
+/**
+ * 复制文本
+ */
+export const copyText = (text: string) => {
+  uni.setClipboardData({
+    data: '要复制的文本',
+    success: function () {
+      showTips('复制成功')
+    }
+  });
+}

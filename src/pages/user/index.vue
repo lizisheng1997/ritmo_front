@@ -70,7 +70,7 @@
         </view>
       </view>
       <!--  -->
-      <view class="li flex">
+      <view class="li flex" @click="routerTo(`/pages/user/inviteFriends`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu3.png"></image>
           邀请好友

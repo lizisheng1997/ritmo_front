@@ -32,6 +32,7 @@ onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   state.phone = query!.phone;
   state.areaCode = query!.areaCode;
+  state.intro = query!.intro ? query!.intro : '';
   sendMobileCode()
 });
 // 参数
@@ -40,6 +41,7 @@ const state = reactive({
   areaCode: '', // 
   oldcode: '',
   code: '', // 
+  intro: '',
   second: 60, // 秒
   counting: false, // 是否正在倒计时
   select: false, // 
@@ -108,7 +110,7 @@ const getAuthUser = async() => {
       state.counting = false;
       state.second = 60; // 重置倒计时时长
       if( res.data.is_new_user ) {
-        routerTo(`/pages/login/information`)
+        routerTo(`/pages/login/information?intro=${state.intro}`)
       } else {
         // routerTo(`/pages/home/index`)
         user.setUserInfo(res.data);

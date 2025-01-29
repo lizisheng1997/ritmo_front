@@ -47,11 +47,16 @@ import { useI18n } from 'vue-i18n'
 import { useUserStore } from '/@/store/modules/user';
 import User from '/@/api/user';
 import Login from '/@/api/login';
+import { onLoad } from '@dcloudio/uni-app';
 const loginApi = new Login();
 const userApi = new User();
 const user = useUserStore();
 const { t } = useI18n()
 
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  form.intro = query!.intro ? query!.intro : '';
+});
 // 参数
 const form = reactive({
   nickname: '', // 昵称
