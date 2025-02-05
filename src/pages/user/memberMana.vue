@@ -3,7 +3,7 @@
     <view class="member flex">
       <view class="left">
         机构成员： 
-        <text class="">{{ state.list.length }} / {{ state.memberLimit }}</text>
+        <text class="">{{ state.list.length }} / {{ state.totalMemberLimit }}</text>
       </view>
       <view class="btn" @click="openMemberExpansion">
         <image class="icon" src="http://47.116.190.37:8002/static/user/addMember.png"></image>
@@ -42,7 +42,7 @@
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import memberExpansion from '/@/components/memberExpansion.vue'
 import operatePopup from '/@/components/operatePopup.vue'
-import { routerTo, showTips } from '/@/utils/currentFun';
+import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import User from '/@/api/user';
@@ -56,51 +56,76 @@ onLoad((query?: AnyObject | undefined): void => {
   state.id = query!.id
 });
 onShow(() => {
-  getList()
+  // getList()
   getInfo()
 })
 // 参数
 const state = reactive({
   id: '', //机构id
   list: [] as any[],
-  memberLimit: 0, // 总数
-  memberDay: 0, // 天数
+  orgName: '',
+  totalMemberLimit: 0, // 总人数
+  currentMemberCount: 0, // 人数
+  duration: 0, // 天数
 })
 // 获取机构详情
 const getInfo = () => {
   homeApi.getOrganizationsInfo(state.id).then((res: any) => {
-    // console.log(res.data);
-    state.memberLimit = res.data.member_limit
-    state.memberDay = res.data.member_day
-  })
-}
-// 列表
-const getList = () => {
-  userApi.getOrganizationsMembers(state.id).then((res: any) => {
     console.log(res.data);
-    state.list = res.data
+    state.totalMemberLimit = res.data.total_member_limit
+    // state.currentMemberCount = res.data.current_member_count
+    state.list = res.data.members
+    state.orgName = res.data.name
+    if( !res.data.is_vip ) {
+      operatePopupRef.value.openDialog('是否支付该机构扩容费用', 0)
+    }
   })
 }
 // 删除
 const operatePopupRef = ref()
 const getSelect = (show: boolean, id: string) => {
+  // console.log(show);
   if( show ) {
-    userApi.getOrganizationsMembersDel(state.id, id).then((res: any) => {
-      showTips(res.message)
-      state.list = []
-      getList()
-    })
+    if( id ) {
+      userApi.getOrganizationsMembersDel(state.id, id).then((res: any) => {
+        showTips(res.message)
+        state.list = []
+        getInfo()
+      })
+    } else {
+      // 创建机构会员订单
+      userApi.getOrganizationsMemberVip(state.id, {
+        members: 3,
+        duration_type: 'month'
+      }).then((res: any) => {
+        // showTips(res.message)
+        getOrganizationsMembersOrderPay(res.data.id)
+      })
+    }
+  } else {
+    if( !id ) routerBack(1)
   }
 }
 
 // 
 const memberExpansionRef = ref()
 const openMemberExpansion = () => {
-  memberExpansionRef.value.openDialog(state.memberDay, state.memberLimit)
+  memberExpansionRef.value.openDialog()
 }
 // 扩容订单
-const memberExpansionChange = (memberDay: number, limit: number) => {
-  routerTo(`/pages/user/memberOrder?id=${state.id}&limit=${limit}&oldLimit=${state.memberLimit}&memberDay=${memberDay}`, true)
+const memberExpansionChange = (duration: number, limit: number) => {
+  routerTo(`/pages/user/memberOrder?id=${state.id}&limit=${limit}&oldLimit=${state.totalMemberLimit}&duration=${duration}&orgName=${state.orgName}`, true)
+}
+// 支付机构会员订单
+const getOrganizationsMembersOrderPay = (id: string) => {
+  userApi.getOrganizationsMembersOrderPay(state.id, id).then((res: any) => {
+    showTips(res.message)
+    if( res.code != 200 ) {
+      operatePopupRef.value.openDialog('是否支付该机构扩容费用', 0)
+    } 
+  }).catch(() => {
+    operatePopupRef.value.openDialog('是否支付该机构扩容费用', 0)
+  })
 }
 </script>
 

@@ -15,7 +15,7 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   uni.setNavigationBarTitle({
-    title: query!.type == '0' ? '用户协议' : '隐私协议'
+    title: query!.type == '0' ? '用户协议' : query!.type == '1' ? '用户协议' : '会员服务协议'
   });
   state.type = query!.type
   getInfo()
@@ -33,6 +33,11 @@ const getInfo = () => {
     })
   } else if( state.type == 1 ) {
     userApi.getAgreementsPrivacy().then((res: any) => {
+      // console.log(res);
+      state.content = res.data.content
+    })
+  } else if( state.type == 2 ) {
+    userApi.getAgreementsRecharge().then((res: any) => {
       // console.log(res);
       state.content = res.data.content
     })

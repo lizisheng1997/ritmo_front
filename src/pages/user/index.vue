@@ -95,7 +95,7 @@
           成员管理
         </view>
         <view class="right flex">
-          <text class="text2">{{ state.institutionCount }} / {{ state.institutionLimit }}</text>
+          <text class="text2">{{ state.currentMemberCount }} / {{ state.totalMemberLimit }}</text>
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
@@ -158,8 +158,8 @@ const state = reactive({
   // 
   isInstitution: false, // 是否是机构
   institutionId: '', // 机构id
-  institutionLimit: 0, // 机构扩容人数
-  institutionCount: 0, // 机构目前人数
+  totalMemberLimit: 0, // 机构扩容人数
+  currentMemberCount: 0, // 机构目前人数
 
 })
 // 获取用户资料
@@ -167,18 +167,18 @@ const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
     console.log(res.data);
     state.nickname = res.data.nickname
-    state.avatarUrl = res.data.avatar ? res.data.avatar.url : ''
+    state.avatarUrl = res.data.avatar_url? res.data.avatar_url : ''
     // console.log(state.avatarUrl);
     
     state.userId = res.data.id
-    state.level = res.data.vip.level
-    state.expireTime = res.data.vip.expire_time
+    state.level = res.data.vip_level
+    state.expireTime = res.data.vip_expire_time
     
     // state.rights = res.data.rights
-    userRecordList[0].hours = res.data.rights.meeting_room.hours_formatted
-    userRecordList[2].hours = res.data.rights.workspace.hours_formatted
-    state.isInstitution = res.data.current_org.id == 0 ? false : true
-    state.institutionId = res.data.current_org.id
+    // userRecordList[0].hours = res.data.rights.meeting_room.hours_formatted
+    // userRecordList[2].hours = res.data.rights.workspace.hours_formatted
+    state.isInstitution = res.data.current_org_id ? true : false
+    state.institutionId = res.data.current_org_id
     if(state.isInstitution) getOrganInfo()
   })
 }
@@ -186,8 +186,8 @@ const getUserInfo = async() => {
 const getOrganInfo = () => {
   homeApi.getOrganizationsInfo(state.institutionId).then((res: any) => {
     // console.log(res.data);
-    state.institutionLimit = res.data.member_limit
-    // state.institutionCount = res.data.member_count
+    state.totalMemberLimit = res.data.total_member_limit
+    state.currentMemberCount = res.data.current_member_count
   })
 }
 // 去登录页

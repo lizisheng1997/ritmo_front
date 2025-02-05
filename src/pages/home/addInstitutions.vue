@@ -13,7 +13,7 @@
         <view class="text">
           统一信用代码
         </view>
-        <input class="uni-input ml25" v-model="form.socialCreditCode" placeholder="请输入统一信用代码" />
+        <input class="uni-input ml25" maxlength="18" v-model="form.socialCreditCode" placeholder="请输入统一信用代码" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
@@ -100,7 +100,7 @@ const uploadImage = () => {
 const submit = async() => {
   
   let { id, name, socialCreditCode, businessLicenseUrl, adminName, adminPhone } = form
-  if(!name && !socialCreditCode && !businessLicenseUrl && !adminName && !adminPhone) {
+  if(!name && !socialCreditCode && !businessLicenseUrl && !adminName && adminPhone.length != 11) {
     showTips('请填写资料')
     return;
   }
@@ -108,7 +108,7 @@ const submit = async() => {
     homeApi.getOrganizationsReapply(id, {
       name,
       social_credit_code: socialCreditCode,
-      business_license_url: businessLicenseUrl,
+      business_license_url: '',
       admin_name: adminName,
       admin_phone: adminPhone,
     }).then((res: any) => {

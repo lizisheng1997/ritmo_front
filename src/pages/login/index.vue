@@ -35,7 +35,7 @@ const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
-  state.intro = query!.intro ? query!.intro : '';
+  // state.intro = query!.intro ? query!.intro : '';
 });
 // 参数
 const state = reactive({

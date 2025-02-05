@@ -4,12 +4,12 @@
       <view class="count flex p0-55">
         <text class="num">{{ state.oldLimit }}人</text>
         <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
-        <text class="num">{{ state.limit }}人</text>
+        <text class="num">{{ Number(state.limit) + Number(state.oldLimit) }}人</text>
       </view>
       <view class="fub">扩容</view>
       <view class="title mt35">{{ state.orgName }}</view>
       <view class="dateText mt35">扩容时间</view>
-      <view class="day mt25">{{ state.memberDay }}天</view>
+      <view class="day mt25">{{ state.duration }}个月</view>
       <view class="info">
         <view class="li flex mt25">
           <text class="label">操作人：</text>
@@ -31,7 +31,7 @@
         <view class="price">¥{{ state.price }}</view>
       </view>
       <view class="count">
-        {{ state.limit-state.oldLimit }}人 × {{ state.memberDay }}天
+        {{ state.limit }}人 × {{ state.duration }}个月
       </view>
       <view class="all">
         总计
@@ -70,19 +70,19 @@ const { t } = useI18n()
 
 
 onLoad((query?: AnyObject | undefined): void => {
-  // console.log(query);
   state.id = query!.id
   state.limit = query!.limit
-  state.memberDay = query!.memberDay
+  state.duration = query!.duration
   state.oldLimit = query!.oldLimit
+  state.orgName = query!.orgName
   getUserInfo()
 });
 // 参数
 const state = reactive({
   id: '', // 机构id
   limit: 0, // 扩容数量
-  oldLimit: 0, // 扩容前数量
-  memberDay: 0, // 扩容天数
+  oldLimit: 0, // 扩容前总数量
+  duration: 0, // 扩容月数
   orgName: '', // 所属机构
   nickname: '', // 操作人
   price: 0,
@@ -92,29 +92,20 @@ const operatePopupRef = ref()
 const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
     // console.log(res.data);
-    state.orgName = res.data.current_org.name
     state.nickname = res.data.nickname
     // 计算价格
-    let obj:any = res.data.vip.level == 2 ? res.data.vip.prices.premium : res.data.vip.prices.basic 
-    let num = state.limit - state.oldLimit;
-    if( state.memberDay <= 30 ) {
-      state.price = obj.month * num
-    } else if( state.memberDay > 30 && state.memberDay <= 90  ) {
-      state.price = obj.quarter * num
-    } else if( state.memberDay > 90  ) {
-      state.price = obj.year * num
-    }
+    state.price = 899 * state.limit * state.duration
   })
 }
 const payPopupRef = ref()
 const submit = (show: boolean, type: number) => {
   if(show) {
     userApi.getOrganizationsMembersExpand(state.id, {
-      new_limit: state.limit,
-      new_memberDay: state.memberDay
+      extra_members: state.limit,
+      duration: state.duration
     }).then((res: any) => {
       // console.log(res.data);
-      getOrder(res.data.order_id)
+      getOrder(res.data.id)
     })
   }
 }

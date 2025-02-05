@@ -126,10 +126,10 @@ const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
     console.log(res);
     state.nickname = res.data.nickname
-    state.avatarUrl = res.data.avatar? res.data.avatar.url : ''
+    state.avatarUrl = res.data.avatar_url? res.data.avatar_url : ''
     state.userId = res.data.id
-    state.level = res.data.vip.level
-    state.isInstitution = res.data.current_org.id == 0 ? false : true
+    state.level = res.data.vip_level
+    state.isInstitution = res.data.current_org_id ? true : false
   })
 }
 </script>

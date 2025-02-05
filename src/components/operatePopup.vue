@@ -1,11 +1,11 @@
 <template>
-  <u-popup v-model="state.isShow" mode="center" border-radius="20" width="630">
+  <u-popup v-model="state.isShow" mode="center" border-radius="20" width="630" :mask-close-able="false">
     <view class="popup pb35">
       <view class="title">
         提示
       </view>
       <view class="text mb35">
-        是否{{ props.isType == 0 ? '切换语言，切换完毕后下次进入生效。' : state.text }}
+        {{ props.isType == 0 ? '是否切换语言，切换完毕后下次进入生效。' : state.text }}
       </view>
       <view class="footerPopup p0-35">
         <view class="btn left" @click="sumbit(false)">取消</view>

@@ -1,3 +1,9 @@
+export const selectList = [
+  {
+    value: '86',
+  }
+]
+
 // 
 export const spaceTimeArr = [
   [ 

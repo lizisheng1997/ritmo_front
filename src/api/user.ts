@@ -45,11 +45,23 @@ export default class User extends Request {
       url: `/v1/agreements/terms`,
     });
   }
+  // 
+  getAgreementsRecharge() {
+    return this.get({
+      url: '/v1/agreements/recharge',
+    });
+  }
   // 创建会员订单
   getOrdersAdd(data: object) {
     return this.post({
       url: `/v1/vip/orders`,
       data
+    });
+  }
+  // 支付会员订单
+  getVipOrdersPay(id: string) {
+    return this.post({
+      url: `/v1/vip/orders/${id}/pay`,
     });
   }
   // 获取机构成员列表
@@ -81,14 +93,27 @@ export default class User extends Request {
   // 生成扩容订单
   getOrganizationsMembersExpand(id: string, data: object) {
     return this.post({
-      url: `/v1/organizations/${id}/expand`,
+      url: `/v1/organizations/${id}/expansion`,
       data
     });
   }
   // 支付扩容订单
   getOrganizationsMembersPay(id: string, orderId: string) {
     return this.post({
-      url: `/v1/organizations/${id}/expand/${orderId}/pay`
+      url: `/v1/organizations/${id}/expansion/${orderId}/pay`
+    });
+  }
+  // 生成机构会员订单
+  getOrganizationsMemberVip(id: string, data: object) {
+    return this.post({
+      url: `/v1/organizations/${id}/vip/orders`,
+      data
+    });
+  }
+  // 支付机构会员订单
+  getOrganizationsMembersOrderPay(id: string, orderId: string) {
+    return this.post({
+      url: `/v1/organizations/${id}/vip/orders/${orderId}/pay`
     });
   }
 }

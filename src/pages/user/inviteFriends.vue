@@ -10,7 +10,7 @@
           邀请有礼：
         </view>
         <view class="hour mt35">
-          <text class="num">2</text>
+          <text class="num">{{ state.count }}</text>
           <text class="text">小时</text>
         </view>
         <view class="fub p35-0">
@@ -26,8 +26,8 @@
           邀请码：
         </view>
         <view class="code">
-          3FJHG
-          <image class="icon" src="/@/static/user/copy.png" @click="copyText('asas')"></image>
+          {{ state.code }}
+          <image class="icon" src="/@/static/user/copy.png" @click="copyText(state.code)"></image>
         </view>
       </view>
       <!--  -->
@@ -52,12 +52,21 @@ const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
+  getUserInfo()
 });
 // 参数
 const state = reactive({
-  type: 0, // 
-  content: '',
+  count: 0, // 
+  code: '',
 })
+// 获取用户资料
+const getUserInfo = async () => {
+  await userApi.getUserInfo({}).then((res: any) => {
+    // console.log(res.invite.code);
+    state.count = res.data.invite.invited_count
+    state.code = res.data.invite.code
+  });
+};
 </script>
 
 <style lang="scss" scoped>

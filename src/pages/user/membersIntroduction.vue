@@ -104,10 +104,10 @@ const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
     console.log(res);
     state.nickname = res.data.nickname
-    state.avatarUrl = res.data.avatar? res.data.avatar.url : ''
+    state.avatarUrl = res.data.avatar_url? res.data.avatar_url : 'http://47.116.190.37:8002/static/home/head.png'
     state.userId = res.data.id
-    state.level = res.data.vip.level
-    state.expireTime = res.data.vip.expire_time
+    state.level = res.data.vip_level
+    state.expireTime = res.data.vip_expire_time
   })
 }
 </script>

@@ -6,7 +6,7 @@
           <image class="head mr30" :src="item.business_license_url" v-if="item.business_license_url"></image>
           <view class="center mr20" :class=" item.business_license_url ? '' : 'centerW100' ">
             <view class="company flex">
-              <text class="text oneEllipsis" :class=" item.status != 1 ? 'statusAsh' : '' " style="max-width: 64%;">{{ item.name }}</text>
+              <text class="text oneEllipsis" :class=" item.status != 3 ? 'statusAsh' : '' " style="max-width: 64%;">{{ item.name }}</text>
               <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-if="item.is_vip"></image>
             </view>
             <view class="name mt10">{{ item.admin_name }}</view>
@@ -14,17 +14,14 @@
         </view>
         <view class="right">
           <!-- 
-            0: 待审核 (新创建的机构默认状态)
-            1: 正常 (管理员审核通过)
-            2: 已拒绝 (管理员审核未通过)
-            3: 已禁用 (管理员手动禁用)
+           1:未审核 2:已驳回 3:已通过 4:已禁用
           -->
           <!--  -->
-           <template v-if="item.status == 0 ">
+           <template v-if="item.status == 1 ">
             <view class="status mb5">审核中</view>
             <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">详情></view>
            </template>
-           <template v-else-if="item.status == 1 ">
+           <template v-else-if="item.status == 3 ">
             <image class="select" src="/@/static/selectIcon.png" v-if="item.id == state.currentOrg"></image>
             <image class="select" src="/@/static/select.png" v-else @click="() => {
               operatePopupRef.openDialog('是否切换机构', item.id)
@@ -68,7 +65,7 @@ onLoad((query?: AnyObject | undefined): void => {
 });
 onShow(() => {
   getList()
-  // getUserInfo()
+  getUserInfo()
 })
 // 参数
 const state = reactive({
@@ -79,8 +76,7 @@ const state = reactive({
 const getList = () => {
   homeApi.getMyOrganizations({status: ''}).then((res: any) => {
     console.log(res);
-    state.currentOrg = res.data.current_org.id
-    state.list = res.data.organizations
+    state.list = res.data
   })
 }
 // 切换机构
@@ -92,16 +88,18 @@ const getSelect = (show: boolean, id: string) => {
       showTips(res.message)
       state.list = []
       state.currentOrg = ''
+      getUserInfo()
       getList()
     })
   }
 }
 // 获取用户资料
-// const getUserInfo = async() => {
-//   await userApi.getUserInfo({}).then((res: any) => {
-//     console.log(res);
-//   })
-// }
+const getUserInfo = async() => {
+  await userApi.getUserInfo({}).then((res: any) => {
+    console.log(res);
+    state.currentOrg = res.data.current_org_id
+  })
+}
 </script>
 
 <style >

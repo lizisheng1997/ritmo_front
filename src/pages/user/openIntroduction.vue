@@ -1,6 +1,6 @@
 <template>
   <view class="content membersIntroduction">
-    <view class="top"  :class=" state.isInstitution ? 'vip3' : state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' " :style="{
+    <view class="top"  :class=" state.isInstitution ? 'vip3' : state.level == 0 ? 'vip0' :  state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' " :style="{
       height: state.isInstitution ? '360rpx' : '440rpx'
     }">
       <image class="back" src="/@/static/iconLeftW.png" @click="routerBack(1)" v-if="state.isInstitution"></image>
@@ -216,7 +216,7 @@
           src="/@/static/selectIcon.png"
           @click="state.select = false"
           v-else></image>
-        我已阅读并同意<text class="">《会员服务协议》</text>
+        我已阅读并同意<text class="" @click="routerTo(`/pages/user/agreement?type=2`)">《会员服务协议》</text>
       </view>
     </template>
     <template v-else>
@@ -254,10 +254,10 @@
     <!--  -->
     <view class="details">
       <view class="title"
-        >-{{ state.isInstitution ? '机构' : state.tabsIdx == 0 ? '初级' : '高级' }}会员权益-</view
+        >-{{ state.isInstitution ? '机构' : state.tabsIdx == 1 ? '初级' : '高级' }}会员权益-</view
       >
       <view class="news p0-35">
-        <template v-if=" state.tabsIdx == 0 ">
+        <template v-if=" state.tabsIdx == 1 ">
           <image class="icon" src="http://47.116.190.37:8002/static/vip/en1.jpg" v-if=" state.languageType == 'en' " style="height: 900rpx;"></image>
           <image class="icon" src="http://47.116.190.37:8002/static/vip/zh1.png" v-else style="height: 900rpx;"></image>
           <image class="icon" src="http://47.116.190.37:8002/static/vip/vip1-1.png"></image>
@@ -295,17 +295,17 @@ onLoad((query?: AnyObject | undefined): void => {
 
   state.languageType = uni.getStorageSync('languageType');
 });
-// 参数
+// 参数  
 // 初级套餐
 const basicList = ref([
-  { key: 1, name: '月卡', price: 0, day: 0 },
-  { key: 6, name: '季卡', price: 0, day: 0 },
-  { key: 12, name: '年费', price: 0, day: 0 },
+  { key: 1, name: '月卡', price: 399, day: 13.3, fub: 'month' },
+  { key: 6, name: '季卡', price: 897, day: 9.9, fub: 'season' },
+  { key: 12, name: '年费', price: 3108, day: 8.5, fub: 'year' },
 ])
 const premiumList = ref([
-  { key: 1, name: '月卡', price: 0, day: 0 },
-  { key: 6, name: '季卡', price: 0, day: 0 },
-  { key: 12, name: '年费', price: 0, day: 0 },
+  { key: 1, name: '月卡', price: 899, day: 29.9, fub: 'month'},
+  { key: 6, name: '季卡', price: 2397, day: 26.6, fub: 'season' },
+  { key: 12, name: '年费', price: 9108, day: 25.1, fub: 'year' },
 ])
 const state = reactive({
   languageType: '', //
@@ -326,27 +326,14 @@ const getUserInfo = async () => {
   await userApi.getUserInfo({}).then((res: any) => {
     console.log(res);
     state.nickname = res.data.nickname;
-    state.avatarUrl = res.data.avatar ? res.data.avatar.url : '';
+    state.avatarUrl = res.data.avatar_url? res.data.avatar_url : 'http://47.116.190.37:8002/static/home/head.png';
     state.userId = res.data.id;
-    state.level = res.data.vip.level;
-    state.expireTime = res.data.vip.expire_time;
-    state.tabsIdx = res.data.vip.level ? res.data.vip.level : 1
-    
-    basicList.value[0].price = res.data.vip.prices.basic.month
-    basicList.value[0].day = Math.floor(basicList.value[0].price / 30)
-    basicList.value[1].price = res.data.vip.prices.basic.quarter * 6
-    basicList.value[1].day = Math.floor(basicList.value[1].price / 90)
-    basicList.value[2].price = res.data.vip.prices.basic.year * 12
-    basicList.value[2].day = Math.floor(basicList.value[2].price / 365)
+    state.level = res.data.vip_level;
+    state.expireTime = res.data.vip_expire_time;
+    state.tabsIdx = res.data.vip_level ? res.data.vip_level : 1
+
     // 
-    premiumList.value[0].price = res.data.vip.prices.premium.month
-    premiumList.value[0].day = Math.floor(res.data.vip.prices.premium.month / 30)
-    premiumList.value[1].price = res.data.vip.prices.premium.quarter * 6
-    premiumList.value[1].day = Math.floor(premiumList.value[1].price / 90)
-    premiumList.value[2].price = res.data.vip.prices.premium.year * 12
-    premiumList.value[2].day = Math.floor(premiumList.value[2].price / 365)
-    // 
-    state.isInstitution = res.data.current_org.id == 0 ? false : true
+    state.isInstitution = res.data.current_org_id ? true : false
   });
 };
 // 提交
@@ -357,19 +344,27 @@ const submit = () => {
   }
   let obj: any = {}
   if( state.tabsIdx == 1 ) {
-    basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
+    obj = basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
   } else {
-    premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
+    obj = premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
   }
-
+  
   userApi.getOrdersAdd({
     vip_level: state.tabsIdx,
-    duration: state.selectVip,
+    duration_type: obj.fub,
     amount: obj.price,
   }).then((res: any) => {
     showTips(res.message)
+    // console.log(res.data);
+    getOrder(res.data.id)
+  })
+}
+// 支付订单
+const getOrder = (id: string) => {
+  userApi.getVipOrdersPay(id).then((res: any) => {
+    showTips(res.message)
     console.log(res.data);
-    
+    getUserInfo()
   })
 }
 </script>
@@ -419,6 +414,9 @@ const submit = () => {
         opacity: 1;
       }
     }
+  }
+  .vip0 {
+    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg1.png');
   }
   .vip1 {
     background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg2.png');

@@ -29,8 +29,8 @@ const state = reactive({
 })
 const getInfo = () => {
   userApi.getUserInfo({}).then((res: any) => {
-    console.log(res.data.face.url);
-    state.url = res.data.face.url
+    // console.log(res.data.face.url);
+    state.url = res.data.face_url
   })
 }
 // 上传人脸

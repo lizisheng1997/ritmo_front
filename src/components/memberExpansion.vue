@@ -10,13 +10,13 @@
           <view class="text">
             扩容人数
           </view>
-          <u-number-box class=" ml25" :min="state.oldDay" v-model="state.limit"></u-number-box>
+          <u-number-box class=" ml25" :min="1"  v-model="state.limit"></u-number-box>
         </view>
         <view class="item flex pb35 mt35">
           <view class="text">
-            扩容天数
+            扩容月数
           </view>
-          <u-number-box class=" ml25" :min="state.oldLlimit" v-model="state.day"></u-number-box>
+          <u-number-box class=" ml25" :min="1" v-model="state.day"></u-number-box>
         </view>
       </view>
       <view class="footerOne" @click="sumbit">
@@ -34,19 +34,14 @@ const { t } = useI18n()
 
 // 参数
 const state = reactive({
-  day: 0, // 扩容天数
+  day: 1, // 扩容天数
   limit: 0, // 扩容人数
-  oldDay: 0, // 扩容前的天数
-  oldLlimit: 0, // 扩容前的人数
   isShow: false, // 
 })
 // 打开弹窗
-const openDialog = (day: number, limit: number) => {
+const openDialog = () => {
   // console.log(rows)
-  state.day = day
-  state.limit = limit
-  state.oldDay = day
-  state.oldLlimit = limit
+  state.limit = 1
   state.isShow = true;
 };
 defineExpose({ openDialog });

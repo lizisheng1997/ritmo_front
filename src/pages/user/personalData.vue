@@ -3,7 +3,7 @@
     <view class="head">
       <view class="picture">
         <image class="imageW100" :src="form.avatarUrl"></image>
-        <image class="icon" src="http://47.116.190.37:8002/static/user/uploadImg.png" @click="avatarCropper()"></image>
+        <image class="icon" src="/@/static/user/uploadImg.png" @click="avatarCropper()"></image>
       </view>
     </view>
     <!--  -->
@@ -134,7 +134,7 @@ const getUserInfo = async() => {
     form.userId = res.data.id
     form.nickname = res.data.nickname
     form.intro = res.data.intro
-    form.avatarUrl = res.data.avatar? res.data.avatar.url : ''
+    form.avatarUrl = res.data.avatar_url? res.data.avatar_url : 'http://47.116.190.37:8002/static/home/head.png'
     form.phone = res.data.phone
     form.areaCode = res.data.area_code
     form.email = res.data.email

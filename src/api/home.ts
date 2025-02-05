@@ -27,7 +27,7 @@ export default class Home extends Request {
   // 编辑机构
   getOrganizationsReapply(id: string, data: object) {
     return this.put({
-      url: `/v1/organizations/${id}/reapply`,
+      url: `/v1/organizations/${id}`,
       data
     });
   }

@@ -4,7 +4,7 @@
     <view class="fub mt20">未注册手机验证后自动登录</view>
     <!--  -->
     <view class="form flex pb40">
-      <view class="sign">
+      <view class="sign" @click=" state.areaShow = true ">
         <u-icon class="icon" name="plus" color="#232322" size="16"></u-icon>
         {{ state.areaCode }}<u-icon class="icon ml10" name="arrow-down-fill" color="#232322" size="14"></u-icon>
       </view>
@@ -20,6 +20,8 @@
     </view>
   </view>
   <textPopup ref="textPopupRef" @refresh="textPopupRefresh"/>
+  <!-- 选择 -->
+  <u-select v-model="state.areaShow" :list="selectList"  label-name="value" value-name="value" @confirm="confirm"></u-select>
 </template>
 
 <script setup lang="ts">
@@ -27,18 +29,19 @@ import { defineAsyncComponent, reactive, ref } from 'vue'
 import textPopup from '/@/components/textPopup.vue'
 import { useI18n } from 'vue-i18n'
 import { routerTo, showTips } from '/@/utils/currentFun'
+import { selectList } from '/@/utils/universalArray'
 import { onLoad } from '@dcloudio/uni-app'
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
-  state.intro = query!.intro ? query!.intro : '';
 });
 // 参数
 const state = reactive({
   phone: '', // 手机号
   intro: '', // 
   areaCode: '86', // 
+  areaShow: false,
   select: false, // 
 })
 // 
@@ -51,8 +54,12 @@ const submit = () => {
     return
   }
   // console.log(111);
-  routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}?intro=${state.intro}`)
+  routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}`)
   
+}
+const confirm = (e: { value: string }[]) => {
+  // console.log(e);
+  state.areaCode = e[0].value
 }
 // 打开弹窗
 const textPopupRef = ref()
