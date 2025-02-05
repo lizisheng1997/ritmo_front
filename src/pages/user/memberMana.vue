@@ -77,7 +77,7 @@ const getInfo = () => {
     state.list = res.data.members
     state.orgName = res.data.name
     if( !res.data.is_vip ) {
-      operatePopupRef.value.openDialog('是否支付该机构扩容费用', 0)
+      operatePopupRef.value.openDialog('是否支付该机构基础扩容费用', 0)
     }
   })
 }
@@ -100,6 +100,8 @@ const getSelect = (show: boolean, id: string) => {
       }).then((res: any) => {
         // showTips(res.message)
         getOrganizationsMembersOrderPay(res.data.id)
+      }).catch(() => {
+        getInfo()
       })
     }
   } else {
@@ -120,11 +122,8 @@ const memberExpansionChange = (duration: number, limit: number) => {
 const getOrganizationsMembersOrderPay = (id: string) => {
   userApi.getOrganizationsMembersOrderPay(state.id, id).then((res: any) => {
     showTips(res.message)
-    if( res.code != 200 ) {
-      operatePopupRef.value.openDialog('是否支付该机构扩容费用', 0)
-    } 
-  }).catch(() => {
-    operatePopupRef.value.openDialog('是否支付该机构扩容费用', 0)
+  }).finally(() => {
+    getInfo()
   })
 }
 </script>
