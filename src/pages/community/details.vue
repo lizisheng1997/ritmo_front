@@ -8,6 +8,7 @@
       <text class="name">Jane</text>
     </view>
     <!--  -->
+    <u-icon class="delete" name="trash-fill" size="60"></u-icon>
     <swiper class="swiper" circular indicator-dots autoplay >
       <swiper-item>
         <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
@@ -18,7 +19,6 @@
       <swiper-item>
         <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
       </swiper-item>
-      <u-icon class="delete" name="trash-fill" size="60"></u-icon>
     </swiper>
     <!--  -->
     <view class="" style="padding: 35rpx 35rpx 180rpx;">
@@ -92,17 +92,20 @@
         <image class="icon" src="/@/static/community/star.png"></image>
         <view class="text">9999</view>
       </view>
-      <view class="tag">
+      <view class="tag" @click="shareRef.openDialog()">
         <image class="icon" src="/@/static/community/share.png"></image>
         <view class="text">3.2w</view>
       </view>
     </view>
+    <!-- 分享 -->
+     <share ref="shareRef" />
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
+import share from './share.vue'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
 import { routerBack } from '/@/utils/currentFun';
@@ -120,6 +123,7 @@ const state = reactive({
   navAllHeight: 0,
   content: '',
 })
+const shareRef = ref()
 const getInfo = () => {
   
 }
@@ -156,15 +160,15 @@ const getInfo = () => {
       color: #232322;
     }
   }
+    .delete {
+      position: fixed;
+      right: 35rpx;
+      top: 200rpx;
+      z-index: 999;
+    }
   .swiper{
     height: 740rpx;
     position: relative;
-    .delete {
-      position: absolute;
-      right: 35rpx;
-      top: 200rpx;
-      z-index: 9999;
-    }
     .uni-swiper-wrapper {
       .uni-swiper-slides {
         width: 100%;
