@@ -45,7 +45,7 @@
         <image class="icon" src="http://47.116.190.37:8002/static/home/card2.png"></image>
         <view class="text mt10">展示柜</view>
       </view>
-      <view class="item">
+      <view class="item" @click="routerTo(`/pages/user/inviteFriends`, true)">
         <image class="icon" src="http://47.116.190.37:8002/static/home/card3.png"></image>
         <view class="text mt10">邀请好友</view>
       </view>

@@ -1,10 +1,10 @@
 <template>
-  <view class="content">
+  <view class="content" v-if=" state.id">
     <view class="introduce" :style="{ paddingTop: state.navAllHeight + 'rpx' }">
       <div class="p0-35">
         <view class="name mb10">
-          杭州·顺丰中心节奏空间
-          <image class="icon" src="/@/static/rightBlack.png" @click="selectSpaceRef.openDialog('0')"></image>
+          {{ state.info.name }}
+          <image class="icon" src="/@/static/rightBlack.png" @click="getSpaceList(0)"></image>
         </view>
         <view class="distance">
           距您200m
@@ -21,41 +21,45 @@
           </swiper-item>
         </swiper>
         <view class="distance m15-0">
-          杭州市拱康路1号顺丰中心A座13楼1304室
+          {{ state.info.address }}
           
-          <image class="icon" src="/@/static/rightAsh.png" @click="routerTo('/pages/space/spaceDetails')"></image>
+          <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/space/spaceDetails?id=${state.id}`)"></image>
         </view>
-        <view class="distance">00:00～24:00</view>
+        <view class="distance">{{ state.info.businessHours }}</view>
         <view class="spaces mt15">
-          <text class="text pr15 mr15">156 工位</text>
-          <text class="text pr15 mr15">10 会议室</text>
-          <text class="text pr15 mr15">20 办公室</text>
-          <text class="text pr15 mr15">8 展示柜 </text>
+          <text class="text pr15 mr15">{{ state.info.workspaceCount }} 工位</text>
+          <text class="text pr15 mr15">{{ state.info.meetingRoomCount }} 会议室</text>
+          <text class="text pr15 mr15">{{ state.info.officeCount }} 办公室</text>
+          <text class="text pr15 mr15">{{ state.info.showcaseCount }} 展示柜 </text>
         </view>
         <view class="cards mt25">
-          <view class="card mr15">
-            <image class="icon mr5" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-            <text class="text">WIFI</text>
-          </view>
-          <view class="card mr15">
-            <image class="icon mr5" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-            <text class="text">WIFI</text>
-          </view>
+          <template v-for=" (item, index) in state.info.services">
+            <view class="card mr15" v-if="index < 3">
+              <image class="icon mr5" :src=" item.icon "></image>
+              <text class="text">{{ item.name }}</text>
+            </view>
+          </template>
           <view class="card ">
             <text class="text">...</text>
           </view>
         </view>
       </div>
       <view class="tabs mt35">
-        <view class="text" :class=" state.tabsIdx == item.key ? 'textAct' : '' " v-for="( item, index ) in tabsList" :key="index" @click=" state.tabsIdx = index ">{{ item.name }}</view>
+        <view class="text" :class=" state.tabsIdx == item.key ? 'textAct' : '' " v-for="( item, index ) in tabsList" :key="index" @click="tabsChange(index) ">{{ item.name }}</view>
       </view>
     </view>
     <!--  -->
     <view class="p0-35">
       <view class="filter flex pt35">
         <template v-if="state.tabsIdx <= 1">
-          <view class="grade p0-25 mr15 " :class=" state.gradeIdx == 0 ? 'gradeAct' : '' " @click="state.gradeIdx = 0">只看初级区</view>
-          <view class="grade p0-25 mr15" :class=" state.gradeIdx == 1 ? 'gradeAct' : '' " @click="state.gradeIdx = 1">只看高级区</view>
+          <view class="grade p0-25 mr15 " :class=" state.gradeIdx == 1 ? 'gradeAct' : '' " @click="() => {
+            state.gradeIdx = 1
+            getAllList()
+          }">只看初级区</view>
+          <view class="grade p0-25 mr15" :class=" state.gradeIdx == 2 ? 'gradeAct' : '' " @click="() => {
+            state.gradeIdx = 2
+            getAllList()
+          }">只看高级区</view>
         </template>
         <view class="grade p0-25 mr15" style="color: #232322;" @click="routerTo('/pages/space/distributionMap')">
           查看分布图
@@ -67,82 +71,36 @@
         </view>
       </view>
       <view class="filterDate flex mt30 " v-if="state.tabsIdx <= 1">
-        <view class="li" v-for=" (item, index) in weekDayList " :key="index" :class=" item.day == state.day ? 'liAct' : '' " @click=" state.day = item.day ">
+        <view class="li" v-for=" (item, index) in weekDayList " :key="index" :class=" item.day == state.day ? 'liAct' : '' " @click=" () => {
+          state.day = item.day
+          getAllList()
+        } ">
           <view class="week mt20">{{ item.week }}</view>
           <view class="day">{{ item.day }}</view>
         </view>
       </view>
-      <!-- 工位 -->
-      <view class="station" v-if="state.tabsIdx == 0">
-        <view class="list">
+      <!-- 工位、会议室 -->
+      <view class="station" v-if="state.tabsIdx == 0 || state.tabsIdx == 1">
+        <view class="list" v-for="item in productList" :key="item.id">
           <view class="li mt20 p20-0">
             <view class="room flex">
-              <view class="left flex" @click="routerTo(`/pages/space/details?type=0`)">
-                <view class="number mr20">A001</view>
+              <view class="left flex" @click="routerTo(`/pages/space/details?type=${state.tabsIdx}`)">
+                <view class="number mr20">{{ item.name }}</view>
                 <view class="info">
                   <view class="text">
-                    wifi ｜ 显示器
+                    {{ item.description }}
                   </view>
                   <view class="text mt5">
-                    ¥15.5/30分钟起
-                    <text class="icon ml20">初级</text>
+                    ¥{{ item.price }}/30分钟起
+                    <text class="icon ml20">{{ item.area_name }}</text>
                   </view>
                 </view>
               </view>
-              <view class="right" @click="routerTo(`/pages/space/reserveRoom?type=0`)">
+              <view class="right" @click="routerTo(`/pages/space/reserveRoom?type=0&sid=${state.id}&id=${item.id}`)">
                 预定
               </view>
             </view>
-            <spaceTimes :seleceList="state.sidxs"/>
-          </view>
-          <view class="li mt20 p20-0">
-            <view class="room flex">
-              <view class="left flex">
-                <view class="number mr20">A001</view>
-                <view class="info">
-                  <view class="text">
-                    wifi ｜ 显示器
-                  </view>
-                  <view class="text mt5">
-                    ¥15.5/30分钟起
-                    <text class="icon ml20">初级</text>
-                  </view>
-                </view>
-              </view>
-              <view class="right">
-                预定
-              </view>
-            </view>
-            <spaceTimes :seleceList="state.sidxs"/>
-          </view>
-          <!--  -->
-        </view>
-      </view>
-      <!-- 会议室 -->
-      <view class="station pb25" v-else-if="state.tabsIdx == 1">
-        <view class="list">
-          <view class="li mt20 p20-0">
-            <view class="room flex">
-              <view class="left flex" @click="routerTo(`/pages/space/details?type=1`)">
-                <view class="banner mr20">
-                  <image class="imageW100" src="http://47.116.190.37:8002/static/addHead.png"></image>
-                </view>
-                <view class="info">
-                  <view class="name mb10">001会议室</view>
-                  <view class="text">
-                    wifi ｜ 显示器
-                  </view>
-                  <view class="text mt5">
-                    ¥15.5/30分钟起
-                    <text class="icon ml20 icon1">高级</text>
-                  </view>
-                </view>
-              </view>
-              <view class="right" @click="routerTo(`/pages/space/reserveRoom?type=1`)">
-                预定
-              </view>
-            </view>
-            <spaceTimes :seleceList="state.sidxs"/>
+            <spaceTimes :seleceList="item.time_slots"/>
           </view>
           <!--  -->
         </view>
@@ -194,9 +152,13 @@
           </view>
         </view>
       </view>
+      <u-empty text="暂无数据" mode="list" icon-size="200" src="../../static/null.png"  v-if=" !productList?.length "></u-empty>
     </view>
     <!--  -->
-    <selectSpace ref="selectSpaceRef" />
+    <selectSpace ref="selectSpaceRef" @refresh="(show, id) => {
+      state.id = id
+      getInfo(id)
+    }"/>
   </view>
 </template>
 
@@ -207,6 +169,8 @@ import spaceTimes from '/@/components/spaceTimes.vue'
 import selectSpace from '/@/components/selectSpace.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import Space from '/@/api/space';
+const spaceApi = new Space();
 const { t } = useI18n()
 
 onLoad(() => {
@@ -216,17 +180,31 @@ onLoad(() => {
   arr[0].week = '今天'
   weekDayList.value = arr
   state.day = arr[0].day
-  console.log(arr);
-  
+  // console.log(arr);
+  getSpaceList(1)
 })
 // 参数
 const tabsList = ref([ { name: '工位', key: 0 }, { name: '会议室', key: 1 }, { name: '办公室', key: 2 }, { name: '展示柜', key: 3 },  ])
 const weekDayList = ref([] as any[])
+const spaceList = ref([] as any) // 空间列表
+const productList = ref([] as any) // 
 const state = reactive({
+  id: '',
+  info: {
+    name: '',
+    address: '',
+    workspaceCount: 0,
+    meetingRoomCount: 0,
+    officeCount: 0,
+    showcaseCount: 0,
+    businessHours: '',
+    services: [] as any[],
+  },
+
   status: 0, // 
-  gradeIdx: 0, // 筛选
+  gradeIdx: 1, // 筛选
   navAllHeight: 0,
-  tabsIdx: 3,
+  tabsIdx: 0,
   day: '',
   sidxs: [ '00:00', '01:00', '03:00', '03:30', '04:00', '12:00', '15:30', '22:00', '22:30'],
 })
@@ -243,14 +221,81 @@ const getLastSevenDays = () => {
       let newDate = date.toISOString().split('T')[0];
       days.push({
           day: newDate.slice(-2), // 获取日期（YYYY-MM-DD）
+          date: newDate,
           week: dayNames[date.getDay()] // 获取星期名称（通过数组索引）
       });
   }
 
   return days;
 }
+// 获取列表
+const getSpaceList = (type: number) => {
+  spaceApi.getSpaceList().then((res: any) => {
+    // console.log(res.data);
+    spaceList.value = res.data
+    if( res.data?.length && type ) {
+      state.id = res.data[0].id
+      getInfo(state.id)
+    }
+    if( !type ) {
+      selectSpaceRef.value.openDialog(state.id, res.data)
+    }
+  })
+}
+// 获取详情
+const getInfo = (id: string) => {
+  spaceApi.getSpaceInfo(id).then((res: any) => {
+    // console.log(res.data);
+    state.info.name = res.data.name
+    state.info.address = res.data.address
+    state.info.businessHours = res.data.business_hours
+    state.info.workspaceCount = res.data.workspace_count
+    state.info.meetingRoomCount = res.data.meeting_room_count
+    state.info.officeCount = res.data.office_count
+    state.info.showcaseCount = res.data.showcase_count
+    state.info.services = res.data.services
+    tabsChange(0)
+  })
+}
+// 获取工位列表
+const tabsChange = ( index: number ) => {
+  state.day = weekDayList.value[0].day
+  state.gradeIdx = 1
+  state.tabsIdx = index
+  getAllList()
+}
+const getAllList = () => {
+  productList.value = []
+  if( state.tabsIdx == 0 ) {
+    spaceApi.getSpaceWorkspaces(state.id, {
+      level: state.gradeIdx,
+      area_name: '',
+      moon: weekDayList.value.find((item) => item.day == state.day).date
+    }).then((res: any) => {
+      console.log(res.data);
+      productList.value = res.data
+    })
+  } else if( state.tabsIdx == 1 ) {
+    spaceApi.getSpaceMeetingRooms(state.id, {
+      level: state.gradeIdx,
+      area_name: '',
+    }).then((res: any) => {
+      console.log(res.data);
+      productList.value = res.data
+    })
+  } else if( state.tabsIdx == 2 ) {
+    
+  } else if( state.tabsIdx == 3 ) {
+    
+  }
+}
 </script>
 
+<style >
+page {
+  background-color: #ffffff;
+}
+</style>
 <style lang="scss" scoped>
 .content {
   .introduce {

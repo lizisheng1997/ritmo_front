@@ -24,7 +24,7 @@ export default class Request {
         success(res: T) {
           // console.log(res);
           
-          if (res.data.code == 300) {
+          if (res.data.code == 300 || res.data.code == 401) {
             showTips(res.data.message)
             setTimeout(() => {
               uni.reLaunch({

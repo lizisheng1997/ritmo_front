@@ -197,7 +197,7 @@ const getAuthUser = async() => {
     .getUserInfo({})
     .then((res: any) => {
       // console.log(res);
-      showTips(res.message)
+      // showTips(res.message)
       user.setUserInfo(res.data);
       setTimeout(() => {
         routerBack(1)

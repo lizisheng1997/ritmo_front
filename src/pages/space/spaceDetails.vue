@@ -1,5 +1,5 @@
 <template>
-  <view class="content">
+  <view class="content" v-if="state.info">
     <view class="back" @click="routerBack(1)">
       <image class="icon" src="/@/static/iconLeftBlack.png"></image>
     </view>
@@ -22,51 +22,80 @@
     <!--  -->
     <view class="center p35">
       <view class="name mb20">
-        杭州·顺丰中心节奏空间
+        {{ state.info.name }}
       </view>
-      <view class="distance">00:00～24:00</view>
+      <view class="distance"> {{ state.info.business_hours }}</view>
       <view class="read mt35">
-        {{ state.content }}
+        {{ state.info.intro }}
       </view>
       <!--  -->
       <view class="tabs flex mt35">
         <view class="text pb25" :class=" index == state.current ? 'textAct' : '' " v-for=" (item, index) in list " @click="state.current = index">{{ item }}</view>
       </view>
-      <!--  -->
-      <view class="cards">
-        <view class="card m10">
-          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-          <view class="text">WIFI</view>
+      <template v-if="state.current == 0">
+        <view class="cards">
+          <view class="card m10" v-for=" (item, index) in state.info.services" :key="index">
+            <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
+            <view class="text">{{ item.name }}</view>
+          </view>
         </view>
-      </view>
+      </template>
       <!--  -->
-      <view class="info mt35">
-        <view class="title mb25">初级工位</view>
-        <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
-        <view class="text">配备人体工学椅，27寸4k显示器，每个桌面配备插座供电，有贴心的照明系统。</view>
-      </view>
+      <template v-else-if="state.current == 1">
+        <view class="info mt35" v-if="state.info.workspace_basic_intro">
+          <view class="title mb25">初级工位</view>
+          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <view class="text">{{ state.info.workspace_basic_intro }}</view>
+        </view>
+        <!--  -->
+        <view class="info mt35" v-if="state.info.workspace_premium_intro">
+          <view class="title mb25">高级工位</view>
+          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <view class="text">{{ state.info.workspace_premium_intro }}</view>
+        </view>
+        <!--  -->
+        <view class="info mt35" v-if="state.info.meeting_room_basic_intro">
+          <view class="title mb25">基础会议室</view>
+          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <view class="text">{{ state.info.meeting_room_basic_intro }}</view>
+        </view>
+        <!--  -->
+        <view class="info mt35" v-if="state.info.meeting_room_premium_intro">
+          <view class="title mb25">高级会议室</view>
+          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <view class="text">{{ state.info.meeting_room_premium_intro }}</view>
+        </view>
+        <!--  -->
+        <view class="info mt35" v-if="state.info.office_intro">
+          <view class="title mb25">办公室</view>
+          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <view class="text">{{ state.info.office_intro }}</view>
+        </view>
+        <!--  -->
+        <view class="info mt35" v-if="state.info.showcase_intro">
+          <view class="title mb25">展示柜</view>
+          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <view class="text">{{ state.info.showcase_intro }}</view>
+        </view>
+      </template>
       <!--  -->
-      <view class="info mt35">
-        <view class="title mb25">高级工位</view>
-        <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
-        <view class="text">配备人体工学椅，27寸4k显示器，每个桌面配备插座供电，有贴心的照明系统。</view>
-      </view>
+      <template v-else-if="state.current == 2">
+        <view class="info mt35">
+          <view class="title mb25">交通方式</view>
+          <view class="text">{{ state.info.traffic }}</view>
+        </view>
+        <!--  -->
+        <view class="info mt35">
+          <view class="title mb25">周边停车</view>
+          <view class="text">{{ state.info.parking }}</view>
+        </view>
+        <!--  -->
+        <view class="info mt35">
+          <view class="title mb25">周边餐饮</view>
+          <view class="text">{{ state.info.dining }}</view>
+        </view>
+      </template>
       <!--  -->
-      <view class="info mt35">
-        <view class="title mb25">交通方式</view>
-        <view class="text">大运河地铁站 200m；
-          14路、230路、9路公交车</view>
-      </view>
-      <!--  -->
-      <view class="info mt35">
-        <view class="title mb25">周边停车</view>
-        <view class="text">地下车库，地面车位，5元/小时</view>
-      </view>
-      <!--  -->
-      <view class="info mt35">
-        <view class="title mb25">周边餐饮</view>
-        <view class="text">星巴克、KFC、古茗、外婆家等</view>
-      </view>
     </view>
     <!--  -->
   </view>
@@ -77,34 +106,27 @@ import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
-import User from '/@/api/user';
-const userApi = new User();
+import Space from '/@/api/space';
+const spaceApi = new Space();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
-  state.type = query!.type
-  // getInfo()
+  state.id = query!.id
+  getInfo()
 });
 // 参数
 let list = ['服务', '设施', '周边']
 const state = reactive({
-  type: 0, // 0工位1会议室2办公室3展示柜
-  content: '山不在高，有仙则名。水不在深，有龙则灵。斯是陋室，惟吾德馨。苔痕上阶绿，草色入帘青。谈笑有鸿儒，往来无白丁。可以调素琴，阅金经。无丝竹之乱耳，无案牍之劳形。南阳诸葛庐，西蜀子云亭。孔子云：何陋之有？',
+  id: '', 
+  info: {} as any,
   current: 0,
 })
 const getInfo = () => {
-  // if( state.type == 0 ) {
-  //   userApi.getAgreementsTerms().then((res: any) => {
-  //     // console.log(res);
-  //     state.content = res.data.content
-  //   })
-  // } else if( state.type == 1 ) {
-  //   userApi.getAgreementsPrivacy().then((res: any) => {
-  //     // console.log(res);
-  //     state.content = res.data.content
-  //   })
-  // }
+  spaceApi.getSpaceInfo(state.id).then((res: any) => {
+    console.log(res.data);
+    state.info = res.data
+  })
 }
 </script>
 

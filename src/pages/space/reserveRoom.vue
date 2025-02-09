@@ -41,13 +41,13 @@
     <view class="date mt35">
       <view class="nav flex">
         <text class="title">选择预约时间</text>
-        <text class="text">16:00～18:00  2小时</text>
+        <text class="text" v-if=" state.selectList.length > 1 ">{{ state.timeRange }}  {{ state.selectList[ state.selectList.length - 1 ] - state.selectList[0] }}小时</text>
       </view>
       <!--  -->
       <view class="times">
         <view class="axis mt25 flex" v-for="( titem, tidx ) in spaceTimeArr" :key="tidx">
           <view class="axis-piece" v-for="( stitem, stidx ) in titem" :key="stidx" style="flex: 1;">
-            <text class="pre" :class=" state.alreadyList.includes(stitem.time)  ? 'pre1' :  state.seleceStopList.includes(stitem.time)  ? 'pre2' : state.selectList.includes(stitem.time)  ? 'pre3' : ''  " @click="addSelect(stitem.time)"></text>
+            <text class="pre" :class=" state.alreadyList.includes(stitem.slot)  ? 'pre1' :  state.seleceStopList.includes(stitem.slot)  ? 'pre2' : state.selectList.includes(stitem.slot)  ? 'pre3' : ''  " @click="addSelect(stitem.slot)"></text>
             <text class="time">{{  stidx %2 == 0  ? stitem.time : '' }}</text>
           </view>
         </view>
@@ -80,10 +80,13 @@
           总计 <text class="" style="color: #FF3434;">5.5</text> 小时 权益抵扣 <text class="" style="color: #FF3434;">2</text> 小时
         </view>
       </view>
-      <view class="right" @click="routerTo(`/pages/space/reserveOrder?type=${state.type}`)">
+      <view class="right" @click="() => {
+        operatePopupRef.openDialog('是否提交预约？')
+      }">
         去预约
       </view>
     </view>
+    <operatePopup ref="operatePopupRef" :isType="1" @refresh="submit"></operatePopup>
     <!-- 选择日期 -->
     <u-calendar v-model="state.calendarShow" mode="date" :change-year="false" min-year="2025" :min-date="state.oldDate"  max-date="2025-12-31" @change="calendarChange"></u-calendar>
   </view>
@@ -94,9 +97,10 @@ import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { spaceTimeArr } from '/@/utils/universalArray';
 import { routerTo, showTips } from '/@/utils/currentFun';
+import operatePopup from '/@/components/operatePopup.vue'
 import { useI18n } from 'vue-i18n'
-import User from '/@/api/user';
-const userApi = new User();
+import Space from '/@/api/space';
+const spaceApi = new Space();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
@@ -105,18 +109,25 @@ onLoad((query?: AnyObject | undefined): void => {
     title: query!.type == '0' ? '预定工位' : '预定会议室'
   });
   state.type = query!.type
+  state.sid = query!.sid
+  state.id = query!.id
   getInfo()
+  // 获取时间限制范围
   state.date = new Date(new Date()).toISOString().split('T')[0]
   state.oldDate = new Date(new Date()).toISOString().split('T')[0]
+  getSpaceMeetingRoomsTimes()
 });
 // 参数
 const state = reactive({
-  type: 0, // 
+  type: 0, // 类型
+  sid: '', // 空间id
+  id: '', // 单id
   date: '',
   oldDate: '',
-  alreadyList: [ '00:00', '01:00', '03:00', '03:30', '04:00', '12:00', '15:30', '22:00', '22:30'], // 已预约
-  seleceStopList: [ '02:00', '06:00', '06:30', '07:00', '10:00'], // 不可预约
-  selectList: [] as string[], // 预约
+  timeRange: '', // 时间范围
+  alreadyList: [] as any[], // 已预约
+  seleceStopList: [] as any[], // 不可预约
+  selectList: [] as any[], // 预约
   calendarShow: false,
 })
 const getInfo = () => {
@@ -135,24 +146,79 @@ const getInfo = () => {
 // 选择日期结束
 const calendarChange = (e: any) => {
   console.log(e);
-  
+  state.date = e.result
+  state.selectList = []
+  state.timeRange = ''
+  getSpaceMeetingRoomsTimes()
 }
 // 选择时间段
-const addSelect = (time: string) => {
+const addSelect = (slot: number) => {
   // 先判断是不是已预约、不可预约
-  let already1 = state.seleceStopList.includes(time)
-  let already2 = state.alreadyList.includes(time)
+  let already1 = state.seleceStopList.includes(slot)
+  let already2 = state.alreadyList.includes(slot)
+  let dateArr = JSON.parse(JSON.stringify(state.selectList))
   if( !already1 && !already2 ) {
-    console.log(time)
     // 在判断是不是在预约数组里，在的话删除
-    let idx = state.selectList.findIndex((item: string) => item == time)
-    console.log(idx);
+    let idx = state.selectList.findIndex((item: number) => item == slot)
     if( idx == -1 ) {
-      state.selectList.push(time)
+      dateArr.push(slot)
     } else {
-      state.selectList.splice(idx, 1)
+      dateArr.splice(idx, 1)
     }
     
+  }
+  // 重新排序
+  state.selectList = dateArr.sort((a: number, b: number) => a - b);
+  // console.log(state.selectList);
+  state.timeRange = ''
+  // 获取时间范围
+  if( state.selectList.length <= 1 ) return;
+  for( let i of spaceTimeArr ) {
+    for( let k of i ) {
+      if( k.slot == state.selectList[0] ) {
+        state.timeRange += k.time
+      }
+      if( k.slot == state.selectList[state.selectList.length-1] ) {
+        state.timeRange += `~${k.time}`
+      }
+    }
+  }
+}
+// 获取可预约的时间
+const getSpaceMeetingRoomsTimes = () => {
+  spaceApi.getSpaceMeetingRoomsTimes(state.id, {
+    date : state.date,
+  }).then((res: any) => {
+    console.log(res.data);
+    /***
+     * available - 可预约的时间段
+       booked - 已被其他用户预约
+       my_booked - 已被当前用户预约
+       past - 已过去的时间段
+     */
+    for( let i of res.data.
+    time_slots ) {
+      if( i.status == 'my_booked' ) {
+        state.alreadyList.push(i.slot)
+      } else if( i.status == 'past' || i.status == 'booked' )  {
+        state.seleceStopList.push(i.slot)
+      }
+    }
+  })
+}
+// 
+const operatePopupRef = ref()
+const submit = (show: boolean) => {
+  if( show ) {
+    spaceApi.getSpaceWorkspacesAdd({
+      space_id: state.sid,
+      workspace_id: state.id,
+      booking_date: state.date,
+      slots: state.selectList,
+      use_rights: true,
+    }).then((res: any) => {
+      routerTo(`/pages/space/reserveOrder?type=${state.type}&sid=${state.sid}&id=${state.id}`)
+    })
   }
 }
 </script>

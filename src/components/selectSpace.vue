@@ -1,34 +1,19 @@
 <template>
-  <u-popup v-model="state.isShow" mode="bottom" border-radius="20" width="630" length="500px">
+  <u-popup v-model="state.isShow" mode="bottom" border-radius="20" width="630" length="500px" :mask-close-able="false">
     <view class="popup p0-35">
       <view class="title">
         选择空间
       </view>
       <scroll-view class="form" :scroll-top="0" scroll-y="true">
-        <view class="li flex mb25 pb25">
+        <view class="li flex mb25 pb25" v-for=" item in spaceList " :key="item.id">
           <view class="left flex">
-            <image class="icon mr25" src="/@/static/addHead.png"></image>
-            <text class="text">xxxxx空间</text>
+            <image class="icon mr25" src="/@/static/logo.png"></image>
+            <text class="text">{{ item.name }}</text>
           </view>
-          <image class="select" src="/@/static/selectIcon.png" v-if=" state.id == 'wxpay' "></image>
-          <image class="select" src="/@/static/select.png" v-else @click="state.id = 'wxpay'"></image>
+          <image class="select" src="/@/static/selectIcon.png" v-if=" state.id == item.id "></image>
+          <image class="select" src="/@/static/select.png" v-else @click="state.id = item.id"></image>
         </view>
-        <view class="li flex mb25 pb25">
-          <view class="left flex">
-            <image class="icon mr25" src="/@/static/addHead.png"></image>
-            <text class="text">xxxxx空间</text>
-          </view>
-          <image class="select" src="/@/static/selectIcon.png" v-if=" state.id == 'alipay' "></image>
-          <image class="select" src="/@/static/select.png" v-else @click="state.id = 'alipay'"></image>
-        </view>
-        <view class="li flex">
-          <view class="left flex">
-            <image class="icon mr25" src="/@/static/addHead.png"></image>
-            <text class="text">xxxxx空间</text>
-          </view>
-          <image class="select" src="/@/static/selectIcon.png" v-if=" state.id == 'stripe' "></image>
-          <image class="select" src="/@/static/select.png" v-else @click="state.id = 'stripe'"></image>
-        </view>
+        
       </scroll-view>
       <view class="footerPopup p0-35">
         <view class="btn" @click="sumbit(true)">确认</view>
@@ -44,15 +29,17 @@ import { showTips } from '../utils/currentFun';
 const { t } = useI18n()
 
 // 参数
+const spaceList = ref([] as any)
 const state = reactive({
   isShow: false, // 
   id: '', // 
   provider: '', // 支付环境
 })
 // 打开弹窗
-const openDialog = (id:string) => {
+const openDialog = (id:string, list: []) => {
   // console.log(rows)
   state.id = id 
+  spaceList.value = list
   state.isShow = true;
 };
 defineExpose({ openDialog });
