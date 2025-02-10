@@ -41,13 +41,13 @@
     <view class="date mt35">
       <view class="nav flex">
         <text class="title">选择预约时间</text>
-        <text class="text" v-if=" state.selectList.length > 1 ">{{ state.timeRange }}  {{ state.selectList[ state.selectList.length - 1 ] - state.selectList[0] }}小时</text>
+        <text class="text" v-if=" state.selectList.length ">{{ state.timeRange }}  {{ state.hourCount }}小时</text>
       </view>
       <!--  -->
       <view class="times">
         <view class="axis mt25 flex" v-for="( titem, tidx ) in spaceTimeArr" :key="tidx">
           <view class="axis-piece" v-for="( stitem, stidx ) in titem" :key="stidx" style="flex: 1;">
-            <text class="pre" :class=" state.alreadyList.includes(stitem.slot)  ? 'pre1' :  state.seleceStopList.includes(stitem.slot)  ? 'pre2' : state.selectList.includes(stitem.slot)  ? 'pre3' : ''  " @click="addSelect(stitem.slot)"></text>
+            <text class="pre" :class=" state.alreadyList.includes(stitem.slot)  ? 'pre1' :  state.seleceStopList.includes(stitem.slot)  ? 'pre2' : state.selectList.includes(stitem.slot)  ? 'pre3' : ''  " @click="addSelect(stitem.slot, stitem.time)"></text>
             <text class="time">{{  stidx %2 == 0  ? stitem.time : '' }}</text>
           </view>
         </view>
@@ -73,11 +73,12 @@
       <view class="left">
         <view class="price">
           <text class="text">总计：</text>
-          <text class="num">¥300</text>
+          <text class="num">¥{{ state.price }}</text>
           
         </view>
+        <!--  -->
         <view class="tips mt10">
-          总计 <text class="" style="color: #FF3434;">5.5</text> 小时 权益抵扣 <text class="" style="color: #FF3434;">2</text> 小时
+          总计 <text class="" style="color: #FF3434;">{{ state.hourCount  }}</text> 小时 权益抵扣 <text class="" style="color: #FF3434;">2</text> 小时
         </view>
       </view>
       <view class="right" @click="() => {
@@ -128,7 +129,10 @@ const state = reactive({
   alreadyList: [] as any[], // 已预约
   seleceStopList: [] as any[], // 不可预约
   selectList: [] as any[], // 预约
+  selectDateList: [] as any[], // 预约时间
   calendarShow: false,
+  price: 0, // 价格
+  hourCount: 0,
 })
 const getInfo = () => {
   // if( state.type == 0 ) {
@@ -148,48 +152,55 @@ const calendarChange = (e: any) => {
   console.log(e);
   state.date = e.result
   state.selectList = []
+  state.selectDateList = []
   state.timeRange = ''
+  state.price = 0
+  state.hourCount = 0
   getSpaceMeetingRoomsTimes()
 }
 // 选择时间段
-const addSelect = (slot: number) => {
+const addSelect = (slot: number, time: string) => {
   // 先判断是不是已预约、不可预约
   let already1 = state.seleceStopList.includes(slot)
   let already2 = state.alreadyList.includes(slot)
-  let dateArr = JSON.parse(JSON.stringify(state.selectList))
+  let dateSlotArr = JSON.parse(JSON.stringify(state.selectList))
+  let dateArr = JSON.parse(JSON.stringify(state.selectDateList))
   if( !already1 && !already2 ) {
     // 在判断是不是在预约数组里，在的话删除
     let idx = state.selectList.findIndex((item: number) => item == slot)
     if( idx == -1 ) {
-      dateArr.push(slot)
+      dateSlotArr.push(slot)
+      dateArr.push(time)
+
     } else {
+      dateSlotArr.splice(idx, 1)
       dateArr.splice(idx, 1)
     }
     
   }
   // 重新排序
-  state.selectList = dateArr.sort((a: number, b: number) => a - b);
+  state.selectList = dateSlotArr.sort((a: number, b: number) => a - b);
   // console.log(state.selectList);
-  state.timeRange = ''
-  // 获取时间范围
-  if( state.selectList.length <= 1 ) return;
-  for( let i of spaceTimeArr ) {
-    for( let k of i ) {
-      if( k.slot == state.selectList[0] ) {
-        state.timeRange += k.time
-      }
-      if( k.slot == state.selectList[state.selectList.length-1] ) {
-        state.timeRange += `~${k.time}`
-      }
+  state.selectDateList = dateArr.sort((a: string, b: string) => {
+    let timeA = a.split(':').map(Number); // 将时间分割并转换为数字数组
+    let timeB = b.split(':').map(Number);
+    if (timeA[0] !== timeB[0]) {
+      return timeA[0] - timeB[0];
+    } else if (timeA[1] !== timeB[1]) {
+      return timeA[1] - timeB[1];
     }
-  }
+  });
+  // 获取时间范围
+  state.hourCount = state.selectList.length <= 1 ? 0.5 : state.selectList.length / 2
+  state.timeRange = state.selectList.length <= 1 ? state.selectDateList[0] : `${state.selectDateList[0]} ~ ${state.selectDateList[state.selectDateList.length-1]}`
+  state.price = state.hourCount * 90
 }
 // 获取可预约的时间
 const getSpaceMeetingRoomsTimes = () => {
   spaceApi.getSpaceMeetingRoomsTimes(state.id, {
     date : state.date,
   }).then((res: any) => {
-    console.log(res.data);
+    // console.log(res.data);
     /***
      * available - 可预约的时间段
        booked - 已被其他用户预约
