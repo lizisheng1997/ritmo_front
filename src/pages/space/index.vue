@@ -96,7 +96,7 @@
                   </view>
                 </view>
               </view>
-              <view class="right" @click="routerTo(`/pages/space/reserveRoom?type=0&sid=${state.id}&id=${item.id}`)">
+              <view class="right" @click="routerTo(`/pages/space/reserveRoom?type=0&sid=${state.id}&id=${item.id}&data=${weekDayList.find((item) => item.day == state.day).date}`)">
                 预定
               </view>
             </view>

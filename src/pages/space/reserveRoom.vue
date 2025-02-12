@@ -117,7 +117,7 @@ onLoad((query?: AnyObject | undefined): void => {
   state.sid = query!.sid
   state.id = query!.id
   // 获取时间限制范围
-  state.date = new Date(new Date()).toISOString().split('T')[0]
+  state.date = query!.data
   state.oldDate = new Date(new Date()).toISOString().split('T')[0]
   getSpaceMeetingRoomsTimes()
   getInfo()
