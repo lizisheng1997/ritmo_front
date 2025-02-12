@@ -83,6 +83,8 @@ import { reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
+import Space from '/@/api/space';
+const spaceApi = new Space();
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
@@ -90,14 +92,34 @@ onLoad((query?: AnyObject | undefined): void => {
     title: query!.type == '0' ? '预定工位' : '预定会议室'
   });
   state.type = query!.type
+  state.sid = query!.sid
+  state.id = query!.id
+  getInfo()
 });
 // 参数
 const state = reactive({
   type: 0, // 
+  sid: '', // 空间id
+  id: '', // 单id
   phone: '', // 手机号
   select: false, // 
   image: '',
 })
+const getInfo = () => {
+  if( state.type == 0 ) {
+    spaceApi.getSpaceMeetingWorkspacesBook(state.sid, {
+      booking_id: state.id
+    }).then((res: any) => {
+      console.log(res.data);
+    })
+  } else if( state.type == 1 ) {
+    spaceApi.getSpaceMeetingRoomsBook(state.id, {
+      booking_id: state.sid
+    }).then((res: any) => {
+      console.log(res.data);
+    })
+  }
+}
 </script>
 
 <style >

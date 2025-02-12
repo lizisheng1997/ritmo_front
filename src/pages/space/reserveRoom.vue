@@ -2,20 +2,20 @@
   <view class="content ">
     <view class="station pb25">
       <view class="list">
-        <view class="li p20-0">
+        <view class="li p20-0" v-if="state.info">
           <view class="room flex">
             <view class="left flex" @click="routerTo(`/pages/space/details?type=1`)">
               <view class="banner mr20">
-                <image class="imageW100" src="http://47.116.190.37:8002/static/addHead.png"></image>
+                <image class="imageW100" :src="state.info.image_url"></image>
               </view>
               <view class="info">
-                <view class="name mb10">001会议室</view>
-                <view class="text">
-                  wifi ｜ 显示器
+                <view class="name mb10">{{ state.info.name }}</view>
+                <view class="text" v-if="state.info.services">
+                  {{ state.info.services[0].name }} ｜  {{ state.info.services[1].name }}...
                 </view>
                 <view class="text mt5">
-                  ¥15.5/30分钟起
-                  <text class="icon ml20 icon1">高级</text>
+                  ¥{{ state.info.price }}/30分钟起
+                  <text class="icon ml20">{{ state.info.level == 1 ? '初级' : '高级' }}</text>
                 </view>
               </view>
             </view>
@@ -82,7 +82,11 @@
         </view>
       </view>
       <view class="right" @click="() => {
-        operatePopupRef.openDialog('是否提交预约？')
+        if( state.hourCount == 0 ) {
+          showTips('请选择')
+        } else {
+          operatePopupRef.openDialog('是否提交预约？')
+        }
       }">
         去预约
       </view>
@@ -112,11 +116,11 @@ onLoad((query?: AnyObject | undefined): void => {
   state.type = query!.type
   state.sid = query!.sid
   state.id = query!.id
-  getInfo()
   // 获取时间限制范围
   state.date = new Date(new Date()).toISOString().split('T')[0]
   state.oldDate = new Date(new Date()).toISOString().split('T')[0]
   getSpaceMeetingRoomsTimes()
+  getInfo()
 });
 // 参数
 const state = reactive({
@@ -133,19 +137,22 @@ const state = reactive({
   calendarShow: false,
   price: 0, // 价格
   hourCount: 0,
+  info: {} as any,
 })
 const getInfo = () => {
-  // if( state.type == 0 ) {
-  //   userApi.getAgreementsTerms().then((res: any) => {
-  //     // console.log(res);
-  //     state.content = res.data.content
-  //   })
-  // } else if( state.type == 1 ) {
-  //   userApi.getAgreementsPrivacy().then((res: any) => {
-  //     // console.log(res);
-  //     state.content = res.data.content
-  //   })
-  // }
+  if( state.type == 0 ) {
+    spaceApi.getSpaceMeetingWorkspacesDetails(state.sid, state.id).then((res: any) => {
+      // console.log(res);
+      state.info = res.data
+    })
+  } else if( state.type == 1 ) {
+    spaceApi.getSpaceMeetingRoomsDetails( state.id, {
+      space_id: state.sid
+    }).then((res: any) => {
+      // console.log(res);
+      state.info = res.data
+    })
+  }
 }
 // 选择日期结束
 const calendarChange = (e: any) => {
@@ -193,7 +200,7 @@ const addSelect = (slot: number, time: string) => {
   // 获取时间范围
   state.hourCount = state.selectList.length <= 1 ? 0.5 : state.selectList.length / 2
   state.timeRange = state.selectList.length <= 1 ? state.selectDateList[0] : `${state.selectDateList[0]} ~ ${state.selectDateList[state.selectDateList.length-1]}`
-  state.price = state.hourCount * 90
+  state.price = state.hourCount * state.info.price
 }
 // 获取可预约的时间
 const getSpaceMeetingRoomsTimes = () => {
@@ -221,15 +228,29 @@ const getSpaceMeetingRoomsTimes = () => {
 const operatePopupRef = ref()
 const submit = (show: boolean) => {
   if( show ) {
-    spaceApi.getSpaceWorkspacesAdd({
-      space_id: state.sid,
-      workspace_id: state.id,
-      booking_date: state.date,
-      slots: state.selectList,
-      use_rights: true,
-    }).then((res: any) => {
-      routerTo(`/pages/space/reserveOrder?type=${state.type}&sid=${state.sid}&id=${state.id}`)
-    })
+    if( state.type == 0 ) {
+      spaceApi.getSpaceWorkspacesAdd({
+        space_id: state.sid,
+        workspace_id: state.id,
+        booking_date: state.date,
+        slots: state.selectList,
+        use_rights: true,
+      }).then((res: any) => {
+        routerTo(`/pages/space/reserveOrder?type=${state.type}&sid=${state.sid}&id=${res.data.id}`)
+      })
+    } else if( state.type == 1 ) {
+
+      spaceApi.getSpaceWorkRoomAdd({
+        space_id: state.sid,
+        meeting_room_id: state.id,
+        booking_date: state.date,
+        slots: state.selectList,
+        attendees: state.info.capacity,
+        use_rights: true,
+      }).then((res: any) => {
+        routerTo(`/pages/space/reserveOrder?type=${state.type}&sid=${state.sid}&id=${res.data.id}`)
+      })
+    }
   }
 }
 </script>
@@ -293,9 +314,6 @@ page {
                   font-weight: 500;
                   color: #ffffff;
                   vertical-align: middle;
-                }
-                .icon1 {
-                  background-color: #ED9E05;
                 }
               }
             }

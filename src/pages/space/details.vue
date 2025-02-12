@@ -3,59 +3,35 @@
     <view class="back" @click="routerBack(1)">
       <image class="icon" src="/@/static/iconLeftBlack.png"></image>
     </view>
-    <swiper class="swiper" circular indicator-dots autoplay >
-      <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </swiper-item>
-      <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </swiper-item>
-      <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </swiper-item>
-    </swiper>
+    <view class="banner" >
+      <image class="imageW100" :src="state.banner"></image>
+    </view>
     <!--  -->
-    <view class="center p35">
-      <view class="name">A001工位</view>
-      <view class="grade mt15">初级</view>
+    <view class="name">{{ state.name }}</view>
+    <view class="center p0-35">
+      <view class="grade mt15" v-if="state.type <= 1">{{ state.level == 1 ? '初级' : '高级' }}</view>
       <view class="fub mt25">
-        会议室采用了先进的音视频设备，确保与会者能够更清晰地听到发言者的声音，同时也方便远程参会者参与。大屏幕投影仪和白板设备则让会议更加直观和高效。
+        {{ state.description }}
       </view>
       <view class="brief mt25">
         <text class="label">所属区域：</text>
-        初级会员区域
+        {{ state.area }}区域
       </view>
       <view class="brief mt25" v-if="state.type == 1 || state.type == 2">
         <text class="label">容纳人数：</text>
-        4-8人
+        {{ state.capacity }}人
       </view>
 
       <view class="brief mt25" v-if="state.type != 2">
         <text class="label">租赁价格：</text>
-        ¥20元/30分钟起租
+        ¥{{ state.price }}元/30分钟起租
       </view>
       <view class="line m35-0"></view>
       <!--  -->
       <view class="cards">
-        <view class="card m10">
-          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-          <view class="text">WIFI</view>
-        </view>
-        <view class="card m10">
-          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-          <view class="text">WIFI</view>
-        </view>
-        <view class="card m10">
-          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-          <view class="text">WIFI</view>
-        </view>
-        <view class="card m10">
-          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-          <view class="text">WIFI</view>
-        </view>
-        <view class="card m10">
-          <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
-          <view class="text">WIFI</view>
+        <view class="card m10" v-for="(item, index) in state.services" :key="index">
+          <image class="icon mt15" :src="item.icon"></image>
+          <view class="text">{{ item.name }}</view>
         </view>
       </view>
     </view>
@@ -68,32 +44,55 @@ import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
-import User from '/@/api/user';
-const userApi = new User();
+import Space from '/@/api/space';
+const spaceApi = new Space();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   state.type = query!.type
-  // getInfo()
+  state.id = query!.id
+  state.sid = query!.sid
+  getInfo()
 });
 // 参数
 const state = reactive({
   type: 0, // 0工位1会议室2办公室3展示柜
-  content: '',
+  id: '',
+  sid: '',
+  banner: '',
+  services: [] as any[],
+  name: '',
+  area: '',
+  description: '',
+  price: 0,
+  level: 1,
+  capacity: 1,
 })
 const getInfo = () => {
-  // if( state.type == 0 ) {
-  //   userApi.getAgreementsTerms().then((res: any) => {
-  //     // console.log(res);
-  //     state.content = res.data.content
-  //   })
-  // } else if( state.type == 1 ) {
-  //   userApi.getAgreementsPrivacy().then((res: any) => {
-  //     // console.log(res);
-  //     state.content = res.data.content
-  //   })
-  // }
+  if( state.type == 0 ) {
+    spaceApi.getSpaceMeetingWorkspacesDetails(state.sid, state.id).then((res: any) => {
+      // console.log(res.data.image_url);
+      details(res.data)
+    })
+  } else if( state.type == 1 ) {
+    spaceApi.getSpaceMeetingRoomsDetails( state.id, {
+      space_id: state.sid
+    }).then((res: any) => {
+      // console.log(res.data);
+      details(res.data)
+      state.capacity = res.data.capacity
+    })
+  }
+}
+const details = (obj: any) => {
+  state.banner = obj.image_url
+  state.services = obj.services
+  state.name = obj.name
+  state.description = obj.description
+  state.area = obj.area_name
+  state.price = obj.price
+  state.level = obj.level
 }
 </script>
 
@@ -123,23 +122,24 @@ page {
       height: 48rpx;
     }
   }
-  .swiper{
+  .banner{
     height: 480rpx;
-    .uni-swiper-wrapper {
-      .uni-swiper-slides {
-        width: 100%;
-        height: 100%;
-      }
-    }
+  }
+  .name {
+    margin-top: -88rpx;
+    padding: 0 35rpx 0 ;
+    font-size: 36rpx;
+    font-weight: 600;
+    line-height: 88rpx;
+    color: #232322;
+    background-color: #F1F1EF;
+    border-radius: 25rpx 25rpx 0 0;
+    z-index: 9999;
+    position: relative;
+    opacity: 0.8;
   }
   .center {
     
-    .name {
-      font-size: 36rpx;
-      font-weight: 600;
-      line-height: 48rpx;
-      color: #232322;
-    }
     .grade {
       display: inline-block;
       width: 46rpx;

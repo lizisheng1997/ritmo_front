@@ -49,7 +49,7 @@
       </view>
     </view>
     <!--  -->
-    <view class="p0-35">
+    <view class="p0-35" style="background-color: #ffffff;">
       <view class="filter flex pt35">
         <template v-if="state.tabsIdx <= 1">
           <view class="grade p0-25 mr15 " :class=" state.gradeIdx == 1 ? 'gradeAct' : '' " @click="() => {
@@ -84,7 +84,7 @@
         <view class="list" v-for="item in productList" :key="item.id">
           <view class="li mt20 p20-0">
             <view class="room flex">
-              <view class="left flex" @click="routerTo(`/pages/space/details?type=${state.tabsIdx}`)">
+              <view class="left flex" @click="routerTo(`/pages/space/details?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}`)">
                 <view class="number mr20">{{ item.name }}</view>
                 <view class="info">
                   <view class="text">
@@ -183,8 +183,8 @@ onLoad(() => {
   // console.log(arr);
   getSpaceList(1)
 })
-// 参数
-const tabsList = ref([ { name: '工位', key: 0 }, { name: '会议室', key: 1 }, { name: '办公室', key: 2 }, { name: '展示柜', key: 3 },  ])
+// 参数, { name: '办公室', key: 2 }, { name: '展示柜', key: 3 },
+const tabsList = ref([ { name: '工位', key: 0 }, { name: '会议室', key: 1 }  ])
 const weekDayList = ref([] as any[])
 const spaceList = ref([] as any) // 空间列表
 const productList = ref([] as any) // 
@@ -270,18 +270,22 @@ const getAllList = () => {
     spaceApi.getSpaceWorkspaces(state.id, {
       level: state.gradeIdx,
       area_name: '',
-      moon: weekDayList.value.find((item) => item.day == state.day).date
+      date: weekDayList.value.find((item) => item.day == state.day).date
     }).then((res: any) => {
       console.log(res.data);
       productList.value = res.data
     })
   } else if( state.tabsIdx == 1 ) {
-    spaceApi.getSpaceMeetingRooms(state.id, {
+    spaceApi.getSpaceMeetingRooms({
+      space_id: state.id,
       level: state.gradeIdx,
       area_name: '',
+      date: weekDayList.value.find((item) => item.day == state.day).date,
+      page: 1,
+      page_size: 99,
     }).then((res: any) => {
       console.log(res.data);
-      productList.value = res.data
+      productList.value = res.data.items
     })
   } else if( state.tabsIdx == 2 ) {
     
@@ -291,11 +295,6 @@ const getAllList = () => {
 }
 </script>
 
-<style >
-page {
-  background-color: #ffffff;
-}
-</style>
 <style lang="scss" scoped>
 .content {
   .introduce {
@@ -471,18 +470,19 @@ page {
               text-align: center;
             }
             .info {
+              width: calc( 100% - 160rpx );
               .name {
                 font-size: 28rpx;
                 font-weight: 600;
                 line-height: 32rpx;
                 color: #232322;
-
               }
               .text {
                 font-size: 24rpx;
                 font-weight: 400;
                 line-height: 28rpx;
                 color: #232322;
+                word-break:break-all;
                 .icon {
                   display: inline-block;
                   width: 46rpx;
