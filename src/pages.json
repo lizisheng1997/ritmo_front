@@ -266,12 +266,12 @@
         "selectedIconPath": "static/tabbar/space1.png",
         "text": "空间"
       },			
-      {
-        "pagePath": "pages/community/index",
-        "iconPath": "static/tabbar/community.png",
-        "selectedIconPath": "static/tabbar/community1.png",		
-        "text": "社区"
-      },			
+      // {
+      //   "pagePath": "pages/community/index",
+      //   "iconPath": "static/tabbar/community.png",
+      //   "selectedIconPath": "static/tabbar/community1.png",		
+      //   "text": "社区"
+      // },			
       {
         "pagePath": "pages/user/index",
         "iconPath": "static/tabbar/user.png",

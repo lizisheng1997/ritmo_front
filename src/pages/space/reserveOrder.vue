@@ -1,36 +1,36 @@
 <template>
-  <view class="content">
+  <view class="content" v-if="state.info">
     <!--  -->
     <view class="card p35">
-      <view class="count flex p0-55">
-        <text class="num">09:00</text>
+      <view class="count flex p0-5">
+        <text class="num">{{ state.info.start_time }}</text>
         <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
-        <text class="num">10:00</text>
+        <text class="num">{{ state.info.end_time }}</text>
       </view>
-      <view class="fub">5月17日 周二</view>
-      <view class="title mt35">杭州· 华润万象空间</view>
-      <view class="rows flex mt35">
+      <!-- <view class="fub">{{ state.info.booking_date }} </view> -->
+      <view class="title mt55">{{ state.info.booking_date }}</view>
+      <view class="rows flex mt45" v-if="state.spaceInfo">
         <view class="item">
           <view class="label mb15">所属区域</view>
-          <view class="text">初级会员区</view>
+          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}会员区域</view>
         </view>
         <view class="item">
           <view class="label mb15">工位号</view>
-          <view class="text">A234</view>
+          <view class="text">{{ state.spaceInfo.name }}</view>
         </view>
         <view class="item">
           <view class="label mb15">会议室类型</view>
-          <view class="text">高级</view>
+          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}</view>
         </view>
       </view>
       <view class="info">
         <view class="li flex mt25">
           <text class="label">预约人：</text>
-          <text class="text">段誉</text>
+          <text class="text">{{ state.nickname }}</text>
         </view>
         <view class="li flex mt25">
           <text class="label">成员id：</text>
-          <text class="text">3332221212</text>
+          <text class="text">{{ state.userId }}</text>
         </view>
       </view>
     </view>
@@ -40,37 +40,30 @@
         订单明细
       </view>
       <view class="expansion mb10 flex">
-        <view class="text">工位预约</view>
-        <view class="price">¥3000</view>
+        <view class="text">实付金额</view>
+        <view class="price">¥{{ state.info.amount }}</view>
       </view>
-      <view class="count">
-        × 5.5h
-      </view>
+      <!-- <view class="count">
+        × {{ state.info.rights_hours }}h
+      </view> -->
       <view class="expansion mb10 flex mt45">
         <view class="text">权益抵扣</view>
-        <view class="price" style="color: #FF3434;">-¥75</view>
+        <view class="price" style="color: #FF3434;">{{ state.info.rights_hours }}h</view>
       </view>
-      <view class="count">
+      <!-- <view class="count">
         × 5.5h
-      </view>
-      <view class="all">
-        总计
-        <text class="">¥3000</text>
-      </view>
+      </view> -->
     </view>
     <!--  -->
     <view class="footer flex">
       <view class="left">
         <view class="price">
           <text class="text">总计：</text>
-          <text class="num">¥300</text>
+          <text class="num">¥{{ state.info.amount }}</text>
           
         </view>
-        <view class="tips mt10">
-          总计 <text class="" style="color: #FF3434;">5.5</text> 小时 权益抵扣 <text class="" style="color: #FF3434;">2</text> 小时
-        </view>
       </view>
-      <view class="right" @click="routerTo(`/pages/space/reserveOrder?type=${state.type}`)">
+      <view class="right">
         确认预约
       </view>
     </view>
@@ -81,9 +74,12 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
+import { spaceLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
+import { useUserStore } from '/@/store/modules/user';
 import Space from '/@/api/space';
+const { t } = useI18n()
+const user = useUserStore();
 const spaceApi = new Space();
 
 onLoad((query?: AnyObject | undefined): void => {
@@ -93,7 +89,10 @@ onLoad((query?: AnyObject | undefined): void => {
   });
   state.type = query!.type
   state.sid = query!.sid
-  state.id = query!.id
+  state.id = query!.id 
+  console.log('-------------', );
+  state.userId = uni.getStorageSync('userInfos').id 
+  state.nickname = uni.getStorageSync('userInfos').nickname
   getInfo()
 });
 // 参数
@@ -101,22 +100,27 @@ const state = reactive({
   type: 0, // 
   sid: '', // 空间id
   id: '', // 单id
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+  info: {} as any, // 
+  spaceInfo: {} as any,
+  userId: '',
+  nickname: '',
 })
 const getInfo = () => {
   if( state.type == 0 ) {
-    spaceApi.getSpaceMeetingWorkspacesBook(state.sid, {
-      booking_id: state.id
+    spaceApi.getSpaceMeetingWorkspacesBook(state.id, {
+      space_id: state.sid
     }).then((res: any) => {
       console.log(res.data);
+      state.info = res.data
+      state.spaceInfo = res.data.workspace
     })
   } else if( state.type == 1 ) {
     spaceApi.getSpaceMeetingRoomsBook(state.id, {
       booking_id: state.sid
     }).then((res: any) => {
       console.log(res.data);
+      state.info = res.data
+      state.spaceInfo = res.data.meeting_room
     })
   }
 }
@@ -247,18 +251,6 @@ page {
       line-height: 36rpx;
       color: #898784;
     }
-    .all {
-      margin-top: 45rpx;
-      padding-top: 35rpx;
-      border-top: 1PX dashed #D7D4CF;
-      text-align: right;
-      font-size: 28rpx;
-      font-weight: 400;
-      color: #232322;
-      text {
-        font-weight: 600;
-      }
-    }
   }
 }
 .footer {
@@ -276,7 +268,7 @@ page {
         display: inline-block;
         font-size: 28rpx;
         font-weight: 400;
-        line-height: 40rpx;
+        line-height: 80rpx;
         color: #232322;
       }
       .num {
@@ -285,12 +277,6 @@ page {
         line-height: 52rpx;
         color: #FF3434;
       }
-    }
-    .tips {
-      font-size: 24rpx;
-      font-weight: 400;
-      line-height: 28rpx;
-      color: #898784;
     }
   }
   .right {

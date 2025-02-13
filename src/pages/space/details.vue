@@ -9,13 +9,13 @@
     <!--  -->
     <view class="name">{{ state.name }}</view>
     <view class="center p0-35">
-      <view class="grade mt15" v-if="state.type <= 1">{{ state.level == 1 ? '初级' : '高级' }}</view>
+      <view class="grade mt15" v-if="state.type <= 1">{{ spaceLevelEnums[state.level] }}</view>
       <view class="fub mt25">
         {{ state.description }}
       </view>
       <view class="brief mt25">
         <text class="label">所属区域：</text>
-        {{ state.area }}区域
+        {{ state.area }}会员区域
       </view>
       <view class="brief mt25" v-if="state.type == 1 || state.type == 2">
         <text class="label">容纳人数：</text>
@@ -43,6 +43,7 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
+import { spaceLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import Space from '/@/api/space';
 const spaceApi = new Space();

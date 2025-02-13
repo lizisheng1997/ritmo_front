@@ -87,7 +87,7 @@ export default class Space extends Request {
   // 会议室订单详情
   getSpaceMeetingRoomsBook( id: string, data: object) {
     return this.get({
-      url: `/v1/booking/meeting-rooms//${id}`,
+      url: `/v1/booking/meeting-rooms/${id}`, 
       data
     });
   }

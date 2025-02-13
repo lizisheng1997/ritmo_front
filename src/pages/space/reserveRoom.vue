@@ -15,7 +15,7 @@
                 </view>
                 <view class="text mt5">
                   ¥{{ state.info.price }}/30分钟起
-                  <text class="icon ml20">{{ state.info.level == 1 ? '初级' : '高级' }}</text>
+                  <text class="icon ml20">{{ spaceLevelEnums[state.info.level] }}</text>
                 </view>
               </view>
             </view>
@@ -78,7 +78,8 @@
         </view>
         <!--  -->
         <view class="tips mt10">
-          总计 <text class="" style="color: #FF3434;">{{ state.hourCount  }}</text> 小时 权益抵扣 <text class="" style="color: #FF3434;">2</text> 小时
+          共计 <text class="" style="color: #FF3434;">{{ state.hourCount  }}</text> 小时
+           <!-- 权益抵扣 <text class="" style="color: #FF3434;">2</text> 小时 -->
         </view>
       </view>
       <view class="right" @click="() => {
@@ -102,6 +103,7 @@ import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { spaceTimeArr } from '/@/utils/universalArray';
 import { routerTo, showTips } from '/@/utils/currentFun';
+import { spaceLevelEnums } from '/@/utils/enums'
 import operatePopup from '/@/components/operatePopup.vue'
 import { useI18n } from 'vue-i18n'
 import Space from '/@/api/space';
