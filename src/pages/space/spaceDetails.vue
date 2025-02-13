@@ -4,18 +4,14 @@
       <image class="icon" src="/@/static/iconLeftBlack.png"></image>
     </view>
     <swiper class="swiper" circular indicator-dots autoplay >
-      <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </swiper-item>
-      <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </swiper-item>
-      <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </swiper-item>
+      <template v-for="(item, index) in state.info.images" :key="index">
+        <swiper-item v-if=" state.info.images >= 4 ? index <= 4 : index <= state.info.images.length -1 ">
+          <image class="imageW100" :src="item"></image>
+        </swiper-item>
+      </template>
     </swiper>
     <!--  -->
-    <view class="album pl5" @click="routerTo('/pages/space/album')">
+    <view class="album pl5" @click="routerTo(`/pages/space/album?id=${state.id}`)">
       相册
       <image class="icon" src="http://47.116.190.37:8002/static/iconLeftW.png"> </image>
     </view>
@@ -44,37 +40,37 @@
       <template v-else-if="state.current == 1">
         <view class="info mt35" v-if="state.info.workspace_basic_intro">
           <view class="title mb25">初级工位</view>
-          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
           <view class="text">{{ state.info.workspace_basic_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.workspace_premium_intro">
           <view class="title mb25">高级工位</view>
-          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
           <view class="text">{{ state.info.workspace_premium_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.meeting_room_basic_intro">
           <view class="title mb25">基础会议室</view>
-          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
           <view class="text">{{ state.info.meeting_room_basic_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.meeting_room_premium_intro">
           <view class="title mb25">高级会议室</view>
-          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
           <view class="text">{{ state.info.meeting_room_premium_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.office_intro">
           <view class="title mb25">办公室</view>
-          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
           <view class="text">{{ state.info.office_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.showcase_intro">
           <view class="title mb25">展示柜</view>
-          <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
           <view class="text">{{ state.info.showcase_intro }}</view>
         </view>
       </template>

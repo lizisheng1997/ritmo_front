@@ -6,19 +6,13 @@
           {{ state.info.name }}
           <image class="icon" src="/@/static/rightBlack.png" @click="getSpaceList(0)"></image>
         </view>
-        <view class="distance">
+        <!-- <view class="distance">
           距您200m
-        </view>
+        </view> -->
         <swiper class="swiper mt15" circular indicator-dots autoplay >
-          <swiper-item>
-            <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-          </swiper-item>
-          <swiper-item>
-            <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-          </swiper-item>
-          <swiper-item>
-            <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-          </swiper-item>
+          <swiper-item  v-for="(item, index) in state.info.images" :key="index">
+          <image class="imageW100" :src="item"></image>
+        </swiper-item>
         </swiper>
         <view class="distance m15-0">
           {{ state.info.address }}
@@ -61,14 +55,14 @@
             getAllList()
           }">只看高级区</view>
         </template>
-        <view class="grade p0-25 mr15" style="color: #232322;" @click="routerTo('/pages/space/distributionMap')">
+        <!-- <view class="grade p0-25 mr15" style="color: #232322;" @click="routerTo('/pages/space/distributionMap')">
           查看分布图
           <image class="icon" src="http://47.116.190.37:8002/static/space/imgs.png"></image>
         </view>
         <view class="grade p0-25 mr15" style="color: #232322;">
           筛选
           <image class="down" src="/@/static/iconDownBlack.png"></image>
-        </view>
+        </view> -->
       </view>
       <view class="filterDate flex mt30 " v-if="state.tabsIdx <= 1">
         <view class="li" v-for=" (item, index) in weekDayList " :key="index" :class=" item.day == state.day ? 'liAct' : '' " @click=" () => {
@@ -199,6 +193,7 @@ const state = reactive({
     showcaseCount: 0,
     businessHours: '',
     services: [] as any[],
+    images: [] as string[]
   },
 
   status: 0, // 
@@ -254,6 +249,7 @@ const getInfo = (id: string) => {
     state.info.officeCount = res.data.office_count
     state.info.showcaseCount = res.data.showcase_count
     state.info.services = res.data.services
+    state.info.images = res.data.images
     tabsChange(0)
   })
 }

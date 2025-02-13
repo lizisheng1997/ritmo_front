@@ -85,7 +85,7 @@
           我的预约
         </view>
         <view class="right flex">
-          <text class="text2">2 待使用</text>
+          <text class="text2">0 待使用</text>
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
