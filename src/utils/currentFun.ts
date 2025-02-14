@@ -149,7 +149,7 @@ export const dateToLocaleDateString = (dateString: string) => {
  */
 export const copyText = (text: string) => {
   uni.setClipboardData({
-    data: '要复制的文本',
+    data: text,
     success: function () {
       showTips('复制成功')
     }

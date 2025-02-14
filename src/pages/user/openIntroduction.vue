@@ -1,19 +1,42 @@
 <template>
   <view class="content membersIntroduction">
-    <view class="top"  :class=" state.isInstitution ? 'vip3' : state.level == 0 ? 'vip0' :  state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' " :style="{
-      height: state.isInstitution ? '360rpx' : '440rpx'
-    }">
-      <image class="back" src="/@/static/iconLeftW.png" @click="routerBack(1)" v-if="state.isInstitution"></image>
-      <image class="back" src="/@/static/iconLeftBlack.png" @click="routerBack(1)" v-else></image>
+    <view
+      class="top"
+      :class="
+        state.isInstitution
+          ? 'vip3'
+          : state.level == 0
+          ? 'vip0'
+          : state.level == 1
+          ? 'vip1'
+          : state.level == 2
+          ? 'vip2'
+          : ''
+      "
+      :style="{
+        height: state.isInstitution ? '360rpx' : '440rpx'
+      }">
+      <image
+        class="back"
+        src="/@/static/iconLeftW.png"
+        @click="routerBack(1)"
+        v-if="state.isInstitution"></image>
+      <image
+        class="back"
+        src="/@/static/iconLeftBlack.png"
+        @click="routerBack(1)"
+        v-else></image>
       <!-- iconLeftW.png -->
       <view class="user flex">
         <image
           class="head"
           :src="state.avatarUrl"></image>
         <view class="center">
-          <view class="company flex mt30" :style="{ color: state.isInstitution ? '#ffffff' : '#232322' }">
+          <view
+            class="company flex mt30"
+            :style="{ color: state.isInstitution ? '#ffffff' : '#232322' }">
             <text class="text oneEllipsis">{{ state.nickname }}</text>
-            <template v-if=" state.isInstitution ">
+            <template v-if="state.isInstitution">
               <image
                 class="icon ml10"
                 src="http://47.116.190.37:8002/static/home/vip3.png"></image>
@@ -41,7 +64,9 @@
           >
         </view>
       </view>
-      <view class="tabs" v-if=" !state.isInstitution ">
+      <view
+        class="tabs"
+        v-if="!state.isInstitution">
         <view class="div flex">
           <view
             class="text"
@@ -62,42 +87,58 @@
     <view class="interests">
       <view class="title">会员权益</view>
       <scroll-view
-        class="interests-roll  mt35"
+        class="interests-roll mt35"
         scroll-x="true"
         scroll-left="0"
         :enable-flex="true"
         style="">
-        <template v-if=" state.tabsIdx == 1 ">
-					<view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/1.png"></image>
+        <template v-if="state.tabsIdx == 1">
+          <view class="item">
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/1.png"></image>
             <view class="text oneEllipsis">静音舱</view>
           </view>
           <view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/2.png"></image>
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/2.png"></image>
             <view class="text oneEllipsis">有限打印</view>
           </view>
           <view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/3.png"></image>
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/3.png"></image>
             <view class="text oneEllipsis">免费茶饮</view>
           </view>
           <view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/4.png"></image>
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/4.png"></image>
             <view class="text oneEllipsis">高速WiFi</view>
           </view>
           <view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/5.png"></image>
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/5.png"></image>
             <view class="text oneEllipsis">8时工区</view>
           </view>
           <view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/6.png"></image>
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/6.png"></image>
             <view class="text oneEllipsis">全天工区</view>
           </view>
           <view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/7.png"></image>
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/7.png"></image>
             <view class="text oneEllipsis">5时办公</view>
           </view>
           <view class="item">
-            <image class="icon" src="http://47.116.190.37:8002/static/vip/8.png"></image>
+            <image
+              class="icon"
+              src="http://47.116.190.37:8002/static/vip/8.png"></image>
             <view class="text oneEllipsis">全天办公</view>
           </view>
         </template>
@@ -163,11 +204,12 @@
             <view class="text">静音舱</view>
           </view>
         </template>
-        
       </scroll-view>
     </view>
     <!--  -->
-    <view class="interests" v-if=" !state.isInstitution ">
+    <view
+      class="interests"
+      v-if="!state.isInstitution">
       <view class="title">选择套餐</view>
       <scroll-view
         class="interests-roll mt35"
@@ -176,7 +218,12 @@
         :enable-flex="true"
         style="height: 240rpx">
         <template v-if="state.tabsIdx == 1">
-          <view class="card mr35 " :class=" state.selectVip == item.key ? 'cardAct' : '' " @click="state.selectVip = item.key" v-for="item in basicList" :key="item.key">
+          <view
+            class="card mr35"
+            :class="state.selectVip == item.key ? 'cardAct' : ''"
+            @click="state.selectVip = item.key"
+            v-for="item in basicList"
+            :key="item.key">
             <!-- <view class="hot">推荐</view> -->
             <view class="name mt35">{{ item.name }}</view>
             <view class="price mt20">
@@ -187,7 +234,12 @@
           </view>
         </template>
         <template v-else>
-          <view class="card mr35 " :class=" state.selectVip == item.key ? 'cardAct' : '' " @click="state.selectVip = item.key" v-for="item in premiumList" :key="item.key">
+          <view
+            class="card mr35"
+            :class="state.selectVip == item.key ? 'cardAct' : ''"
+            @click="state.selectVip = item.key"
+            v-for="item in premiumList"
+            :key="item.key">
             <!-- <view class="hot">推荐</view> -->
             <view class="name mt35">{{ item.name }}</view>
             <view class="price mt20">
@@ -197,13 +249,16 @@
             <view class="fub mt20">日均仅{{ item.day }}元</view>
           </view>
         </template>
-        
       </scroll-view>
     </view>
     <!--  -->
-    <template v-if=" !state.isInstitution ">
+    <template v-if="!state.isInstitution">
       <view class="p35">
-        <view class="footerOne" @click="submit"> 确认购买 </view>
+        <view
+          class="footerOne"
+          @click="submit">
+          确认购买
+        </view>
       </view>
       <view class="tips mb50 ml35">
         <image
@@ -216,36 +271,50 @@
           src="/@/static/selectIcon.png"
           @click="state.select = false"
           v-else></image>
-        我已阅读并同意<text class="" @click="routerTo(`/pages/user/agreement?type=2`)">《会员服务协议》</text>
+        我已阅读并同意<text
+          class=""
+          @click="routerTo(`/pages/user/agreement?type=2`)"
+          >《会员服务协议》</text
+        >
       </view>
     </template>
     <template v-else>
       <view class="interests">
         <view class="title">旗下办公室</view>
         <scroll-view
-        class="interests-roll  mt35"
-        scroll-x="true"
-        scroll-left="0"
-        :enable-flex="true"
-        style="height: 240rpx;">
+          class="interests-roll mt35"
+          scroll-x="true"
+          scroll-left="0"
+          :enable-flex="true"
+          style="height: 240rpx">
           <view class="room mr25">
-            <image class="banner" src="/@/static/addHead.png"></image>
+            <image
+              class="banner"
+              src="/@/static/addHead.png"></image>
             <view class="text">XXXX办公室</view>
           </view>
           <view class="room mr25">
-            <image class="banner" src="/@/static/addHead.png"></image>
+            <image
+              class="banner"
+              src="/@/static/addHead.png"></image>
             <view class="text">XXXX办公室</view>
           </view>
           <view class="room mr25">
-            <image class="banner" src="/@/static/addHead.png"></image>
+            <image
+              class="banner"
+              src="/@/static/addHead.png"></image>
             <view class="text">XXXX办公室</view>
           </view>
           <view class="room mr25">
-            <image class="banner" src="/@/static/addHead.png"></image>
+            <image
+              class="banner"
+              src="/@/static/addHead.png"></image>
             <view class="text">XXXX办公室</view>
           </view>
           <view class="room mr25">
-            <image class="banner" src="/@/static/addHead.png"></image>
+            <image
+              class="banner"
+              src="/@/static/addHead.png"></image>
             <view class="text">XXXX办公室</view>
           </view>
         </scroll-view>
@@ -254,33 +323,73 @@
     <!--  -->
     <view class="details">
       <view class="title"
-        >-{{ state.isInstitution ? '机构' : state.tabsIdx == 1 ? '初级' : '高级' }}会员权益-</view
+        >-{{
+          state.isInstitution ? '机构' : state.tabsIdx == 1 ? '初级' : '高级'
+        }}会员权益-</view
       >
       <view class="news p0-35">
-        <template v-if=" state.tabsIdx == 1 ">
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/en1.jpg" v-if=" state.languageType == 'en' " style="height: 900rpx;"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/zh1.png" v-else style="height: 900rpx;"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/vip1-1.png"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/vip1-2.jpg"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/vip1-3.jpg"></image>
+        <template v-if="state.tabsIdx == 1">
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/en1.jpg"
+            v-if="state.languageType == 'en'"
+            style="height: 900rpx"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/zh1.png"
+            v-else
+            style="height: 900rpx"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/vip1-1.png"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/vip1-2.jpg"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/vip1-3.jpg"></image>
         </template>
         <template v-else>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/en2.jpg" v-if=" state.languageType == 'en' " style="height: 980rpx;"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/zh2.jpg" v-else style="height: 980rpx;"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/vip2-1.png"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/vip2-2.jpg"></image>
-          <image class="icon" src="http://47.116.190.37:8002/static/vip/vip2-3.jpg"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/en2.jpg"
+            v-if="state.languageType == 'en'"
+            style="height: 980rpx"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/zh2.jpg"
+            v-else
+            style="height: 980rpx"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/vip2-1.png"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/vip2-2.jpg"></image>
+          <image
+            class="icon"
+            src="http://47.116.190.37:8002/static/vip/vip2-3.jpg"></image>
         </template>
-
       </view>
     </view>
+    <payPopup
+      ref="payPopupRef"
+      :isType="1"
+      @refresh="getPay"></payPopup>
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue';
-import { routerBack, routerTo, showTips, dateToLocaleDateString } from '/@/utils/currentFun';
+import payPopup from '/@/components/payPopup.vue';
+import {
+  routerBack,
+  routerTo,
+  showTips,
+  dateToLocaleDateString,
+  copyText
+} from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
 import User from '/@/api/user';
 const userApi = new User();
@@ -295,22 +404,22 @@ onLoad((query?: AnyObject | undefined): void => {
 
   state.languageType = uni.getStorageSync('languageType');
 });
-// 参数  
+// 参数
 // 初级套餐
 const basicList = ref([
   { key: 1, name: '月卡', price: 399, day: 13.3, fub: 'month' },
   { key: 6, name: '季卡', price: 897, day: 9.9, fub: 'season' },
-  { key: 12, name: '年费', price: 3108, day: 8.5, fub: 'year' },
-])
+  { key: 12, name: '年费', price: 3108, day: 8.5, fub: 'year' }
+]);
 const premiumList = ref([
-  { key: 1, name: '月卡', price: 899, day: 29.9, fub: 'month'},
+  { key: 1, name: '月卡', price: 899, day: 29.9, fub: 'month' },
   { key: 6, name: '季卡', price: 2397, day: 26.6, fub: 'season' },
-  { key: 12, name: '年费', price: 9108, day: 25.1, fub: 'year' },
-])
+  { key: 12, name: '年费', price: 9108, day: 25.1, fub: 'year' }
+]);
 const state = reactive({
   languageType: '', //
   selectVip: 1, //
-  navAllHeight: 0, // 
+  navAllHeight: 0, //
   nickname: '', //
   avatarUrl: '', //
   userId: '', //
@@ -318,55 +427,99 @@ const state = reactive({
   tabsIdx: 1,
   expireTime: '',
   select: false,
-  // 
-  isInstitution: false, // 是否是机构
+  //
+  isInstitution: false // 是否是机构
 });
 // 获取用户资料
 const getUserInfo = async () => {
   await userApi.getUserInfo({}).then((res: any) => {
     console.log(res);
     state.nickname = res.data.nickname;
-    state.avatarUrl = res.data.avatar_url? res.data.avatar_url : 'http://47.116.190.37:8002/static/home/head.png';
+    state.avatarUrl = res.data.avatar_url
+      ? res.data.avatar_url
+      : 'http://47.116.190.37:8002/static/home/head.png';
     state.userId = res.data.id;
     state.level = res.data.vip_level;
     state.expireTime = res.data.vip_expire_time;
-    state.tabsIdx = res.data.vip_level ? res.data.vip_level : 1
+    state.tabsIdx = res.data.vip_level ? res.data.vip_level : 1;
 
-    // 
-    state.isInstitution = res.data.current_org_id ? true : false
+    //
+    state.isInstitution = res.data.current_org_id ? true : false;
   });
 };
 // 提交
+const payPopupRef = ref();
 const submit = () => {
-  if( !state.select ) {
-    showTips('请先同意服务协议')
-    return
+  if (!state.select) {
+    showTips('请先同意服务协议');
+    return;
   }
-  let obj: any = {}
-  if( state.tabsIdx == 1 ) {
-    obj = basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
-  } else {
-    obj = premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
-  }
-  
-  userApi.getOrdersAdd({
-    vip_level: state.tabsIdx,
-    duration_type: obj.fub,
-    amount: obj.price,
-  }).then((res: any) => {
-    showTips(res.message)
-    // console.log(res.data);
-    getOrder(res.data.id)
-  })
-}
+  payPopupRef.value.openDialog();
+
+  // let obj: any = {}
+  // if( state.tabsIdx == 1 ) {
+  //   obj = basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
+  // } else {
+  //   obj = premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
+  // }
+
+  // userApi.getOrdersAdd({
+  //   vip_level: state.tabsIdx,
+  //   duration_type: obj.fub,
+  //   amount: obj.price,
+  // }).then((res: any) => {
+  //   showTips(res.message)
+  //   // console.log(res.data);
+  //   getOrder(res.data.id)
+  // })
+};
 // 支付订单
+const getPay = (show: boolean, type: string) => {
+  if (show) {
+    // console.log(type);
+    if (type == 'wxpay') {
+      uni.login({
+        success: function (res) {
+          if (res.code) {
+            console.log(res);
+            uni.showModal({
+              title: '提示',
+              content: res.code,
+              success: function (res1) {
+                if (res1.confirm) {
+                  // console.log('用户点击确定');
+                  copyText(res.code);
+                } else if (res1.cancel) {
+                  console.log('用户点击取消');
+                }
+              }
+            });
+          } else {
+            console.log('登录失败！' + res.errMsg);
+          }
+        }
+      });
+      // uni.requestPayment({
+      //   provider: 'wxpay', //固定值为"wxpay"
+      //   orderInfo: orderInfo,
+      //   success: function (res) {
+      //     var rawdata = JSON.parse(res.rawdata);
+      //     console.log('支付成功');
+      //   },
+      //   fail: function (err) {
+      //     console.log('支付失败:' + JSON.stringify(err));
+      //   }
+      // });
+    }
+  }
+};
 const getOrder = (id: string) => {
-  userApi.getVipOrdersPay(id).then((res: any) => {
-    showTips(res.message)
-    console.log(res.data);
-    getUserInfo()
-  })
-}
+  // userApi.getVipOrdersPay(id).then((res: any) => {
+  //   showTips(res.message)
+  //   console.log(res.data);
+  //   getUserInfo()
+  // })
+};
 </script>
 
 <style lang="scss" scoped>

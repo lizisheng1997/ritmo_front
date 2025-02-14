@@ -5,32 +5,17 @@
         选择支付方式
       </view>
       <view class="form mb35">
-        <view class="li flex mb25 pb25">
-          <view class="left flex">
-            <image class="icon mr25" src="/@/static/space/wechat.png"></image>
-            <text class="text">微信</text>
+        <template v-for="item in list" :key="item.key">
+          <view class="li flex mb25 pb25" v-if=" state.provider.includes(item.key) ">
+            <view class="left flex">
+              <image class="icon mr25" :src="item.image"></image>
+              <text class="text">{{ item.value }}</text>
+              <!--  -->
+            </view>
+            <image class="select" src="/@/static/selectIcon.png" v-if=" state.type == item.key "></image>
+            <image class="select" src="/@/static/select.png" v-else @click="state.type = item.key"></image>
           </view>
-          <image class="select" src="/@/static/selectIcon.png" v-if=" state.type == 'wxpay' "></image>
-          <image class="select" src="/@/static/select.png" v-else @click="state.type = 'wxpay'"></image>
-        </view>
-        <!-- #ifdef APP-PLUS || H5 -->
-        <view class="li flex mb25 pb25">
-          <view class="left flex">
-            <image class="icon mr25" src="/@/static/space/alipay.png"></image>
-            <text class="text">支付宝</text>
-          </view>
-          <image class="select" src="/@/static/selectIcon.png" v-if=" state.type == 'alipay' "></image>
-          <image class="select" src="/@/static/select.png" v-else @click="state.type = 'alipay'"></image>
-        </view>
-        <view class="li flex">
-          <view class="left flex">
-            <image class="icon mr25" src="/@/static/space/stripe.png"></image>
-            <text class="text">Stripe</text>
-          </view>
-          <image class="select" src="/@/static/selectIcon.png" v-if=" state.type == 'stripe' "></image>
-          <image class="select" src="/@/static/select.png" v-else @click="state.type = 'stripe'"></image>
-        </view>
-        <!-- #endif -->
+        </template>
       </view>
       <view class="footerPopup p0-35">
         <view class="btn left" @click="sumbit(false)">取消</view>
@@ -47,16 +32,32 @@ import { showTips } from '../utils/currentFun';
 const { t } = useI18n()
 
 // 参数
+const list = ref([
+  {
+    key: 'wxpay',
+    value: '微信',
+    image: 'http://47.116.190.37:8002/static/space/wechat.png'
+  },
+  {
+    key: 'alipay',
+    value: '支付宝',
+    image: 'http://47.116.190.37:8002/static/space/alipay.png'
+  },
+  {
+    key: 'stripe',
+    value: 'Stripe',
+    image: 'http://47.116.190.37:8002/static/space/stripe.png'
+  },
+])
 const state = reactive({
   isShow: false, // 
   type: 'wxpay', // wxpay微信支付  alipay支付宝支付 stripe-Stripe
   id: '', // 弹窗携带的id
-  provider: '', // 支付环境
+  provider: [] as string[], // 支付环境
 })
 // 打开弹窗
 const openDialog = (id?:string) => {
   // console.log(rows)
-  state.type = 'wxpay'
   state.id = id ? id : ''
   getProvider()
   state.isShow = true;
@@ -66,10 +67,18 @@ const getProvider = () => {
   uni.getProvider({
     service: 'payment',
     success: function (res) {
-        console.log(res.provider)
-        
+      // console.log(res.provider)
+      if( !res.provider?.length ) {
+        showTips('暂无支持的支付方式')
+        setTimeout(() => {
+          state.isShow = false
+        }, 1000);
+        return
+      }
+      state.provider = res.provider
+      state.type = res.provider[0]
     }
-});
+  });
 }
 defineExpose({ openDialog });
 const emit = defineEmits(['refresh']);
