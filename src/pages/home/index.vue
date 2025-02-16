@@ -81,12 +81,12 @@
     </view>
     <!--  -->
     <view class="list">
-      <view class="li mt35">
+      <!-- <view class="li mt35">
         <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
       </view>
       <view class="li mt35">
         <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </view>
+      </view> -->
     </view>
   </view>
 </template>

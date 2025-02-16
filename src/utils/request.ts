@@ -4,7 +4,7 @@ import { showTips } from './currentFun';
 import type { T } from './types';
 
 // 记得全局更换background-image地址
-export const baseUrl = 'http://47.116.190.37:8002'; // 测试环境
+export const baseUrl = 'https://ritmohub.cn'; // 测试环境
 // console.log(baseUrl);
 
 export default class Request {

@@ -456,69 +456,69 @@ const submit = () => {
   }
   payPopupRef.value.openDialog();
 
-  // let obj: any = {}
-  // if( state.tabsIdx == 1 ) {
-  //   obj = basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
-  // } else {
-  //   obj = premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
-  // }
-
-  // userApi.getOrdersAdd({
-  //   vip_level: state.tabsIdx,
-  //   duration_type: obj.fub,
-  //   amount: obj.price,
-  // }).then((res: any) => {
-  //   showTips(res.message)
-  //   // console.log(res.data);
-  //   getOrder(res.data.id)
-  // })
+  
 };
 // 支付订单
-const getPay = (show: boolean, type: string) => {
+const getPay = (show: boolean, type: string, id: string) => {
   if (show) {
     // console.log(type);
-    if (type == 'wxpay') {
-      uni.login({
-        success: function (res) {
-          if (res.code) {
-            console.log(res);
-            uni.showModal({
-              title: '提示',
-              content: res.code,
-              success: function (res1) {
-                if (res1.confirm) {
-                  // console.log('用户点击确定');
-                  copyText(res.code);
-                } else if (res1.cancel) {
-                  console.log('用户点击取消');
-                }
-              }
-            });
-          } else {
-            console.log('登录失败！' + res.errMsg);
-          }
-        }
-      });
-      // uni.requestPayment({
-      //   provider: 'wxpay', //固定值为"wxpay"
-      //   orderInfo: orderInfo,
-      //   success: function (res) {
-      //     var rawdata = JSON.parse(res.rawdata);
-      //     console.log('支付成功');
-      //   },
-      //   fail: function (err) {
-      //     console.log('支付失败:' + JSON.stringify(err));
-      //   }
-      // });
+    let obj: any = {}
+    if( state.tabsIdx == 1 ) {
+      obj = basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
+    } else {
+      obj = premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
     }
+
+    userApi.getOrdersAdd({
+      vip_level: state.tabsIdx,
+      duration_type: obj.fub,
+      amount: obj.price,
+    }).then((resOne: any) => {
+      // showTips(resOne.message)
+      // console.log(resOne.data.id);
+      if (type == 'wxpay') {
+        uni.login({
+          success: function (resLogin) {
+            if (resLogin.code) {
+              console.log(resLogin);
+              userApi.getVipOrdersPay(resOne.data.id, resLogin.code).then((res: any) => {
+                // showTips(res.message)
+                console.log(res.data);
+                getRequestPayment(type, res.data.orderInfo)
+              })
+            } else {
+              console.log('登录失败！' + resLogin.errMsg);
+            }
+          }
+        });
+      }
+      
+    })
   }
 };
-const getOrder = (id: string) => {
-  // userApi.getVipOrdersPay(id).then((res: any) => {
-  //   showTips(res.message)
-  //   console.log(res.data);
-  //   getUserInfo()
-  // })
+const getRequestPayment = (provider: any, obj: any) => {
+  // console.log(obj);
+  
+  uni.requestPayment({
+    provider, 
+    // orderInfo: obj,
+    // @ts-ignore
+    appid: obj.appid, // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
+    timeStamp: obj.timeStamp, // 时间戳（单位：秒）
+    package: 'prepay_id=' + obj.package, // 固定值
+    paySign: obj.paySign, //签名
+    signType: obj.signType, // 签名算法，这里用的 MD5/RSA 签名
+    nonceStr: obj.nonceStr, 
+    success: function (res) {
+      // var rawdata = JSON.parse(res.rawdata);
+      // console.log('支付成功');
+      showTips('支付成功');
+      getUserInfo()
+    },
+    fail: function (err) {
+      console.log('支付失败:' + JSON.stringify(err));
+    }
+  });
 };
 </script>
 

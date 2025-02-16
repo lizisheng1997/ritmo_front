@@ -51,7 +51,7 @@ const list = ref([
 ])
 const state = reactive({
   isShow: false, // 
-  type: 'wxpay', // wxpay微信支付  alipay支付宝支付 stripe-Stripe
+  type: 'wxpay', // wxpay微信支付  alipay支付宝支付 stripe Stripe
   id: '', // 弹窗携带的id
   provider: [] as string[], // 支付环境
 })
@@ -83,12 +83,15 @@ const getProvider = () => {
 defineExpose({ openDialog });
 const emit = defineEmits(['refresh']);
 const sumbit = (show: boolean) => {
+  console.log( state.type);
+  console.log( state.provider);
+  
   if( show && state.type != 'stripe' ) {
-    if( state.type == 'wxpay' && !state.provider.indexOf('wxpay') ) {
+    if( state.type == 'wxpay' && !state.provider.includes('wxpay') ) {
       showTips('暂不支持微信支付')
       return
     }
-    if( state.type == 'alipay' && !state.provider.indexOf('alipay') ) {
+    if( state.type == 'alipay' && !state.provider.includes('alipay') ) {
       showTips('暂不支持支付宝支付')
       return
     }

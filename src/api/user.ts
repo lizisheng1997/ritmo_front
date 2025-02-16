@@ -59,9 +59,9 @@ export default class User extends Request {
     });
   }
   // 支付会员订单
-  getVipOrdersPay(id: string) {
+  getVipOrdersPay(id: string, code: string) {
     return this.post({
-      url: `/v1/vip/orders/${id}/pay`,
+      url: `/v1/vip/orders/${id}/pay?code=${code}`
     });
   }
   // 获取机构成员列表

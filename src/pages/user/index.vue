@@ -204,7 +204,7 @@ const loginTo = () => {
 
 <style lang="scss" scoped>
 .content {
-  background-color: #fff;
+  background-color: #ffffff;
   .info {
     background-color: #F5F3EF;
     position: relative;
