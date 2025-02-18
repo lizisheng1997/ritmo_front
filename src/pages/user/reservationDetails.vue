@@ -1,54 +1,54 @@
 <template>
-  <view class="content p35">
-    <view class="step flex mt35">
-      <text class="text textAct">待使用</text>
+  <view class="content p35" v-if="state.info">
+    <!-- <view class="step flex mt35">
+      <text class="text textAct"></text>
       <image class="icon m0-28" src="http://47.116.190.37:8002/static/user/step.png"></image>
       <text class="text">进行中</text>
       <image class="icon m0-28" src="http://47.116.190.37:8002/static/user/step.png"></image>
       <text class="text">已完成</text>
-    </view>
+    </view> -->
     <!--  -->
-    <view class="card p35 mt35">
+    <view class="card p35">
       <view class="order flex mb15">
-        <view class="id">No：137289789</view>
+        <view class="id">No：{{ state.info.id }}</view>
         <view class="text">
-          相关订单>
+          {{ reservationsEnums[state.info.status] }}
         </view>
       </view>
       <view class="count flex p0-55">
-        <text class="num">09:00</text>
+        <text class="num">{{ state.info.start_time }}</text>
         <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
-        <text class="num">10:00</text>
+        <text class="num">{{ state.info.end_time }}</text>
       </view>
-      <view class="fub">5月17日 周二</view>
+      <view class="fub">{{ state.info.booking_date }}</view>
       <view class="title mt35">杭州· 华润万象空间</view>
       <view class="rows flex mt35">
         <view class="item">
           <view class="label mb15">所属区域</view>
-          <view class="text">初级会员区</view>
+          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}会员区</view>
         </view>
         <view class="item">
           <view class="label mb15">工位号</view>
-          <view class="text">A234</view>
+          <view class="text">{{ state.spaceInfo.name }}</view>
         </view>
         <view class="item">
           <view class="label mb15">会议室类型</view>
-          <view class="text">高级</view>
+          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}</view>
         </view>
       </view>
       <view class="info">
         <view class="li flex mt25">
           <text class="label">预约人：</text>
-          <text class="text">段誉</text>
+          <text class="text">{{ state.nickname }}</text>
         </view>
         <view class="li flex mt25">
           <text class="label">成员id：</text>
-          <text class="text">3332221212</text>
+          <text class="text">{{ state.userId }}</text>
         </view>
       </view>
     </view>
     <!--  -->
-    <view class="contacts p35 mt35 flex">
+    <!-- <view class="contacts p35 mt35 flex">
       <view class="item flex">
         <image class="icon mr15" src="http://47.116.190.37:8002/static/user/contacts1.png"></image>
         <text class="text">去导航</text>
@@ -61,32 +61,66 @@
         <image class="icon mr15" src="http://47.116.190.37:8002/static/user/contacts3.png"></image>
         <text class="text">空间分布图</text>
       </view>
-    </view>
+    </view> -->
     <!--  -->
     <view class="careful mt35 p25">
       <view class="title mb10">注意事项：</view>
-      1.会议室的预约最晚可以在开始前6个小时进行取消，晚于这个时间无法取消<br>
+      1.预约最晚可以在开始前6个小时进行取消，晚于这个时间无法取消<br>
       2.取消成功后，相应的时长将直接退回权益中，请到我的页面-权益时长中查收
     </view>
     <!--  -->
-    <view class="footer">
+    <!-- <view class="footer">
       <text class="">取消预约</text>
-    </view>
+    </view> -->
   </view>
 </template>
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
+import { dateToLocaleDateString } from '/@/utils/currentFun';
+import { reservationsEnums, spaceLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
+import Space from '/@/api/space';
+const spaceApi = new Space();
 const { t } = useI18n()
 
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  state.type = query!.type == 'workspace' ? 0 : 1
+  state.id = query!.id 
+  state.userId = uni.getStorageSync('userInfos').id 
+  state.nickname = uni.getStorageSync('userInfos').nickname
+  getInfo()
+});
 // 参数
 const state = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+  id: '', // 手机号
+  type: 0,
+  info: {} as any, // 
+  spaceInfo: {} as any, // 
+  userId: '',
+  nickname: '',
 })
+const getInfo = () => {
+  if( state.type == 0 ) {
+    spaceApi.getSpaceMeetingWorkspacesBook(state.id, {
+      space_id: state.id
+    }).then((res: any) => {
+      console.log(res.data);
+      state.info = res.data
+      state.spaceInfo = res.data.workspace
+    })
+  } else if( state.type == 1 ) {
+    spaceApi.getSpaceMeetingRoomsBook(state.id, {
+      booking_id: state.id
+    }).then((res: any) => {
+      console.log(res.data);
+      state.info = res.data
+      state.spaceInfo = res.data.meeting_room
+    })
+  }
+}
 </script>
 
 <style >

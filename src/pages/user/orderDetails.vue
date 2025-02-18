@@ -1,9 +1,11 @@
 <template>
   <view class="content p35">
-    <view class="myOrderList">
+    <!-- <view class="myOrderList">
       <view class="li flex">
         <view class="left flex">
-          <!-- <view class="card mr25">会员</view> -->
+
+          <view class="card mr25">会员</view>
+
           <image class="banner mr25" src="http://47.116.190.37:8002/static/addHead.png"></image>
           <view class="info">
             <view class="title mb10">
@@ -12,24 +14,15 @@
             </view>
             <view class="hour">1.5小时</view>
 
-            <!-- 
-              <view class="hour">初级会员 -> 高级会员</view>
-              <view class="hour mt15">升级天数：25天</view>
-            -->
-            <!-- <view class="hour">有效期至：2024-09-09</view> -->
-            <!-- <view class="hour">扩容5人 ｜ 扩容10天</view> -->
+            <view class="hour">有效期至：2024-09-09</view>
+            <view class="hour">扩容5人 ｜ 扩容10天</view>
             
           </view>
         </view>
-        <!-- "margin-top: 25rpx; -->
-        <view class="pay flex" style="margin-top: 35rpx;">
-          <view class="name mr15">相关预约</view>
-          <image class="icon" src="/@/static/rightAsh.png"></image>
-        </view>
       </view>
-    </view>
+    </view> -->
     <!--  -->
-    <view class="order mt35 p35">
+    <!-- <view class="order mt35 p35">
       <view class="title mb35">
         订单明细
       </view>
@@ -42,18 +35,31 @@
       </view>
       <view class="all">
         总计
-        <text class="">¥3000</text>
+        <text class="">¥{{ state.info.amount }}</text>
       </view>
-    </view>
+    </view> -->
     <!--  -->
-    <view class="order mt35 p35">
+    <view class="order  p35">
       <view class="title mb35">
         订单信息
       </view>
-      <view class="label mb20">订单号：438290438290</view>
-      <view class="label mb20">下单时间：2024-09-20 11:09:01</view>
-      <view class="label mb20">下单人：段誉</view>
-      <view class="label">支付方式：银联</view>
+      <view class="label mb20">订单号：{{ state.info.id }}</view>
+      <view class="label mb20">
+        订单类型：
+        {{ state.info.order_source == 'vip' || state.info.order_source == 'org_vip'
+                    ? '会员'
+                    : state.info.order_source == 'org_expansion'
+                    ? '扩容'
+                    : state.info.order_source == 'workspace'
+                    ? '工位'
+                    : '会议室' }}
+      </view>
+      <view class="label mb20">订单金额：¥{{ state.info.amount }}</view>
+      <view class="label mb20">订单状态：{{ state.info.order_status_text }}</view>
+      <view class="label mb20">下单时间：{{ dateToLocaleDateString(state.info.create_time) }}</view>
+      <view class="label mb20" v-if="state.info.pay_time">支付时间：{{ dateToLocaleDateString(state.info.pay_time) }}</view>
+      <view class="label mb20">下单人：{{ state.nickname }}</view>
+      <!-- <view class="label">支付方式：银联</view> -->
     </view>
     <!--  -->
   </view>
@@ -62,18 +68,37 @@
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
+import { routerTo, dateToLocaleDateString } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
+  state.id = query!.id
+  state.type = query!.type
+  getInfo()
+  state.nickname = uni.getStorageSync('userInfos').nickname
   // console.log(query);
 });
 // 参数
+// workspace工位   meeting_room会议室  vip会员 org_vip 机构会员 org_expansion机构扩容
 const state = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
+  id: '',
+  type: '', // 手机号
+  info: {} as any, // 
+  nickname: '',
 })
+const getInfo = async() => {
+  await userApi.getUserOrders().then((res: any) => {
+    for( let i of res.data.orders ) {
+      if( i.id == state.id ) {
+        state.info = i
+      }
+    }
+    console.log(state.info);
+  });
+}
 </script>
 
 <style >

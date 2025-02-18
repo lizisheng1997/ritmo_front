@@ -1,49 +1,28 @@
 <template>
   <view class="content p0-35">
     <view class="list">
-      <view class="card mt35">
+      <view class="card mt35" v-for="item in list" :key="item.id">
         <view class="pname flex pb20">
           <text class="title">杭州· 华润万象空间</text>
-          <text class="status status1">待使用</text>
+          <text class="status " :style="{ color: reservationsColorEnums[item.status] }">{{ item.status_text }}</text>
         </view>
         <view class="myOrderList">
-          <view class="item mt35 flex" @click="routerTo(`/pages/user/reservationDetails`)">
+          <view class="item mt35 flex" @click="routerTo(`/pages/user/reservationDetails?id=${item.id}&type=${item.reservation_type }`)">
             <view class="left flex">
-              <image class="banner mr25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+              <image class="banner mr25" src="https://images.unsplash.com/photo-1497366216548-37526070297c"></image>
               <view class="info">
                 <view class="title mb10">
-                  <text class="text">工位</text>
-                  <text class="grade ml15">初级</text>
+                  <text class="text">{{ item.reservation_type == 'workspace' ? '工位' : '会议室' }}</text>
+                  <!-- <text class="grade ml15">初级</text> -->
                 </view>
-                <view class="hour">2024-02-13 11:00～12:30</view>
+                <!-- <view class="hour">6-8人</view> -->
+                <view class="hour">{{ item.booking_date }} {{ item.start_time }}～{{ item.end_time }}</view>
+                <!-- <view class="hour mt5">预约人：段誉</view> -->
               </view>
             </view>
           </view>
         </view>
       </view>
-      <view class="card mt35">
-        <view class="pname flex pb20">
-          <text class="title">杭州· 华润万象空间</text>
-          <text class="status status2">进行中</text>
-        </view>
-        <view class="myOrderList">
-          <view class="item mt35 flex" @click="routerTo(`/pages/user/reservationDetails`)">
-            <view class="left flex">
-              <image class="banner mr25" src="http://47.116.190.37:8002/static/addHead.png"></image>
-              <view class="info">
-                <view class="title mb10">
-                  <text class="text">工位</text>
-                  <text class="grade ml15">初级</text>
-                </view>
-                <view class="num mb5" style="font-size: 24rpx;">6-8人</view>
-                <view class="hour">2024-02-13 11:00～12:30</view>
-                <view class="hour mt10">预约人：段誉</view>
-              </view>
-            </view>
-          </view>
-        </view>
-      </view>
-
 
     </view>
     <!--  -->
@@ -54,21 +33,28 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
+import { reservationsColorEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   uni.setNavigationBarTitle({
     title: query!.type == '0' ? '我的预约' : '机构预约'
   });
+  getList()
   // state.id = query!.id
 });
 // 参数
-const state = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
-})
+const list = ref([] as any[])
+// 
+const getList = async() => {
+  await userApi.getUserReservations().then((res: any) => {
+    console.log(res.data);
+    list.value = res.data.reservations
+  })
+}
 </script>
 
 <style >
@@ -97,15 +83,6 @@ page {
           font-weight: 400;
           line-height: 32rpx;
 
-        }
-        .status1 {
-          color: #FF3434;
-        }
-        .status2 {
-          color: #232322;
-        }
-        .status3 {
-          color: #898784;
         }
       }
     }

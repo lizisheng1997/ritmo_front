@@ -36,18 +36,18 @@
         <text class="text">我的权益</text>
         <text class="fub ml15" v-if="state.level == 0">暂无可用权益</text>
       </view>
-      <view class="record" v-if="state.level != 0">
+      <view class="record" v-if="state.level != 0" @click="routerTo(`/pages/user/record`, true)">
         变更记录
-        <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/user/record`, true)"></image>
+        <image class="icon" src="/@/static/rightAsh.png" ></image>
       </view>
     </view>
-    <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
+    <!-- <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
       <view class="card" v-for="item in userRecordList" :key="item.key">
         <view class="num mt30">{{ item.hours }}</view>
         <view class="text mt15">小时</view>
         <view class="grade mt35">{{ item.name }}</view>
       </view>
-    </view>
+    </view> -->
     <view class="menuForm mt35 p0-35">
       <!--  -->
       <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`, true)">
@@ -85,7 +85,7 @@
           我的预约
         </view>
         <view class="right flex">
-          <text class="text2">0 待使用</text>
+          <!-- <text class="text2">0 待使用</text> -->
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>

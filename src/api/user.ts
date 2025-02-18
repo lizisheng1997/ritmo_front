@@ -116,4 +116,17 @@ export default class User extends Request {
       url: `/v1/organizations/${id}/vip/orders/${orderId}/pay`
     });
   }
+  // 获取我的预约列表
+  getUserReservations() {
+    return this.get({
+      url: `/v1/users/reservations`,
+    });
+  }
+  // 获取我的订单
+  getUserOrders() {
+    return this.get({
+      url: `/v1/users/orders`,
+    });
+  }
+
 }

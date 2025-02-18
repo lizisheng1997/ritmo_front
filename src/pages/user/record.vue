@@ -1,36 +1,25 @@
 <template>
   <view class="content ">
     <!--  -->
-    <view class="interestsList flex p35">
+    <!-- <view class="interestsList flex p35">
       <view class="card" v-for="item in userRecordList" :key="item.key" :class="state.idx == item.key ? 'cardAfter' : ''" @click="bindIdx(item.key) ">
         <view class="num mt30">{{ item.hours }}</view>
         <view class="text mt15">小时</view>
         <view class="grade mt35">{{ item.name }}</view>
       </view>
-    </view>
+    </view> -->
     <!--  -->
     <scroll-view class="p0-35" scroll-y="true" style="height: 74vh; width: calc( 100% - 70rpx );">
       <view class="record ">
-        <view class="li flex mt25 pb25">
+        <view class="li flex mt25 pb25" v-for="item in list" :key="item.id">
           <view class="left">
-            <view class="title mb15">工位预约</view>
-            <view class="reservation mb8">相关预约：GW2382910382910</view>
-            <view class="date">3月15日 11:37:32</view>
+            <view class="title mb15">{{ item.order_source == 'workspace_basic' ? '工位' : '会议室' }}预约</view>
+            <view class="reservation mb8">id：{{ item.id }}</view>
+            <view class="date"> {{ item.remark }}</view>
           </view>
           <view class="time">
-            <view class="hour mb15">-10.5小时</view>
-            <view class="remaining">剩余：443小时</view>
-          </view>
-        </view>
-        <view class="li flex mt25 pb25">
-          <view class="left">
-            <view class="title mb15">工位预约</view>
-            <view class="reservation mb8">相关预约：GW2382910382910</view>
-            <view class="date">3月15日 11:37:32</view>
-          </view>
-          <view class="time">
-            <view class="hour mb15">-10.5小时</view>
-            <view class="remaining">剩余：443小时</view>
+            <view class="hour mb15" style="text-align: right;">{{ item.operation == 'add' ? '+' : '-' }}{{ item.hours }}小时</view>
+            <view class="remaining">{{ dateToLocaleDateString(item.create_time) }}</view>
           </view>
         </view>
       </view>
@@ -40,22 +29,41 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { userRecordList } from '/@/utils/universalArray'
+import { onLoad } from '@dcloudio/uni-app';
+import { dateToLocaleDateString } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import User from '/@/api/user';
+const userApi = new User();
 const { t } = useI18n()
 
+onLoad((query?: AnyObject | undefined): void => {
+  // console.log(query);
+  // state.type = query!.type
+  getList()
+});
 // 参数
+const list = ref([] as any[])
 const state = reactive({
   idx: 0, // 下标
-  select: false, // 
-  image: '',
 })
 // 底部
 const bindIdx = ( idx: number ) => {
   state.idx = idx
 }
+// 
+const getList = async() => {
+  await userApi.getUserOrders().then((res: any) => {
+    console.log(res.data);
+    list.value = res.data.benefit_history
+  })
+}
 </script>
 
+<style >
+page {
+  background-color: #ffffff;
+}
+</style>
 <style lang="scss" scoped>
 .content {
   .interestsList {

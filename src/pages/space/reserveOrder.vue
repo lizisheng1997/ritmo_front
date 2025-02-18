@@ -78,9 +78,9 @@ import { spaceLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '/@/store/modules/user';
 import Space from '/@/api/space';
-const { t } = useI18n()
 const user = useUserStore();
 const spaceApi = new Space();
+const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
@@ -90,7 +90,7 @@ onLoad((query?: AnyObject | undefined): void => {
   state.type = query!.type
   state.sid = query!.sid
   state.id = query!.id 
-  console.log('-------------', );
+  // console.log('-------------', );
   state.userId = uni.getStorageSync('userInfos').id 
   state.nickname = uni.getStorageSync('userInfos').nickname
   getInfo()
