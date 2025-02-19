@@ -60,8 +60,9 @@ const submit = () => {
 
 <style lang="scss" scoped>
 .content {
+  height: 100vh;
+  background-color: #ffffff;
   .input {
-    
     border-radius: 20rpx;
     background-color: #F5F3EF;
   }

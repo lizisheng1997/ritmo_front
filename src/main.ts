@@ -9,7 +9,7 @@ import en from './locales/en.json'
 // 创建 VueI18n 实例并配置
 const i18n = createI18n({
   legacy: false, // 让 setup 函数可以通过 t 访问
-  locale: uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh',
+  locale: uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'en',
   messages: {
     zh: zhCN,
     en: en

@@ -42,11 +42,14 @@
                 src="/@/static/home/vip3.png"></image>
             </template>
             <template v-else>
-              <image
+              <template v-if="state.level == 0">
+                <image
                 class="icon ml10"
                 src="/@/static/home/vip0.png"
-                v-if="state.level == 0"
+                v-if="state.type == 'zh'"
                 style="width: 91rpx"></image>
+                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 91rpx;"></image>
+              </template>
               <image
                 class="icon ml10"
                 src="/@/static/home/vip1.png"
@@ -60,7 +63,7 @@
           <view
             class="name mt10"
             v-if="state.expireTime"
-            >有效期至{{ dateToLocaleDateString(state.expireTime) }}</view
+            >{{ t('Validuntil') }} {{ dateToLocaleDateString(state.expireTime) }}</view
           >
         </view>
       </view>
@@ -72,20 +75,20 @@
             class="text"
             :class="state.tabsIdx == 1 ? 'textAct' : ''"
             @click="state.tabsIdx = 1"
-            >初级空间</view
+            >{{ t('PrimarySpace') }}</view
           >
           <view
             class="text"
             :class="state.tabsIdx == 2 ? 'textAct' : ''"
             @click="state.tabsIdx = 2"
-            >高级空间</view
+            >{{ t('AdvancedSpace') }}</view
           >
         </view>
       </view>
     </view>
     <!--  -->
     <view class="interests">
-      <view class="title">会员权益</view>
+      <view class="title">{{ t('MEMBERBENEFITS') }}</view>
       <scroll-view
         class="interests-roll mt35"
         scroll-x="true"
@@ -210,7 +213,7 @@
     <view
       class="interests"
       v-if="!state.isInstitution">
-      <view class="title">选择套餐</view>
+      <view class="title">{{ t('Chooseapackage') }}</view>
       <scroll-view
         class="interests-roll mt35"
         scroll-x="true"
@@ -225,12 +228,12 @@
             v-for="item in basicList"
             :key="item.key">
             <!-- <view class="hot">推荐</view> -->
-            <view class="name mt35">{{ item.name }}</view>
+            <view class="name mt35">{{ state.type == 'zh' ? item.name : item.ename }}</view>
             <view class="price mt20">
               <text style="font-size: 28rpx">￥</text>
               {{ item.price }}
             </view>
-            <view class="fub mt20">日均仅{{ item.day }}元</view>
+            <view class="fub mt20">{{ t('Daily') }}{{ item.day }}{{ t('RMB') }}</view>
           </view>
         </template>
         <template v-else>
@@ -246,7 +249,7 @@
               <text style="font-size: 28rpx">￥</text>
               {{ item.price }}
             </view>
-            <view class="fub mt20">日均仅{{ item.day }}元</view>
+            <view class="fub mt20">{{ t('Daily') }}{{ item.day }}{{ t('RMB') }}</view>
           </view>
         </template>
       </scroll-view>
@@ -257,7 +260,7 @@
         <view
           class="footerOne"
           @click="submit">
-          确认购买
+          {{ t('Confirmpurchase') }}
         </view>
       </view>
       <view class="tips mb50 ml35">
@@ -271,10 +274,10 @@
           src="/@/static/selectIcon.png"
           @click="state.select = false"
           v-else></image>
-        我已阅读并同意<text
+        <text
           class=""
           @click="routerTo(`/pages/user/agreement?type=2`)"
-          >《会员服务协议》</text
+          >{{ t('havereadandagree') }}《{{ t('MembershipService') }}》</text
         >
       </view>
     </template>
@@ -324,8 +327,8 @@
     <view class="details">
       <view class="title"
         >-{{
-          state.isInstitution ? '机构' : state.tabsIdx == 1 ? '初级' : '高级'
-        }}会员权益-</view
+          state.isInstitution ? t('mechanism') : state.tabsIdx == 1 ? t('primary') : t('senior')
+        }}  {{ t('MEMBERBENEFITS') }}-</view
       >
       <view class="news p0-35">
         <template v-if="state.tabsIdx == 1">
@@ -398,6 +401,7 @@ const { t } = useI18n();
 onLoad((query?: AnyObject | undefined): void => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 88;
+  state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   // console.log(query);
   // state.id = query!.id
   getUserInfo();
@@ -407,16 +411,17 @@ onLoad((query?: AnyObject | undefined): void => {
 // 参数
 // 初级套餐
 const basicList = ref([
-  { key: 1, name: '月卡', price: 399, day: 13.3, fub: 'month' },
-  { key: 6, name: '季卡', price: 897, day: 9.9, fub: 'season' },
-  { key: 12, name: '年费', price: 3108, day: 8.5, fub: 'year' }
+  { key: 1, name: '月卡', ename: 'monthly card', price: 399, day: 13.3, fub: 'month' },
+  { key: 6, name: '季卡', ename: 'season card', price: 897, day: 9.9, fub: 'season' },
+  { key: 12, name: '年费', ename: 'annual fee', price: 3108, day: 8.5, fub: 'year' }
 ]);
 const premiumList = ref([
-  { key: 1, name: '月卡', price: 899, day: 29.9, fub: 'month' },
-  { key: 6, name: '季卡', price: 2397, day: 26.6, fub: 'season' },
-  { key: 12, name: '年费', price: 9108, day: 25.1, fub: 'year' }
+  { key: 1, name: '月卡', ename: 'monthly card', price: 899, day: 29.9, fub: 'month' },
+  { key: 6, name: '季卡', ename: 'season card', price: 2397, day: 26.6, fub: 'season' },
+  { key: 12, name: '年费', ename: 'annual fee', price: 9108, day: 25.1, fub: 'year' }
 ]);
 const state = reactive({
+  type: '',
   languageType: '', //
   selectVip: 1, //
   navAllHeight: 0, //

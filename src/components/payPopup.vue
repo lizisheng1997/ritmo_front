@@ -2,7 +2,7 @@
   <u-popup v-model="state.isShow" mode="bottom" border-radius="20" width="630">
     <view class="popup pb35">
       <view class="title">
-        选择支付方式
+        {{ t('Choosepaymentmethod') }}
       </view>
       <view class="form mb35">
         <template v-for="item in list" :key="item.key">
@@ -18,8 +18,8 @@
         </template>
       </view>
       <view class="footerPopup p0-35">
-        <view class="btn left" @click="sumbit(false)">取消</view>
-        <view class="btn right" @click="sumbit(true)">确认支付</view>
+        <view class="btn left" @click="sumbit(false)">{{ t('cancel') }}</view>
+        <view class="btn right" @click="sumbit(true)">{{ t('confirm') }}</view>
       </view>
     </view>
   </u-popup>

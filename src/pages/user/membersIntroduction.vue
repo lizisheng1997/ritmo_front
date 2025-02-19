@@ -7,18 +7,21 @@
         <view class="center">
           <view class="company flex mt30">
             <text class="text oneEllipsis">{{ state.nickname }}</text>
-            <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
+            <template v-if="state.level == 0">
+              <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.type == 'zh'" style="width: 91rpx;"></image>
+              <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 91rpx;"></image>
+            </template>
             <image class="icon ml10" src="/@/static/home/vip1.png" v-else-if="state.level == 1"></image>
             <image class="icon ml10" src="/@/static/home/vip2.png" v-else-if="state.level == 2"></image>
             <image class="icon ml10" src="/@/static/home/vip3.png" v-else-if="state.currentorgid"></image>
           </view>
-          <view class="name mt10" v-if="state.expireTime">有效期至{{ state.expireTime }}</view>
+          <view class="name mt10" v-if="state.expireTime">{{ t('Validuntil') }} {{ state.expireTime }}</view>
         </view>
       </view>
     </view>
     <!--  -->
     <view class="interests">
-      <view class="title">会员机构权益</view>
+      <view class="title">{{ t('MembershipInstitution') }}</view>
         <scroll-view class="interests-roll mt35" scroll-x="true"  scroll-left="0" :enable-flex="true" style="">
 					<view class="item">
             <image class="icon" src="http://47.116.190.37:8002/static/vip/1.png"></image>
@@ -57,12 +60,12 @@
     </view>
     <view class="p35">
       <view class="footerOne" @click="routerTo(`/pages/user/openIntroduction`)">
-        租赁办公室，成为会员
+        {{ t('Becomelease') }}
       </view>
     </view>
     <!--  -->
     <view class="details">
-      <view class="title">-会员机构权益-</view>
+      <view class="title">-{{ t('MembershipInstitution') }}-</view>
       <view class="news p0-35">
         <image class="icon" src="http://47.116.190.37:8002/static/vip/en1.jpg" v-if=" state.languageType == 'en' " style="height: 900rpx;"></image>
         <image class="icon" src="http://47.116.190.37:8002/static/vip/zh1.png" v-else style="height: 900rpx;"></image>
@@ -86,12 +89,14 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   // state.id = query!.id
+  state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   getUserInfo()
   // console.log(uni.getStorageSync('languageType'))
   state.languageType = uni.getStorageSync('languageType')
 });
 // 参数
 const state = reactive({
+  type: '',
   languageType: '', // 
   nickname: '', // 
   avatarUrl: '', // 

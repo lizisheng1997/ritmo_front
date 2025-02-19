@@ -58,7 +58,10 @@
             <text class="text oneEllipsis">{{ state.nickname }}</text>
             <image class="icon ml10" src="/@/static/home/vip3.png" v-if="state.isInstitution"></image>
             <template v-else >
-              <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
+              <template v-if="state.level == 0">
+                <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.type == 'zh'" style="width: 91rpx;"></image>
+                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 91rpx;"></image>
+              </template>
               <image class="icon ml10" src="/@/static/home/vip1.png" v-else-if="state.level == 1"></image>
               <image class="icon ml10" src="/@/static/home/vip2.png" v-else-if="state.level == 2"></image>
             </template>
@@ -100,7 +103,11 @@ const { t } = useI18n()
 onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
-  getSpaceList()
+  state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
+  if(uni.getStorageSync('accessToken') && uni.getStorageSync('userInfos')) {
+    getSpaceList()
+  }
+  
 })
 onShow(() => {
   if(uni.getStorageSync('accessToken') && uni.getStorageSync('userInfos')) {
@@ -109,6 +116,7 @@ onShow(() => {
 })
 // 参数
 const state = reactive({
+  type: '',
   status: 0, // 
   navAllHeight: 0,
   nickname: '', // 名称
@@ -216,6 +224,7 @@ page {
       }
       .text {
         width: 80%;
+        text-align: center;
         font-size: 24rpx;
         font-weight: 400;
         line-height: 28rpx;
