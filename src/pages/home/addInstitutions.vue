@@ -1,23 +1,23 @@
 <template>
   <view class="content p35">
-    <view class="title">机构信息</view>
+    <view class="title">{{ t('InstitutionalInformation') }}</view>
     <!--  -->
     <view class="form">
       <view class="item flex pb35 mt35">
         <view class="text">
-          机构名称
+          {{ t('InstitutionName') }}
         </view>
-        <input class="uni-input ml25" maxlength="7" v-model="form.name" placeholder="请输入机构名称" />
+        <input class="uni-input ml25" maxlength="7" v-model="form.name" :placeholder="t('InstitutionName')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
-          统一信用代码
+          {{ t('UnifiedSocialCreditCode') }}
         </view>
-        <input class="uni-input ml25" maxlength="18" v-model="form.socialCreditCode" placeholder="请输入统一信用代码" />
+        <input class="uni-input ml25" maxlength="18" v-model="form.socialCreditCode" :placeholder="t('UnifiedSocialCreditCode')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
-          营业执照
+          {{ t('Businesslicense') }}
         </view>
         <view class="yyzz ml30">
           <image class="icon imageW100" :src=" form.businessLicenseUrl ? form.businessLicenseUrl : 'http://47.116.190.37:8002/static/home/yyzz.png'" @click="uploadImage"></image>
@@ -26,24 +26,24 @@
       </view>
     </view>
     <!--  -->
-    <view class="title mt35">超管信息</view>
+    <view class="title mt35">{{ t('SuperadministratorInformation') }}</view>
     <view class="form">
       <view class="item flex pb35 mt35">
         <view class="text">
-          管理员
+          {{ t('Administrator') }}
         </view>
-        <input class="uni-input ml25" maxlength="5" v-model="form.adminName" placeholder="请输入管理员" />
+        <input class="uni-input ml25" maxlength="5" v-model="form.adminName" :placeholder="t('Administrator')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
-          联系方式
+          {{ t('ContactInformation') }}
         </view>
-        <input class="uni-input ml25" type="number" maxlength="11" v-model="form.adminPhone" placeholder="请输入联系方式" />
+        <input class="uni-input ml25" type="number" maxlength="11" v-model="form.adminPhone" :placeholder="t('ContactInformation')" />
       </view>
     </view>
     <!--  -->
     <view class="btn" :class=" form.name && form.socialCreditCode && form.businessLicenseUrl && form.adminName && form.adminPhone.length == 11 ? '' : 'btnNull' " @click="submit">
-      {{ form.id ? '重新提交' : '确认创建' }}
+      {{ form.id ? t('resubmit') : t('Confirmcreation') }}
     </view>
   </view>
 </template>
@@ -59,6 +59,9 @@ const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
+  uni.setNavigationBarTitle({
+    title: t('CreateInstitution')
+  });
   form.id = query!.id ? query!.id : ''
   if( form.id ) getInfo();
 });
@@ -101,7 +104,7 @@ const submit = async() => {
   
   let { id, name, socialCreditCode, businessLicenseUrl, adminName, adminPhone } = form
   if(!name && !socialCreditCode && !businessLicenseUrl && !adminName && adminPhone.length != 11) {
-    showTips('请填写资料')
+    showTips(t('Pleaseinformation'))
     return;
   }
   if(id) {

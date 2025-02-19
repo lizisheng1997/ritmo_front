@@ -41,7 +41,7 @@ const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   uni.setNavigationBarTitle({
-    title: query!.type == '0' ? '我的预约' : '机构预约'
+    title: query!.type == '0' ? t('Myreservations') : t('InstitutionAppointment')
   });
   getList()
   // state.id = query!.id

@@ -5,19 +5,19 @@
         height: '100rpx',
         lineHeight: '100rpx',
         padding: '0 35rpx'
-      }" placeholder="请输入"  :maxlength=" state.type == 0 ? 5 : 30" v-if=" state.type != 1 "/>
+      }" :placeholder="t('Enter')"  :maxlength=" state.type == 0 ? 5 : 30" v-if=" state.type != 1 "/>
       <!--  -->
       <view class="textareaDiv" v-else>
         <u-input class="textarea " v-model="state.value" type="textarea" :border="false" :auto-height="false" :maxlength="300" :custom-style="{
           height: '240rpx',
           lineHeight: '40rpx',
           padding: '35rpx 35rpx 80rpx'
-        }" placeholder="请输入"/>
+        }" :placeholder="t('Enter')"/>
         <text class="num">{{ state.value.length }}/300</text>
       </view>
     </view>
     <view class="footerOne" @click="submit">
-      确认修改
+      {{ t('Save') }}
     </view>
   </view>
 </template>
@@ -34,7 +34,7 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   uni.setNavigationBarTitle({
-    title: query!.type == '0' ? '修改昵称' : query!.type == '1' ? '修改个人简介' : query!.type == '2' ? '修改常驻空间' : '修改邮箱'
+    title: query!.type == '0' ? t('Changenickname') : query!.type == '1' ? t('Modifypersonalprofile') : query!.type == '2' ? t('Modifythepermanentspace') : t('Changeemailaddress')
   });
   state.type = query!.type
   state.value = query!.value

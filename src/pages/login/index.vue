@@ -18,7 +18,7 @@
       <view class="tips mt30">
         <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
         <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
-        同意RITMOHUB<text class="" @click="openPupup(0)">《用户协议》</text>、<text class="" @click="openPupup(1)">《隐私政策》</text> 并使用本机号码进行登录
+        {{ t('Agree') }}RITMOHUB<text class="" @click="openPupup(0)">《{{ t('userAgreement') }}》</text>、<text class="" @click="openPupup(1)">《{{ t('privacyPolicy') }}》</text> 
       </view>
     </view>
     <textPopup ref="textPopupRef" @refresh="textPopupRefresh"/>
@@ -52,7 +52,7 @@ const textPopupRefresh = (show: boolean) => {
 }
 const codeLoginTo = () => {
   if( !state.select ) {
-    showTips('请勾选协议')
+    showTips(t('Pleasechecktheagreement'))
     return
   }
   routerTo(`/pages/login/codeLogin`)

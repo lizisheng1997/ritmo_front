@@ -88,6 +88,9 @@ onLoad((query?: AnyObject | undefined): void => {
   uni.setNavigationBarTitle({
     title: query!.type == '0' ? '我的订单' : '机构订单'
   });
+  uni.setNavigationBarTitle({
+    title: query!.type == '0' ? t('Myorders') : t('InstitutionOrders')
+  });
   // state.type = query!.type
   getList();
 });

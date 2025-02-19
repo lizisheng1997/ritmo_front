@@ -1,7 +1,7 @@
 <template>
   <view class="content p35">
-    <view class="title">输入验证码: {{ state.oldcode }}</view>
-    <view class="fub mt20">已发送验证码至{{ state.phone }}</view>
+    <view class="title">{{ t('Entercode') }}: {{ state.oldcode }}</view>
+    <view class="fub mt20">{{ t('Verificationcodesentto') }} {{ state.phone }}</view>
     <!--  -->
     <view class="form pb40">
       <u-message-input mode="box" maxlength="4" :value="state.code" width="120"  @change="codeChange"></u-message-input>
@@ -9,10 +9,10 @@
     <view class="second" :style="{ color: state.counting == true ? '#898784' : '#232322' }" @click="() => {
       if( !state.counting ) sendMobileCode();
     }">
-      {{ state.counting == true ? `${state.second}秒后可重新获取` : '重新发送' }}
+      {{ state.counting == true ? `${state.second}${t('resendinseconds')}` : t('Resend') }}
     </view>
     <!--  -->
-    <view class="btn" :class=" state.code.length == 4 ? '' : 'btnNull' " @click="submit">注册并登录</view>
+    <view class="btn" :class=" state.code.length == 4 ? '' : 'btnNull' " @click="submit">{{ t('Registerandlogin') }}</view>
   </view>
 </template>
 
@@ -79,7 +79,7 @@ const sendMobileCode = async() => {
 // 
 const submit = async() => {
   if( state.code.length != 4 ) {
-    showTips('请输入验证码')
+    showTips(t('Entercode'))
     return
   }
   // 

@@ -1,41 +1,41 @@
 <template>
   <view class="content p35">
-    <view class="title">完善资料</view>
+    <view class="title">{{ t('Completeinformation') }}</view>
     <!--  -->
     <view class="form">
       <view class="item flex pb35 mt35">
         <view class="text">
-          昵称
+          {{ t('Nickname') }}
         </view>
-        <input class="uni-input ml25" maxlength="5" v-model="form.nickname" placeholder="请输入昵称或姓名" />
+        <input class="uni-input ml25" maxlength="5" v-model="form.nickname" :placeholder="t('Pleaseenternicknamename')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
-          邮箱
+          {{ t('Email') }}
         </view>
-        <input class="uni-input ml25" v-model="form.email" placeholder="请输入邮箱" />
+        <input class="uni-input ml25" v-model="form.email" :placeholder="t('Pleaseenteremail')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
-          邀请码
+          {{ t('Invitationcode') }}
         </view>
-        <input class="uni-input ml25" maxlength="8" v-model="form.intro" placeholder="非必填" />
+        <input class="uni-input ml25" maxlength="8" v-model="form.intro" :placeholder="t('Optional')" />
       </view>
     </view>
     <!--  -->
     <view class="addHead mb25">
-      添加人脸
+      {{ t('Addface') }}
     </view>
     <view class="fub mb35">
-      用于门禁人脸识别开门 <br>
-      若暂不设置，也可以后续到个人中心设置人脸
+      {{ t('FaceRecognitionaccesscontrol') }} <br>
+      {{ t('Canlaterinaccount') }}
     </view>
     <view class="headImage">
       <image class="imageW100" :src=" form.avatarUrl ? form.avatarUrl : '../../static/addHead.png' " @click="uploadImage"></image>
     </view>
     <!--  -->
     <view class="btn" :class=" ( form.nickname && form.email && form.avatarUrl ) ? '' : 'btnNull' " @click="submit()">
-      完善并开始使用
+      {{ t('Complete') }}
     </view>
   </view>
 </template>

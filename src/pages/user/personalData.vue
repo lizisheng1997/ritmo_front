@@ -10,7 +10,7 @@
     <view class="menuForm " style="margin-top: 80rpx;">
       <view class="li flex">
         <view class="left">
-          昵称
+          {{ t('Nickname') }}
         </view>
         <view class="right flex">
           <text class="text2"> {{ form.nickname }}</text>
@@ -19,7 +19,7 @@
       </view>
       <view class="li flex">
         <view class="left">
-          个人简介
+          {{ t('PersonalProfile') }}
         </view>
         <view class="right flex">
           <text class="text2 textTwoEllipsis twoEllipsis" style="text-align: right;">{{ form.intro }}</text>
@@ -28,24 +28,24 @@
       </view>
       <view class="li flex">
         <view class="left">
-          常驻空间
+          {{ t('PermanentSpace') }}
         </view>
         <view class="right flex">
-          <text class="text2">{{ state.defaultSpaceName ? state.defaultSpaceName : '请选择' }}</text>
+          <text class="text2">{{ state.defaultSpaceName ? state.defaultSpaceName : t('Pleaseselect') }}</text>
           <image class="icon" src="/@/static/rightAsh.png"  @click="state.availableShow = true"></image>
         </view>
       </view>
     </view>
     <!--  -->
     <view class="hide flex">
-      <text class="text">隐藏手机号</text>
+      <text class="text">{{ t('Hidephonenumber') }}</text>
       <u-switch v-model="form.showPhone" active-color="#FF3434" inactive-color="#D7D4CF"></u-switch>
     </view>
     <!--  -->
     <view class="menuForm mt35" v-if="!form.showPhone">
       <view class="li flex">
         <view class="left">
-          手机号
+          {{ t('phonenumber') }}
         </view>
         <view class="right flex">
           <text class="text2">+{{ form.areaCode }} {{ form.phone }}</text>
@@ -54,14 +54,14 @@
     </view>
     <!--  -->
     <view class="hide flex">
-      <text class="text">隐藏邮箱</text>
+      <text class="text">{{ t('Hideemail') }}</text>
       <u-switch v-model="form.showEmail" active-color="#FF3434" inactive-color="#D7D4CF"></u-switch>
     </view>
     <!--  -->
     <view class="menuForm mt35" v-if="!form.showEmail">
       <view class="li flex">
         <view class="left">
-          邮箱
+          {{ t('Email') }}
         </view>
         <view class="right flex">
           <text class="text2">{{ form.email }}</text>
@@ -70,10 +70,10 @@
       </view>
     </view>
     <view class="footerOne" @click="submit">
-      确认修改
+      {{ t('Save') }}
     </view>
     <!-- 选择空间 -->
-    <u-select v-model="state.availableShow" :list="state.list" @confirm="availableConfirm" value-name="code" label-name="name" title="选择空间"></u-select>
+    <u-select v-model="state.availableShow" :list="state.list" @confirm="availableConfirm" value-name="code" label-name="name" :title="t('SelectSpace')" :confirm-text="t('confirm')" :cancel-text="t('cancel')"></u-select>
   </view>
 </template>
 
@@ -90,6 +90,9 @@ const user = useUserStore();
 
 onLoad(() => {
   getUserInfo()
+  uni.setNavigationBarTitle({
+    title: t('editorialmaterial')
+  });
   uni.$on('uAvatarCropper', path => {
     // console.log(path);
     form.avatarUrl = path
@@ -157,14 +160,10 @@ const avatarCropper = () => {
     url: `/uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper?rectWidth=300&fileType='png'`
   })
 }
-// 上传图片
-const uploadImage = (url: string) => {
-  
-}
 // 
 const submit = async() => {
   if(!form.nickname && !form.email && !form.intro) {
-    showTips('请填写资料')
+    showTips(t('Enter'))
     return;
   }
   // 先上传头像

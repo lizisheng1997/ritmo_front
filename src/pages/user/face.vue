@@ -4,7 +4,7 @@
       <image class="imageW100" :src="state.url" @click="uploadImage"></image>
     </view>
     <view class="footerOne" @click="submit">
-      确认修改
+      {{ t('Save') }}
     </view>
   </view>
 </template>
@@ -20,6 +20,9 @@ const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
+  uni.setNavigationBarTitle({
+    title: t('imageupload')
+  });
   getInfo()
 });
 // 参数

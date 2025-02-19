@@ -39,21 +39,21 @@
             <template v-if="state.isInstitution">
               <image
                 class="icon ml10"
-                src="http://47.116.190.37:8002/static/home/vip3.png"></image>
+                src="/@/static/home/vip3.png"></image>
             </template>
             <template v-else>
               <image
                 class="icon ml10"
-                src="http://47.116.190.37:8002/static/home/vip0.png"
+                src="/@/static/home/vip0.png"
                 v-if="state.level == 0"
                 style="width: 91rpx"></image>
               <image
                 class="icon ml10"
-                src="http://47.116.190.37:8002/static/home/vip1.png"
+                src="/@/static/home/vip1.png"
                 v-else-if="state.level == 1"></image>
               <image
                 class="icon ml10"
-                src="http://47.116.190.37:8002/static/home/vip2.png"
+                src="/@/static/home/vip2.png"
                 v-else-if="state.level == 2"></image>
             </template>
           </view>

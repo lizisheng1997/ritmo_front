@@ -1,15 +1,15 @@
 <template>
   <u-popup v-model="state.isShow" mode="center" border-radius="20" width="630">
-    <view class="popup pb35">
+    <view class="popup ">
       <view class="title">
-        {{ state.type == 0 ? t('userAgreement') : '隐私政策' }}
+        {{ state.type == 0 ? t('userAgreement') : t('privacyPolicy') }}
       </view>
       <view class="text ">
         <rich-text :nodes="state.content"></rich-text>
       </view>
-      <view class="footerPopup p0-35" v-if="props.isType == 0">
-        <view class="btn left" @click="sumbit(false)">不同意并退出</view>
-        <view class="btn right" @click="sumbit(true)">同意</view>
+      <view class="footerPopup p35" v-if="props.isType == 0">
+        <view class="btn left" @click="sumbit(false)">{{ t('disagree') }}</view>
+        <view class="btn right" @click="sumbit(true)">{{ t('agreewith') }}</view>
       </view>
     </view>
   </u-popup>
@@ -73,7 +73,10 @@ const sumbit = (show: boolean) => {
   color: #232322;
 }
 .text {
-  padding: 0 35rpx 15rpx 35rpx;
+  padding: 0 35rpx 0 35rpx;
+
+  height: 600rpx;
+  overflow-y: auto;
 }
 .footerPopup {
   display: flex;

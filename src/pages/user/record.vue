@@ -39,6 +39,9 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   // state.type = query!.type
+  uni.setNavigationBarTitle({
+    title: `${'Myrights'} ${t('changerecord')}`
+  });
   getList()
 });
 // 参数

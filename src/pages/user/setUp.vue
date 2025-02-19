@@ -3,7 +3,7 @@
     <view class="menuForm mt35 p0-35">
       <view class="li flex">
         <view class="left">
-          评价
+          {{ t('Comment') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -11,7 +11,7 @@
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/language`)">
         <view class="left" >
-          语言
+          {{ t('Language') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -20,16 +20,16 @@
       <!-- #ifdef APP-PLUS || H5 -->
       <view class="li flex">
         <view class="left">
-          清除缓存
+          {{ t('Clearcache') }}
         </view>
         <view class="right">
-          <text class="text2">2Mb</text>
+          <text class="text2">0Mb</text>
         </view>
       </view>
       <!-- #endif -->
       <view class="li flex" @click="openBottomOperation(0)">
         <view class="left">
-          退出登录
+          {{ t('Logout') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -37,7 +37,7 @@
       </view>
       <view class="li flex" @click="openBottomOperation(1)">
         <view class="left">
-          删除账号
+          {{ t('Deleteaccount') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -45,7 +45,7 @@
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/agreement?type=0`)">
         <view class="left">
-          用户协议
+          {{ t('userAgreement') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -53,7 +53,7 @@
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/agreement?type=1`)">
         <view class="left">
-          隐私协议
+          {{ t('privacyPolicy') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -62,7 +62,7 @@
       <!-- #ifdef APP-PLUS || H5 -->
       <view class="li flex">
         <view class="left">
-          去更新
+          {{ t('update') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -81,16 +81,15 @@ import bottomOperation from '/@/components/bottomOperation.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import Login from '/@/api/login';
+import { onLoad } from '@dcloudio/uni-app';
 const loginApi = new Login();
 const { t } = useI18n()
 
-// 引入组件
-// 参数
-const state = reactive({
-  phone: '', // 手机号
-  select: false, // 
-  image: '',
-})
+onLoad((query?: AnyObject | undefined): void => {
+  uni.setNavigationBarTitle({
+    title: t('Settings')
+  });
+});
 const operatePopupRef = ref()
 // 
 const bottomOperationRef = ref()

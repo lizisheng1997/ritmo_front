@@ -2,14 +2,14 @@
   <u-popup v-model="state.isShow" mode="center" border-radius="20" width="630" :mask-close-able="false">
     <view class="popup pb35">
       <view class="title">
-        提示
+        {{ t('prompt') }}
       </view>
       <view class="text mb35">
-        {{ props.isType == 0 ? '是否切换语言，切换完毕后下次进入生效。' : state.text }}
+        {{ props.isType == 0 ? t('Switchlanguages') : state.text }}
       </view>
       <view class="footerPopup p0-35">
-        <view class="btn left" @click="sumbit(false)">取消</view>
-        <view class="btn right" @click="sumbit(true)">确定</view>
+        <view class="btn left" @click="sumbit(false)">{{ t('cancel') }}</view>
+        <view class="btn right" @click="sumbit(true)">{{ t('confirm') }}</view>
       </view>
     </view>
   </u-popup>

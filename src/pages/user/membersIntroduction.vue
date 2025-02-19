@@ -7,10 +7,10 @@
         <view class="center">
           <view class="company flex mt30">
             <text class="text oneEllipsis">{{ state.nickname }}</text>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip1.png" v-else-if="state.level == 0"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip2.png" v-else-if="state.level == 0"></image>
-            <image class="icon ml10" src="http://47.116.190.37:8002/static/home/vip3.png" v-else-if="state.level == 0"></image>
+            <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.level == 0" style="width: 91rpx;"></image>
+            <image class="icon ml10" src="/@/static/home/vip1.png" v-else-if="state.level == 1"></image>
+            <image class="icon ml10" src="/@/static/home/vip2.png" v-else-if="state.level == 2"></image>
+            <image class="icon ml10" src="/@/static/home/vip3.png" v-else-if="state.currentorgid"></image>
           </view>
           <view class="name mt10" v-if="state.expireTime">有效期至{{ state.expireTime }}</view>
         </view>
@@ -98,6 +98,7 @@ const state = reactive({
   userId: '', // 
   level: 0, // 
   expireTime: '',
+  currentorgid: '',
 })
 // 获取用户资料
 const getUserInfo = async() => {
@@ -108,6 +109,7 @@ const getUserInfo = async() => {
     state.userId = res.data.id
     state.level = res.data.vip_level
     state.expireTime = res.data.vip_expire_time
+    state.currentorgid = res.data.currentorgid
   })
 }
 </script>

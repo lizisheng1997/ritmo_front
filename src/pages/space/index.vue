@@ -11,8 +11,8 @@
         </view> -->
         <swiper class="swiper mt15" circular indicator-dots autoplay >
           <swiper-item  v-for="(item, index) in state.info.images" :key="index">
-          <image class="imageW100" :src="item"></image>
-        </swiper-item>
+            <image class="imageW100" :src="item"></image>
+          </swiper-item>
         </swiper>
         <view class="distance m15-0">
           {{ state.info.address }}
@@ -146,7 +146,7 @@
           </view>
         </view>
       </view>
-      <u-empty text="暂无数据" mode="list" icon-size="200" src="../../static/null.png"  v-if=" !productList?.length "></u-empty>
+      <u-empty :text="t('Nodata')" mode="list" icon-size="200" src="../../static/null.png"  v-if=" !productList?.length "></u-empty>
     </view>
     <!--  -->
     <selectSpace ref="selectSpaceRef" @refresh="(show, id) => {

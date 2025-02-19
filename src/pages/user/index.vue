@@ -5,7 +5,7 @@
           }">
       <view class="user flex p0-35">
         <view class="left" @click="">
-          <view class="name oneEllipsis" @click="loginTo">{{ state.nickname ? state.nickname : '请登录' }}</view>
+          <view class="name oneEllipsis" @click="loginTo">{{ state.nickname ? state.nickname : t('Pleaselogin') }}</view>
           <view class="id mt10" v-if="state.userId">ID：{{ state.userId }}</view>
         </view>
         <view class="right">
@@ -16,16 +16,16 @@
       <view class="vip flex m0-35" :class=" state.isInstitution ? 'vip3' : state.level == 1 ? 'vip1' : state.level == 2 ? 'vip2' : '' ">
         <view class="left ml35">
           <view class="grade mt35">
-            {{ state.isInstitution ? '会员机构' : userLevelEnums[state.level] }}
+            {{ state.isInstitution ? t('memberagency') : state.type == 'zh' ? userLevelEnums[state.level] : userLevelEnEnums[state.level] }}
             <image class="icon" src="/@/static/rightY.png" v-if="state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
             <image class="icon" src="/@/static/rightBlack.png" v-if="state.level != 0 && !state.isInstitution" @click="routerTo(`/pages/user/openIntroduction`, true)"></image>
           </view>
           <view class="date mt15">
-            {{ state.level ? `有效期至 ${dateToLocaleDateString(state.expireTime)}` : '开通会员最高享受10项专属权益' }}
+            {{ state.level ? `${t('Validuntil')} ${dateToLocaleDateString(state.expireTime)}` : t('10exclusivebenefits') }}
           </view>
         </view>
         <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/membersIntroduction`, true)">
-          开通会员
+          {{ t('Openmembership') }}
         </view>
       </view>
       <image class="bg" src="http://47.116.190.37:8002/static/user/userBotBg.png"></image>
@@ -33,11 +33,11 @@
     <!--  -->
     <view class="interests mt55 flex p0-35">
       <view class="title">
-        <text class="text">我的权益</text>
-        <text class="fub ml15" v-if="state.level == 0">暂无可用权益</text>
+        <text class="text">{{ t('Myrights') }}</text>
+        <text class="fub ml15" v-if="state.level == 0">{{ t('Norights') }}</text>
       </view>
       <view class="record" v-if="state.level != 0" @click="routerTo(`/pages/user/record`, true)">
-        变更记录
+        {{ t('changerecord') }}
         <image class="icon" src="/@/static/rightAsh.png" ></image>
       </view>
     </view>
@@ -53,7 +53,7 @@
       <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/home/switch.png"></image>
-          切换身份
+          {{ t('Switchidentity') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -63,7 +63,7 @@
       <view class="li flex" @click="routerTo(`/pages/user/face`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu2.png"></image>
-          图片上传 
+           {{ t('imageupload') }}
         </view>
         <view class="right flex">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -73,16 +73,16 @@
       <view class="li flex" @click="routerTo(`/pages/user/inviteFriends`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu3.png"></image>
-          邀请好友
+          {{ t('Invitefriends') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="routerTo(`/pages/user/myReservation`, true)">
+      <view class="li flex" @click="routerTo(`/pages/user/myReservation?type=${ state.isInstitution ? 1 : 0 }`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
-          我的预约
+          {{ t('Myreservations') }}
         </view>
         <view class="right flex">
           <!-- <text class="text2">0 待使用</text> -->
@@ -92,17 +92,17 @@
       <view class="li flex" @click="routerTo(`/pages/user/memberMana?id=${state.institutionId}`, true)" v-if="state.isInstitution">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
-          成员管理
+          {{ t('Membermanagement') }}
         </view>
         <view class="right flex">
           <text class="text2">{{ state.currentMemberCount }} / {{ state.totalMemberLimit }}</text>
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="routerTo(`/pages/user/myOrder`, true)">
+      <view class="li flex" @click="routerTo(`/pages/user/myOrder?type=${ state.isInstitution ? 1 : 0 }`, true)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu5.png"></image>
-          我的订单
+          {{ t('Myorders') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -111,7 +111,7 @@
       <view class="li flex" @click="routerTo(`/pages/user/setUp`)">
         <view class="left">
           <image class="icon" src="http://47.116.190.37:8002/static/user/menu6.png"></image>
-          设置
+          {{ t('Settings') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
@@ -126,7 +126,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerTo, showTips, dateToLocaleDateString } from '/@/utils/currentFun';
 import { userRecordList } from '/@/utils/universalArray'
-import { userLevelEnums } from '/@/utils/enums'
+import { userLevelEnums, userLevelEnEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
 import Home from '/@/api/home';
@@ -137,6 +137,7 @@ const { t } = useI18n()
 onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 88;
+  state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   // console.log(state.navAllHeight);
   
 })
@@ -147,6 +148,7 @@ onShow(() => {
 })
 // 参数
 const state = reactive({
+  type: '',
   nickname: '', // 名称
   avatarUrl: '', // 头像
   userId: '', // 

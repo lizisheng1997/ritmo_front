@@ -18,27 +18,27 @@
           -->
           <!--  -->
            <template v-if="item.status == 1 ">
-            <view class="status mb5">审核中</view>
-            <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">详情></view>
+            <view class="status mb5">{{ t('inreview') }}</view>
+            <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">{{ t('details') }}></view>
            </template>
            <template v-else-if="item.status == 3 ">
             <image class="select" src="/@/static/selectIcon.png" v-if="item.id == state.currentOrg"></image>
             <image class="select" src="/@/static/select.png" v-else @click="() => {
-              operatePopupRef.openDialog('是否切换机构', item.id)
+              operatePopupRef.openDialog(t('Switch'), item.id)
             }"></image>
            </template>
            <template v-else>
-            <view class="status statusRed mb5">{{ item.status == 2 ? '已驳回' : '已禁用' }}</view>
-            <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">详情></view>
+            <view class="status statusRed mb5">{{ item.status == 2 ? t('Rejected') : t('disabled') }}</view>
+            <view class="details" @click="routerTo(`/pages/home/institutionsDetails?id=${item.id}`)">{{ t('details') }}></view>
            </template>
         </view>
       </view>
       <!--  -->
     </view>
-    <u-empty text="暂无数据" mode="list" icon-size="400" src="../../static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
+    <u-empty :text="t('Nodata')" mode="list" icon-size="400" src="../../static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
     <!--  -->
     <view class="footerOne mt35" @click="routerTo(`/pages/home/addInstitutions`)">
-      创建机构
+      {{ t('CreateInstitution') }}
     </view>
     <operatePopup ref="operatePopupRef" :isType="1" @refresh="getSelect"></operatePopup>
   </view>
@@ -59,9 +59,9 @@ const homeApi = new Home();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
-  // console.log(query);
-  // state.id = query!.id
-  
+  uni.setNavigationBarTitle({
+    title: t('ListofInstitutions')
+  });
 });
 onShow(() => {
   getList()

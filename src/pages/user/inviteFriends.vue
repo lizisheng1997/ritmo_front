@@ -2,19 +2,20 @@
   <view class="content">
     <image class="back" src="/@/static/iconLeftBlack.png" @click="routerBack(1)"></image>
     <view class="top">
-      <image class="leftIcon" src="/@/static/user/title2.png"></image>
+      <image class="leftIcon" src="/@/static/user/title2.png" v-if="state.type == 'zh'"></image>
+      <image class="leftIcon" src="/@/static/user/title1.png" v-else></image>
       <image class="rightIcon" src="/@/static/user/high.png"></image>
       <view class="card p35">
         <view class="title">
           <image class="icon mr10" src="/@/static/user/gift.png"></image>
-          邀请有礼：
+          {{ t('InvitationwithGifts') }} ：
         </view>
         <view class="hour mt35">
           <text class="num">{{ state.count }}</text>
-          <text class="text">小时</text>
+          <text class="text">{{ t('hour') }}</text>
         </view>
         <view class="fub p35-0">
-          初级会议室时长权益
+          {{ t('JuniorMeetingRoom') }}
         </view>
       </view>
     </view>
@@ -23,7 +24,7 @@
       <view class="copyCard flex p35">
         <view class="title">
           <image class="icon" src="/@/static/user/invite.png"></image>
-          邀请码：
+          {{ t('Invitationcode') }} :
         </view>
         <view class="code">
           {{ state.code }}
@@ -32,10 +33,10 @@
       </view>
       <!--  -->
       <view class="footerOne mt35" >
-        马上分享
+        {{ t('ShareNow') }}
       </view>
       <view class="tips mt35">
-        奖励规则：好友通过您分享的链接或邀请码注册成功，您可获得 2 小时免费预约小型会议室时长权益（每邀请一位成功注册的好友都能再次获得该权益）。
+        {{ t('Rewardrule') }}
       </view>
     </view>
     <!--  -->
@@ -52,10 +53,13 @@ const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
+  state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
+  
   getUserInfo()
 });
 // 参数
 const state = reactive({
+  type: '',
   count: 0, // 
   code: '',
 })

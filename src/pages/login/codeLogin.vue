@@ -1,27 +1,27 @@
 <template>
   <view class="content p35">
-    <view class="title">验证码登录</view>
-    <view class="fub mt20">未注册手机验证后自动登录</view>
+    <view class="title">{{ t('verificationCode') }}</view>
+    <view class="fub mt20">{{ t('verificationDevices') }}</view>
     <!--  -->
     <view class="form flex pb40">
       <view class="sign" @click=" state.areaShow = true ">
         <u-icon class="icon" name="plus" color="#232322" size="16"></u-icon>
         {{ state.areaCode }}<u-icon class="icon ml10" name="arrow-down-fill" color="#232322" size="14"></u-icon>
       </view>
-      <input class="uni-input ml25" type="number" maxlength="11" v-model="state.phone" placeholder="请输入手机号" />
+      <input class="uni-input ml25" type="number" maxlength="11" v-model="state.phone" :placeholder="t('Entermobilenumber')" />
     </view>
     <!--  -->
-    <view class="btn" :class=" state.phone.length == 11 ? '' : 'btnNull' " @click="submit">发送验证码</view>
+    <view class="btn" :class=" state.phone.length == 11 ? '' : 'btnNull' " @click="submit">{{ t('SendCode') }}</view>
     <!--  -->
     <view class="tips mt30 flex">
       <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
       <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
-      同意RITMOHUB <text class="" @click="openPupup(0)">《用户协议》</text>、<text class="" @click="openPupup(1)">《隐私政策》</text>
+      {{ t('Agree') }}RITMOHUB<text class="" @click="openPupup(0)">《{{ t('userAgreement') }}》</text>、<text class="" @click="openPupup(1)">《{{ t('privacyPolicy') }}》</text> 
     </view>
   </view>
   <textPopup ref="textPopupRef" @refresh="textPopupRefresh"/>
   <!-- 选择 -->
-  <u-select v-model="state.areaShow" :list="selectList"  label-name="value" value-name="value" @confirm="confirm"></u-select>
+  <u-select v-model="state.areaShow" :list="selectList"  label-name="value" value-name="value" @confirm="confirm" :confirm-text="t('confirm')" :cancel-text="t('cancel')"></u-select>
 </template>
 
 <script setup lang="ts">
@@ -73,6 +73,8 @@ const textPopupRefresh = (show: boolean) => {
 
 <style lang="scss" scoped>
 .content {
+  height: 100vh;
+  background-color: #ffffff;
   .title {
     font-size: 48rpx;
     font-weight: 600;

@@ -22,7 +22,7 @@
       
     </view>
     <view class="footerOne" @click="operatePopupRef.openDialog()">
-      保存
+      {{ t('Save') }}
     </view>
     <operatePopup ref="operatePopupRef" @refresh="submit"></operatePopup>
   </view>
@@ -37,6 +37,9 @@ import { onLoad } from '@dcloudio/uni-app';
 const { t } = useI18n()
 
 onLoad(() => {
+  uni.setNavigationBarTitle({
+    title: t('Language')
+  });
   state.idx = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   // 
 })
@@ -49,7 +52,7 @@ const operatePopupRef = ref()
 const submit = async(type: boolean) => {
   if( type ) {
     uni.setStorageSync('languageType', state.idx);
-    showTips('切换成功')
+    showTips('success')
   }
 }
 </script>

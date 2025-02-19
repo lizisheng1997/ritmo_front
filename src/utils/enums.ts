@@ -1,8 +1,15 @@
 export enum userLevelEnums {
   普通成员 = 0,
-  初级会员,
-  高级会员,
+  行星会员,
+  恒星会员,
   机构会员
+}
+
+export enum userLevelEnEnums {
+  'Ordinary member' = 0,
+  'Planet',
+  'Star',
+  'Member institution'
 }
 
 export enum spaceLevelEnums {

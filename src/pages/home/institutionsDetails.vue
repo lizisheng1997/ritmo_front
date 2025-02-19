@@ -1,20 +1,20 @@
 <template>
   <view class="content p35" v-if="state.info">
     <view class="examine pb35" style="border-bottom: 1PX solid #D7D4CF;">
-      <view class="status" v-if="state.info.status == 0">审核中</view>
-      <view class="status statusRed" v-else-if="state.info.status == 2">已驳回</view>
+      <view class="status" v-if="state.info.status == 0">{{ t('inreview') }}</view>
+      <view class="status statusRed" v-else-if="state.info.status == 2">{{ t('Rejected') }}</view>
       <view class="remark flex mt35" v-if="state.info.status == 2">
-        <view class="label">拒绝理由：</view>
+        <view class="label">{{ t('Reasonforrefusal') }} :</view>
         <view class="text">{{ state.info.reject_reason }}</view>
       </view>
     </view>
     <!--  -->
-    <view class="title mt35">机构信息</view>
+    <view class="title mt35">{{ t('InstitutionalInformation') }}</view>
     <!--  -->
     <view class="form" style="border-bottom: 1PX solid #D7D4CF;">
       <view class="item flex pb35 ">
         <view class="text">
-          机构名称
+          {{ t('InstitutionName') }}
         </view>
         <view class="value">
           {{ state.info.name }}
@@ -22,7 +22,7 @@
       </view>
       <view class="item flex pb35 ">
         <view class="text">
-          统一信用代码
+          {{ t('UnifiedSocialCreditCode') }}
         </view>
         <view class="value">
           {{ state.info.social_credit_code }}
@@ -30,7 +30,7 @@
       </view>
       <view class="item flex pb35 ">
         <view class="text">
-          营业执照
+          {{ t('Businesslicense') }}
         </view>
         <view class="yyzz ml30">
           <image class="icon imageW100" :src="state.info.business_license_url"></image>
@@ -38,11 +38,11 @@
       </view>
     </view>
     <!--  -->
-    <view class="title mt35">超管信息</view>
+    <view class="title mt35">{{ t('SuperadministratorInformation') }}</view>
     <view class="form">
       <view class="item flex pb35 ">
         <view class="text">
-          管理员
+          {{ t('Administrator') }}
         </view>
         <view class="value">
           {{ state.info.admin_name }}
@@ -50,7 +50,7 @@
       </view>
       <view class="item flex pb35 ">
         <view class="text">
-          联系方式
+          {{ t('ContactInformation') }}
         </view>
         <view class="value">
           {{ state.info.admin_phone }}
@@ -59,7 +59,7 @@
     </view>
     <!--  -->
     <view class="btn" @click="routerTo(`/pages/home/addInstitutions?id=${state.id}`)">
-      编辑并重新提审
+      {{ t('Editandreview') }}
     </view>
   </view>
 </template>
@@ -76,6 +76,10 @@ const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
+  // console.log(query);
+  uni.setNavigationBarTitle({
+    title: t('Institutionaldetails')
+  });
   state.id = query!.id
   getInfo()
 });

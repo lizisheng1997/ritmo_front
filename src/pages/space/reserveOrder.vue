@@ -63,10 +63,14 @@
           
         </view>
       </view>
-      <view class="right">
+      <view class="right" @click="payPopupRef.openDialog()">
         确认预约
       </view>
     </view>
+    <payPopup
+      ref="payPopupRef"
+      :isType="1"
+      @refresh="getPay"></payPopup>
   </view>
 </template>
 
@@ -74,6 +78,7 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
+import payPopup from '/@/components/payPopup.vue';
 import { spaceLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '/@/store/modules/user';
@@ -96,6 +101,7 @@ onLoad((query?: AnyObject | undefined): void => {
   getInfo()
 });
 // 参数
+const payPopupRef = ref();
 const state = reactive({
   type: 0, // 
   sid: '', // 空间id
@@ -124,6 +130,63 @@ const getInfo = () => {
     })
   }
 }
+// 支付订单
+const getPay = (show: boolean, type: string, id: string) => {
+  if (show) {
+    // console.log(type);
+    showTips('功能未开发')
+
+    // userApi.getOrdersAdd({
+    //   vip_level: state.tabsIdx,
+    //   duration_type: obj.fub,
+    //   amount: obj.price,
+    // }).then((resOne: any) => {
+    //   // showTips(resOne.message)
+    //   // console.log(resOne.data.id);
+    //   if (type == 'wxpay') {
+    //     uni.login({
+    //       success: function (resLogin) {
+    //         if (resLogin.code) {
+    //           console.log(resLogin);
+    //           userApi.getVipOrdersPay(resOne.data.id, resLogin.code).then((res: any) => {
+    //             // showTips(res.message)
+    //             console.log(res.data);
+    //             getRequestPayment(type, res.data.orderInfo)
+    //           })
+    //         } else {
+    //           console.log('登录失败！' + resLogin.errMsg);
+    //         }
+    //       }
+    //     });
+    //   }
+      
+    // })
+  }
+};
+const getRequestPayment = (provider: any, obj: any) => {
+  // console.log(obj);
+  
+  uni.requestPayment({
+    provider, 
+    // orderInfo: obj,
+    // @ts-ignore
+    appid: obj.appid, // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
+    timeStamp: obj.timeStamp, // 时间戳（单位：秒）
+    package: 'prepay_id=' + obj.package, // 固定值
+    paySign: obj.paySign, //签名
+    signType: obj.signType, // 签名算法，这里用的 MD5/RSA 签名
+    nonceStr: obj.nonceStr, 
+    success: function (res) {
+      // var rawdata = JSON.parse(res.rawdata);
+      // console.log('支付成功');
+      showTips('支付成功');
+      // getUserInfo()
+    },
+    fail: function (err) {
+      console.log('支付失败:' + JSON.stringify(err));
+    }
+  });
+};
 </script>
 
 <style >
