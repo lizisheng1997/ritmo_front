@@ -21,10 +21,10 @@
         </view>
         <view class="distance">{{ state.info.businessHours }}</view>
         <view class="spaces mt15">
-          <text class="text pr15 mr15">{{ state.info.workspaceCount }} 工位</text>
-          <text class="text pr15 mr15">{{ state.info.meetingRoomCount }} 会议室</text>
-          <text class="text pr15 mr15">{{ state.info.officeCount }} 办公室</text>
-          <text class="text pr15 mr15">{{ state.info.showcaseCount }} 展示柜 </text>
+          <text class="text pr15 mr15">{{ state.info.workspaceCount }} {{ t('workstation') }}</text>
+          <text class="text pr15 mr15">{{ state.info.meetingRoomCount }} {{ t('conference') }}</text>
+          <text class="text pr15 mr15">{{ state.info.officeCount }} {{ t('office') }}</text>
+          <text class="text pr15 mr15">{{ state.info.showcaseCount }} {{ t('cabinet') }} </text>
         </view>
         <view class="cards mt25">
           <template v-for=" (item, index) in state.info.services">
@@ -49,11 +49,11 @@
           <view class="grade p0-25 mr15 " :class=" state.gradeIdx == 1 ? 'gradeAct' : '' " @click="() => {
             state.gradeIdx = 1
             getAllList()
-          }">只看初级区</view>
+          }">{{ t('primary1') }}</view>
           <view class="grade p0-25 mr15" :class=" state.gradeIdx == 2 ? 'gradeAct' : '' " @click="() => {
             state.gradeIdx = 2
             getAllList()
-          }">只看高级区</view>
+          }">{{ t('senior1') }}</view>
         </template>
         <!-- <view class="grade p0-25 mr15" style="color: #232322;" @click="routerTo('/pages/space/distributionMap')">
           查看分布图
@@ -85,13 +85,13 @@
                     {{ item.description }}
                   </view>
                   <view class="text mt5">
-                    ¥{{ item.price }}/30分钟起
+                    ¥{{ item.price }}/{{ t('Startingfromminutes') }}
                     <text class="icon ml20">{{ item.area_name }}</text>
                   </view>
                 </view>
               </view>
               <view class="right" @click="routerTo(`/pages/space/reserveRoom?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}&data=${weekDayList.find((item) => item.day == state.day).date}`)">
-                预定
+                {{ t('reserve') }}
               </view>
             </view>
             <spaceTimes :seleceList="item.time_slots"/>
@@ -171,14 +171,14 @@ onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
   let arr = getLastSevenDays()
-  arr[0].week = '今天'
+  arr[0].week = t('today')
   weekDayList.value = arr
   state.day = arr[0].day
   // console.log(arr);
   getSpaceList(1)
 })
 // 参数, { name: '办公室', key: 2 }, { name: '展示柜', key: 3 },
-const tabsList = ref([ { name: '工位', key: 0 }, { name: '会议室', key: 1 }  ])
+const tabsList = ref([ { name: t('workstation'), key: 0 }, { name: t('conference'), key: 1 }  ])
 const weekDayList = ref([] as any[])
 const spaceList = ref([] as any) // 空间列表
 const productList = ref([] as any) // 
@@ -208,7 +208,7 @@ const selectSpaceRef = ref()
 const getLastSevenDays = () => {
   const today = new Date();
   const days = [];
-  const dayNames = ['周天', '周一', '周二', '周三', '周四', '周五', '周六'];
+  const dayNames = [t('today'), t('sun'), t('mon'), t('tues'), t('wed'), t('thur'), t('fri'), t('satur')];
 
   for (let i = 0; i < 7; i++) {
       const date = new Date(today);

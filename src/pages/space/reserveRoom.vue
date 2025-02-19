@@ -14,7 +14,7 @@
                   {{ state.info.services[0].name }} ｜  {{ state.info.services[1].name }}...
                 </view>
                 <view class="text mt5">
-                  ¥{{ state.info.price }}/30分钟起
+                  ¥{{ state.info.price }}/{{ t('Startingfromminutes') }}
                   <text class="icon ml20">{{ spaceLevelEnums[state.info.level] }}</text>
                 </view>
               </view>
@@ -29,19 +29,19 @@
     <!--  -->
     <view class="selectDate mt35">
       <view class="nav flex">
-        <text class="title">选择预约日期</text>
+        <text class="title">{{ t('Selectappointmentdate') }}</text>
       </view>
       <view class="card p15 mt25">
         <image class="icon" src="/@/static/rightAsh.png" @click="state.calendarShow = true"></image>
-        <view class="title">日期</view>
+        <view class="title">{{ t('date') }}</view>
         <view class="date mt20">{{ state.date }}</view>
       </view>
     </view>
     <!--  -->
     <view class="date mt35">
       <view class="nav flex">
-        <text class="title">选择预约时间</text>
-        <text class="text" v-if=" state.selectList.length ">{{ state.timeRange }}  {{ state.hourCount }}小时</text>
+        <text class="title">{{ t('Chooseanappointmenttime') }}</text>
+        <text class="text" v-if=" state.selectList.length ">{{ state.timeRange }}  {{ state.hourCount }}{{ t('hour') }}</text>
       </view>
       <!--  -->
       <view class="times">
@@ -56,15 +56,15 @@
       <view class="describe mt35 flex">
         <view class="li">
           <text class="icon mr15" style="background-color: #D7D4CF;"></text>
-          <text class="text">已预约</text>
+          <text class="text">{{ t('alreadybooked') }}</text>
         </view>
         <view class="li">
           <text class="icon mr15" style="background-color: #ff0000;"></text>
-          <text class="text">不可预约</text>
+          <text class="text">{{ t('notavailable') }}</text>
         </view>
         <view class="li">
           <text class="icon mr15" style="background-color: #FFCF00;"></text>
-          <text class="text">预约选中</text>
+          <text class="text">{{ t('appointmentselection') }}</text>
         </view>
       </view>
       <!--  -->
@@ -72,24 +72,24 @@
     <view class="footer flex">
       <view class="left">
         <view class="price">
-          <text class="text">总计：</text>
+          <text class="text">{{ t('total') }}:</text>
           <text class="num">¥{{ state.price }}</text>
           
         </view>
         <!--  -->
         <view class="tips mt10">
-          共计 <text class="" style="color: #FF3434;">{{ state.hourCount  }}</text> 小时
+          {{ t('total') }} <text class="" style="color: #FF3434;">{{ state.hourCount  }}</text> {{ t('hour') }}
            <!-- 权益抵扣 <text class="" style="color: #FF3434;">2</text> 小时 -->
         </view>
       </view>
       <view class="right" @click="() => {
         if( state.hourCount == 0 ) {
-          showTips('请选择')
+          showTips(t('Pleaseselect'))
         } else {
-          operatePopupRef.openDialog('是否提交预约？')
+          operatePopupRef.openDialog(t('submitanappointment'))
         }
       }">
-        去预约
+        {{ t('reservation') }}
       </view>
     </view>
     <operatePopup ref="operatePopupRef" :isType="1" @refresh="submit"></operatePopup>
@@ -113,7 +113,7 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   uni.setNavigationBarTitle({
-    title: query!.type == '0' ? '预定工位' : '预定会议室'
+    title: query!.type == '0' ? t('Spacereservation') : t('Roomreservation')
   });
   state.type = query!.type
   state.sid = query!.sid

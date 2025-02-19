@@ -2,7 +2,7 @@
   <u-popup v-model="state.isShow" mode="bottom" border-radius="20" width="630" length="500px" :mask-close-able="false">
     <view class="popup p0-35">
       <view class="title">
-        选择空间
+        {{ t('SelectSpace') }}
       </view>
       <scroll-view class="form" :scroll-top="0" scroll-y="true">
         <view class="li flex mb25 pb25" v-for=" item in spaceList " :key="item.id">
@@ -16,7 +16,7 @@
         
       </scroll-view>
       <view class="footerPopup p0-35">
-        <view class="btn" @click="sumbit(true)">确认</view>
+        <view class="btn" @click="sumbit(true)">{{ t('confirm') }}</view>
       </view>
     </view>
   </u-popup>

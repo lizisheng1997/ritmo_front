@@ -3,24 +3,24 @@
   <u-popup v-model="state.isShow" mode="bottom" border-radius="20" width="630">
     <view class="popup p35">
       <view class="title">
-        成员扩容
+        {{ t('Memberexpansion') }}
       </view>
       <view class="form mt45">
         <view class="item flex pb35 mt35">
           <view class="text">
-            扩容人数
+            {{ t('Expandthenumber') }}
           </view>
           <u-number-box class=" ml25" :min="1"  v-model="state.limit"></u-number-box>
         </view>
         <view class="item flex pb35 mt35">
           <view class="text">
-            扩容月数
+            {{ t('Expansionmonths') }}
           </view>
           <u-number-box class=" ml25" :min="1" v-model="state.day"></u-number-box>
         </view>
       </view>
       <view class="footerOne" @click="sumbit">
-        去扩容
+        {{ t('Goexpandthe') }}
       </view>
     </view>
   </u-popup>

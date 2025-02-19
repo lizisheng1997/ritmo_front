@@ -5,14 +5,14 @@
         {{ state.isType == 0 ? '退出账号' : '确认删除账户' }}
       </view>
       <view class="text mt35" v-if="state.isType == 0">
-        是否退出当前账号？
+        {{ t('ofthecurrentaccount') }}？
       </view>
       <view class="textAsh mt35" v-else>
-        确认删除后，相关信息将无法还原
+        {{ t('Afterconfirming') }}
       </view>
       <view class="footerTwo flex" >
-        <view class="btn btn1" @click="sumbit(0)">再想想</view>
-        <view class="btn btn2" @click="sumbit(1)"> {{ state.isType == 0 ? '确认退出' : '确认删除' }}</view>
+        <view class="btn btn1" @click="sumbit(0)">{{ t('Thinkagain') }}</view>
+        <view class="btn btn2" @click="sumbit(1)"> {{ t('confirm') }}</view>
       </view>
     </view>
   </u-popup>

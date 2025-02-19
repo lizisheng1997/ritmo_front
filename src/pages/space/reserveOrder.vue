@@ -11,25 +11,25 @@
       <view class="title mt55">{{ state.info.booking_date }}</view>
       <view class="rows flex mt45" v-if="state.spaceInfo">
         <view class="item">
-          <view class="label mb15">所属区域</view>
-          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}会员区域</view>
+          <view class="label mb15">{{ t('belong') }}</view>
+          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}{{ t('vip') }}</view>
         </view>
         <view class="item">
-          <view class="label mb15">工位号</view>
+          <view class="label mb15">{{ t('stationnumber') }}</view>
           <view class="text">{{ state.spaceInfo.name }}</view>
         </view>
         <view class="item">
-          <view class="label mb15">会议室类型</view>
+          <view class="label mb15">{{ t('Meetingroomtype') }}</view>
           <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}</view>
         </view>
       </view>
       <view class="info">
         <view class="li flex mt25">
-          <text class="label">预约人：</text>
+          <text class="label">{{ t('appointedby') }} ：</text>
           <text class="text">{{ state.nickname }}</text>
         </view>
         <view class="li flex mt25">
-          <text class="label">成员id：</text>
+          <text class="label">{{ t('memberid') }} ：</text>
           <text class="text">{{ state.userId }}</text>
         </view>
       </view>
@@ -37,17 +37,17 @@
     <!--  -->
     <view class="order mt35 p35">
       <view class="title mb35">
-        订单明细
+        {{ t('orderdetails') }}
       </view>
       <view class="expansion mb10 flex">
-        <view class="text">实付金额</view>
+        <view class="text">{{ t('PayAmount') }}</view>
         <view class="price">¥{{ state.info.amount }}</view>
       </view>
       <!-- <view class="count">
         × {{ state.info.rights_hours }}h
       </view> -->
       <view class="expansion mb10 flex mt45">
-        <view class="text">权益抵扣</view>
+        <view class="text">{{ t('Equitydeduction') }}</view>
         <view class="price" style="color: #FF3434;">{{ state.info.rights_hours }}h</view>
       </view>
       <!-- <view class="count">
@@ -58,13 +58,15 @@
     <view class="footer flex">
       <view class="left">
         <view class="price">
-          <text class="text">总计：</text>
+          <text class="text">
+            {{ t('total') }} :
+          </text>
           <text class="num">¥{{ state.info.amount }}</text>
           
         </view>
       </view>
       <view class="right" @click="payPopupRef.openDialog()">
-        确认预约
+        {{ t('Confirmappointment') }}
       </view>
     </view>
     <payPopup
@@ -90,7 +92,7 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   uni.setNavigationBarTitle({
-    title: query!.type == '0' ? '预定工位' : '预定会议室'
+    title: query!.type == '0' ? t('Spacereservation') : t('Roomreservation')
   });
   state.type = query!.type
   state.sid = query!.sid
