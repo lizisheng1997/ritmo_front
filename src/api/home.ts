@@ -39,11 +39,18 @@ export default class Home extends Request {
     });
   }
   // 切换机构
-  getSwithOrganizations(id: string) {
+  getSwithOrganizations(id: string, type: number) {
     return this.post({
-      url: `/v1/organizations/switch/${id}`,
+      url: `/v1/organizations/switch/${id}?type=${type}`,
     });
   }
+  // banner
+  getCarousel() {
+    return this.get({
+      url: `/v1/homepage/carousel`,
+    });
+  }
+
 
 
 }

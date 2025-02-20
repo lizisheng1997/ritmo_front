@@ -90,7 +90,6 @@ onLoad((query?: AnyObject | undefined): void => {
     title: t('Settings')
   });
 });
-const operatePopupRef = ref()
 // 
 const bottomOperationRef = ref()
 const openBottomOperation = (type: number) => {

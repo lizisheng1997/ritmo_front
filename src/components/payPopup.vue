@@ -36,17 +36,17 @@ const list = ref([
   {
     key: 'wxpay',
     value: '微信',
-    image: 'http://47.116.190.37:8002/static/space/wechat.png'
+    image: 'https://ritmohub.cn/static/space/wechat.png'
   },
   {
     key: 'alipay',
     value: '支付宝',
-    image: 'http://47.116.190.37:8002/static/space/alipay.png'
+    image: 'https://ritmohub.cn/static/space/alipay.png'
   },
   {
     key: 'stripe',
     value: 'Stripe',
-    image: 'http://47.116.190.37:8002/static/space/stripe.png'
+    image: 'https://ritmohub.cn/static/space/stripe.png'
   },
 ])
 const state = reactive({

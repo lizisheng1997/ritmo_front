@@ -25,6 +25,7 @@
       </view>
 
     </view>
+    <u-empty :text="t('Nodata')" mode="list" icon-size="400" src="https://ritmohub.cn/static/null.png" style="margin-top: 40%;" v-if=" !list?.length "></u-empty>
     <!--  -->
   </view>
 </template>

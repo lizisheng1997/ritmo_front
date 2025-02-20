@@ -11,20 +11,20 @@
             <text class="text oneEllipsis">{{ state.nickname }}</text>
             <image
               class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip0.png"
+              src="https://ritmohub.cn/static/home/vip0.png"
               v-if="state.level == 0"
               style="width: 91rpx"></image>
             <image
               class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip1.png"
+              src="https://ritmohub.cn/static/home/vip1.png"
               v-else-if="state.level == 0"></image>
             <image
               class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip2.png"
+              src="https://ritmohub.cn/static/home/vip2.png"
               v-else-if="state.level == 0"></image>
             <image
               class="icon ml10"
-              src="http://47.116.190.37:8002/static/home/vip3.png"
+              src="https://ritmohub.cn/static/home/vip3.png"
               v-else-if="state.level == 0"></image>
           </view>
         </view>
@@ -57,7 +57,7 @@
       <view class="myreply p0-35 mt35">
         <view class="li mb25 pb25">
           <view class="article flex">
-            <image class="banner mr20" src="http://47.116.190.37:8002/static/addHead.png"></image>
+            <image class="banner mr20" src="https://ritmohub.cn/static/addHead.png"></image>
             <view class="info">
               <view class="title twoEllipsis">AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了</view>
               <view class="date mt6">04-21</view>
@@ -67,7 +67,7 @@
         </view>
         <view class="li mb25 pb25">
           <view class="article flex">
-            <image class="banner mr20" src="http://47.116.190.37:8002/static/addHead.png"></image>
+            <image class="banner mr20" src="https://ritmohub.cn/static/addHead.png"></image>
             <view class="info">
               <view class="titl twoEllipsise">AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了</view>
               <view class="date mt6">04-21</view>
@@ -84,7 +84,7 @@
     <template v-if=" state.current == 3 ">
       <view class="replymy p0-35 mt35">
         <view class="li mb25 pb25 flex">
-          <image class="head mr20" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <image class="head mr20" src="https://ritmohub.cn/static/addHead.png"></image>
           <view class="info">
             <view class="name ">Luxus</view>
             <view class="time mt15">评论了你的动态 3分钟前</view>

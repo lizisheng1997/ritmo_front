@@ -13,7 +13,7 @@
     <!--  -->
     <view class="album pl5" @click="routerTo(`/pages/space/album?id=${state.id}`)">
       相册
-      <image class="icon" src="http://47.116.190.37:8002/static/iconLeftW.png"> </image>
+      <image class="icon" src="https://ritmohub.cn/static/iconLeftW.png"> </image>
     </view>
     <!--  -->
     <view class="center p35">
@@ -31,7 +31,7 @@
       <template v-if="state.current == 0">
         <view class="cards">
           <view class="card m10" v-for=" (item, index) in state.info.services" :key="index">
-            <image class="icon mt15" src="http://47.116.190.37:8002/static/space/icon (1).png"></image>
+            <image class="icon mt15" src="https://ritmohub.cn/static/space/icon (1).png"></image>
             <view class="text">{{ item.name }}</view>
           </view>
         </view>
@@ -40,37 +40,37 @@
       <template v-else-if="state.current == 1">
         <view class="info mt35" v-if="state.info.workspace_basic_intro">
           <view class="title mb25">初级工位</view>
-          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
+          <!-- <image class="banner mb25" src="https://ritmohub.cn/static/addHead.png"></image> -->
           <view class="text">{{ state.info.workspace_basic_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.workspace_premium_intro">
           <view class="title mb25">高级工位</view>
-          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
+          <!-- <image class="banner mb25" src="https://ritmohub.cn/static/addHead.png"></image> -->
           <view class="text">{{ state.info.workspace_premium_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.meeting_room_basic_intro">
           <view class="title mb25">基础会议室</view>
-          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
+          <!-- <image class="banner mb25" src="https://ritmohub.cn/static/addHead.png"></image> -->
           <view class="text">{{ state.info.meeting_room_basic_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.meeting_room_premium_intro">
           <view class="title mb25">高级会议室</view>
-          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
+          <!-- <image class="banner mb25" src="https://ritmohub.cn/static/addHead.png"></image> -->
           <view class="text">{{ state.info.meeting_room_premium_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.office_intro">
           <view class="title mb25">办公室</view>
-          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
+          <!-- <image class="banner mb25" src="https://ritmohub.cn/static/addHead.png"></image> -->
           <view class="text">{{ state.info.office_intro }}</view>
         </view>
         <!--  -->
         <view class="info mt35" v-if="state.info.showcase_intro">
           <view class="title mb25">展示柜</view>
-          <!-- <image class="banner mb25" src="http://47.116.190.37:8002/static/addHead.png"></image> -->
+          <!-- <image class="banner mb25" src="https://ritmohub.cn/static/addHead.png"></image> -->
           <view class="text">{{ state.info.showcase_intro }}</view>
         </view>
       </template>

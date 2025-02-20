@@ -1,7 +1,7 @@
 <template>
   <view class="content p35" v-if="state.info">
     <view class="examine pb35" style="border-bottom: 1PX solid #D7D4CF;">
-      <view class="status" v-if="state.info.status == 0">{{ t('inreview') }}</view>
+      <view class="status" v-if="state.info.status == 1">{{ t('inreview') }}</view>
       <view class="status statusRed" v-else-if="state.info.status == 2">{{ t('Rejected') }}</view>
       <view class="remark flex mt35" v-if="state.info.status == 2">
         <view class="label">{{ t('Reasonforrefusal') }} :</view>

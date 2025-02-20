@@ -28,7 +28,7 @@
           {{ t('Openmembership') }}
         </view>
       </view>
-      <image class="bg" src="http://47.116.190.37:8002/static/user/userBotBg.png"></image>
+      <image class="bg" src="https://ritmohub.cn/static/user/userBotBg.png"></image>
     </view>
     <!--  -->
     <view class="interests mt55 flex p0-35">
@@ -52,7 +52,7 @@
       <!--  -->
       <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`, true)">
         <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/home/switch.png"></image>
+          <image class="icon" src="https://ritmohub.cn/static/home/switch.png"></image>
           {{ t('Switchidentity') }}
         </view>
         <view class="right">
@@ -62,7 +62,7 @@
       <!--  -->
       <view class="li flex" @click="routerTo(`/pages/user/face`, true)">
         <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/menu2.png"></image>
+          <image class="icon" src="https://ritmohub.cn/static/user/menu2.png"></image>
            {{ t('imageupload') }}
         </view>
         <view class="right flex">
@@ -72,7 +72,7 @@
       <!--  -->
       <view class="li flex" @click="routerTo(`/pages/user/inviteFriends`, true)">
         <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/menu3.png"></image>
+          <image class="icon" src="https://ritmohub.cn/static/user/menu3.png"></image>
           {{ t('Invitefriends') }}
         </view>
         <view class="right">
@@ -81,7 +81,7 @@
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/myReservation?type=${ state.isInstitution ? 1 : 0 }`, true)">
         <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
+          <image class="icon" src="https://ritmohub.cn/static/user/menu4.png"></image>
           {{ t('Myreservations') }}
         </view>
         <view class="right flex">
@@ -91,7 +91,7 @@
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/memberMana?id=${state.institutionId}`, true)" v-if="state.isInstitution">
         <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/menu4.png"></image>
+          <image class="icon" src="https://ritmohub.cn/static/user/menu4.png"></image>
           {{ t('Membermanagement') }}
         </view>
         <view class="right flex">
@@ -101,7 +101,7 @@
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/myOrder?type=${ state.isInstitution ? 1 : 0 }`, true)">
         <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/menu5.png"></image>
+          <image class="icon" src="https://ritmohub.cn/static/user/menu5.png"></image>
           {{ t('Myorders') }}
         </view>
         <view class="right">
@@ -110,7 +110,7 @@
       </view>
       <view class="li flex" @click="routerTo(`/pages/user/setUp`)">
         <view class="left">
-          <image class="icon" src="http://47.116.190.37:8002/static/user/menu6.png"></image>
+          <image class="icon" src="https://ritmohub.cn/static/user/menu6.png"></image>
           {{ t('Settings') }}
         </view>
         <view class="right">
@@ -247,7 +247,7 @@ const loginTo = () => {
     .vip {
       margin-top: 38rpx;
       height: 160rpx;
-      background-image: url('http://47.116.190.37:8002/static/user/vip0.png');
+      background-image: url('https://ritmohub.cn/static/user/vip0.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       justify-content: space-between;
@@ -285,13 +285,13 @@ const loginTo = () => {
       }
     }
     .vip1 {
-      background-image: url('http://47.116.190.37:8002/static/user/vip1.png') !important;
+      background-image: url('https://ritmohub.cn/static/user/vip1.png') !important;
     }
     .vip2 {
-      background-image: url('http://47.116.190.37:8002/static/user/vip3.png') !important;
+      background-image: url('https://ritmohub.cn/static/user/vip3.png') !important;
     }
     .vip3 {
-      background-image: url('http://47.116.190.37:8002/static/user/vip4.png') !important;
+      background-image: url('https://ritmohub.cn/static/user/vip4.png') !important;
       .grade {
         color: #FFCF00 !important;
       }
@@ -333,7 +333,7 @@ const loginTo = () => {
     .card {
       width: 150rpx;
       height: 200rpx;
-      background-image: url('http://47.116.190.37:8002/static/user/interestsListBg.png');
+      background-image: url('https://ritmohub.cn/static/user/interestsListBg.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       margin-right: 26rpx;

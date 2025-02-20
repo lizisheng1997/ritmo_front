@@ -2,11 +2,11 @@
   <view class="content p35">
     <!-- <rich-text :nodes="state.content"></rich-text> -->
      <view class="title">初级</view>
-    <image class="icon" src="http://47.116.190.37:8002/static/vip/vip1-2.jpg"></image>
-    <image class="icon" src="http://47.116.190.37:8002/static/vip/vip1-3.jpg"></image>
+    <image class="icon" src="https://ritmohub.cn/static/vip/vip1-2.jpg"></image>
+    <image class="icon" src="https://ritmohub.cn/static/vip/vip1-3.jpg"></image>
     <view class="title">高级</view>
-    <image class="icon" src="http://47.116.190.37:8002/static/vip/vip2-2.jpg"></image>
-    <image class="icon" src="http://47.116.190.37:8002/static/vip/vip2-3.jpg"></image>
+    <image class="icon" src="https://ritmohub.cn/static/vip/vip2-2.jpg"></image>
+    <image class="icon" src="https://ritmohub.cn/static/vip/vip2-3.jpg"></image>
   </view>
 </template>
 

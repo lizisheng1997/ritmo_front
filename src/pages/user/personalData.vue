@@ -137,7 +137,7 @@ const getUserInfo = async() => {
     form.userId = res.data.id
     form.nickname = res.data.nickname
     form.intro = res.data.intro
-    form.avatarUrl = res.data.avatar_url? res.data.avatar_url : 'http://47.116.190.37:8002/static/home/head.png'
+    form.avatarUrl = res.data.avatar_url? res.data.avatar_url : 'https://ritmohub.cn/static/home/head.png'
     form.phone = res.data.phone
     form.areaCode = res.data.area_code
     form.email = res.data.email

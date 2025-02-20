@@ -68,6 +68,8 @@
           <view class="price">￥{{ item.amount }}</view>
         </view>
       </view>
+      
+      <u-empty :text="t('Nodata')" mode="list" icon-size="400" src="https://ritmohub.cn/static/null.png" style="margin-top: 40%;" v-if=" !list?.length "></u-empty>
       <!-- 
       workspace工位   meeting_room会议室  vip会员 org_vip 机构会员 org_expansion机构扩容。 同时，每个订单记录添加 order_status_text（状态文字说明），状态映射如下： 对于预订类订单：0：“待支付”, 1：“待使用”, 2：“使用中”, 3：“已完成”, 4：“已取消”； 对于VIP及机构订单：0：“待支付”, 1：“已支付”, 2：“已取消”。 同时返回权益使用记录（VipBenefitHistory）的历史记录。 -->
     </view>

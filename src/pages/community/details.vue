@@ -11,13 +11,13 @@
     <u-icon class="delete" name="trash-fill" size="60"></u-icon>
     <swiper class="swiper" circular indicator-dots autoplay >
       <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
+        <image class="imageW100" src="https://ritmohub.cn/static/loginBg.png"></image>
       </swiper-item>
       <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
+        <image class="imageW100" src="https://ritmohub.cn/static/loginBg.png"></image>
       </swiper-item>
       <swiper-item>
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
+        <image class="imageW100" src="https://ritmohub.cn/static/loginBg.png"></image>
       </swiper-item>
     </swiper>
     <!--  -->

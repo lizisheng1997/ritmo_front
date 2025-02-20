@@ -6,7 +6,7 @@
 
           <view class="card mr25">会员</view>
 
-          <image class="banner mr25" src="http://47.116.190.37:8002/static/addHead.png"></image>
+          <image class="banner mr25" src="https://ritmohub.cn/static/addHead.png"></image>
           <view class="info">
             <view class="title mb10">
               <text class="text">工位</text>

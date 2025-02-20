@@ -6,7 +6,7 @@
         <text class="">{{ state.list.length }} / {{ state.totalMemberLimit }}</text>
       </view>
       <view class="btn" @click="openMemberExpansion">
-        <image class="icon" src="http://47.116.190.37:8002/static/user/addMember.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/user/addMember.png"></image>
         成员扩容
       </view>
     </view>
@@ -14,7 +14,7 @@
     <view class="list">
       <view class="li flex mt35 p35" v-for="item in state.list" :key="item.id">
         <view class="left flex">
-          <image class="head mr25" src="http://47.116.190.37:8002/static/home/head.png"></image>
+          <image class="head mr25" src="https://ritmohub.cn/static/home/head.png"></image>
           <view class="info">
             <view class="name mb10">{{ item.nickname }}</view>
             <view class="phone">{{ item.phone }}</view>
@@ -22,19 +22,26 @@
         </view>
         <view class="right mt15">
           <view class="card" v-if=" item.role == 1 ">超管</view>
-          <image class="icon ml15" src="http://47.116.190.37:8002/static/user/delete.png" @click="operatePopupRef.openDialog('是否删除该成员', item.id)" v-if=" item.role != 1 "></image>
+          <image class="icon ml15" src="https://ritmohub.cn/static/user/delete.png" @click="operatePopupRef.openDialog('是否删除该成员', {id: item.id})" v-if=" item.role != 1 "></image>
           
-          <image class="icon" src="http://47.116.190.37:8002/static/user/editMember.png" @click="routerTo(`/pages/user/editMember?oid=${state.id}&id=${item.id}&nickname=${item.nickname}&phone=${item.phone}`)"  v-if=" item.role != 1 "></image>
+          <image class="icon" src="https://ritmohub.cn/static/user/editMember.png" @click="routerTo(`/pages/user/editMember?oid=${state.id}&id=${item.id}&nickname=${item.nickname}&phone=${item.phone}`)"  v-if=" item.role != 1 "></image>
         </view>
       </view>
     </view>
-    <u-empty :text="t('Nodata')" mode="list" icon-size="400" src="../../static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
+    <u-empty :text="t('Nodata')" mode="list" icon-size="400" src="https://ritmohub.cn/static/null.png" style="margin-top: 40%;" v-if=" !state.list?.length "></u-empty>
     <!--  -->
     <view class="footerOne" @click="routerTo(`/pages/user/editMember?oid=${state.id}`)">
       新增成员
     </view>
     <memberExpansion ref="memberExpansionRef" @refresh="memberExpansionChange"/>
+    <!-- 操作 -->
     <operatePopup ref="operatePopupRef" :isType="1" @refresh="getSelect"></operatePopup>
+    <!-- 支付 -->
+     
+    <payPopup
+      ref="payPopupRef"
+      :isType="1"
+      @refresh="getPay"></payPopup>
   </view>
 </template>
 
@@ -42,7 +49,8 @@
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import memberExpansion from '/@/components/memberExpansion.vue'
 import operatePopup from '/@/components/operatePopup.vue'
-import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
+import payPopup from '/@/components/payPopup.vue';
+import { getRequestPayment, routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import User from '/@/api/user';
@@ -77,35 +85,29 @@ const getInfo = () => {
     state.list = res.data.members
     state.orgName = res.data.name
     if( !res.data.is_vip ) {
-      operatePopupRef.value.openDialog('是否支付该机构基础扩容费用', 0)
+      setTimeout(() => {
+        operatePopupRef.value.openDialog('是否支付该机构基础扩容费用', 0)
+      }, 200);
     }
   })
 }
 // 删除
 const operatePopupRef = ref()
-const getSelect = (show: boolean, id: string) => {
+const payPopupRef = ref();
+const getSelect = (show: boolean, obj: {id: string}) => {
   // console.log(show);
   if( show ) {
-    if( id ) {
-      userApi.getOrganizationsMembersDel(state.id, id).then((res: any) => {
+    if( obj.id ) {
+      userApi.getOrganizationsMembersDel(state.id, obj.id).then((res: any) => {
         showTips(res.message)
         state.list = []
         getInfo()
       })
     } else {
-      // 创建机构会员订单
-      userApi.getOrganizationsMemberVip(state.id, {
-        members: 3,
-        duration_type: 'month'
-      }).then((res: any) => {
-        // showTips(res.message)
-        getOrganizationsMembersOrderPay(res.data.id)
-      }).catch(() => {
-        getInfo()
-      })
+      payPopupRef.value.openDialog();
     }
   } else {
-    if( !id ) routerBack(1)
+    if( !obj.id ) routerBack(1)
   }
 }
 
@@ -118,13 +120,40 @@ const openMemberExpansion = () => {
 const memberExpansionChange = (duration: number, limit: number) => {
   routerTo(`/pages/user/memberOrder?id=${state.id}&limit=${limit}&oldLimit=${state.totalMemberLimit}&duration=${duration}&orgName=${state.orgName}`, true)
 }
+// 创建机构会员订单
+const getPay = (show: boolean, type: string, id: string) => {
+  if (show) {
+    userApi.getOrganizationsMemberVip(state.id, {
+      members: 3,
+      duration_type: 'month'
+    }).then((res: any) => {
+      getOrganizationsMembersOrderPay(type, res.data.id)
+    }).catch(() => {
+      getInfo()
+    })
+  }
+}
 // 支付机构会员订单
-const getOrganizationsMembersOrderPay = (id: string) => {
-  userApi.getOrganizationsMembersOrderPay(state.id, id).then((res: any) => {
-    showTips(res.message)
-  }).finally(() => {
-    getInfo()
-  })
+const getOrganizationsMembersOrderPay = (type: string, orderId: string) => {
+  if (type == 'wxpay') {
+    uni.login({
+      success: function (resLogin) {
+        if (resLogin.code) {
+          console.log(resLogin);
+          
+          userApi.getOrganizationsMembersOrderPay(state.id, orderId, resLogin.code).then((res: any) => {
+            getRequestPayment(type, res.data).then((res) => {}).finally(() => {
+              setTimeout(() => {
+                getInfo()
+              }, 200);
+            })
+          })
+        } else {
+          console.log('登录失败！' + resLogin.errMsg);
+        }
+      }
+    });
+  }
 }
 </script>
 

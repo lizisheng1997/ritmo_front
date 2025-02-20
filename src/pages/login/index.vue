@@ -4,7 +4,7 @@
     <!--  -->
     <view class="interface">
       <view class="logo">
-        <image class="imageW100" src="http://47.116.190.37:8002/static/logo.png"></image>
+        <image class="imageW100" src="https://ritmohub.cn/static/logo.png"></image>
       </view>
       <!-- #ifdef APP-PLUS || H5 -->
       <view class="phone">132****2336</view>
@@ -63,7 +63,7 @@ const codeLoginTo = () => {
 .content {
   height: 100vh;
   width: 100%;
-  background: url('http://47.116.190.37:8002/static/loginBg.png');
+  background: url('https://ritmohub.cn/static/loginBg.png');
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: relative;

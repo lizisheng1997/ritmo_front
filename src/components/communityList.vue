@@ -11,7 +11,7 @@
 					</view>
 					<view class="user mt15 flex">
 						<view class="left flex" @click="routerTo('/pages/community/homepage')">
-              <image class="head mr20" src="http://47.116.190.37:8002/static/addHead.png"></image>
+              <image class="head mr20" src="https://ritmohub.cn/static/addHead.png"></image>
               <view class="info">
                 <view class="name">安徒生</view>
                 <view class="name space">{{ item.gongsi }}</view>
@@ -32,7 +32,7 @@
 					</view>
 					<view class="user mt15 flex" @click="routerTo('/pages/community/homepage')">
 						<view class="left flex">
-              <image class="head mr20" src="http://47.116.190.37:8002/static/addHead.png"></image>
+              <image class="head mr20" src="https://ritmohub.cn/static/addHead.png"></image>
               <view class="info">
                 <view class="name">安徒生</view>
               </view>

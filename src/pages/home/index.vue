@@ -9,23 +9,23 @@
     <swiper class="swiper home-swiper m35" circular indicator-dots autoplay >
       <!-- state.imagesList -->
       <swiper-item  v-for="(item, index) in state.imagesList" :key="index">
-        <image class="imageW100" :src="item"></image>
+        <image class="imageW100" :src="item.image_url"></image>
       </swiper-item>
     </swiper>
     <!--  -->
     <view class="reserves p0-35 flex">
       <view class="item">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/reserves1.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/reserves1.png"></image>
         <view class="title mt20">{{ t('Spacereservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文</view> -->
       </view>
       <view class="item">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/reserves2.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/reserves2.png"></image>
         <view class="title mt20">{{ t('Roomreservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文配文配文配文配文配文</view> -->
       </view>
       <view class="item">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/reserves3.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/reserves3.png"></image>
         <view class="title mt20">{{ t('Officereservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10 textColor">{{ t('Notyetopen') }}</view> -->
       </view>
@@ -33,19 +33,19 @@
     <!--  -->
     <view class="cards flex ">
       <view class="item">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/card1.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/card1.png"></image>
         <view class="text mt10">{{ t('Activityroom') }}</view>
       </view>
       <view class="item">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/card2.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/card2.png"></image>
         <view class="text mt10">{{ t('Cornerreservation') }}</view>
       </view>
       <view class="item" @click="routerTo(`/pages/user/inviteFriends`, true)">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/card3.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/card3.png"></image>
         <view class="text mt10">{{ t('Invitefriends') }}</view>
       </view>
       <view class="item" @click="routerTo(`/pages/user/myReservation`, true)">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/card4.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/card4.png"></image>
         <view class="text mt10">{{ t('Myreservations') }}</view>
       </view>
     </view>
@@ -73,19 +73,19 @@
         </template>
       </view>
       <view class="right" v-if="state.userId && state.level == 2">
-        <image class="icon" src="http://47.116.190.37:8002/static/home/switch.png"></image>
+        <image class="icon" src="https://ritmohub.cn/static/home/switch.png" @click="routerTo(`/pages/home/institutions`)"></image>
         <text class="" @click="routerTo(`/pages/home/institutions`)">{{ t('Switch') }}</text>
       </view>
     </view>
     <!--  -->
-    <view class="list">
-      <!-- <view class="li mt35">
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
+    <!-- <view class="list">
+      <view class="li mt35">
+        <image class="imageW100" src="https://ritmohub.cn/static/loginBg.png"></image>
       </view>
       <view class="li mt35">
-        <image class="imageW100" src="http://47.116.190.37:8002/static/loginBg.png"></image>
-      </view> -->
-    </view>
+        <image class="imageW100" src="https://ritmohub.cn/static/loginBg.png"></image>
+      </view>
+    </view> -->
   </view>
 </template>
 
@@ -95,8 +95,8 @@ import { routerTo, showTips } from '/@/utils/currentFun';
 import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
-import Space from '/@/api/space';
-const spaceApi = new Space();
+import Home from '/@/api/home';
+const homeApi = new Home();
 const userApi = new User();
 const { t } = useI18n()
 
@@ -104,9 +104,7 @@ onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
   state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
-  if(uni.getStorageSync('accessToken') && uni.getStorageSync('userInfos')) {
-    getSpaceList()
-  }
+  getCarousel()
   
 })
 onShow(() => {
@@ -139,11 +137,11 @@ const getUserInfo = async() => {
     state.isInstitution = res.data.current_org_id ? true : false
   })
 }
-// 获取列表
-const getSpaceList = () => {
-  spaceApi.getSpaceList().then((res: any) => {
+// 获取banner列表
+const getCarousel = () => {
+  homeApi.getCarousel().then((res: any) => {
     console.log(res.data);
-    state.imagesList = res.data[0].images
+    state.imagesList = res.data
   })
 }
 </script>

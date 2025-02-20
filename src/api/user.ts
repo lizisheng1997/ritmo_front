@@ -98,9 +98,9 @@ export default class User extends Request {
     });
   }
   // 支付扩容订单
-  getOrganizationsMembersPay(id: string, orderId: string) {
+  getOrganizationsMembersPay(id: string, orderId: string, code: string) {
     return this.post({
-      url: `/v1/organizations/${id}/expansion/${orderId}/pay`
+      url: `/v1/organizations/${id}/expansion/${orderId}/pay?code=${code}`
     });
   }
   // 生成机构会员订单
@@ -111,9 +111,10 @@ export default class User extends Request {
     });
   }
   // 支付机构会员订单
-  getOrganizationsMembersOrderPay(id: string, orderId: string) {
+  getOrganizationsMembersOrderPay(id: string, orderId: string, code: string) {
     return this.post({
-      url: `/v1/organizations/${id}/vip/orders/${orderId}/pay`
+      url: `/v1/organizations/${id}/vip/orders/${orderId}/pay?code=${code}`,
+      
     });
   }
   // 获取我的预约列表

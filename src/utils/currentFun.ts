@@ -155,3 +155,32 @@ export const copyText = (text: string) => {
     }
   });
 }
+
+/**
+ * 支付
+ */
+export const getRequestPayment = (provider: any, obj: any) => {
+  return new Promise((resolve, reject) => {
+    uni.requestPayment({
+      provider, 
+      // orderInfo: obj,
+      // @ts-ignore
+      appid: obj.appid, // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
+      timeStamp: obj.timeStamp, // 时间戳（单位：秒）
+      package: 'prepay_id=' + obj.package, // 固定值
+      paySign: obj.paySign, //签名
+      signType: obj.signType, // 签名算法，这里用的 MD5/RSA 签名
+      nonceStr: obj.nonceStr, 
+      success: function (res) {
+        // var rawdata = JSON.parse(res.rawdata);
+        showTips('支付成功')
+        resolve(res)
+      },
+      fail: function (err) {
+        console.log('支付失败:' + JSON.stringify(err));
+        showTips('支付失败')
+        reject(err)
+      }
+    });
+  })
+}

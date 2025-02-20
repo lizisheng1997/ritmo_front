@@ -71,7 +71,7 @@ const canvasInit = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     // 绘制banner图
     let bannerImg = new Image();
-    bannerImg.src = 'http://47.116.190.37:8002/static/loginBg.png'
+    bannerImg.src = 'https://ritmohub.cn/static/loginBg.png'
     bannerImg.onload = () => {
       ctx.drawImage(bannerImg, 0, 0, canvas.width, 235)
       // 绘制昵称
@@ -106,7 +106,7 @@ const canvasInit = () => {
       }
       // 绘制二维码
       let codeImg = new Image();
-      codeImg.src = 'http://47.116.190.37:8002/static/loginBg.png'
+      codeImg.src = 'https://ritmohub.cn/static/loginBg.png'
       ctx.beginPath();
       ctx.drawImage(codeImg, 240, 330, 65, 65)
       // 绘制公司名称
@@ -115,12 +115,12 @@ const canvasInit = () => {
       ctx.fillText('Ritmohub', 75, 370);
       // 绘制公司logo
       let logoImg = new Image();
-      logoImg.src = 'http://47.116.190.37:8002/static/loginBg.png'
+      logoImg.src = 'https://ritmohub.cn/static/loginBg.png'
       ctx.beginPath();
       ctx.drawImage(logoImg, 10, 340, 50, 50)
       // 绘制头像
       let headImg = new Image();
-      headImg.src = 'http://47.116.190.37:8002/static/loginBg.png'
+      headImg.src = 'https://ritmohub.cn/static/loginBg.png'
       ctx.beginPath();
       ctx.arc(35, 235, 25, 0, Math.PI * 2, false);
       ctx.clip();

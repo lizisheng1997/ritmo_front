@@ -3,7 +3,7 @@
     <view class="card p35">
       <view class="count flex p0-55">
         <text class="num">{{ state.oldLimit }}人</text>
-        <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
+        <image class="icon mt25" src="https://ritmohub.cn/static/user/memberOrderCradD.png"></image>
         <text class="num">{{ Number(state.limit) + Number(state.oldLimit) }}人</text>
       </view>
       <view class="fub">扩容</view>
@@ -47,10 +47,11 @@
       </view>
       <view class="btn" @click="operatePopupRef.openDialog('是否支付该订单', state.id)">确认扩容</view>
     </view>
-    <!-- (show) => {
-      if(show)payPopupRef.openDialog();
-    } -->
-    <operatePopup ref="operatePopupRef" :isType="1" @refresh="submit"></operatePopup>
+    <operatePopup ref="operatePopupRef" :isType="1" @refresh="(show: boolean) => {
+      if (show) {
+        if(show)payPopupRef.openDialog();
+      }
+    }"></operatePopup>
     <payPopup ref="payPopupRef" :isType="1" @refresh="submit"></payPopup>
   </view>
 </template>
@@ -63,7 +64,7 @@ import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
 import Home from '/@/api/home';
-import { routerBack, showTips } from '/@/utils/currentFun';
+import { getRequestPayment, routerBack, showTips } from '/@/utils/currentFun';
 const homeApi = new Home();
 const userApi = new User();
 const { t } = useI18n()
@@ -98,7 +99,7 @@ const getUserInfo = async() => {
   })
 }
 const payPopupRef = ref()
-const submit = (show: boolean, type: number) => {
+const submit = (show: boolean, type: string) => {
   if(show) {
     userApi.getOrganizationsMembersExpand(state.id, {
       extra_members: state.limit,
@@ -110,39 +111,32 @@ const submit = (show: boolean, type: number) => {
   }
 }
 // 支付扩容订单
-const getOrder = (type: number, orderId: string) => {
-    userApi.getOrganizationsMembersPay(state.id, orderId).then((res: any) => {
-      // console.log(res.data);
-      // showTips(res.message)
-      getRequestPayment(type, res.data.orderInfo)
-    })
-}
-const getRequestPayment = (provider: any, obj: any) => {
-  // console.log(obj);
+const getOrder = (type: string, orderId: string) => {
+  if (type == 'wxpay') {
+    uni.login({
+      success: function (resLogin) {
+        if (resLogin.code) {
+          console.log(resLogin);
+          userApi.getOrganizationsMembersPay(state.id, orderId, resLogin.code).then((res: any) => {
+            // console.log(res.data);
+            // showTips(res.message)
+            getRequestPayment(type, res.data).then((res) => {
+              setTimeout(() => {
+                uni.reLaunch({
+                  url: '/pages/user/index'
+                })
+              }, 1500);
+            })
+          })
+        } else {
+          console.log('登录失败！' + resLogin.errMsg);
+        }
+      }
+    });
+  }
   
-  uni.requestPayment({
-    provider, 
-    // orderInfo: obj,
-    // @ts-ignore
-    appid: obj.appid, // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
-    timeStamp: obj.timeStamp, // 时间戳（单位：秒）
-    package: 'prepay_id=' + obj.package, // 固定值
-    paySign: obj.paySign, //签名
-    signType: obj.signType, // 签名算法，这里用的 MD5/RSA 签名
-    nonceStr: obj.nonceStr, 
-    success: function (res) {
-      // var rawdata = JSON.parse(res.rawdata);
-      // console.log('支付成功');
-      showTips('支付成功');
-      setTimeout(() => {
-        routerBack(1)
-      }, 1000);
-    },
-    fail: function (err) {
-      console.log('支付失败:' + JSON.stringify(err));
-    }
-  });
-};
+}
+
 </script>
 
 <style >
@@ -154,7 +148,7 @@ page {
 .content {
   .card {
     height: 668rpx;
-    background-image: url('http://47.116.190.37:8002/static/user/memberOrderCardBg.png');
+    background-image: url('https://ritmohub.cn/static/user/memberOrderCardBg.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     // box-shadow: 0px 2px 10px 0px #0000001A;

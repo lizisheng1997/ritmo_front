@@ -2,9 +2,9 @@
   <view class="content p35" v-if="state.info">
     <!-- <view class="step flex mt35">
       <text class="text textAct"></text>
-      <image class="icon m0-28" src="http://47.116.190.37:8002/static/user/step.png"></image>
+      <image class="icon m0-28" src="https://ritmohub.cn/static/user/step.png"></image>
       <text class="text">进行中</text>
-      <image class="icon m0-28" src="http://47.116.190.37:8002/static/user/step.png"></image>
+      <image class="icon m0-28" src="https://ritmohub.cn/static/user/step.png"></image>
       <text class="text">已完成</text>
     </view> -->
     <!--  -->
@@ -17,7 +17,7 @@
       </view>
       <view class="count flex p0-55">
         <text class="num">{{ state.info.start_time }}</text>
-        <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
+        <image class="icon mt25" src="https://ritmohub.cn/static/user/memberOrderCradD.png"></image>
         <text class="num">{{ state.info.end_time }}</text>
       </view>
       <view class="fub">{{ state.info.booking_date }}</view>
@@ -50,15 +50,15 @@
     <!--  -->
     <!-- <view class="contacts p35 mt35 flex">
       <view class="item flex">
-        <image class="icon mr15" src="http://47.116.190.37:8002/static/user/contacts1.png"></image>
+        <image class="icon mr15" src="https://ritmohub.cn/static/user/contacts1.png"></image>
         <text class="text">去导航</text>
       </view>
       <view class="item flex">
-        <image class="icon mr15" src="http://47.116.190.37:8002/static/user/contacts2.png"></image>
+        <image class="icon mr15" src="https://ritmohub.cn/static/user/contacts2.png"></image>
         <text class="text">联系商家</text>
       </view>
       <view class="item flex">
-        <image class="icon mr15" src="http://47.116.190.37:8002/static/user/contacts3.png"></image>
+        <image class="icon mr15" src="https://ritmohub.cn/static/user/contacts3.png"></image>
         <text class="text">空间分布图</text>
       </view>
     </view> -->
@@ -153,7 +153,7 @@ page {
   }
   .card {
     height: 668rpx;
-    background-image: url('http://47.116.190.37:8002/static/user/memberOrderCardBg.png');
+    background-image: url('https://ritmohub.cn/static/user/memberOrderCardBg.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     // box-shadow: 0px 2px 10px 0px #0000001A;

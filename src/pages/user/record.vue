@@ -23,6 +23,7 @@
           </view>
         </view>
       </view>
+      <u-empty :text="t('Nodata')" mode="list" icon-size="400" src="https://ritmohub.cn/static/null.png" style="margin-top: 40%;" v-if=" !list?.length "></u-empty>
     </scroll-view>
   </view>
 </template>
@@ -40,7 +41,7 @@ onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   // state.type = query!.type
   uni.setNavigationBarTitle({
-    title: `${'Myrights'} ${t('changerecord')}`
+    title: `${t('Myrights')} ${t('changerecord')}`
   });
   getList()
 });
@@ -73,7 +74,7 @@ page {
     .card {
       width: 150rpx;
       height: 200rpx;
-      background-image: url('http://47.116.190.37:8002/static/user/interestsListBg.png');
+      background-image: url('https://ritmohub.cn/static/user/interestsListBg.png');
       background-repeat: no-repeat;
       background-size: 100% 100%;
       margin-right: 26rpx;
@@ -104,7 +105,7 @@ page {
       }
     }
     .cardAsh {
-      background-image: url('http://47.116.190.37:8002/static/user/interestsListBgAsh.png');
+      background-image: url('https://ritmohub.cn/static/user/interestsListBgAsh.png');
     }
     .cardAfter {
       &::after {

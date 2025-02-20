@@ -4,7 +4,7 @@
     <view class="card p35">
       <view class="count flex p0-5">
         <text class="num">{{ state.info.start_time }}</text>
-        <image class="icon mt25" src="http://47.116.190.37:8002/static/user/memberOrderCradD.png"></image>
+        <image class="icon mt25" src="https://ritmohub.cn/static/user/memberOrderCradD.png"></image>
         <text class="num">{{ state.info.end_time }}</text>
       </view>
       <!-- <view class="fub">{{ state.info.booking_date }} </view> -->
@@ -201,7 +201,7 @@ page {
   padding: 35rpx 35rpx 200rpx;
   .card {
     height: 668rpx;
-    background-image: url('http://47.116.190.37:8002/static/user/memberOrderCardBg.png');
+    background-image: url('https://ritmohub.cn/static/user/memberOrderCardBg.png');
     background-repeat: no-repeat;
     background-size: 100% 100%;
     .count {

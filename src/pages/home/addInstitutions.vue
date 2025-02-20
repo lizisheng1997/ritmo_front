@@ -20,7 +20,7 @@
           {{ t('Businesslicense') }}
         </view>
         <view class="yyzz ml30">
-          <image class="icon imageW100" :src=" form.businessLicenseUrl ? form.businessLicenseUrl : 'http://47.116.190.37:8002/static/home/yyzz.png'" @click="uploadImage"></image>
+          <image class="icon imageW100" :src=" form.businessLicenseUrl ? form.businessLicenseUrl : 'https://ritmohub.cn/static/home/yyzz.png'" @click="uploadImage"></image>
           <image class="delete" src="/@/static/home/delete.png" @click=" form.businessLicenseUrl = '' "></image>
         </view>
       </view>

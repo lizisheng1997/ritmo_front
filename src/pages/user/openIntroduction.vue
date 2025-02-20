@@ -47,8 +47,8 @@
                 class="icon ml10"
                 src="/@/static/home/vip0.png"
                 v-if="state.type == 'zh'"
-                style="width: 91rpx"></image>
-                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 91rpx;"></image>
+                style="width: 36rpx"></image>
+                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 36rpx;"></image>
               </template>
               <image
                 class="icon ml10"
@@ -99,49 +99,49 @@
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/1.png"></image>
+              src="https://ritmohub.cn/static/vip/1.png"></image>
             <view class="text oneEllipsis">静音舱</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/2.png"></image>
+              src="https://ritmohub.cn/static/vip/2.png"></image>
             <view class="text oneEllipsis">有限打印</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/3.png"></image>
+              src="https://ritmohub.cn/static/vip/3.png"></image>
             <view class="text oneEllipsis">免费茶饮</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/4.png"></image>
+              src="https://ritmohub.cn/static/vip/4.png"></image>
             <view class="text oneEllipsis">高速WiFi</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/5.png"></image>
+              src="https://ritmohub.cn/static/vip/5.png"></image>
             <view class="text oneEllipsis">8时工区</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/6.png"></image>
+              src="https://ritmohub.cn/static/vip/6.png"></image>
             <view class="text oneEllipsis">全天工区</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/7.png"></image>
+              src="https://ritmohub.cn/static/vip/7.png"></image>
             <view class="text oneEllipsis">5时办公</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/8.png"></image>
+              src="https://ritmohub.cn/static/vip/8.png"></image>
             <view class="text oneEllipsis">全天办公</view>
           </view>
         </template>
@@ -149,61 +149,61 @@
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/9.png"></image>
+              src="https://ritmohub.cn/static/vip/9.png"></image>
             <view class="text">权益一</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/10.png"></image>
+              src="https://ritmohub.cn/static/vip/10.png"></image>
             <view class="text">免费茶饮</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/11.png"></image>
+              src="https://ritmohub.cn/static/vip/11.png"></image>
             <view class="text">高速WiFi</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/12.png"></image>
+              src="https://ritmohub.cn/static/vip/12.png"></image>
             <view class="text">全天工区</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/13.png"></image>
+              src="https://ritmohub.cn/static/vip/13.png"></image>
             <view class="text">无限打印</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/14.png"></image>
+              src="https://ritmohub.cn/static/vip/14.png"></image>
             <view class="text">权益一</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/15.png"></image>
+              src="https://ritmohub.cn/static/vip/15.png"></image>
             <view class="text">权益一</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/16.png"></image>
+              src="https://ritmohub.cn/static/vip/16.png"></image>
             <view class="text">权益一</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/17.png"></image>
+              src="https://ritmohub.cn/static/vip/17.png"></image>
             <view class="text">权益一</view>
           </view>
           <view class="item">
             <image
               class="icon"
-              src="http://47.116.190.37:8002/static/vip/18.png"></image>
+              src="https://ritmohub.cn/static/vip/18.png"></image>
             <view class="text">静音舱</view>
           </view>
         </template>
@@ -266,7 +266,7 @@
       <view class="tips mb50 ml35">
         <image
           class="icon mr10"
-          src="http://47.116.190.37:8002/static/loginSelect.png"
+          src="https://ritmohub.cn/static/loginSelect.png"
           v-if="!state.select"
           @click="state.select = true"></image>
         <image
@@ -334,44 +334,44 @@
         <template v-if="state.tabsIdx == 1">
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/en1.jpg"
+            src="https://ritmohub.cn/static/vip/en1.jpg"
             v-if="state.languageType == 'en'"
             style="height: 900rpx"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/zh1.png"
+            src="https://ritmohub.cn/static/vip/zh1.png"
             v-else
             style="height: 900rpx"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/vip1-1.png"></image>
+            src="https://ritmohub.cn/static/vip/vip1-1.png"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/vip1-2.jpg"></image>
+            src="https://ritmohub.cn/static/vip/vip1-2.jpg"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/vip1-3.jpg"></image>
+            src="https://ritmohub.cn/static/vip/vip1-3.jpg"></image>
         </template>
         <template v-else>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/en2.jpg"
+            src="https://ritmohub.cn/static/vip/en2.jpg"
             v-if="state.languageType == 'en'"
             style="height: 980rpx"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/zh2.jpg"
+            src="https://ritmohub.cn/static/vip/zh2.jpg"
             v-else
             style="height: 980rpx"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/vip2-1.png"></image>
+            src="https://ritmohub.cn/static/vip/vip2-1.png"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/vip2-2.jpg"></image>
+            src="https://ritmohub.cn/static/vip/vip2-2.jpg"></image>
           <image
             class="icon"
-            src="http://47.116.190.37:8002/static/vip/vip2-3.jpg"></image>
+            src="https://ritmohub.cn/static/vip/vip2-3.jpg"></image>
         </template>
       </view>
     </view>
@@ -391,7 +391,8 @@ import {
   routerTo,
   showTips,
   dateToLocaleDateString,
-  copyText
+  copyText,
+  getRequestPayment
 } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
 import User from '/@/api/user';
@@ -442,7 +443,7 @@ const getUserInfo = async () => {
     state.nickname = res.data.nickname;
     state.avatarUrl = res.data.avatar_url
       ? res.data.avatar_url
-      : 'http://47.116.190.37:8002/static/home/head.png';
+      : 'https://ritmohub.cn/static/home/head.png';
     state.userId = res.data.id;
     state.level = res.data.vip_level;
     state.expireTime = res.data.vip_expire_time;
@@ -489,7 +490,11 @@ const getPay = (show: boolean, type: string, id: string) => {
               userApi.getVipOrdersPay(resOne.data.id, resLogin.code).then((res: any) => {
                 // showTips(res.message)
                 console.log(res.data);
-                getRequestPayment(type, res.data.orderInfo)
+                getRequestPayment(type, res.data.orderInfo).then((res) => {
+                  setTimeout(() => {
+                    getUserInfo()
+                  }, 1000);
+                })
               })
             } else {
               console.log('登录失败！' + resLogin.errMsg);
@@ -500,30 +505,6 @@ const getPay = (show: boolean, type: string, id: string) => {
       
     })
   }
-};
-const getRequestPayment = (provider: any, obj: any) => {
-  // console.log(obj);
-  
-  uni.requestPayment({
-    provider, 
-    // orderInfo: obj,
-    // @ts-ignore
-    appid: obj.appid, // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
-    timeStamp: obj.timeStamp, // 时间戳（单位：秒）
-    package: 'prepay_id=' + obj.package, // 固定值
-    paySign: obj.paySign, //签名
-    signType: obj.signType, // 签名算法，这里用的 MD5/RSA 签名
-    nonceStr: obj.nonceStr, 
-    success: function (res) {
-      // var rawdata = JSON.parse(res.rawdata);
-      // console.log('支付成功');
-      showTips('支付成功');
-      getUserInfo()
-    },
-    fail: function (err) {
-      console.log('支付失败:' + JSON.stringify(err));
-    }
-  });
 };
 </script>
 
@@ -574,16 +555,16 @@ const getRequestPayment = (provider: any, obj: any) => {
     }
   }
   .vip0 {
-    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg1.png');
+    background-image: url('https://ritmohub.cn/static/user/membersIntroductionBannerBg1.png');
   }
   .vip1 {
-    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg2.png');
+    background-image: url('https://ritmohub.cn/static/user/membersIntroductionBannerBg2.png');
   }
   .vip2 {
-    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg3.png');
+    background-image: url('https://ritmohub.cn/static/user/membersIntroductionBannerBg3.png');
   }
   .vip3 {
-    background-image: url('http://47.116.190.37:8002/static/user/membersIntroductionBannerBg4.png');
+    background-image: url('https://ritmohub.cn/static/user/membersIntroductionBannerBg4.png');
   }
   .interests {
     .room {

@@ -31,20 +31,20 @@ const props = defineProps({
 const state = reactive({
   isShow: false, // 
   text: '', // 提示字
-  id: '', // 弹窗携带的id
+  obj: {} as any, // 其它参数
 })
 // 打开弹窗
-const openDialog = (text?:string, id?:string) => {
+const openDialog = (text?:string, obj?:object) => {
   // console.log(rows)
   state.text = text ? text : ''
-  state.id = id ? id : ''
+  state.obj = obj ? obj : {}
   state.isShow = true;
 };
 defineExpose({ openDialog });
 const emit = defineEmits(['refresh']);
 const sumbit = (show: boolean) => {
   state.isShow = false
-  emit('refresh', show, state.id)
+  emit('refresh', show, state.obj)
   
 }
 </script>
