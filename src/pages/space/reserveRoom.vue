@@ -202,29 +202,45 @@ const addSelect = (slot: number, time: string) => {
   // 获取时间范围
   state.hourCount = state.selectList.length <= 1 ? 0.5 : state.selectList.length / 2
   state.timeRange = state.selectList.length <= 1 ? state.selectDateList[0] : `${state.selectDateList[0]} ~ ${state.selectDateList[state.selectDateList.length-1]}`
-  state.price = state.hourCount * state.info.price
+  state.price = state.hourCount * state.info.price * 2
 }
 // 获取可预约的时间
 const getSpaceMeetingRoomsTimes = () => {
-  spaceApi.getSpaceMeetingRoomsTimes(state.id, {
-    date : state.date,
-  }).then((res: any) => {
-    // console.log(res.data);
-    /***
-     * available - 可预约的时间段
-       booked - 已被其他用户预约
-       my_booked - 已被当前用户预约
-       past - 已过去的时间段
-     */
-    for( let i of res.data.
-    time_slots ) {
-      if( i.status == 'my_booked' ) {
-        state.alreadyList.push(i.slot)
-      } else if( i.status == 'past' || i.status == 'booked' )  {
-        state.seleceStopList.push(i.slot)
+  /***
+   * available - 可预约的时间段
+     booked - 已被其他用户预约
+      my_booked - 已被当前用户预约
+      past - 已过去的时间段
+    */
+  if( state.type == 0 ) {
+    spaceApi.getSpaceWorkspacesTimes(state.id, {
+      date : state.date,
+    }).then((res: any) => {
+      // console.log(res.data);
+      for( let i of res.data.
+      time_slots ) {
+        if( i.status == 'my_booked' ) {
+          state.alreadyList.push(i.slot)
+        } else if( i.status == 'past' || i.status == 'booked' )  {
+          state.seleceStopList.push(i.slot)
+        }
       }
-    }
-  })
+    })
+  } else {
+    spaceApi.getSpaceMeetingRoomsTimes(state.id, {
+      date : state.date,
+    }).then((res: any) => {
+      // console.log(res.data);
+      for( let i of res.data.
+      time_slots ) {
+        if( i.status == 'my_booked' ) {
+          state.alreadyList.push(i.slot)
+        } else if( i.status == 'past' || i.status == 'booked' )  {
+          state.seleceStopList.push(i.slot)
+        }
+      }
+    })
+  }
 }
 // 
 const operatePopupRef = ref()

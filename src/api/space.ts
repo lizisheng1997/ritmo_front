@@ -37,6 +37,12 @@ export default class Space extends Request {
     });
   }
   // 获取会议室、工位可预约的时间
+  getSpaceWorkspacesTimes(id: string, data: object) {
+    return this.get({
+      url: `/v1/booking/workspaces/${id}/time-slots`,
+      data
+    });
+  }
   getSpaceMeetingRoomsTimes(id: string, data: object) {
     return this.get({
       url: `/v1/booking/meeting-rooms/${id}/time-slots`,
@@ -58,10 +64,14 @@ export default class Space extends Request {
     });
   }
   // 确认会议室、工位订单
-  getSpaceWorkspacesOrder(id: string, data: object) {
+  getSpaceWorkspacesOrder(id: string, code: string) {
     return this.post({
-      url: `/v1/booking/workspaces/${id}/confirm`,
-      data
+      url: `/v1/booking/workspaces/${id}/confirm?code=${code}`,
+    });
+  }
+  getSpaceMeetingRoomsOrder(id: string, code: string) {
+    return this.post({
+      url: `/v1/booking/meeting-rooms/${id}/confirm?code=${code}`,
     });
   }
   // 工位详情

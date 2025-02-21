@@ -27,7 +27,7 @@
           <text class="text pr15 mr15">{{ state.info.showcaseCount }} {{ t('cabinet') }} </text>
         </view>
         <view class="cards mt25">
-          <template v-for=" (item, index) in state.info.services">
+          <template v-for=" (item, index) in state.info.services" :key="index">
             <view class="card mr15" v-if="index < 3">
               <image class="icon mr5" :src=" item.icon "></image>
               <text class="text">{{ item.name }}</text>
@@ -79,7 +79,7 @@
           <view class="li mt20 p20-0">
             <view class="room flex">
               <view class="left flex" @click="routerTo(`/pages/space/details?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}`)">
-                <view class="number mr20">{{ item.name }}</view>
+                <view class="number mr20 oneEllipsis">{{ item.name }}</view>
                 <view class="info">
                   <view class="text">
                     {{ item.description }}
@@ -208,7 +208,7 @@ const selectSpaceRef = ref()
 const getLastSevenDays = () => {
   const today = new Date();
   const days = [];
-  const dayNames = [t('today'), t('sun'), t('mon'), t('tues'), t('wed'), t('thur'), t('fri'), t('satur')];
+  const dayNames = [ t('sun'), t('mon'), t('tues'), t('wed'), t('thur'), t('fri'), t('satur')];
 
   for (let i = 0; i < 7; i++) {
       const date = new Date(today);
@@ -262,14 +262,21 @@ const tabsChange = ( index: number ) => {
 }
 const getAllList = () => {
   productList.value = []
+  uni.showLoading({
+    title: '加载中'
+  });
   if( state.tabsIdx == 0 ) {
     spaceApi.getSpaceWorkspaces(state.id, {
       level: state.gradeIdx,
       area_name: '',
       date: weekDayList.value.find((item) => item.day == state.day).date
     }).then((res: any) => {
-      console.log(res.data);
+      // console.log(res.data);
       productList.value = res.data
+    }).finally(() => {
+      setTimeout(() => {
+        uni.hideLoading();
+      }, 3500);
     })
   } else if( state.tabsIdx == 1 ) {
     spaceApi.getSpaceMeetingRooms({
@@ -280,8 +287,10 @@ const getAllList = () => {
       page: 1,
       page_size: 99,
     }).then((res: any) => {
-      console.log(res.data);
+      // console.log(res.data);
       productList.value = res.data.items
+    }).finally(() => {
+      uni.hideLoading();
     })
   } else if( state.tabsIdx == 2 ) {
     
@@ -464,6 +473,7 @@ const getAllList = () => {
               border: 1PX solid #FFCF00;
               border-radius: 10rpx;
               text-align: center;
+
             }
             .info {
               width: calc( 100% - 160rpx );
