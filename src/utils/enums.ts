@@ -13,10 +13,15 @@ export enum userLevelEnEnums {
 }
 
 export enum spaceLevelEnums {
-  初级 = 1,
+  标准 = 1,
   高级,
 }
 
+
+export enum espaceLevelEnums {
+  'primary' = 1,
+  'senior',
+}
 export enum reservationsEnums {
   待支付 = 0,
   待使用,

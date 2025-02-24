@@ -9,13 +9,15 @@
     <!--  -->
     <view class="name">{{ state.name }}</view>
     <view class="center p0-35">
-      <view class="grade mt15" v-if="state.type <= 1">{{ spaceLevelEnums[state.level] }}</view>
+      <view class="grade mt15" v-if="state.type <= 1">{{ ltype == 'zh' ? spaceLevelEnums[state.level] : espaceLevelEnums[state.level] }}
+
+      </view>
       <view class="fub mt25">
         {{ state.description }}
       </view>
       <view class="brief mt25">
         <text class="label">所属区域：</text>
-        {{ state.area }}会员区域
+        {{ state.area }}
       </view>
       <view class="brief mt25" v-if="state.type == 1 || state.type == 2">
         <text class="label">容纳人数：</text>
@@ -43,7 +45,7 @@
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
-import { spaceLevelEnums } from '/@/utils/enums'
+import { spaceLevelEnums, espaceLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import Space from '/@/api/space';
 const spaceApi = new Space();
@@ -51,12 +53,14 @@ const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
+  ltype.value = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   state.type = query!.type
   state.id = query!.id
   state.sid = query!.sid
   getInfo()
 });
 // 参数
+const ltype = ref('')
 const state = reactive({
   type: 0, // 0工位1会议室2办公室3展示柜
   id: '',

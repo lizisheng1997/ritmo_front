@@ -47,8 +47,8 @@
                 class="icon ml10"
                 src="/@/static/home/vip0.png"
                 v-if="state.type == 'zh'"
-                style="width: 36rpx"></image>
-                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 36rpx;"></image>
+                style="width: 70rpx"></image>
+                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 70rpx;"></image>
               </template>
               <image
                 class="icon ml10"

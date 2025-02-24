@@ -24,7 +24,7 @@
             {{ state.level ? `${t('Validuntil')} ${dateToLocaleDateString(state.expireTime)}` : t('10exclusivebenefits') }}
           </view>
         </view>
-        <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/membersIntroduction`, true)">
+        <view class="right mt45 mr45" v-if="state.level == 0"  @click="routerTo(`/pages/user/openIntroduction`, true)">
           {{ t('Openmembership') }}
         </view>
       </view>

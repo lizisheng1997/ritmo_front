@@ -7,7 +7,7 @@
         <view class="text">
           {{ t('InstitutionName') }}
         </view>
-        <input class="uni-input ml25" maxlength="7" v-model="form.name" :placeholder="t('InstitutionName')" />
+        <input class="uni-input ml25" maxlength="25" v-model="form.name" :placeholder="t('InstitutionName')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">

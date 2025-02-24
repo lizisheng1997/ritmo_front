@@ -68,7 +68,7 @@ page {
   .face {
     display: inline-block;
     width: 100%;
-    height: 600rpx;
+    height: 53vh;
     background-color: #FFFFFF;
   }
   .footerOne {

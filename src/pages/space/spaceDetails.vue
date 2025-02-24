@@ -31,7 +31,7 @@
       <template v-if="state.current == 0">
         <view class="cards">
           <view class="card m10" v-for=" (item, index) in state.info.services" :key="index">
-            <image class="icon mt15" src="https://ritmohub.cn/static/space/icon (1).png"></image>
+            <image class="icon mt15" :src="item.icon"></image>
             <view class="text">{{ item.name }}</view>
           </view>
         </view>

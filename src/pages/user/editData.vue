@@ -5,7 +5,7 @@
         height: '100rpx',
         lineHeight: '100rpx',
         padding: '0 35rpx'
-      }" :placeholder="t('Enter')"  :maxlength=" state.type == 0 ? 5 : 30" v-if=" state.type != 1 "/>
+      }" :placeholder="t('Enter')"  :maxlength=" state.type == 0 ? 25 : 100" v-if=" state.type != 1 "/>
       <!--  -->
       <view class="textareaDiv" v-else>
         <u-input class="textarea " v-model="state.value" type="textarea" :border="false" :auto-height="false" :maxlength="300" :custom-style="{

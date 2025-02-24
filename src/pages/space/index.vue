@@ -17,7 +17,7 @@
         <view class="distance m15-0">
           {{ state.info.address }}
           
-          <image class="icon" src="/@/static/rightAsh.png" @click="routerTo(`/pages/space/spaceDetails?id=${state.id}`)"></image>
+          <image class="icon" src="/@/static/rightAsh.png" @click="routerToPar(`/pages/space/spaceDetails?id=${state.id}`)"></image>
         </view>
         <view class="distance">{{ state.info.businessHours }}</view>
         <view class="spaces mt15">
@@ -78,19 +78,19 @@
         <view class="list" v-for="item in productList" :key="item.id">
           <view class="li mt20 p20-0">
             <view class="room flex">
-              <view class="left flex" @click="routerTo(`/pages/space/details?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}`)">
+              <view class="left flex" @click="routerToPar(`/pages/space/details?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}`)">
                 <view class="number mr20 oneEllipsis">{{ item.name }}</view>
                 <view class="info">
                   <view class="text">
                     {{ item.description }}
                   </view>
-                  <view class="text mt5">
+                  <view class="text mt5" style="font-weight: bold;">
                     ¥{{ item.price }}/{{ t('Startingfromminutes') }}
                     <text class="icon ml20">{{ item.area_name }}</text>
                   </view>
                 </view>
               </view>
-              <view class="right" @click="routerTo(`/pages/space/reserveRoom?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}&data=${weekDayList.find((item) => item.day == state.day).date}`)">
+              <view class="right" @click="routerToPar(`/pages/space/reserveRoom?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}&data=${weekDayList.find((item) => item.day == state.day).date}`)">
                 {{ t('reserve') }}
               </view>
             </view>
@@ -102,12 +102,12 @@
       <!-- 办公室 -->
       <view class="office pb25 mt25" v-else-if="state.tabsIdx == 2">
         <view class="list">
-          <view class="li mt20 flex pt20" @click="routerTo(`/pages/space/reserveOfficial?type=2`)">
+          <view class="li mt20 flex pt20" @click="routerToPar(`/pages/space/reserveOfficial?type=2`)">
             <view class="btn">预约</view>
             <view class="banner mr20">
               <image class="imageW100" src="https://ritmohub.cn/static/addHead.png"></image>
             </view>
-            <view class="info" @click="routerTo(`/pages/space/details?type=2`)">
+            <view class="info" @click="routerToPar(`/pages/space/details?type=2`)">
               <view class="name">001办公室</view>
               <view class="text mt10">6-7人</view>
               <view class="text">wifi ｜ 显示器 ｜ wifi ｜ 显示器 ｜ 显示器...</view>
@@ -130,11 +130,11 @@
       <!-- 展示柜 -->
       <view class="office pb25 mt25" v-else-if="state.tabsIdx == 3">
         <view class="list">
-          <view class="li mt20 flex pt20" @click="routerTo(`/pages/space/reserveOfficial?type=3`)">
+          <view class="li mt20 flex pt20" @click="routerToPar(`/pages/space/reserveOfficial?type=3`)">
             <view class="banner mr20">
               <image class="imageW100" src="https://ritmohub.cn/static/addHead.png"></image>
             </view>
-            <view class="info" @click="routerTo(`/pages/space/details?type=3`)">
+            <view class="info" @click="routerToPar(`/pages/space/details?type=3`)">
               <view class="name">001展示柜</view>
               <view class="text mt10">¥300/按月起</view>
               <view class="gary mt10">
@@ -157,7 +157,7 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
+import { onLoad, onShow } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import spaceTimes from '/@/components/spaceTimes.vue'
 import selectSpace from '/@/components/selectSpace.vue'
@@ -167,15 +167,23 @@ import Space from '/@/api/space';
 const spaceApi = new Space();
 const { t } = useI18n()
 
-onLoad(() => {
+onLoad((query?: AnyObject | undefined): void => {
+  
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
   let arr = getLastSevenDays()
   arr[0].week = t('today')
   weekDayList.value = arr
   state.day = arr[0].day
+  state.gradeIdx = 1
   // console.log(arr);
+})
+onShow(() => {
+  const tabsIdx = uni.getStorageSync('spaceTabsIdx');
+  state.tabsIdx = tabsIdx ? tabsIdx : 0
+  console.log(state.tabsIdx);
   getSpaceList(1)
+
 })
 // 参数, { name: '办公室', key: 2 }, { name: '展示柜', key: 3 },
 const tabsList = ref([ { name: t('workstation'), key: 0 }, { name: t('conference'), key: 1 }  ])
@@ -250,7 +258,7 @@ const getInfo = (id: string) => {
     state.info.showcaseCount = res.data.showcase_count
     state.info.services = res.data.services
     state.info.images = res.data.images
-    tabsChange(0)
+    getAllList()
   })
 }
 // 获取工位列表
@@ -297,6 +305,10 @@ const getAllList = () => {
   } else if( state.tabsIdx == 3 ) {
     
   }
+}
+const routerToPar = (url: string) => {
+  uni.setStorageSync('spaceTabsIdx', state.tabsIdx);
+  routerTo(url)
 }
 </script>
 

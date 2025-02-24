@@ -13,13 +13,13 @@
                 <view class="text" v-if="state.info.services">
                   {{ state.info.services[0].name }} ｜  {{ state.info.services[1].name }}...
                 </view>
-                <view class="text mt5">
+                <view class="text mt5" style="font-weight: bold;">
                   ¥{{ state.info.price }}/{{ t('Startingfromminutes') }}
-                  <text class="icon ml20">{{ spaceLevelEnums[state.info.level] }}</text>
+                  <text class="icon ml20">{{ ltype == 'zh' ? spaceLevelEnums[state.info.level] : espaceLevelEnums[state.info.level] }}</text>
                 </view>
               </view>
             </view>
-            <view class="right" @click="routerTo(`/pages/space/details?type=${state.type}`)">
+            <view class="right" @click="routerTo(`/pages/space/details?type=${state.type}&sid=${state.sid}&id=${state.id}`)">
               <image class="icon" src="/@/static/rightBlack.png"></image>
             </view>
           </view>
@@ -103,7 +103,7 @@ import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { spaceTimeArr } from '/@/utils/universalArray';
 import { routerTo, showTips } from '/@/utils/currentFun';
-import { spaceLevelEnums } from '/@/utils/enums'
+import { spaceLevelEnums,espaceLevelEnums } from '/@/utils/enums'
 import operatePopup from '/@/components/operatePopup.vue'
 import { useI18n } from 'vue-i18n'
 import Space from '/@/api/space';
@@ -115,6 +115,7 @@ onLoad((query?: AnyObject | undefined): void => {
   uni.setNavigationBarTitle({
     title: query!.type == '0' ? t('Spacereservation') : t('Roomreservation')
   });
+  ltype.value = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   state.type = query!.type
   state.sid = query!.sid
   state.id = query!.id
@@ -125,6 +126,7 @@ onLoad((query?: AnyObject | undefined): void => {
   getInfo()
 });
 // 参数
+const ltype = ref('')
 const state = reactive({
   type: 0, // 类型
   sid: '', // 空间id

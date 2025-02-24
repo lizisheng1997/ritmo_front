@@ -14,19 +14,19 @@
     </swiper>
     <!--  -->
     <view class="reserves p0-35 flex">
-      <view class="item">
+      <view class="item" @click="switchTab(0)">
         <image class="icon" src="https://ritmohub.cn/static/home/reserves1.png"></image>
         <view class="title mt20">{{ t('Spacereservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文</view> -->
       </view>
-      <view class="item">
+      <view class="item" @click="switchTab(1)">
         <image class="icon" src="https://ritmohub.cn/static/home/reserves2.png"></image>
         <view class="title mt20">{{ t('Roomreservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文配文配文配文配文配文</view> -->
       </view>
       <view class="item">
         <image class="icon" src="https://ritmohub.cn/static/home/reserves3.png"></image>
-        <view class="title mt20">{{ t('Officereservation') }}</view>
+        <view class="title mt20 textColor">{{ t('Officereservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10 textColor">{{ t('Notyetopen') }}</view> -->
       </view>
     </view>
@@ -142,6 +142,12 @@ const getCarousel = () => {
   homeApi.getCarousel().then((res: any) => {
     console.log(res.data);
     state.imagesList = res.data
+  })
+}
+const switchTab = (tabsIdx: number) => {
+  uni.setStorageSync('spaceTabsIdx', tabsIdx);
+  uni.switchTab({
+    url: `/pages/space/index`
   })
 }
 </script>

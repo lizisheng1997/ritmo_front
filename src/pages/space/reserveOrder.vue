@@ -12,7 +12,10 @@
       <view class="rows flex mt45" v-if="state.spaceInfo">
         <view class="item">
           <view class="label mb15">{{ t('belong') }}</view>
-          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}{{ t('vip') }}</view>
+          <view class="text">
+            {{ ltype == 'zh' ? spaceLevelEnums[state.spaceInfo.level] : espaceLevelEnums[state.spaceInfo.level] }}
+            {{ t('vip') }}
+          </view>
         </view>
         <view class="item">
           <view class="label mb15">{{ t('workstation') }}</view>
@@ -20,7 +23,7 @@
         </view>
         <view class="item">
           <view class="label mb15">{{ t('Meetingroomtype') }}</view>
-          <view class="text">{{ spaceLevelEnums[state.spaceInfo.level] }}</view>
+          <view class="text">{{ ltype == 'zh' ? spaceLevelEnums[state.spaceInfo.level] : espaceLevelEnums[state.spaceInfo.level] }}</view>
         </view>
       </view>
       <view class="info">
@@ -81,7 +84,7 @@ import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { getRequestPayment, routerTo, showTips } from '/@/utils/currentFun';
 import payPopup from '/@/components/payPopup.vue';
-import { spaceLevelEnums } from '/@/utils/enums'
+import { spaceLevelEnums, espaceLevelEnums } from '/@/utils/enums'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '/@/store/modules/user';
 import Space from '/@/api/space';
@@ -94,6 +97,7 @@ onLoad((query?: AnyObject | undefined): void => {
   uni.setNavigationBarTitle({
     title: query!.type == '0' ? t('Spacereservation') : t('Roomreservation')
   });
+  ltype.value = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   state.type = query!.type
   state.sid = query!.sid
   state.id = query!.id 
@@ -104,6 +108,7 @@ onLoad((query?: AnyObject | undefined): void => {
 });
 // 参数
 const payPopupRef = ref();
+const ltype = ref('')
 const state = reactive({
   type: 0, // 
   sid: '', // 空间id
