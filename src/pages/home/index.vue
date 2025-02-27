@@ -1,17 +1,19 @@
 <template>
-  <view class="content" :style="{
-    paddingTop: state.navAllHeight + 'rpx'
-  }">
-    <view class="nav" :style="{ top: 0, paddingTop: (state.navAllHeight - 90) + 'rpx'   }">
+  <view class="content">
+    <view class="nav" :style="{ top: state.navAllHeight - 15 + 'rpx' }">
       RITMOHUB
     </view>
     <!--  -->
-    <swiper class="swiper home-swiper m35" circular indicator-dots autoplay >
-      <!-- state.imagesList -->
-      <swiper-item  v-for="(item, index) in state.imagesList" :key="index">
-        <image class="imageW100" :src="item.image_url"></image>
-      </swiper-item>
-    </swiper>
+    <view class="" :style="{
+      paddingTop: state.navAllHeight - 20 + 'px'
+    }">
+      <swiper class="swiper home-swiper m35" circular indicator-dots autoplay >
+        <!-- state.imagesList -->
+        <swiper-item  v-for="(item, index) in state.imagesList" :key="index">
+          <image class="imageW100" :src="item.image_url"></image>
+        </swiper-item>
+      </swiper>
+    </view>
     <!--  -->
     <view class="reserves p0-35 flex">
       <view class="item" @click="switchTab(0)">
@@ -59,8 +61,8 @@
             <image class="icon ml10" src="/@/static/home/vip3.png" v-if="state.isInstitution"></image>
             <template v-else >
               <template v-if="state.level == 0">
-                <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.type == 'zh'" style="width: 91rpx;"></image>
-                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 91rpx;"></image>
+                <image class="icon ml10" src="/@/static/home/vip0.png" v-if="state.type == 'zh'" style="width: 100rpx;"></image>
+                <image class="icon ml10" src="/@/static/home/evip0.png" v-else style="width: 100rpx;"></image>
               </template>
               <image class="icon ml10" src="/@/static/home/vip1.png" v-else-if="state.level == 1"></image>
               <image class="icon ml10" src="/@/static/home/vip2.png" v-else-if="state.level == 2"></image>
@@ -102,7 +104,7 @@ const { t } = useI18n()
 
 onLoad(() => {
   // @ts-ignore
-  state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  state.navAllHeight = getApp().globalData.navAllHeight;
   state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   getCarousel()
   

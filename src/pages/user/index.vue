@@ -136,7 +136,7 @@ const { t } = useI18n()
 
 onLoad(() => {
   // @ts-ignore
-  state.navAllHeight = getApp().globalData.navAllHeight + 88;
+  state.navAllHeight = getApp().globalData.navAllHeight;
   state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   // console.log(state.navAllHeight);
   

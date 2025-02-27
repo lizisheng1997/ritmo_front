@@ -7,14 +7,12 @@
         <image class="imageW100" src="https://ritmohub.cn/static/logo.png"></image>
       </view>
       <!-- #ifdef APP-PLUS || H5 -->
-      <view class="phone">132****2336</view>
+      <!-- <view class="phone">132****2336</view>
       <view class="provider mt30">中国联通提供认证服务</view>
       <view class="btn btnOne mt50">{{ t('oneLogin') }}</view>
-      <view class="btn btnOne" style="margin-top: 45rpx;" @click="codeLoginTo">{{ t('codeLogin') }}</view>
+      <view class="btn btnOne" style="margin-top: 45rpx;" @click="codeLoginTo">{{ t('codeLogin') }}</view> -->
       <!-- #endif -->
-      <!-- #ifdef MP-WEIXIN -->
       <view class="btn btnOne" style="margin-top: 500rpx;" @click="codeLoginTo">{{ t('codeLogin') }}</view>
-      <!-- #endif -->
       <view class="tips mt30">
         <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
         <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>

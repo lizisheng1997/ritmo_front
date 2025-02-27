@@ -170,7 +170,7 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   
   // @ts-ignore
-  state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  state.navAllHeight = getApp().globalData.navAllHeight;
   let arr = getLastSevenDays()
   arr[0].week = t('today')
   weekDayList.value = arr

@@ -10,10 +10,8 @@ export default defineComponent({
     console.log("App Launch");
     // 获取状态栏高度
     let statuBar: any = uni.getSystemInfoSync().statusBarHeight;
-    // 获取胶囊数据
-    let custom = uni.getMenuButtonBoundingClientRect()
     
-    let navigationBarHeight = custom.height + (custom.top - statuBar) * 2
+    let navigationBarHeight = 44
 
     let navAllHeight = navigationBarHeight  + statuBar
     // @ts-ignore

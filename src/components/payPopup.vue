@@ -91,7 +91,8 @@ const sumbit = (show: boolean) => {
       showTips('暂不支持微信支付')
       return
     }
-    if( state.type == 'alipay' && !state.provider.includes('alipay') ) {
+    //  && !state.provider.includes('alipay')
+    if( state.type == 'alipay' ) {
       showTips('暂不支持支付宝支付')
       return
     }
