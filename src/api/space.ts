@@ -29,10 +29,31 @@ export default class Space extends Request {
       data
     });
   }
-  // 获取办公室列表
+  // 获取会议室列表
   getSpaceMeetingRooms(data: object) {
     return this.get({
       url: `/v1/meeting-rooms`,
+      data
+    });
+  }
+  // 办公室
+  getSpaceOffices(data: object) {
+    return this.get({
+      url: `/v1/offices`,
+      data
+    });
+  }
+  // 展示柜
+  getSpaceShowcases(data: object) {
+    return this.get({
+      url: `/v1/showcases`,
+      data
+    });
+  }
+  // 活动室
+  getSpacEventRooms(data: object) {
+    return this.get({
+      url: `/v1/event-rooms`,
       data
     });
   }
@@ -85,6 +106,24 @@ export default class Space extends Request {
     return this.get({
       url: `/v1/meeting-rooms/${id}`,
       data
+    });
+  }
+  // 办公室详情
+  getSpaceOfficesDetails(sid: string, id: string) {
+    return this.get({
+      url: `/v1/offices/${sid}?space_id=${id}`,
+    });
+  }
+  // 展示柜详情
+  getSpaceShowcasesDetails(sid: string, id: string) {
+    return this.get({
+      url: `/v1/showcases/${sid}?space_id=${id}`,
+    });
+  }
+  // 活动室详情
+  getSpaceEventRoomsDetails(sid: string, id: string) {
+    return this.get({
+      url: `/v1/event-rooms/${sid}?space_id=${id}`,
     });
   }
   // 工位订单详情

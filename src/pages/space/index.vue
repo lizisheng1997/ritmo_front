@@ -99,28 +99,20 @@
           <!--  -->
         </view>
       </view>
-      <!-- 办公室 -->
-      <view class="office pb25 mt25" v-else-if="state.tabsIdx == 2">
-        <view class="list">
-          <view class="li mt20 flex pt20" @click="routerToPar(`/pages/space/reserveOfficial?type=2`)">
-            <view class="btn">预约</view>
+      <!-- 办公室/展示柜/会议室 -->
+      <view class="office pb25 mt25" v-else>
+        <view class="list" v-for="item in productList" :key="item.id">
+          <view class="li mt20 flex pt20" @click="routerToPar(`/pages/space/details?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}`)">
+            <!-- <view class="btn">预约</view> -->
             <view class="banner mr20">
-              <image class="imageW100" src="https://ritmohub.cn/static/addHead.png"></image>
-            </view>
-            <view class="info" @click="routerToPar(`/pages/space/details?type=2`)">
-              <view class="name">001办公室</view>
-              <view class="text mt10">6-7人</view>
-              <view class="text">wifi ｜ 显示器 ｜ wifi ｜ 显示器 ｜ 显示器...</view>
-            </view>
-          </view>
-          <view class="li mt20 flex pt20">
-            <view class="banner mr20">
-              <image class="imageW100" src="https://ritmohub.cn/static/addHead.png"></image>
+              <image class="imageW100" :src="item.image_url"></image>
             </view>
             <view class="info">
-              <view class="name">001办公室</view>
-              <view class="company mt15">
-                <text class="oneEllipsis">大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司</text>
+              <view class="name">{{ item.name }}</view>
+              <view class="text mt10" v-if=" item.status == 1 ">{{ state.tabsIdx == 3 ? item.size : `${item.capacity}人` }}  </view>
+              <view class="text" v-if=" item.status == 1 ">{{ item.description }}</view>
+              <view class="company mt15" v-if=" item.status == 0 ">
+                <!-- <text class="oneEllipsis">大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司</text> -->
                 <text class="status">租用中</text>
               </view>
             </view>
@@ -128,7 +120,7 @@
         </view>
       </view>
       <!-- 展示柜 -->
-      <view class="office pb25 mt25" v-else-if="state.tabsIdx == 3">
+      <!-- <view class="office pb25 mt25" v-else-if="state.tabsIdx == 3">
         <view class="list">
           <view class="li mt20 flex pt20" @click="routerToPar(`/pages/space/reserveOfficial?type=3`)">
             <view class="banner mr20">
@@ -145,7 +137,7 @@
             <view class="btn">预约</view>
           </view>
         </view>
-      </view>
+      </view> -->
       <u-empty :text="t('Nodata')" mode="list" icon-size="200" src="https://ritmohub.cn/static/null.png"  v-if=" !productList?.length "></u-empty>
     </view>
     <!--  -->
@@ -157,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad, onShow } from '@dcloudio/uni-app';
+import { onLoad, onReachBottom, onShow } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import spaceTimes from '/@/components/spaceTimes.vue'
 import selectSpace from '/@/components/selectSpace.vue'
@@ -181,12 +173,13 @@ onLoad((query?: AnyObject | undefined): void => {
 onShow(() => {
   const tabsIdx = uni.getStorageSync('spaceTabsIdx');
   state.tabsIdx = tabsIdx ? tabsIdx : 0
-  console.log(state.tabsIdx);
+  // console.log(state.tabsIdx);
   getSpaceList(1)
+  
 
 })
-// 参数, { name: '办公室', key: 2 }, { name: '展示柜', key: 3 },
-const tabsList = ref([ { name: t('workstation'), key: 0 }, { name: t('conference'), key: 1 }  ])
+// 参数
+const tabsList = ref([ { name: t('workstation'), key: 0 }, { name: t('conference'), key: 1 }, { name: t('office'), key: 2 }, { name: t('cabinet'), key: 3 }, { name: t('activity'), key: 4 }  ])
 const weekDayList = ref([] as any[])
 const spaceList = ref([] as any) // 空间列表
 const productList = ref([] as any) // 
@@ -203,6 +196,8 @@ const state = reactive({
     services: [] as any[],
     images: [] as string[]
   },
+  page: 1, // 页码
+  pageSize: 99, // 页数
 
   status: 0, // 
   gradeIdx: 1, // 筛选
@@ -231,7 +226,7 @@ const getLastSevenDays = () => {
 
   return days;
 }
-// 获取列表
+// 获取空间列表
 const getSpaceList = (type: number) => {
   spaceApi.getSpaceList().then((res: any) => {
     // console.log(res.data);
@@ -261,15 +256,18 @@ const getInfo = (id: string) => {
     getAllList()
   })
 }
-// 获取工位列表
+// 
 const tabsChange = ( index: number ) => {
   state.day = weekDayList.value[0].day
   state.gradeIdx = 1
   state.tabsIdx = index
+  state.page = 1
+  state.pageSize = 20
+  productList.value = []
   getAllList()
 }
+// 获取列表
 const getAllList = () => {
-  productList.value = []
   uni.showLoading({
     title: '加载中'
   });
@@ -277,7 +275,9 @@ const getAllList = () => {
     spaceApi.getSpaceWorkspaces(state.id, {
       level: state.gradeIdx,
       area_name: '',
-      date: weekDayList.value.find((item) => item.day == state.day).date
+      date: weekDayList.value.find((item) => item.day == state.day).date,
+      page: state.page,
+      page_size: state.pageSize
     }).then((res: any) => {
       // console.log(res.data);
       productList.value = res.data
@@ -292,8 +292,8 @@ const getAllList = () => {
       level: state.gradeIdx,
       area_name: '',
       date: weekDayList.value.find((item) => item.day == state.day).date,
-      page: 1,
-      page_size: 99,
+      page: state.page,
+      page_size: state.pageSize
     }).then((res: any) => {
       // console.log(res.data);
       productList.value = res.data.items
@@ -301,11 +301,51 @@ const getAllList = () => {
       uni.hideLoading();
     })
   } else if( state.tabsIdx == 2 ) {
+    spaceApi.getSpaceOffices({
+      space_id: state.id,
+      status: 1,
+      page: state.page,
+      page_size: state.pageSize
+    }).then((res: any) => {
+      console.log(res.data);
+      productList.value = res.data.items
+    }).finally(() => {
+      uni.hideLoading();
+    })
     
   } else if( state.tabsIdx == 3 ) {
+    spaceApi.getSpaceShowcases({
+      space_id: state.id,
+      status: 1,
+      page: state.page,
+      page_size: state.pageSize
+    }).then((res: any) => {
+      console.log(res.data);
+      productList.value = res.data.items
+    }).finally(() => {
+      uni.hideLoading();
+    })
+    
+  } else if( state.tabsIdx == 4 ) {
+    spaceApi.getSpacEventRooms({
+      space_id: state.id,
+      status: 1,
+      page: state.page,
+      page_size: state.pageSize
+    }).then((res: any) => {
+      console.log(res.data);
+      productList.value = res.data.items
+    }).finally(() => {
+      uni.hideLoading();
+    })
     
   }
 }
+// 
+onReachBottom(() =>{
+  console.log('到底了');
+  
+})
 const routerToPar = (url: string) => {
   uni.setStorageSync('spaceTabsIdx', state.tabsIdx);
   routerTo(url)
@@ -381,7 +421,7 @@ const routerToPar = (url: string) => {
       height: 80rpx;
       .text {
         display: inline-block;
-        padding: 0 35rpx;
+        padding: 0 25rpx;
         text-align: center;
         line-height: 80rpx;
         color: #898784;

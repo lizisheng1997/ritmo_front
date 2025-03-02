@@ -38,4 +38,25 @@ export default class Login extends Request {
       data
     });
   }
+  // 获取删除账号状态
+  getDeactivateStatus() {
+    return this.get({
+      url: '/v1/users/deactivate/status'
+    });
+  }
+  // 注销账号前置
+  getDeactivate(data: object) {
+    return this.post({
+      url: '/v1/users/deactivate',
+      data
+    });
+  }
+  getDeactivateCancel(data: object) {
+    return this.post({
+      url: '/v1/users/deactivate/cancel',
+      data
+    });
+  }
+
+
 }

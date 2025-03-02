@@ -80,14 +80,11 @@
       </view>
     </view>
     <!--  -->
-    <!-- <view class="list">
-      <view class="li mt35">
-        <image class="imageW100" src="https://ritmohub.cn/static/loginBg.png"></image>
+    <view class="list">
+      <view class="li mt35"  v-for="(item, index) in state.imagesList" :key="index">
+        <image class="imageW100" :src="item.image_url"></image>
       </view>
-      <view class="li mt35">
-        <image class="imageW100" src="https://ritmohub.cn/static/loginBg.png"></image>
-      </view>
-    </view> -->
+    </view>
   </view>
 </template>
 
@@ -107,6 +104,7 @@ onLoad(() => {
   state.navAllHeight = getApp().globalData.navAllHeight;
   state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   getCarousel()
+  getSecondCarousel()
   
 })
 onShow(() => {
@@ -126,6 +124,7 @@ const state = reactive({
   isInstitution: false, // 是否是机构
   isNewUser: true, // 是否是新用户
   imagesList: [] as any[],
+  bannerList: [] as any[],
   // 
 })
 // 获取用户资料
@@ -142,8 +141,14 @@ const getUserInfo = async() => {
 // 获取banner列表
 const getCarousel = () => {
   homeApi.getCarousel().then((res: any) => {
-    console.log(res.data);
+    // console.log(res.data);
     state.imagesList = res.data
+  })
+}
+const getSecondCarousel = () => {
+  homeApi.getCarousel().then((res: any) => {
+    // console.log(res.data);
+    state.bannerList = res.data
   })
 }
 const switchTab = (tabsIdx: number) => {

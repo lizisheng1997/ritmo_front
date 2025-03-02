@@ -7,8 +7,11 @@
       <view class="text mt35" v-if="state.isType == 0">
         {{ t('ofthecurrentaccount') }}？
       </view>
-      <view class="textAsh mt35" v-else>
+      <view class="textAsh mt35" v-else-if="state.isType == 1">
         {{ t('Afterconfirming') }}
+      </view>
+      <view class="textAsh mt35" v-else-if="state.isType == 2">
+        {{ t('Afterconfirming2') }}
       </view>
       <view class="footerTwo flex" >
         <view class="btn btn1" @click="sumbit(0)">{{ t('Thinkagain') }}</view>
@@ -28,7 +31,7 @@ const { t } = useI18n()
 
 // 参数
 const state = reactive({
-  isType: 0, // 0退出账号 1删除账户
+  isType: 0, // 0退出账号 1删除账户 2 删除账号保护期
   isShow: false, // 
 })
 // 打开弹窗
@@ -53,10 +56,31 @@ const sumbit = async(type: number) => {
           state.isShow = false
         }, 1000);
       })
-    }
-  } else {
-    state.isShow = false
+    } else if( state.isType == 1 ) {
+      await loginApi.getDeactivate({
+        reason: '用户提交注销请求后，7天后系统自动处理注销',
+      }).then((res: any) => {
+        showTips(res.message)
+        setTimeout(() => {
+          uni.reLaunch({
+            url: '/pages/user/index'
+          });
+          state.isShow = false
+        }, 1000);
+      })
 
+    } else if( state.isType == 2 ) {
+      await loginApi.getDeactivateCancel({}).then((res: any) => {
+        showTips(res.message)
+        setTimeout(() => {
+          uni.reLaunch({
+            url: '/pages/user/index'
+          });
+          state.isShow = false
+        }, 1000);
+      })
+
+    }
   }
 
 }

@@ -50,6 +50,12 @@ export default class Home extends Request {
       url: `/v1/homepage/carousel`,
     });
   }
+  getSecondCarousel() {
+    return this.get({
+      url: `/v1/homepage/second-carousel`,
+    });
+  }
+  // 
 
 
 

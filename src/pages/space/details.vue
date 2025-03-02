@@ -28,12 +28,33 @@
         <text class="label">租赁价格：</text>
         ¥{{ state.price }}元/30分钟起租
       </view>
+
+      <view class="brief mt25" v-if="state.type > 2">
+        <text class="label">场地面积：</text>
+        {{ state.size }}
+      </view>
       <view class="line m35-0"></view>
       <!--  -->
       <view class="cards">
         <view class="card m10" v-for="(item, index) in state.services" :key="index">
           <image class="icon mt15" :src="item.icon"></image>
           <view class="text">{{ item.name }}</view>
+        </view>
+      </view>
+    </view>
+    <!--  -->
+    <view class="list p0-35" v-if="state.type >= 2">
+      <view class="li flex mt20 pt20" v-for="item in staffList" :key="item.id">
+        <view class="btn" @click="makePhoneCall(item.phone)">立即联系</view>
+        <view class="banner mr20">
+          <image class="imageW100" :src="item.avatar_url"></image>
+        </view>
+        <view class="info">
+          <view class="dname mt15">
+            {{ item.name }}
+            <text class="" style="font-size: 24rpx;font-weight: 200;">({{ item.position }})</text>
+          </view>
+          <view class="dtext mt15">{{ item.phone }} </view>
         </view>
       </view>
     </view>
@@ -61,8 +82,9 @@ onLoad((query?: AnyObject | undefined): void => {
 });
 // 参数
 const ltype = ref('')
+const staffList = ref([] as any)
 const state = reactive({
-  type: 0, // 0工位1会议室2办公室3展示柜
+  type: 0, // 0工位1会议室2办公室3展示柜4会议室
   id: '',
   sid: '',
   banner: '',
@@ -70,6 +92,7 @@ const state = reactive({
   name: '',
   area: '',
   description: '',
+  size: '',
   price: 0,
   level: 1,
   capacity: 1,
@@ -88,6 +111,27 @@ const getInfo = () => {
       details(res.data)
       state.capacity = res.data.capacity
     })
+  } else if( state.type == 2 ) {
+    spaceApi.getSpaceOfficesDetails( state.sid, state.id).then((res: any) => {
+      console.log(res.data);
+      details(res.data)
+      state.capacity = res.data.capacity
+      staffList.value = res.data.staff
+    })
+  } else if( state.type == 3 ) {
+    spaceApi.getSpaceShowcasesDetails(state.sid, state.id).then((res: any) => {
+      console.log(res.data);
+      details(res.data)
+      state.capacity = res.data.capacity
+      staffList.value = res.data.staff
+    })
+  } else if( state.type == 4 ) {
+    spaceApi.getSpaceEventRoomsDetails(state.sid, state.id).then((res: any) => {
+      // console.log(res.data);
+      details(res.data)
+      state.capacity = res.data.capacity
+      staffList.value = res.data.staff
+    })
   }
 }
 const details = (obj: any) => {
@@ -98,6 +142,11 @@ const details = (obj: any) => {
   state.area = obj.area_name
   state.price = obj.price
   state.level = obj.level
+}
+const makePhoneCall = (phone: string) => {
+  uni.makePhoneCall({
+    phoneNumber: phone
+  });
 }
 </script>
 
@@ -201,6 +250,47 @@ page {
           line-height: 28rpx;
           color: #232322;
         }
+      }
+    }
+  }
+}
+
+.list {
+  .li {
+    border-top: 1PX solid #F5F3EF;
+    position: relative;
+    .btn {
+      position: absolute;
+      right: 0;
+      top: 20rpx;
+      width: 160rpx;
+      height: 60rpx;
+      line-height: 60rpx;
+      text-align: center;
+      border-radius: 10rpx;
+      font-size: 28rpx;
+      font-weight: 600;
+      color: #232322;
+      background-color: #FFCF00;
+    }
+    .banner {
+      width: 130rpx;
+      height: 100rpx;
+      border-radius: 6rpx;
+    }
+    .info {
+      width: calc( 100% - 260rpx );
+      .dname {
+        font-size: 28rpx;
+        font-weight: 600;
+        line-height: 32rpx;
+        color: #232322;
+      }
+      .dtext {
+        font-size: 24rpx;
+        font-weight: 400;
+        line-height: 28rpx;
+        color: #232322;
       }
     }
   }

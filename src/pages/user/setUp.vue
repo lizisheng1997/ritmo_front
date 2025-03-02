@@ -35,7 +35,7 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
-      <view class="li flex" @click="openBottomOperation(1)">
+      <view class="li flex" @click="getDeactivateStatus">
         <view class="left">
           {{ t('Deleteaccount') }}
         </view>
@@ -95,9 +95,17 @@ const bottomOperationRef = ref()
 const openBottomOperation = (type: number) => {
   bottomOperationRef.value.openDialog(type)
 }
-// 退出登录
-const loginOut = async() => {
-
+// 获取删除账号状态
+// 
+const getDeactivateStatus = async() => {
+  await loginApi.getDeactivateStatus().then((res: any) => {
+    console.log(res.data);
+    if( res.data.has_request ) {
+      openBottomOperation(2)
+    } else {
+      openBottomOperation(1)
+    }
+  })
 }
 </script>
 
