@@ -28,6 +28,8 @@ export default class Request {
           
           if (res.data.code == 300 || res.data.code == 401) {
             showTips(res.data.message)
+            uni.removeStorageSync('accessToken');
+            uni.removeStorageSync('userInfos');
             setTimeout(() => {
               uni.reLaunch({
                 url: '/pages/login/index'

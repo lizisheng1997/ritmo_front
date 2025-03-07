@@ -1,7 +1,7 @@
 <template>
   <view class="content p35">
     <view class="face">
-      <image class="imageW100" :src="state.url" @click="uploadImage"></image>
+      <image class="imageW100" :src="state.url" @click="avatarCropper()"></image>
     </view>
     <view class="footerOne" @click="submit">
       {{ t('Save') }}
@@ -23,6 +23,11 @@ onLoad((query?: AnyObject | undefined): void => {
   uni.setNavigationBarTitle({
     title: t('imageupload')
   });
+  uni.$on('uAvatarCropper', path => {
+    // console.log(path);
+    state.url = path
+    // uploadImage(path)
+  })
   getInfo()
 });
 // 参数
@@ -45,8 +50,16 @@ const uploadImage = () => {
     
   })
 }
+const avatarCropper = () => {
+  uni.navigateTo({
+    url: `/uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper?rectWidth=300&fileType='png'`
+  })
+}
 // 
 const submit = () => {
+  uni.showLoading({
+    title: '上传中'
+  });
   userApi.getUpdateUserFace({ filePath: state.url }).then((res: any) => {
     // console.log(res);
     showTips('上传成功')
@@ -54,6 +67,8 @@ const submit = () => {
       routerBack(1)
     }, 1000);
   }).catch((err) => {
+  }).finally(() => {
+    uni.hideLoading();
   })
 }
 </script>

@@ -26,9 +26,10 @@
         <view class="title mt20">{{ t('Roomreservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文配文配文配文配文配文</view> -->
       </view>
-      <view class="item">
+      <view class="item" @click="switchTab(2)">
         <image class="icon" src="https://ritmohub.cn/static/home/reserves3.png"></image>
-        <view class="title mt20 textColor">{{ t('Officereservation') }}</view>
+        <view class="title mt20">{{ t('Officereservation') }}</view>
+        <!-- textColor -->
         <!-- <view class="text p0-10 oneEllipsis mt10 textColor">{{ t('Notyetopen') }}</view> -->
       </view>
     </view>
@@ -81,9 +82,12 @@
     </view>
     <!--  -->
     <view class="list">
-      <view class="li mt35"  v-for="(item, index) in state.imagesList" :key="index">
-        <image class="imageW100" :src="item.image_url"></image>
-      </view>
+      <template v-for="(item, index) in state.imagesList" :key="index">
+
+        <view class="li mt35" v-if="  index < 1">
+          <image class="imageW100" :src="item.image_url"></image>
+        </view>
+      </template>
     </view>
   </view>
 </template>

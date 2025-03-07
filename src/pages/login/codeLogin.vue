@@ -1,9 +1,9 @@
 <template>
   <view class="content p35">
-    <view class="title">{{ t('verificationCode') }}</view>
-    <view class="fub mt20">{{ t('verificationDevices') }}</view>
+    <view class="title">{{ state.type ? t('oneLogin') : t('codeLogin') }}</view>
+    <view class="fub mt20" v-if="state.type == 0">{{ t('verificationDevices') }}</view>
     <!--  -->
-    <view class="form flex pb40">
+    <view class="form flex pb40" >
       <view class="sign" @click=" state.areaShow = true ">
         <u-icon class="icon" name="plus" color="#232322" size="16"></u-icon>
         {{ state.areaCode }}<u-icon class="icon ml10" name="arrow-down-fill" color="#232322" size="14"></u-icon>
@@ -11,15 +11,31 @@
       <input class="uni-input ml25" type="number" maxlength="11" v-model="state.phone" :placeholder="t('Entermobilenumber')" />
     </view>
     <!--  -->
-    <view class="btn" :class=" state.phone.length == 11 ? '' : 'btnNull' " @click="submit">{{ t('SendCode') }}</view>
+    <template v-if=" state.type == 1 ">
+      <view class="form flex pb40">
+        <view class="sign">
+          {{ t('password') }}
+        </view>
+        <input class="uni-input ml25" type="number" maxlength="18" v-model="state.password" :placeholder="t('EntermobilePass')" />
+      </view>
+    </template>
     <!--  -->
-    <view class="tips mt30 flex">
+    <view class="btn" :class=" ( state.type == 0  && state.phone.length == 11 ) || ( state.type == 1 && state.phone.length == 11 && state.password.length >= 6 ) ? '' : 'btnNull' " @click="submit">{{ state.type ? t('oneLogin') : t('SendCode') }}</view>
+    <!--  -->
+    <view class="tips mt30 flex" v-if="state.type == 1" @click="() => {
+      state.password = ''
+      state.type = 0
+    }" style="font-size: 28rpx;">
+      没有账号？立即注册
+    </view>
+    <!--  -->
+    <view class="tips mt50 flex">
       <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
       <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
       {{ t('Agree') }}RITMOHUB<text class="" @click="openPupup(0)">《{{ t('userAgreement') }}》</text>、<text class="" @click="openPupup(1)">《{{ t('privacyPolicy') }}》</text> 
     </view>
   </view>
-  <textPopup ref="textPopupRef" @refresh="textPopupRefresh"/>
+  <textPopup ref="textPopupRef" @refresh="textPopupRefresh" :isType="0"/>
   <!-- 选择 -->
   <u-select v-model="state.areaShow" :list="selectList"  label-name="value" value-name="value" @confirm="confirm" :confirm-text="t('confirm')" :cancel-text="t('cancel')"></u-select>
 </template>
@@ -31,15 +47,20 @@ import { useI18n } from 'vue-i18n'
 import { routerTo, showTips } from '/@/utils/currentFun'
 import { selectList } from '/@/utils/universalArray'
 import { onLoad } from '@dcloudio/uni-app'
+import Login from '/@/api/login';
+const loginApi = new Login();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
+  state.type = query!.type ? Number(query!.type) : 0;
 });
 // 参数
 const state = reactive({
+  type: 0, // 0验证码 1手机号密码
   phone: '', // 手机号
   intro: '', // 
+  password: '', // 
   areaCode: '86', // 
   areaShow: false,
   select: false, // 
@@ -54,7 +75,26 @@ const submit = () => {
     return
   }
   // console.log(111);
-  routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}`)
+  if( state.type ) {
+    if( state.password.length < 6 ) {
+      return
+    }
+    loginApi.getPasswordLogin({
+      area_code: state.areaCode,
+      phone: state.phone,
+      password: state.password,
+    }).then((res: any) => {
+      // console.log(res);
+      showTips(res.message)
+      setTimeout(() => {
+        uni.reLaunch({
+          url: '/pages/home/index'
+        });
+      }, 1000);
+    })
+  } else {
+    routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}`)
+  }
   
 }
 const confirm = (e: { value: string }[]) => {

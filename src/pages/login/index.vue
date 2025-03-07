@@ -12,7 +12,11 @@
       <view class="btn btnOne mt50">{{ t('oneLogin') }}</view>
       <view class="btn btnOne" style="margin-top: 45rpx;" @click="codeLoginTo">{{ t('codeLogin') }}</view> -->
       <!-- #endif -->
-      <view class="btn btnOne" style="margin-top: 500rpx;" @click="codeLoginTo">{{ t('codeLogin') }}</view>
+      <view class="btn btnOne" style="margin-top: 410rpx;" @click="codeLoginTo(0)">{{ t('codeLogin') }}</view>
+      <view class="btn btnCode mt50" @click="codeLoginTo(1)">{{ t('oneLogin') }}</view>
+      <!-- #ifdef MP-WEIXIN -->
+      <view class="notlogging mt35" @click="switchTab">暂不登录,前往首页。</view>
+      <!-- #endif -->
       <view class="tips mt30">
         <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
         <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
@@ -48,16 +52,26 @@ const openPupup = (type: number) => {
 const textPopupRefresh = (show: boolean) => {
   state.select = show
 }
-const codeLoginTo = () => {
+const codeLoginTo = (type: number) => {
   if( !state.select ) {
     showTips(t('Pleasechecktheagreement'))
     return
   }
-  routerTo(`/pages/login/codeLogin`)
+  routerTo(`/pages/login/codeLogin?type=${type}`)
+}
+const switchTab = () => {
+  uni.switchTab({
+          url: '/pages/home/index'
+        });
 }
 </script>
 
 <style lang="scss" scoped>
+.notlogging {
+  width: 85%;
+  text-align: left !important;
+  color: #FFFFFF;
+}
 .content {
   height: 100vh;
   width: 100%;

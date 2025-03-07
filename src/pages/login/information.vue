@@ -17,6 +17,12 @@
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
+          {{ t('password') }}
+        </view>
+        <input class="uni-input ml25" maxlength="18" v-model="form.password" :placeholder="t('EntermobilePass')" />
+      </view>
+      <view class="item flex pb35 mt35">
+        <view class="text">
           {{ t('Invitationcode') }}
         </view>
         <input class="uni-input ml25" maxlength="8" v-model="form.intro" :placeholder="t('Optional')" />
@@ -34,7 +40,7 @@
       <image class="imageW100" :src=" form.avatarUrl ? form.avatarUrl : '../../static/addHead.png' " @click="uploadImage"></image>
     </view>
     <!--  -->
-    <view class="btn" :class=" ( form.nickname && form.email && form.avatarUrl ) ? '' : 'btnNull' " @click="submit()">
+    <view class="btn" :class=" ( form.nickname && form.email && form.avatarUrl && form.password.length >= 6 ) ? '' : 'btnNull' " @click="submit()">
       {{ t('Complete') }}
     </view>
   </view>
@@ -63,6 +69,7 @@ const form = reactive({
   email: '', // 邮箱
   intro: '', // 邀请码
   avatarUrl: '',
+  password: '',
 })
 // 上传人脸
 const uploadImage = () => {
@@ -80,7 +87,7 @@ const uploadImage = () => {
 }
 // 
 const submit = async() => {
-  if(!form.nickname && !form.email && !form.avatarUrl) {
+  if(!form.nickname && !form.email && !form.avatarUrl && form.password.length < 6) {
     return;
   }
   let { nickname, email, intro, avatarUrl } = form
@@ -88,9 +95,10 @@ const submit = async() => {
     nickname,
     email,
     intro,
-    avatar_url: avatarUrl
+    avatar_url: avatarUrl,
+    password: form.password
   }).then((res: any) => {
-    console.log(res);
+    // console.log(res);
     showTips(res.message)
     getAuthUser()
   })

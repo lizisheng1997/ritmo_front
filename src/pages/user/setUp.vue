@@ -43,6 +43,14 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
+      <view class="li flex" @click="routerTo(`/pages/user/changePassword`)">
+        <view class="left">
+          {{ t('changePassword') }}
+        </view>
+        <view class="right">
+          <image class="icon" src="/@/static/rightAsh.png"></image>
+        </view>
+      </view>
       <view class="li flex" @click="routerTo(`/pages/user/agreement?type=0`)">
         <view class="left">
           {{ t('userAgreement') }}

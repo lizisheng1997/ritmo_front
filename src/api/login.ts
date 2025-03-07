@@ -18,6 +18,12 @@ export default class Login extends Request {
       data
     });
   }
+  getPasswordLogin(data: object) {
+    return this.post({
+      url: '/v1/auth/password-login ',
+      data
+    });
+  }
   // 刷新token
   getAuthRefresh(data: object) {
     return this.post({
@@ -54,6 +60,13 @@ export default class Login extends Request {
   getDeactivateCancel(data: object) {
     return this.post({
       url: '/v1/users/deactivate/cancel',
+      data
+    });
+  }
+  // 修改密码
+  getResetPassword(data: object) {
+    return this.post({
+      url: '/v1/auth/reset-password',
       data
     });
   }

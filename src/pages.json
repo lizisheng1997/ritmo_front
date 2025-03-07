@@ -235,6 +235,13 @@
 			}
 		},
     {
+			"path": "pages/user/changePassword",
+			"style": {
+				"navigationBarTitleText": "修改密码"
+			}
+		},
+    
+    {
       "path": "uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper",
       "style": {
         "navigationBarTitleText": "头像裁剪",

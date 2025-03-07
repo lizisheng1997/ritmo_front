@@ -135,8 +135,15 @@ const userApi = new User();
 const { t } = useI18n()
 
 onLoad(() => {
+  // #ifdef APP
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight;
+  // #endif
+  
+  // #ifdef MP-WEIXIN
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight + 70;
+  // #endif
   state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   // console.log(state.navAllHeight);
   
