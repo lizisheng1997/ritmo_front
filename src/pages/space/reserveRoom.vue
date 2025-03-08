@@ -31,8 +31,8 @@
       <view class="nav flex">
         <text class="title">{{ t('Selectappointmentdate') }}</text>
       </view>
-      <view class="card p15 mt25">
-        <image class="icon" src="/@/static/rightAsh.png" @click="state.calendarShow = true"></image>
+      <view class="card p15 mt25" @click="state.calendarShow = true">
+        <image class="icon" src="/@/static/rightAsh.png"></image>
         <view class="title">{{ t('date') }}</view>
         <view class="date mt20">{{ state.date }}</view>
       </view>

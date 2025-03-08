@@ -50,7 +50,7 @@
     </view> -->
     <view class="menuForm mt35 p0-35">
       <!--  -->
-      <view class="li flex" v-if="state.level != 2" @click="routerTo(`/pages/home/institutions`, true)">
+      <view class="li flex"  @click="routerTo(`/pages/home/institutions`, true)">
         <view class="left">
           <image class="icon" src="https://ritmohub.cn/static/home/switch.png"></image>
           {{ t('Switchidentity') }}

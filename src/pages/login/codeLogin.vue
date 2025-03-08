@@ -44,11 +44,13 @@
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import textPopup from '/@/components/textPopup.vue'
 import { useI18n } from 'vue-i18n'
+import { useUserStore } from '/@/store/modules/user';
 import { routerTo, showTips } from '/@/utils/currentFun'
 import { selectList } from '/@/utils/universalArray'
 import { onLoad } from '@dcloudio/uni-app'
 import Login from '/@/api/login';
 const loginApi = new Login();
+const user = useUserStore();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
@@ -86,6 +88,11 @@ const submit = () => {
     }).then((res: any) => {
       // console.log(res);
       showTips(res.message)
+      user.setUserInfo(res.data.user);
+      
+      uni.setStorageSync('accessToken', res.data.access_token);
+      // console.log(111);
+      
       setTimeout(() => {
         uni.reLaunch({
           url: '/pages/home/index'

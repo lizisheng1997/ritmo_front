@@ -17,17 +17,17 @@
     <!--  -->
     <view class="reserves p0-35 flex">
       <view class="item" @click="switchTab(0)">
-        <image class="icon" src="https://ritmohub.cn/static/home/reserves1.png"></image>
+        <image class="icon" src="/@/static/home/reserves1.png"></image>
         <view class="title mt20">{{ t('Spacereservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文</view> -->
       </view>
       <view class="item" @click="switchTab(1)">
-        <image class="icon" src="https://ritmohub.cn/static/home/reserves2.png"></image>
+        <image class="icon" src="/@/static/home/reserves2.png"></image>
         <view class="title mt20">{{ t('Roomreservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文配文配文配文配文配文</view> -->
       </view>
       <view class="item" @click="switchTab(2)">
-        <image class="icon" src="https://ritmohub.cn/static/home/reserves3.png"></image>
+        <image class="icon" src="/@/static/home/reserves3.png"></image>
         <view class="title mt20">{{ t('Officereservation') }}</view>
         <!-- textColor -->
         <!-- <view class="text p0-10 oneEllipsis mt10 textColor">{{ t('Notyetopen') }}</view> -->
@@ -35,11 +35,11 @@
     </view>
     <!--  -->
     <view class="cards flex ">
-      <view class="item">
+      <view class="item" @click="switchTab(4)">
         <image class="icon" src="https://ritmohub.cn/static/home/card1.png"></image>
         <view class="text mt10">{{ t('Activityroom') }}</view>
       </view>
-      <view class="item">
+      <view class="item" @click="switchTab(3)">
         <image class="icon" src="https://ritmohub.cn/static/home/card2.png"></image>
         <view class="text mt10">{{ t('Cornerreservation') }}</view>
       </view>
@@ -47,7 +47,7 @@
         <image class="icon" src="https://ritmohub.cn/static/home/card3.png"></image>
         <view class="text mt10">{{ t('Invitefriends') }}</view>
       </view>
-      <view class="item" @click="routerTo(`/pages/user/myReservation`, true)">
+      <view class="item" @click="routerTo(`/pages/user/myReservation?type=0`, true)">
         <image class="icon" src="https://ritmohub.cn/static/home/card4.png"></image>
         <view class="text mt10">{{ t('Myreservations') }}</view>
       </view>
@@ -75,19 +75,24 @@
           <view class="not"  @click="routerTo(`/pages/login/index`)">{{ t('Notloggedinyet') }}</view>
         </template>
       </view>
-      <view class="right" v-if="state.userId && state.level == 2">
+      <view class="right" v-if="state.userId">
         <image class="icon" src="https://ritmohub.cn/static/home/switch.png" @click="routerTo(`/pages/home/institutions`)"></image>
         <text class="" @click="routerTo(`/pages/home/institutions`)">{{ t('Switch') }}</text>
       </view>
     </view>
     <!--  -->
     <view class="list">
-      <template v-for="(item, index) in state.imagesList" :key="index">
+      <swiper class="swiper mt15" circular indicator-dots autoplay >
+        <swiper-item  v-for="(item, index) in state.bannerList" :key="index">
+          <image class="imageW100" :src="item.image_url"></image>
+        </swiper-item>
+      </swiper>
+      <!-- <template v-for="(item, index) in state.imagesList" :key="index">
 
         <view class="li mt35" v-if="  index < 1">
           <image class="imageW100" :src="item.image_url"></image>
         </view>
-      </template>
+      </template> -->
     </view>
   </view>
 </template>
@@ -150,7 +155,7 @@ const getCarousel = () => {
   })
 }
 const getSecondCarousel = () => {
-  homeApi.getCarousel().then((res: any) => {
+  homeApi.getSecondCarousel().then((res: any) => {
     // console.log(res.data);
     state.bannerList = res.data
   })
@@ -310,6 +315,18 @@ page {
   }
   .list {
     padding: 0 35rpx 35rpx ;
+    .swiper{
+      height: 380rpx;
+      .imageW100 {
+        border-radius: 16rpx;
+      }
+      .uni-swiper-wrapper {
+        .uni-swiper-slides {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
     .li {
       height: 340rpx;
       border-radius: 20rpx;
@@ -317,4 +334,5 @@ page {
     }
   }
 }
+
 </style>
