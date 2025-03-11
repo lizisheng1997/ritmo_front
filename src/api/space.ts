@@ -111,19 +111,19 @@ export default class Space extends Request {
   // 办公室详情
   getSpaceOfficesDetails(sid: string, id: string) {
     return this.get({
-      url: `/v1/offices/${sid}?space_id=${id}`,
+      url: `/v1/offices/${id}?space_id=${sid}`,
     });
   }
   // 展示柜详情
   getSpaceShowcasesDetails(sid: string, id: string) {
     return this.get({
-      url: `/v1/showcases/${sid}?space_id=${id}`,
+      url: `/v1/showcases/${id}?space_id=${sid}`,
     });
   }
   // 活动室详情
   getSpaceEventRoomsDetails(sid: string, id: string) {
     return this.get({
-      url: `/v1/event-rooms/${sid}?space_id=${id}`,
+      url: `/v1/event-rooms/${id}?space_id=${sid}`,
     });
   }
   // 工位订单详情

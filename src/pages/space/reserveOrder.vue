@@ -68,7 +68,7 @@
           
         </view>
       </view>
-      <view class="right" @click="payPopupRef.openDialog()">
+      <view class="right" @click="payZero()">
         {{ t('Confirmappointment') }}
       </view>
     </view>
@@ -180,6 +180,18 @@ const getPay = (show: boolean, type: string, id: string) => {
     }
   }
 };
+const payZero = () => {
+  if( state.info.amount == 0 ) {
+    showTips('支付成功')
+    setTimeout(() => {
+      uni.reLaunch({
+        url: '/pages/user/index'
+      });
+    }, 1000);
+  } else {
+    payPopupRef.value.openDialog()
+  }
+}
 </script>
 
 <style >

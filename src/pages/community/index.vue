@@ -32,7 +32,13 @@
     <view class="add" @click="routerTo('/pages/community/addCommunity')">
       <image class="icon" src="/@/static/iconAdd.png"> </image>
     </view>
-    <!--  -->
+    <!-- {
+        "pagePath": "pages/community/index",
+        "iconPath": "static/tabbar/community.png",
+        "selectedIconPath": "static/tabbar/community1.png",		
+        "text": "社区"
+      },		 -->
+     
   </view>
 </template>
 

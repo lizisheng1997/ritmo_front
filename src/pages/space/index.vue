@@ -111,9 +111,9 @@
               <view class="name">{{ item.name }}</view>
               <view class="text mt10" v-if=" item.status == 1 ">{{ state.tabsIdx == 3 ? item.size : `${item.capacity}人` }}  </view>
               <view class="text" v-if=" item.status == 1 ">{{ item.description }}</view>
-              <view class="company mt15" v-if=" item.status == 0 ">
+              <view class="company mt15" v-if=" item.status == 0 ||  item.status == 2 ">
                 <!-- <text class="oneEllipsis">大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司</text> -->
-                <text class="status">租用中</text>
+                <text class="status">{{ item.status == 2 ? '租用中' : '不可租' }}</text>
               </view>
             </view>
           </view>

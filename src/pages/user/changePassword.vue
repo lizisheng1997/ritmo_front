@@ -12,13 +12,13 @@
         <view class="text">
           {{ t('newpassword') }}
         </view>
-        <input class="uni-input ml25" maxlength="18" v-model="form.newPassword" :placeholder="t('EntermobilePass2')" />
+        <input class="uni-input ml25" password type="text" maxlength="18" v-model="form.newPassword" :placeholder="t('EntermobilePass2')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
           {{ t('newpassword') }}
         </view>
-        <input class="uni-input ml25" maxlength="18" v-model="form.newPassword2" :placeholder="t('EntermobilePass2')" />
+        <input class="uni-input ml25" password type="text" maxlength="18" v-model="form.newPassword2" :placeholder="t('EntermobilePass2')" />
       </view>
     </view>
     <!--  -->

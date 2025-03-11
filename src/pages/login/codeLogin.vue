@@ -16,7 +16,7 @@
         <view class="sign">
           {{ t('password') }}
         </view>
-        <input class="uni-input ml25" type="number" maxlength="18" v-model="state.password" :placeholder="t('EntermobilePass')" />
+        <input class="uni-input ml25" password type="text" maxlength="18" v-model="state.password" :placeholder="t('EntermobilePass')" />
       </view>
     </template>
     <!--  -->

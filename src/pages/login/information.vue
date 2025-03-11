@@ -19,7 +19,7 @@
         <view class="text">
           {{ t('password') }}
         </view>
-        <input class="uni-input ml25" maxlength="18" v-model="form.password" :placeholder="t('EntermobilePass')" />
+        <input class="uni-input ml25" maxlength="18" password type="text" v-model="form.password" :placeholder="t('EntermobilePass')" />
       </view>
       <view class="item flex pb35 mt35">
         <view class="text">
