@@ -41,7 +41,7 @@ onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   // state.type = query!.type
   uni.setNavigationBarTitle({
-    title: `${t('Myrights')} ${t('changerecord')}`
+    title: `${t('Myrights')}${t('changerecord')}`
   });
   getList()
 });

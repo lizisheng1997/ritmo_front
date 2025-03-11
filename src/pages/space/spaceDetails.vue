@@ -12,7 +12,7 @@
     </swiper>
     <!--  -->
     <view class="album pl5" @click="routerTo(`/pages/space/album?id=${state.id}`)">
-      相册
+      {{ t('album') }}
       <image class="icon" src="https://ritmohub.cn/static/iconLeftW.png"> </image>
     </view>
     <!--  -->
@@ -112,7 +112,7 @@ onLoad((query?: AnyObject | undefined): void => {
   getInfo()
 });
 // 参数
-let list = ['服务', '设施', '周边']
+let list = [t('service'), t('facilities'), t('surroundings')]
 const state = reactive({
   id: '', 
   info: {} as any,
@@ -166,7 +166,7 @@ page {
     position: absolute;
     left: 35rpx;
     top: 388rpx;
-    width: 100rpx;
+    width: 120rpx;
     height: 36rpx;
     line-height: 36rpx;
     font-size: 20rpx;

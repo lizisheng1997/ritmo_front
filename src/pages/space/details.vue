@@ -16,21 +16,21 @@
         {{ state.description }}
       </view>
       <view class="brief mt25">
-        <text class="label">所属区域：</text>
+        <text class="label">{{ t('belong') }}：</text>
         {{ state.area }}
       </view>
       <view class="brief mt25" v-if="state.type == 1 || state.type == 2">
-        <text class="label">容纳人数：</text>
-        {{ state.capacity }}人
+        <text class="label">{{ t('capacity') }}：</text>
+        {{ state.capacity }}{{ t('people') }}
       </view>
 
       <view class="brief mt25" v-if="state.type != 2">
-        <text class="label">租赁价格：</text>
-        ¥{{ state.price }}元/30分钟起租
+        <text class="label">{{ t('leasingprice') }}：</text>
+        ¥{{ state.price }}{{ t('RMB') }} / {{ t('Startingfromminutes') }} 租
       </view>
 
       <view class="brief mt25" v-if="state.type > 2">
-        <text class="label">场地面积：</text>
+        <text class="label">{{ t('sitearea') }}：</text>
         {{ state.size }}
       </view>
       <view class="line m35-0"></view>
@@ -45,7 +45,7 @@
     <!--  -->
     <view class="list p0-35" v-if="state.type >= 2">
       <view class="li flex mt20 pt20" v-for="item in staffList" :key="item.id">
-        <view class="btn" @click="makePhoneCall(item.phone)">立即联系</view>
+        <view class="btn" @click="makePhoneCall(item.phone)">{{ t('contact') }}</view>
         <view class="banner mr20">
           <image class="imageW100" :src="item.avatar_url"></image>
         </view>

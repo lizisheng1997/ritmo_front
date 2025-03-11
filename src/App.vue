@@ -18,6 +18,20 @@ export default defineComponent({
     this.globalData.navigationBarHeight = navigationBarHeight
     // @ts-ignore
     this.globalData.navAllHeight = navAllHeight
+    // 设置tabbar中英文
+    let type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
+    uni.setTabBarItem({
+      index: 0,
+      text: type == 'zh' ? '首页' : 'home',
+    })
+    uni.setTabBarItem({
+      index: 1,
+      text: type == 'zh' ? '空间' : 'space',
+    })
+    uni.setTabBarItem({
+      index: 2,
+      text: type == 'zh' ? '我的' : 'user',
+    })
   },
   onShow: function () {
     // console.log('App Launch')

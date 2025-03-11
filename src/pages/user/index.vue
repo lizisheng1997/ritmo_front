@@ -41,13 +41,18 @@
         <image class="icon" src="/@/static/rightAsh.png" ></image>
       </view>
     </view>
-    <!-- <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
-      <view class="card" v-for="item in userRecordList" :key="item.key">
-        <view class="num mt30">{{ item.hours }}</view>
-        <view class="text mt15">小时</view>
-        <view class="grade mt35">{{ item.name }}</view>
+    <view class="interestsList p0-35 flex mt35" v-if="state.level != 0">
+      <view class="card">
+        <view class="num mt30">{{ state.basicHours }}</view>
+        <view class="text mt15">{{ t('hour') }}</view>
+        <view class="grade mt35">{{ t('primary') }}{{ t('conference') }}</view>
       </view>
-    </view> -->
+      <view class="card">
+        <view class="num mt30">{{ state.premiumHours }}</view>
+        <view class="text mt15">{{ t('hour') }}</view>
+        <view class="grade mt35">{{ t('senior') }}{{ t('conference') }}</view>
+      </view>
+    </view>
     <view class="menuForm mt35 p0-35">
       <!--  -->
       <view class="li flex"  @click="routerTo(`/pages/home/institutions`, true)">
@@ -122,7 +127,7 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad, onShow } from '@dcloudio/uni-app';
+import { onHide, onLoad, onShow } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerTo, showTips, dateToLocaleDateString } from '/@/utils/currentFun';
 import { userRecordList } from '/@/utils/universalArray'
@@ -161,6 +166,9 @@ const state = reactive({
   userId: '', // 
   level: 0, // 0：非会员, 1: 初级会员, 2: 高级会员, 3: 企业会员
   expireTime: '', // 到期时间
+  basicHours: 0,
+  premiumHours: 0,
+
   // 
   status: 0, //  
   navAllHeight: 0,
@@ -184,6 +192,8 @@ const getUserInfo = async() => {
     state.expireTime = res.data.vip_expire_time
     
     // state.rights = res.data.rights
+    state.basicHours = res.data.benefits.meeting_room_basic_hours
+    state.premiumHours = res.data.benefits.meeting_room_premium_hours
     // userRecordList[0].hours = res.data.rights.meeting_room.hours_formatted
     // userRecordList[2].hours = res.data.rights.workspace.hours_formatted
     state.isInstitution = res.data.current_org_id ? true : false

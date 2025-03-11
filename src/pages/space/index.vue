@@ -149,7 +149,7 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad, onReachBottom, onShow } from '@dcloudio/uni-app';
+import { onHide, onLoad, onReachBottom, onShow } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import spaceTimes from '/@/components/spaceTimes.vue'
 import selectSpace from '/@/components/selectSpace.vue'
@@ -177,6 +177,9 @@ onShow(() => {
   getSpaceList(1)
   
 
+})
+onHide(() => {
+  uni.setStorageSync('spaceTabsIdx', state.tabsIdx);
 })
 // 参数
 const tabsList = ref([ { name: t('workstation'), key: 0 }, { name: t('conference'), key: 1 }, { name: t('office'), key: 2 }, { name: t('cabinet'), key: 3 }, { name: t('activity'), key: 4 }  ])
@@ -284,7 +287,7 @@ const getAllList = () => {
     }).finally(() => {
       setTimeout(() => {
         uni.hideLoading();
-      }, 3500);
+      }, 1500);
     })
   } else if( state.tabsIdx == 1 ) {
     spaceApi.getSpaceMeetingRooms({
@@ -303,7 +306,7 @@ const getAllList = () => {
   } else if( state.tabsIdx == 2 ) {
     spaceApi.getSpaceOffices({
       space_id: state.id,
-      status: 1,
+      status: '',
       page: state.page,
       page_size: state.pageSize
     }).then((res: any) => {
@@ -316,7 +319,7 @@ const getAllList = () => {
   } else if( state.tabsIdx == 3 ) {
     spaceApi.getSpaceShowcases({
       space_id: state.id,
-      status: 1,
+      status: '',
       page: state.page,
       page_size: state.pageSize
     }).then((res: any) => {
@@ -329,7 +332,7 @@ const getAllList = () => {
   } else if( state.tabsIdx == 4 ) {
     spaceApi.getSpacEventRooms({
       space_id: state.id,
-      status: 1,
+      status: '',
       page: state.page,
       page_size: state.pageSize
     }).then((res: any) => {
@@ -347,7 +350,7 @@ onReachBottom(() =>{
   
 })
 const routerToPar = (url: string) => {
-  uni.setStorageSync('spaceTabsIdx', state.tabsIdx);
+  
   routerTo(url)
 }
 </script>
