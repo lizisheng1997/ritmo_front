@@ -52,7 +52,7 @@ const uploadImage = () => {
 }
 const avatarCropper = () => {
   uni.navigateTo({
-    url: `/uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper?rectWidth=300&fileType='png'`
+    url: `/uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper?rectWidth=400&fileType='png'`
   })
 }
 // 

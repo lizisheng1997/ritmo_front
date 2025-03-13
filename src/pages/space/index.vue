@@ -113,7 +113,10 @@
               <view class="text" v-if=" item.status == 1 ">{{ item.description }}</view>
               <view class="company mt15" v-if=" item.status == 0 ||  item.status == 2 ">
                 <!-- <text class="oneEllipsis">大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司</text> -->
-                <text class="status">{{ item.status == 2 ? '租用中' : '不可租' }}</text>
+                <text class="status" :style="{
+                backgroundColor: item.status == 0 ? '#ff0000' : '#00B0FF',
+                borderRadius: item.status == 0 ? '10rpx ' : '0 10rpx 10rpx 0',
+              }">{{ item.status == 2 ? t('rentingin') : t('notrentable') }}</text>
               </view>
             </view>
           </view>
@@ -638,11 +641,13 @@ const routerToPar = (url: string) => {
             font-size: 20rpx;
             font-weight: 500;
             color: #232322;
-            padding: 0 125rpx 0 25rpx;
+            padding: 0 0 0 25rpx;
             position: relative;
+            min-width: 100rpx;
             .oneEllipsis {
               display: inline-block;
               max-width: 360rpx;
+              margin-right: 125rpx;
             }
             .status {
               display: inline-block;
@@ -654,7 +659,6 @@ const routerToPar = (url: string) => {
               line-height: 50rpx;
               text-align: center;
               color: #ffffff;
-              background-color: #00B0FF;
               border-radius: 0 10rpx 10rpx 0;
             }
           }

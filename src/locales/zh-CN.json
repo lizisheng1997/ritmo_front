@@ -180,7 +180,8 @@
   "service": "服务",
   "facilities": "设施",
   "surroundings": "周边",
-  "": "",
+  "rentingin": "租用中",
+  "notrentable": "不可租",
   "": "",
   "": ""
 }
