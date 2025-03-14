@@ -67,8 +67,8 @@ const state = reactive({
 const getUserInfo = async () => {
   await userApi.getUserInfo({}).then((res: any) => {
     // console.log(res.invite.code);
-    state.count = res.data.invite.invited_count
-    state.code = res.data.invite.code
+    state.count = res.data.invited_count
+    state.code = res.data.invite_code
   });
 };
 </script>

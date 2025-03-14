@@ -129,7 +129,7 @@ const getInfo = () => {
     })
   } else if( state.type == 1 ) {
     spaceApi.getSpaceMeetingRoomsBook(state.id, {
-      booking_id: state.sid
+      space_id: state.sid
     }).then((res: any) => {
       console.log(res.data);
       state.info = res.data
@@ -146,32 +146,8 @@ const getPay = (show: boolean, type: string, id: string) => {
       uni.login({
         success: function (resLogin) {
           if (resLogin.code) {
-            console.log(resLogin);
-            if( state.type == 0 ) {
-              spaceApi.getSpaceWorkspacesOrder(state.id, resLogin.code).then((res: any) => {
-                // showTips(res.message)
-                console.log(res.data);
-                getRequestPayment(type, res.data).then((res) => {
-                  setTimeout(() => {
-                    uni.reLaunch({
-                      url: '/pages/user/index'
-                    });
-                  }, 1000);
-                })
-              })
-            } else {
-              spaceApi.getSpaceMeetingRoomsOrder(state.id, resLogin.code).then((res: any) => {
-                // showTips(res.message)
-                console.log(res.data);
-                getRequestPayment(type, res.data).then((res) => {
-                  setTimeout(() => {
-                    uni.reLaunch({
-                      url: '/pages/user/index'
-                    });
-                  }, 1000);
-                })
-              })
-            }
+            // console.log(resLogin);
+            payments(type, resLogin.code)
           } else {
             console.log('登录失败！' + resLogin.errMsg);
           }
@@ -181,15 +157,57 @@ const getPay = (show: boolean, type: string, id: string) => {
   }
 };
 const payZero = () => {
-  if( state.info.amount == 0 ) {
-    showTips('支付成功')
-    setTimeout(() => {
-      uni.reLaunch({
-        url: '/pages/user/index'
-      });
-    }, 1000);
+  if( state.info.amount == 0 || state.info.amount == '0.00' ) {
+    payments('', 'benefits')
+    
   } else {
     payPopupRef.value.openDialog()
+  }
+}
+// 区分支付
+const payments = (type: string, code: string) => {
+  if( state.type == 0 ) {
+    spaceApi.getSpaceWorkspacesOrder(state.id, code).then((res: any) => {
+      // showTips(res.message)
+      console.log(res.data);
+      if( code == 'benefits' ) {
+        showTips('支付成功')
+        setTimeout(() => {
+          uni.reLaunch({
+            url: '/pages/user/index'
+          });
+        }, 1000);
+      } else {
+        getRequestPayment(type, res.data).then((res) => {
+          setTimeout(() => {
+            uni.reLaunch({
+              url: '/pages/user/index'
+            });
+          }, 1000);
+        })
+      }
+    })
+  } else {
+    spaceApi.getSpaceMeetingRoomsOrder(state.id, code).then((res: any) => {
+      // showTips(res.message)
+      console.log(res.data);
+      if( code == 'benefits' ) {
+        showTips('支付成功')
+        setTimeout(() => {
+          uni.reLaunch({
+            url: '/pages/user/index'
+          });
+        }, 1000);
+      } else {
+        getRequestPayment(type, res.data).then((res) => {
+          setTimeout(() => {
+            uni.reLaunch({
+              url: '/pages/user/index'
+            });
+          }, 1000);
+        })
+      }
+    })
   }
 }
 </script>

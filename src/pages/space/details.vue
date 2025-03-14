@@ -24,15 +24,15 @@
         {{ state.capacity }}{{ t('people') }}
       </view>
 
-      <view class="brief mt25" v-if="state.type != 2">
+      <view class="brief mt25" v-if="state.type == 0">
         <text class="label">{{ t('leasingprice') }}：</text>
         ¥{{ state.price }}{{ t('RMB') }} / {{ t('Startingfromminutes') }} 租
       </view>
 
-      <view class="brief mt25" v-if="state.type > 2">
+      <!-- <view class="brief mt25" v-if="state.type > 2">
         <text class="label">{{ t('sitearea') }}：</text>
         {{ state.size }}
-      </view>
+      </view> -->
       <view class="line m35-0"></view>
       <!--  -->
       <view class="cards">
