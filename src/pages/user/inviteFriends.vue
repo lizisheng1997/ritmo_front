@@ -32,7 +32,7 @@
         </view>
       </view>
       <!--  -->
-      <view class="footerOne mt35" >
+      <view class="footerOne mt35" @click="shareWithSystems()">
         {{ t('ShareNow') }}
       </view>
       <view class="tips mt35">
@@ -71,6 +71,21 @@ const getUserInfo = async () => {
     state.code = res.data.invite_code
   });
 };
+const shareWithSystems = () => {
+  uni.shareWithSystem({
+  summary: '',
+  type: 'image',
+  href: 'https://ritmohub.cn/uploads/faces/face_6.png',
+  success(){
+    // 分享完成，请注意此时不一定是成功分享
+  },
+  fail(e){
+    console.log(e);
+    
+    // 分享失败
+  }
+})
+}
 </script>
 
 <style lang="scss" scoped>

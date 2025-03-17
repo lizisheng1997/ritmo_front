@@ -167,28 +167,35 @@ const submit = async() => {
     return;
   }
   // 先上传头像
-  userApi.getUpdateUserAvatar({ filePath: form.avatarUrl }).then(async (res: any) => {
-    console.log(res);
-    
-    // form.avatarUrl = res.avatar_url
+  if( form.avatarUrl.includes('/uploads/') ) {
+    getUpdateUser(form.avatarUrl)
+  } else {
+    userApi.getUpdateUserAvatar({ filePath: form.avatarUrl }).then(async (res: any) => {
+      // console.log(res);
+      
+      getUpdateUser(res.avatar_url)
 
-    let { nickname, email, intro, avatarUrl, showPhone, showEmail, defaultSpace } = form
-    await userApi.getUpdateUser({
-      nickname,
-      email,
-      intro,
-      avatar_url: res.avatar_url,
-      show_email: showPhone,
-      show_phone: showEmail,
-      default_space: defaultSpace
-    }).then((res: any) => {
-      console.log(res);
-      showTips(res.message)
-      getAuthUser()
+    }).catch((err) => {
     })
-  }).catch((err) => {
-  })
+  }
   
+}
+const getUpdateUser = async (url: string) => {
+
+  let { nickname, email, intro, avatarUrl, showPhone, showEmail, defaultSpace } = form
+  await userApi.getUpdateUser({
+    nickname,
+    email,
+    intro,
+    avatar_url: url,
+    show_email: showPhone,
+    show_phone: showEmail,
+    default_space: defaultSpace
+  }).then((res: any) => {
+    console.log(res);
+    showTips(res.message)
+    getAuthUser()
+  })
 }
 // 更新缓存
 const getAuthUser = async() => {

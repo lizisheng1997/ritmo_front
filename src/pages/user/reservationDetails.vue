@@ -21,7 +21,7 @@
         <text class="num">{{ state.info.end_time }}</text>
       </view>
       <view class="fub">{{ state.info.booking_date }}</view>
-      <view class="title mt35">杭州· 华润万象空间</view>
+      <view class="title mt35 oneEllipsis"> {{ state.info.space }} </view>
       <view class="rows flex mt35">
         <view class="item">
           <view class="label mb15">所属区域</view>

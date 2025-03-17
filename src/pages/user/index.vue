@@ -45,12 +45,14 @@
       <view class="card">
         <view class="num mt30">{{ state.basicHours }}</view>
         <view class="text mt15">{{ t('hour') }}</view>
-        <view class="grade mt35">{{ t('primary') }}{{ t('conference') }}</view>
+        <view class="grade mt35">{{ t('primary') }}</view>
+        <!-- {{ t('conference') }} -->
       </view>
       <view class="card">
         <view class="num mt30">{{ state.premiumHours }}</view>
         <view class="text mt15">{{ t('hour') }}</view>
-        <view class="grade mt35">{{ t('senior') }}{{ t('conference') }}</view>
+        <view class="grade mt35">{{ t('senior') }}</view>
+        <!-- {{ t('conference') }} -->
       </view>
     </view>
     <view class="menuForm mt35 p0-35">

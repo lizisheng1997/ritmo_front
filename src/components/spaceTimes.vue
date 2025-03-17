@@ -1,7 +1,7 @@
 <template>
   <!-- 空间首页下面预约时间-不可点击  -->
   <view class="times">
-    <view class="axis mt25 flex" v-for="( titem, tidx ) in spaceTimeArr" :key="tidx">
+    <view class="axis mt25 flex" v-for="( titem, tidx ) in spaceTimeArr" :key="tidx" >
       <view class="axis-piece" v-for="( stitem, stidx ) in titem" :key="stidx" style="flex: 1;">
         <text class="pre" :class=" props.seleceList.includes(stitem.slot)  ? 'pre1' : '' "></text>
         <text class="time">{{  stidx %2 == 0  ? stitem.time : '' }}</text>

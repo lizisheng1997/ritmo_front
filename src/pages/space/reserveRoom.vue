@@ -45,7 +45,7 @@
       </view>
       <!--  -->
       <view class="times">
-        <view class="axis mt25 flex" v-for="( titem, tidx ) in spaceTimeArr" :key="tidx">
+        <view class="axis mt25 flex" v-for="( titem, tidx ) in spaceTimeArr" :key="tidx" >
           <view class="axis-piece" v-for="( stitem, stidx ) in titem" :key="stidx" style="flex: 1;">
             <text class="pre" :class=" state.alreadyList.includes(stitem.slot)  ? 'pre1' :  state.seleceStopList.includes(stitem.slot)  ? 'pre2' : state.selectList.includes(stitem.slot)  ? 'pre3' : ''  " @click="addSelect(stitem.slot, stitem.time)"></text>
             <text class="time">{{  stidx %2 == 0  ? stitem.time : '' }}</text>
@@ -214,6 +214,8 @@ const getSpaceMeetingRoomsTimes = () => {
       my_booked - 已被当前用户预约
       past - 已过去的时间段
     */
+    state.alreadyList = []
+    state.seleceStopList = []
   if( state.type == 0 ) {
     spaceApi.getSpaceWorkspacesTimes(state.id, {
       date : state.date,
