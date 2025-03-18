@@ -217,7 +217,7 @@
                 class="text mt10"
                 v-if="item.status == 1"
                 >
-                <u-tag :text="t('renting')" type="success " size="mini" v-if="item.status == 1"/>
+                <u-tag class="mr10" :text="t('renting')" type="success " size="mini" v-if="item.status == 1"/>
                 {{ state.tabsIdx == 3 ? `¥${item.price}/${t('monthly')}` : `${item.capacity}人` }}
               </view>
               <!-- <view class="text" v-if=" item.status == 1 ">{{ item.description }}</view> -->

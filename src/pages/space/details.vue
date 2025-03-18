@@ -58,7 +58,13 @@
         </view>
       </view>
     </view>
-    <!--  -->
+    <!-- #ifdef MP-WEIXIN -->
+    <view class="p35" v-if="state.type >= 2">
+      <view class="wxchat" @click="contactClick" hover-class='none'>
+        <text>联系微信客服</text>
+      </view>
+    </view>
+    <!-- #endif -->
   </view>
 </template>
 
@@ -147,6 +153,20 @@ const makePhoneCall = (phone: string) => {
   uni.makePhoneCall({
     phoneNumber: phone
   });
+}
+const contactClick = () => {
+  // console.log(12213);
+  
+  // @ts-ignore
+  wx.openCustomerServiceChat({
+    extInfo: {url: 'https://work.weixin.qq.com/kfid/kfca90d65129645148c'},
+    corpId: 'wwaf856e1b502600db',
+    success(res: any) {},
+    fail(res: any) {
+      console.log(res);
+      
+    },
+  })
 }
 </script>
 
@@ -294,5 +314,14 @@ page {
       }
     }
   }
+}
+.wxchat {
+  background-color: #FFCF00;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #232322;
+  text-align: center;
+  line-height: 88rpx;
+  border-radius: 88rpx;
 }
 </style>
