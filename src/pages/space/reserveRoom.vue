@@ -513,12 +513,8 @@ page {
           }
         }
         &:last-child {
-          // display: none;
           .pre {
             display: none;
-            // &::before {
-            //   background-color: transparent !important;
-            // }
           }
           .time {
             left: -100%;

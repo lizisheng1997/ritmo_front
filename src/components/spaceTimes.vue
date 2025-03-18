@@ -42,6 +42,14 @@ const props = defineProps({
           }
         }
       }
+      &:last-child {
+        .pre {
+          display: none;
+        }
+        .time {
+          left: -100%;
+        }
+      }
     }
     .pre {
       display: inline-block;

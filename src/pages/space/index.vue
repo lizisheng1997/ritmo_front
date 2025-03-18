@@ -38,12 +38,12 @@
           </view>
         </view>
       </div>
-      <view class="tabs mt35">
+      <scroll-view scroll-x="true" class="tabs mt35">
         <view class="text" :class=" state.tabsIdx == item.key ? 'textAct' : '' " v-for="( item, index ) in tabsList" :key="index" @click="tabsChange(index) ">{{ item.name }}</view>
-      </view>
+			</scroll-view>
     </view>
     <!--  -->
-    <view class="p0-35" style="background-color: #ffffff;">
+    <view class="pl35" style="background-color: #ffffff;">
       <view class="filter flex pt35">
         <template v-if="state.tabsIdx <= 1">
           <view class="grade p0-25 mr15 " :class=" state.gradeIdx == 1 ? 'gradeAct' : '' " @click="() => {
@@ -77,7 +77,7 @@
       <view class="station" v-if="state.tabsIdx == 0 || state.tabsIdx == 1">
         <view class="list" v-for="item in productList" :key="item.id">
           <view class="li mt20 p20-0">
-            <view class="room flex">
+            <view class="room flex pr35">
               <view class="left flex" @click="routerToPar(`/pages/space/details?type=${state.tabsIdx}&sid=${state.id}&id=${item.id}`)">
                 <view class="number mr20 oneEllipsis">{{ item.name }}</view>
                 <view class="info">
@@ -107,16 +107,17 @@
             <view class="banner mr20">
               <image class="imageW100" :src="item.image_url"></image>
             </view>
-            <view class="info">
+            <view class="info pr30">
               <view class="name">{{ item.name }}</view>
               <view class="text mt10" v-if=" item.status == 1 ">{{ state.tabsIdx == 3 ? item.size : `${item.capacity}人` }}  </view>
               <view class="text" v-if=" item.status == 1 ">{{ item.description }}</view>
-              <view class="company mt15" v-if=" item.status == 0 ||  item.status == 2 ">
+              <!--  v-if=" item.status == 0 ||  item.status == 2 " -->
+              <view class="company mt15">
                 <!-- <text class="oneEllipsis">大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司大鱼网络科技有限公司</text> -->
                 <text class="status" :style="{
-                backgroundColor: item.status == 0 ? '#ff0000' : '#00B0FF',
+                backgroundColor: item.status == 0 ? '#ff0000' : item.status == 2 ? '#00B0FF' : '#FFCF00',
                 borderRadius: item.status == 0 ? '10rpx ' : '0 10rpx 10rpx 0',
-              }">{{ item.status == 2 ? t('rentingin') : t('notrentable') }}</text>
+              }">{{ item.status == 0 ? t('notrentable') : item.status == 2 ? t('rentingin') : t('renting') }}</text>
               </view>
             </view>
           </view>
@@ -423,8 +424,12 @@ const routerToPar = (url: string) => {
       }
     }
     .tabs {
-      width: 100%;
+      // width: 100%;
       height: 80rpx;
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto; /* 允许水平滚动 */
+	    white-space: nowrap;
       .text {
         display: inline-block;
         padding: 0 25rpx;

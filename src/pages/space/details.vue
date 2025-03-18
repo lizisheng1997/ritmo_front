@@ -177,7 +177,7 @@ page {
     }
   }
   .banner{
-    height: 480rpx;
+    height: 530rpx;
   }
   .name {
     margin-top: -88rpx;

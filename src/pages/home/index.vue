@@ -1,6 +1,6 @@
 <template>
   <view class="content">
-    <view class="nav" :style="{ top: state.navAllHeight - 15 + 'rpx' }">
+    <view class="nav" :style="{ paddingTop: state.navAllHeight - 15 + 'rpx' }">
       RITMOHUB
     </view>
     <!--  -->
