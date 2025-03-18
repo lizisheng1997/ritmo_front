@@ -7,7 +7,9 @@
     <view class="" :style="{
       paddingTop: state.navAllHeight - 20 + 'px'
     }">
-      <swiper class="swiper home-swiper m35" circular indicator-dots autoplay >
+      <swiper class="swiper home-swiper m35" circular indicator-dots autoplay :style="{
+        height: state.swiperHeight + 'rpx'
+      }">
         <!-- state.imagesList -->
         <swiper-item  v-for="(item, index) in state.imagesList" :key="index">
           <image class="imageW100" :src="item.image_url"></image>
@@ -114,6 +116,15 @@ onLoad(() => {
   state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
   getCarousel()
   getSecondCarousel()
+  // #ifdef APP-PLUS | H5
+  state.swiperHeight = 500
+  // #endif
+
+  // #ifdef MP-WEIXIN
+  state.swiperHeight = 400
+  // #endif
+  console.log(state.swiperHeight);
+  
   
 })
 onShow(() => {
@@ -124,6 +135,7 @@ onShow(() => {
 // 参数
 const state = reactive({
   type: '',
+  swiperHeight: 0,
   status: 0, // 
   navAllHeight: 0,
   nickname: '', // 名称
