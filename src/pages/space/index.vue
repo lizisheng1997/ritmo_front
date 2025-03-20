@@ -311,7 +311,10 @@ onLoad((query?: AnyObject | undefined): void => {
   weekDayList.value = arr;
   state.day = arr[0].day;
   state.gradeIdx = 1;
-  // console.log(arr);
+  // 获取缓存中的空间id
+  const spaceId = uni.getStorageSync('spaceSyncId');
+  state.id = spaceId ? spaceId : ''
+  // console.log(spaceId);
 });
 onShow(() => {
   const tabsIdx = uni.getStorageSync('spaceTabsIdx');
@@ -400,7 +403,7 @@ const getSpaceList = (type: number) => {
     // console.log(res.data);
     spaceList.value = res.data;
     if (res.data?.length && type) {
-      state.id = res.data[0].id;
+      if(!state.id)state.id = res.data[0].id;
       getInfo(state.id);
     }
     if (!type) {

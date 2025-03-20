@@ -52,7 +52,7 @@ const uploadImage = () => {
 }
 const avatarCropper = () => {
   uni.navigateTo({
-    url: `/uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper?rectWidth=400&fileType='png'`
+    url: `/uni_modules/vk-uview-ui/components/u-avatar-cropper/u-avatar-cropper?rectWidth=380&destWidth=380&fileType='png'`
   })
 }
 // 
@@ -63,9 +63,9 @@ const submit = () => {
   userApi.getUpdateUserFace({ filePath: state.url }).then((res: any) => {
     // console.log(res);
     showTips('上传成功')
-    setTimeout(() => {
-      routerBack(1)
-    }, 1000);
+    // setTimeout(() => {
+    //   routerBack(1)
+    // }, 1000);
   }).catch((err) => {
   }).finally(() => {
     uni.hideLoading();
@@ -83,7 +83,7 @@ page {
   .face {
     display: inline-block;
     width: 100%;
-    height: 53vh;
+    height: 40vh;
     background-color: #FFFFFF;
   }
   .footerOne {

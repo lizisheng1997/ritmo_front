@@ -3,7 +3,7 @@
     <view class="list">
       <view class="card mt35" v-for="item in list" :key="item.id">
         <view class="pname flex pb20">
-          <text class="title">{{ item.space.space_name }}</text>
+          <text class="title">{{ item.space }}</text>
           <text class="status " :style="{ color: reservationsColorEnums[item.status] }">{{ item.status_text }}</text>
         </view>
         <view class="myOrderList">

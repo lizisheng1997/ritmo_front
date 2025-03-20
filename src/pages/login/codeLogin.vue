@@ -86,12 +86,11 @@ const submit = () => {
       phone: state.phone,
       password: state.password,
     }).then((res: any) => {
-      // console.log(res);
+      // console.log(res.data.user);
       showTips(res.message)
       user.setUserInfo(res.data.user);
       
       uni.setStorageSync('accessToken', res.data.access_token);
-      // console.log(111);
       
       setTimeout(() => {
         uni.reLaunch({

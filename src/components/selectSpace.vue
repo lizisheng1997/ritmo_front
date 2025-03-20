@@ -45,6 +45,7 @@ const openDialog = (id:string, list: []) => {
 defineExpose({ openDialog });
 const emit = defineEmits(['refresh']);
 const sumbit = (show: boolean) => {
+  uni.setStorageSync('spaceSyncId', state.id);
   state.isShow = false
   emit('refresh', show, state.id)
   
