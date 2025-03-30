@@ -161,17 +161,32 @@ const getUserInfo = async() => {
 }
 // 获取banner列表
 const getCarousel = () => {
-  homeApi.getCarousel().then((res: any) => {
-    // console.log(res.data);
-    state.imagesList = res.data
-  })
+  if( state.type == 'zh' ) {
+    homeApi.getCarousel().then((res: any) => {
+      // console.log(res.data);
+      state.imagesList = res.data
+    })
+  } else {
+    homeApi.getCarouselEn().then((res: any) => {
+      // console.log(res.data);
+      state.imagesList = res.data
+    })
+  }
 }
 const getSecondCarousel = () => {
-  homeApi.getSecondCarousel().then((res: any) => {
-    // console.log(res.data);
-    state.bannerList = res.data
-  })
+  if( state.type == 'zh' ) {
+    homeApi.getSecondCarousel().then((res: any) => {
+      // console.log(res.data);
+      state.bannerList = res.data
+    })
+  } else {
+    homeApi.getSecondCarouselEn().then((res: any) => {
+      // console.log(res.data);
+      state.bannerList = res.data
+    })
+  }
 }
+// 
 const switchTab = (tabsIdx: number) => {
   uni.setStorageSync('spaceTabsIdx', tabsIdx);
   uni.switchTab({

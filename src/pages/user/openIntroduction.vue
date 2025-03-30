@@ -266,7 +266,7 @@
       <view class="tips mb50 ml35">
         <image
           class="icon mr10"
-          src="https://ritmohub.cn/static/loginSelect.png"
+          src="/@/static/loginSelect.png"
           v-if="!state.select"
           @click="state.select = true"></image>
         <image
@@ -482,30 +482,55 @@ const getPay = (show: boolean, type: string, id: string) => {
     }).then((resOne: any) => {
       // showTips(resOne.message)
       // console.log(resOne.data.id);
+      
+      // @ts-ignore
+      let terminalPay = getApp().globalData.terminalPay
+      
       if (type == 'wxpay') {
         uni.login({
-          success: function (resLogin) {
+          "provider": 'weixin',
+          onlyAuthorize: true,
+          success: function (resLogin: any) {
+            // 登录成功,获取openid
+            console.log(resLogin);
+            // resLogin.authResult.openid
             if (resLogin.code) {
-              console.log(resLogin);
-              userApi.getVipOrdersPay(resOne.data.id, resLogin.code).then((res: any) => {
-                // showTips(res.message)
-                console.log(res.data);
-                getRequestPayment(type, res.data.orderInfo).then((res) => {
-                  setTimeout(() => {
-                    getUserInfo()
-                  }, 1000);
-                })
-              })
+              // device: terminalPay,
+              getVipOrdersPay(resOne.data.id, type, `?device=${terminalPay}&code=${resLogin.code}&payment_type='wechat'`)
             } else {
-              console.log('登录失败！' + resLogin.errMsg);
+              console.log('登录失败！' + resLogin.authResult.openid);
             }
-          }
+          },
+          fail: function(result) {
+            console.log('--------', result);
+          },
         });
+      } else if( type == 'alipay' ) {
+        // console.log(type);
+        getVipOrdersPay(resOne.data.id, type, `?device=${terminalPay}&platform=android&payment_type=alipay`)
+
       }
       
     })
   }
 };
+const getVipOrdersPay = (id: string, type: string, obj: string) => {
+  // console.log(obj);
+  
+  userApi.getVipOrdersPay(id, obj).then((res: any) => {
+    // showTips(res.message)
+    console.log(res.data);
+    getRequestPayment(type, res.data.orderInfo).then((res) => {
+      setTimeout(() => {
+        getUserInfo()
+      }, 1000);
+    })
+  }).catch((e) => {
+    console.log(e);
+    showTips(e.message)
+    
+  })
+}
 </script>
 
 <style lang="scss" scoped>

@@ -2,8 +2,8 @@
     "name" : "RITMOHUB",
     "appid" : "__UNI__F93E4BB",
     "description" : "",
-    "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionName" : "1.0.1",
+    "versionCode" : 101,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -60,13 +60,13 @@
                     },
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appid" : "wx9844bc1e46653f7c",
+                        "appid" : "wx4d896770e08aab0e",
                         "UniversalLinks" : ""
                     }
                 },
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx9844bc1e46653f7c",
+                        "appid" : "wx4d896770e08aab0e",
                         "UniversalLinks" : ""
                     }
                 }

@@ -85,14 +85,14 @@ export default class Space extends Request {
     });
   }
   // 确认会议室、工位订单
-  getSpaceWorkspacesOrder(id: string, code: string) {
+  getSpaceWorkspacesOrder(id: string, query: string) {
     return this.post({
-      url: `/v1/booking/workspaces/${id}/confirm?code=${code}`,
+      url: `/v1/booking/workspaces/${id}/confirm${query}`,
     });
   }
-  getSpaceMeetingRoomsOrder(id: string, code: string) {
+  getSpaceMeetingRoomsOrder(id: string, query: string) {
     return this.post({
-      url: `/v1/booking/meeting-rooms/${id}/confirm?code=${code}`,
+      url: `/v1/booking/meeting-rooms/${id}/confirm${query}`,
     });
   }
   // 工位详情

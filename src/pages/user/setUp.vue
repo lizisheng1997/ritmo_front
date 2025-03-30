@@ -1,14 +1,14 @@
 <template>
   <view class="content">
     <view class="menuForm mt35 p0-35">
-      <view class="li flex">
+      <!-- <view class="li flex">
         <view class="left">
           {{ t('Comment') }}
         </view>
         <view class="right">
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
-      </view>
+      </view> -->
       <view class="li flex" @click="routerTo(`/pages/user/language`)">
         <view class="left" >
           {{ t('Language') }}

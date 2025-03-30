@@ -529,8 +529,9 @@ onReachBottom(() => {
   console.log('到底了');
 });
 const routerToPar = (url: string) => {
-  routerTo(url);
+  routerTo(url, true);
 };
+
 </script>
 
 <style lang="scss" scoped>

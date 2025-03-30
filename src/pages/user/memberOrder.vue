@@ -112,31 +112,45 @@ const submit = (show: boolean, type: string) => {
 }
 // 支付扩容订单
 const getOrder = (type: string, orderId: string) => {
+  // @ts-ignore
+  let terminalPay = getApp().globalData.terminalPay
   if (type == 'wxpay') {
     uni.login({
+      "provider": 'weixin',
+      onlyAuthorize: true,
       success: function (resLogin) {
         if (resLogin.code) {
           console.log(resLogin);
-          userApi.getOrganizationsMembersPay(state.id, orderId, resLogin.code).then((res: any) => {
-            // console.log(res.data);
-            // showTips(res.message)
-            getRequestPayment(type, res.data).then((res) => {
-              setTimeout(() => {
-                uni.reLaunch({
-                  url: '/pages/user/index'
-                })
-              }, 1500);
-            })
-          })
+          getOrdersPay(state.id, orderId, type, `?device=${terminalPay}&code=${resLogin.code}&payment_type='wechat'`)
+
         } else {
           console.log('登录失败！' + resLogin.errMsg);
         }
       }
     });
+  } else if( type == 'alipay' ) {
+    // console.log(type);
+    getOrdersPay(state.id, orderId, type, `?device=${terminalPay}&platform=android&payment_type=alipay`)
+
   }
   
 }
 
+const getOrdersPay = (id: string, orderId: string, type: string, obj: string) => {
+  // console.log(obj);
+  userApi.getOrganizationsMembersPay(id, orderId, obj).then((res: any) => {
+    // console.log(res.data);
+    // showTips(res.message)
+    getRequestPayment(type, res.data.orderInfo).then((res) => {
+      setTimeout(() => {
+        uni.reLaunch({
+          url: '/pages/user/index'
+        })
+      }, 1500);
+    })
+  })
+
+}
 </script>
 
 <style >

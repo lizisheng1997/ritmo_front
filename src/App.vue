@@ -5,9 +5,10 @@ export default defineComponent({
   globalData: {
     navigationBarHeight: 0,  // 获取导航栏（标题栏高度）高度
     navAllHeight: 0, // 总体高度 = 状态栏高度+导航栏高度
+    terminalPay: '', // android ios wechat
   } as any,
   onLaunch: function () {
-    console.log("App Launch");
+    // console.log("App Launch");
     // 获取状态栏高度
     let statuBar: any = uni.getSystemInfoSync().statusBarHeight;
     
@@ -32,6 +33,16 @@ export default defineComponent({
       index: 2,
       text: type == 'zh' ? '我的' : 'user',
     })
+    // 
+    const systemInfo = uni.getSystemInfoSync();
+    // console.log('----', systemInfo)
+    if (systemInfo.platform === 'android' || systemInfo.platform === 'ios') {
+      // @ts-ignore
+      this.globalData.terminalPay = systemInfo.platform;
+    } else {
+      // @ts-ignore
+      this.globalData.terminalPay = 'wechat';
+    }
   },
   onShow: function () {
     // console.log('App Launch')

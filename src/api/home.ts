@@ -44,7 +44,7 @@ export default class Home extends Request {
       url: `/v1/organizations/switch/${id}?type=${type}`,
     });
   }
-  // banner
+  // 首页banner
   getCarousel() {
     return this.get({
       url: `/v1/homepage/carousel`,
@@ -53,6 +53,16 @@ export default class Home extends Request {
   getSecondCarousel() {
     return this.get({
       url: `/v1/homepage/second-carousel`,
+    });
+  }
+  getCarouselEn() {
+    return this.get({
+      url: `/v1/homepage/en/carousel`,
+    });
+  }
+  getSecondCarouselEn() {
+    return this.get({
+      url: `/v1/homepage/en/second-carousel`,
     });
   }
   // 
