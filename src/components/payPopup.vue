@@ -87,7 +87,8 @@ const sumbit = (show: boolean) => {
   console.log( state.provider);
   
   if( show && state.type != 'stripe' ) {
-    if( state.type == 'wxpay' && !state.provider.includes('wxpay') ) {
+    //  && !state.provider.includes('wxpay') 
+    if( state.type == 'wxpay') {
       showTips('暂不支持微信支付')
       return
     }
