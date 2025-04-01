@@ -63,6 +63,7 @@ const state = reactive({
   phone: '', // 手机号
   intro: '', // 
   password: '', // 
+  code: '',
   areaCode: '86', // 
   areaShow: false,
   select: false, // 
@@ -76,7 +77,28 @@ const submit = () => {
     showTips('请同意协议')
     return
   }
+  // #ifdef APP-PLUS
+  getLogin()
+  // #endif
+  // #ifdef MP-WEIXIN
+  uni.login({
+    success: function (resLogin: any) {
+      // 登录成功
+      // console.log(resLogin);
+      state.code = resLogin.code
+      getLogin()
+    },
+    fail: function(result) {
+      console.log('--------', result);
+    },
+  });
+  // #endif
+  // 
+  
   // console.log(111);
+  
+}
+const getLogin = () => {
   if( state.type ) {
     if( state.password.length < 6 ) {
       return
@@ -85,6 +107,7 @@ const submit = () => {
       area_code: state.areaCode,
       phone: state.phone,
       password: state.password,
+      wxcode: state.code
     }).then((res: any) => {
       // console.log(res.data.user);
       showTips(res.message)
@@ -99,9 +122,8 @@ const submit = () => {
       }, 1000);
     })
   } else {
-    routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}`)
+    routerTo(`/pages/login/inputCode?phone=${state.phone}&areaCode=${state.areaCode}&wxCode=${state.code}`)
   }
-  
 }
 const confirm = (e: { value: string }[]) => {
   // console.log(e);

@@ -20,7 +20,7 @@ export default class Login extends Request {
   }
   getPasswordLogin(data: object) {
     return this.post({
-      url: '/v1/auth/password-login ',
+      url: '/v1/auth/password-login',
       data
     });
   }

@@ -33,6 +33,7 @@ onLoad((query?: AnyObject | undefined): void => {
   state.phone = query!.phone;
   state.areaCode = query!.areaCode;
   state.intro = query!.intro ? query!.intro : '';
+  state.wxCode = query!.wxCode ? query!.wxCode : '';
   sendMobileCode()
 });
 // 参数
@@ -41,6 +42,7 @@ const state = reactive({
   areaCode: '', // 
   oldcode: '',
   code: '', // 
+  wxCode: '',
   intro: '',
   second: 60, // 秒
   counting: false, // 是否正在倒计时
@@ -87,7 +89,8 @@ const submit = async() => {
     .getLogin({
       phone: state.phone,
       area_code: state.areaCode,
-      code: state.code
+      code: state.code,
+      wxcode: state.wxCode,
     })
     .then( async(res: any) => {
       // console.log(res);
