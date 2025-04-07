@@ -23,15 +23,15 @@ export default defineComponent({
     let type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
     uni.setTabBarItem({
       index: 0,
-      text: type == 'zh' ? '首页' : 'home',
+      text: type == 'zh' ? '首页' : 'HOME',
     })
     uni.setTabBarItem({
       index: 1,
-      text: type == 'zh' ? '空间' : 'space',
+      text: type == 'zh' ? '空间' : 'SPACE',
     })
     uni.setTabBarItem({
       index: 2,
-      text: type == 'zh' ? '我的' : 'user',
+      text: type == 'zh' ? '我的' : 'USER',
     })
     // 
     const systemInfo = uni.getSystemInfoSync();

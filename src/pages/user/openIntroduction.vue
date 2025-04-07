@@ -412,14 +412,14 @@ onLoad((query?: AnyObject | undefined): void => {
 // 参数
 // 初级套餐
 const basicList = ref([
-  { key: 1, name: '月卡', ename: 'monthly card', price: 399, day: 13.3, fub: 'month' },
-  { key: 6, name: '半年', ename: 'season card', price: 2154, day: 11.8, fub: 'season' },
-  { key: 12, name: '年费', ename: 'annual fee', price: 3588, day: 9.8, fub: 'year' }
+  { key: 1, name: '月卡', ename: 'Monthly Card', price: 399, day: 13.3, fub: 'month' },
+  { key: 6, name: '半年', ename: 'Season Card', price: 2154, day: 11.8, fub: 'season' },
+  { key: 12, name: '年费', ename: 'Annual Fee', price: 3588, day: 9.8, fub: 'year' }
 ]);
 const premiumList = ref([
-  { key: 1, name: '月卡', ename: 'monthly card', price: 899, day: 29.9, fub: 'month' },
-  { key: 6, name: '半年', ename: 'season card', price: 5154, day: 28.3, fub: 'season' },
-  { key: 12, name: '年费', ename: 'annual fee', price: 9588, day: 26.2, fub: 'year' }
+  { key: 1, name: '月卡', ename: 'Monthly Card', price: 899, day: 29.9, fub: 'month' },
+  { key: 6, name: '半年', ename: 'Season Card', price: 5154, day: 28.3, fub: 'season' },
+  { key: 12, name: '年费', ename: 'Annual Fee', price: 9588, day: 26.2, fub: 'year' }
 ]);
 const state = reactive({
   type: '',
