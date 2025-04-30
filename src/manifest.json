@@ -2,8 +2,8 @@
     "name" : "RITMOHUB",
     "appid" : "__UNI__F93E4BB",
     "description" : "",
-    "versionName" : "1.0.1",
-    "versionCode" : 101,
+    "versionName" : "1.0.2",
+    "versionCode" : 102,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -23,7 +23,9 @@
         "modules" : {
             "Payment" : {},
             "OAuth" : {},
-            "Contacts" : {}
+            "Contacts" : {},
+            "VideoPlayer" : {},
+            "Barcode" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -50,27 +52,10 @@
             },
             /* ios打包配置 */
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "idfa" : false
             },
             /* SDK配置 */
-            "sdkConfigs" : {
-                "payment" : {
-                    "alipay" : {
-                        "__platform__" : [ "ios", "android" ]
-                    },
-                    "weixin" : {
-                        "__platform__" : [ "ios", "android" ],
-                        "appid" : "wx4d896770e08aab0e",
-                        "UniversalLinks" : ""
-                    }
-                },
-                "oauth" : {
-                    "weixin" : {
-                        "appid" : "wx4d896770e08aab0e",
-                        "UniversalLinks" : ""
-                    }
-                }
-            },
             "icons" : {
                 "android" : {
                     "hdpi" : "unpackage/res/icons/72x72.png",
@@ -100,6 +85,14 @@
                         "settings@3x" : "unpackage/res/icons/87x87.png",
                         "spotlight@2x" : "unpackage/res/icons/80x80.png",
                         "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    }
+                }
+            },
+            "sdkConfigs" : {
+                "oauth" : {},
+                "payment" : {
+                    "alipay" : {
+                        "__platform__" : [ "ios", "android" ]
                     }
                 }
             }

@@ -87,11 +87,19 @@ const sumbit = (show: boolean) => {
   console.log( state.provider);
   
   if( show && state.type != 'stripe' ) {
-    //  && !state.provider.includes('wxpay') 
+    // 
+    // #ifdef APP-PLUS
     if( state.type == 'wxpay') {
       showTips('暂不支持微信支付')
       return
     }
+    // #endif
+    // #ifdef MP-WEIXIN
+    if( state.type == 'wxpay' && !state.provider.includes('wxpay') ) {
+      showTips('暂不支持微信支付')
+      return
+    }
+    // #endif
     //  
     if( state.type == 'alipay' && !state.provider.includes('alipay') ) {
       showTips('暂不支持支付宝支付')

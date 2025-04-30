@@ -161,6 +161,8 @@ export const copyText = (text: string) => {
  */
 export const getRequestPayment = (provider: any, obj: any, terminalPay?: string) => {
   // const appId = terminalPay === 'ios' ? 'appId' : 'appid';
+  console.log(obj);
+  
   return new Promise((resolve, reject) => {
     if( provider == 'wxpay' ) {
       uni.requestPayment({
