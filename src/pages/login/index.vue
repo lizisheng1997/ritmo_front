@@ -12,7 +12,7 @@
       <view class="btn btnOne mt50">{{ t('oneLogin') }}</view>
       <view class="btn btnOne" style="margin-top: 45rpx;" @click="codeLoginTo">{{ t('codeLogin') }}</view> -->
       <!-- #endif -->
-      <view class="btn btnOne" style="margin-top: 410rpx;" @click="codeLoginTo(0)">{{ t('codeLogin') }}</view>
+      <view class="btn btnOne" style="margin-top: 30%;" @click="codeLoginTo(0)">{{ t('codeLogin') }}</view>
       <view class="btn btnCode mt50" @click="codeLoginTo(1)">{{ t('oneLogin') }}</view>
       <!-- #ifdef MP-WEIXIN -->
       <view class="notlogging mt35" @click="switchTab">暂不登录,前往首页。</view>
@@ -97,10 +97,11 @@ const switchTab = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     .logo {
       width: 308rpx;
       height: 308rpx;
-      margin-top: 410rpx;
+      // margin-top: 30%;
     }
     .phone {
       font-size: 48rpx;
