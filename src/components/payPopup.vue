@@ -95,6 +95,11 @@ const sumbit = (show: boolean) => {
     }
     // #endif
     // #ifdef MP-WEIXIN
+    
+    if( state.type == 'stripe') {
+      showTips('暂不支持stripe支付')
+      return
+    }
     if( state.type == 'wxpay' && !state.provider.includes('wxpay') ) {
       showTips('暂不支持微信支付')
       return

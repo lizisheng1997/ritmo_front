@@ -32,9 +32,11 @@
         </view>
       </view>
       <!--  -->
+      <!-- #ifdef MP-WEIXIN -->
       <view class="footerOne mt35" @click="shareWithSystems()">
         {{ t('ShareNow') }}
       </view>
+      <!-- #endif -->
       <view class="tips mt35">
         {{ t('Rewardrule') }}
       </view>

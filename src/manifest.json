@@ -2,8 +2,8 @@
     "name" : "RITMOHUB",
     "appid" : "__UNI__F93E4BB",
     "description" : "",
-    "versionName" : "1.0.2",
-    "versionCode" : 102,
+    "versionName" : "1.0.6",
+    "versionCode" : 106,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -22,10 +22,9 @@
         /* 模块配置 */
         "modules" : {
             "Payment" : {},
-            "OAuth" : {},
-            "Contacts" : {},
             "VideoPlayer" : {},
-            "Barcode" : {}
+            "Barcode" : {},
+            "Camera" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -53,7 +52,13 @@
             /* ios打包配置 */
             "ios" : {
                 "dSYMs" : false,
-                "idfa" : false
+                "idfa" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "APP需要您的同意，才能在个人资料，任务等操作时访问相册并上传，如拒绝将无法通过相册上传",
+                    "NSPhotoLibraryAddUsageDescription" : "APP需要您的同意，才能下载照片，如拒绝将无法下载到相册",
+                    "NSMicrophoneUsageDescription" : "APP需要您的同意，才能使用通过APP拨打电话功能，如拒绝将无法通过APP拨打电话",
+                    "NSContactsUsageDescription" : "APP需要您的同意，才能访问您的联系人，如拒绝将无法访问您的联系人"
+                }
             },
             /* SDK配置 */
             "icons" : {
@@ -89,10 +94,21 @@
                 }
             },
             "sdkConfigs" : {
-                "oauth" : {},
+                "oauth" : {
+                    "weixin" : {
+                        "appid" : "wx4d896770e08aab0e",
+                        "UniversalLinks" : "https://www.ritmohub.cn/app/"
+                    }
+                },
                 "payment" : {
                     "alipay" : {
                         "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx4d896770e08aab0e",
+                        "UniversalLinks" : "https://www.ritmohub.cn/app/"
                     }
                 }
             }
@@ -122,3 +138,5 @@
     },
     "vueVersion" : "3"
 }
+/* 模块配置 */
+
