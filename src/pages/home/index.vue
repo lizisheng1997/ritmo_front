@@ -343,7 +343,7 @@ page {
   .list {
     padding: 0 35rpx 35rpx ;
     .swiper{
-      height: 380rpx;
+      height: 345rpx;
       .imageW100 {
         border-radius: 16rpx;
       }
