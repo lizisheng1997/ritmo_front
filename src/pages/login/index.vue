@@ -15,7 +15,7 @@
       <view class="btn btnOne" style="margin-top: 30%;" @click="codeLoginTo(0)">{{ t('codeLogin') }}</view>
       <view class="btn btnCode mt50" @click="codeLoginTo(1)">{{ t('oneLogin') }}</view>
       <!-- #ifdef MP-WEIXIN -->
-      <view class="notlogging mt35" @click="switchTab">暂不登录,前往首页。</view>
+      <view class="notlogging mt35" @click="switchTab">{{ t('logginginhome') }} 。</view>
       <!-- #endif -->
       <view class="tips mt30">
         <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>

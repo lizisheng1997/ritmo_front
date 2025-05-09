@@ -2,7 +2,7 @@
   <u-popup v-model="state.isShow" mode="bottom" border-radius="20" width="630">
     <view class="popup p35">
       <view class="title">
-        {{ state.isType == 0 ? '退出账号' : '确认删除账户' }}
+        {{ state.isType == 0 ? t('Exitaccount') : t('Confirmdeleteaccount') }}
       </view>
       <view class="text mt35" v-if="state.isType == 0">
         {{ t('ofthecurrentaccount') }}？

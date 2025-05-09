@@ -184,5 +184,8 @@
   "renting": "可租用",
   "notrentable": "不可租",
   "monthly": "按月起",
-  "": ""
+  "logginginhome": "暂不登录,前往首页",
+  "Exitaccount": "退出账号",
+  "Confirmdeleteaccount": "确认删除账户",
+  "AffiliatedOffice": "旗下办公室"
 }
