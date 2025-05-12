@@ -187,5 +187,17 @@
   "logginginhome": "暂不登录,前往首页",
   "Exitaccount": "退出账号",
   "Confirmdeleteaccount": "确认删除账户",
-  "AffiliatedOffice": "旗下办公室"
+  "AffiliatedOffice": "旗下办公室",
+  "Highspeed": "高速WiFi",
+  "SeatReservation": "工位预定",
+  "MeetingReservation": "会议预定",
+  "SilentCabin": "静音仓",
+  "FreeTea": "免费茶饮",
+  "AlldayWork": "全天工区",
+  "twentyfour": "无时差办公",
+  "Limitedprint": "有限打印",
+  "InfinitePrint": "无限打印",
+  "SeminarActivity": "研讨活动",
+  "": "",
+  "": ""
 }

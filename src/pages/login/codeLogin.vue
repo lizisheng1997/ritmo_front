@@ -77,7 +77,7 @@ const submit = () => {
     showTips('请同意协议')
     return
   }
-  // #ifdef APP-PLUS
+  // #ifdef APP-PLUS || H5
   getLogin()
   // #endif
   // #ifdef MP-WEIXIN

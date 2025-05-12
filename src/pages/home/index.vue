@@ -174,17 +174,10 @@ const getCarousel = () => {
   }
 }
 const getSecondCarousel = () => {
-  if( state.type == 'zh' ) {
-    homeApi.getSecondCarousel().then((res: any) => {
+  homeApi.getSecondCarouselEn().then((res: any) => {
       // console.log(res.data);
       state.bannerList = res.data
     })
-  } else {
-    homeApi.getSecondCarouselEn().then((res: any) => {
-      // console.log(res.data);
-      state.bannerList = res.data
-    })
-  }
 }
 // 
 const switchTab = (tabsIdx: number) => {

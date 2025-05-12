@@ -187,5 +187,16 @@
   "logginginhome": "Not logging in, go to the home",
   "Exitaccount": "Exit account",
   "Confirmdeleteaccount": "Confirm to delete account",
-  "AffiliatedOffice": "The Affiliated Office"
+  "AffiliatedOffice": "The Affiliated Office",
+  "Highspeed": "High-speed WiFi",
+  "SeatReservation": "Seat Reservation",
+  "MeetingReservation": "Meeting Reservation",
+  "SilentCabin": "Silent Cabin",
+  "FreeTea": "Free Tea",
+  "AlldayWork": "All-day Work",
+  "twentyfour": "7×24",
+  "Limitedprint": "Limited print",
+  "InfinitePrint": "Infinite Print",
+  "SeminarActivity": "Seminar Activity",
+  "": ""
 }

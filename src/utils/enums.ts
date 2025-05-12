@@ -19,8 +19,8 @@ export enum spaceLevelEnums {
 
 
 export enum espaceLevelEnums {
-  'primary' = 1,
-  'senior',
+  'Planet' = 1,
+  'Star',
 }
 export enum reservationsEnums {
   待支付 = 0,

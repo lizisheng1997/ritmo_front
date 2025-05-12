@@ -216,7 +216,8 @@ page {
     
     .grade {
       display: inline-block;
-      width: 46rpx;
+      // width: 46rpx;
+      padding: 0 10rpx;
       height: 28rpx;
       line-height: 28rpx;
       text-align: center;

@@ -87,7 +87,7 @@
       </view>
     </view>
     <!--  -->
-    <view class="interests">
+    <view class="interests" style="padding-top: 35rpx;">
       <view class="title">{{ t('MEMBERBENEFITS') }}</view>
       <scroll-view
         class="interests-roll mt35"
@@ -100,49 +100,49 @@
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/1.png"></image>
-            <view class="text oneEllipsis">静音舱</view>
+            <view class="text word-wrap">{{ t('Highspeed') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/2.png"></image>
-            <view class="text oneEllipsis">有限打印</view>
+            <view class="text word-wrap">{{ t('SeatReservation') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/3.png"></image>
-            <view class="text oneEllipsis">免费茶饮</view>
+            <view class="text word-wrap">{{ t('MeetingReservation') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/4.png"></image>
-            <view class="text oneEllipsis">高速WiFi</view>
+            <view class="text word-wrap">{{ t('SilentCabin') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/5.png"></image>
-            <view class="text oneEllipsis">8时工区</view>
+            <view class="text word-wrap">{{ t('FreeTea') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/6.png"></image>
-            <view class="text oneEllipsis">全天工区</view>
+            <view class="text word-wrap">{{ t('AlldayWork') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/7.png"></image>
-            <view class="text oneEllipsis">5时办公</view>
+            <view class="text word-wrap">{{ t('twentyfour') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/8.png"></image>
-            <view class="text oneEllipsis">全天办公</view>
+            <view class="text word-wrap">{{ t('Limitedprint') }}</view>
           </view>
         </template>
         <template v-else>
@@ -150,61 +150,55 @@
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/9.png"></image>
-            <view class="text">权益一</view>
+            <view class="text word-wrap">{{ t('Highspeed') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/10.png"></image>
-            <view class="text">免费茶饮</view>
+            <view class="text word-wrap">{{ t('SeatReservation') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/11.png"></image>
-            <view class="text">高速WiFi</view>
+            <view class="text word-wrap">{{ t('MeetingReservation') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/12.png"></image>
-            <view class="text">全天工区</view>
+            <view class="text word-wrap">{{ t('SilentCabin') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/13.png"></image>
-            <view class="text">无限打印</view>
+            <view class="text word-wrap">{{ t('FreeTea') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/14.png"></image>
-            <view class="text">权益一</view>
+            <view class="text word-wrap">{{ t('AlldayWork') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/15.png"></image>
-            <view class="text">权益一</view>
+            <view class="text word-wrap">{{ t('twentyfour') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/16.png"></image>
-            <view class="text">权益一</view>
+            <view class="text word-wrap">{{ t('InfinitePrint') }}</view>
           </view>
           <view class="item">
             <image
               class="icon"
               src="https://ritmohub.cn/static/vip/17.png"></image>
-            <view class="text">权益一</view>
-          </view>
-          <view class="item">
-            <image
-              class="icon"
-              src="https://ritmohub.cn/static/vip/18.png"></image>
-            <view class="text">静音舱</view>
+            <view class="text word-wrap">{{ t('SeminarActivity') }}</view>
           </view>
         </template>
       </scroll-view>
@@ -244,7 +238,7 @@
             v-for="item in premiumList"
             :key="item.key">
             <!-- <view class="hot">推荐</view> -->
-            <view class="name mt35">{{ item.name }}</view>
+            <view class="name mt35">{{ state.type == 'zh' ? item.name : item.ename }}</view>
             <view class="price mt20">
               <text style="font-size: 28rpx">￥</text>
               {{ item.price }}
@@ -282,7 +276,8 @@
       </view>
     </template>
     <template v-else>
-      <view class="interests">
+      <!-- 先隐藏 -->
+      <!-- <view class="interests">
         <view class="title">{{ t('AffiliatedOffice') }}</view>
         <scroll-view
           class="interests-roll mt35"
@@ -321,7 +316,7 @@
             <view class="text">XXXX办公室</view>
           </view>
         </scroll-view>
-      </view>
+      </view> -->
     </template>
     <!--  -->
     <view class="details">
@@ -412,14 +407,16 @@ onLoad((query?: AnyObject | undefined): void => {
 // 参数
 // 初级套餐
 const basicList = ref([
-  { key: 1, name: '月卡', ename: 'Monthly Card', price: 399, day: 13.3, fub: 'month' },
-  { key: 6, name: '半年', ename: 'Half-year Card', price: 2154, day: 11.8, fub: 'season' },
-  { key: 12, name: '年费', ename: 'Annual Fee', price: 3588, day: 9.8, fub: 'year' }
+  { key: 1, name: '月卡', ename: 'Monthly', price: 399, day: 13.3, fub: 'month' },
+  // { key: 6, name: '半年', ename: 'Half-year', price: 2154, day: 11.8, fub: 'season' },
+  { key: 6, name: '季卡', ename: 'Season', price: 1077, day: 11.9, fub: 'season' },
+  { key: 12, name: '年费', ename: 'Annual', price: 3588, day: 9.8, fub: 'year' }
 ]);
 const premiumList = ref([
-  { key: 1, name: '月卡', ename: 'Monthly Card', price: 899, day: 29.9, fub: 'month' },
-  { key: 6, name: '半年', ename: 'Half-year Card', price: 5154, day: 28.3, fub: 'season' },
-  { key: 12, name: '年费', ename: 'Annual Fee', price: 9588, day: 26.2, fub: 'year' }
+  { key: 1, name: '月卡', ename: 'Monthly', price: 899, day: 29.9, fub: 'month' },
+  // { key: 6, name: '半年', ename: 'Half-year', price: 5154, day: 28.3, fub: 'season' },
+  { key: 6, name: '季卡', ename: 'Season', price: 2577, day: 28.6, fub: 'season' },
+  { key: 12, name: '年费', ename: 'Annual', price: 9588, day: 26.2, fub: 'year' }
 ]);
 const state = reactive({
   type: '',
@@ -439,7 +436,7 @@ const state = reactive({
 // 获取用户资料
 const getUserInfo = async () => {
   await userApi.getUserInfo({}).then((res: any) => {
-    console.log(res);
+    // console.log(res);
     state.nickname = res.data.nickname;
     state.avatarUrl = res.data.avatar_url
       ? res.data.avatar_url
@@ -676,5 +673,10 @@ const getVipOrdersPay = (id: string, type: string, obj: string) => {
       margin-top: 35rpx;
     }
   }
+}
+.word-wrap{
+  word-wrap: break-word;
+  white-space: break-spaces;
+  line-height: 32rpx;
 }
 </style>

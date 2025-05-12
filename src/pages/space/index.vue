@@ -726,7 +726,8 @@ const routerToPar = (url: string) => {
                 word-break: break-all;
                 .icon {
                   display: inline-block;
-                  width: 46rpx;
+                  padding: 0 10rpx;
+                  // width: 46rpx;
                   height: 28rpx;
                   text-align: center;
                   border-radius: 4rpx;
