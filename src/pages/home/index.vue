@@ -28,7 +28,8 @@
         <view class="title mt20">{{ t('Roomreservation') }}</view>
         <!-- <view class="text p0-10 oneEllipsis mt10">配文配文配文配文配文配文</view> -->
       </view>
-      <view class="item" @click="switchTab(2)">
+      <!-- @click="switchTab(2)" -->
+      <view class="item" @click="routerTo(`/pages/homestay/index`)">
         <image class="icon" src="/@/static/home/reserves3.png"></image>
         <view class="title mt20">{{ t('Officereservation') }}</view>
         <!-- textColor -->
@@ -174,10 +175,19 @@ const getCarousel = () => {
   }
 }
 const getSecondCarousel = () => {
+  // console.log(state.type );
+  
+  if( state.type == 'zh' ) {
+    homeApi.getSecondCarousel().then((res: any) => {
+      // console.log(res.data);
+      state.bannerList = res.data
+    })
+  } else {
   homeApi.getSecondCarouselEn().then((res: any) => {
       // console.log(res.data);
       state.bannerList = res.data
     })
+  }
 }
 // 
 const switchTab = (tabsIdx: number) => {
@@ -229,6 +239,7 @@ page {
         line-height: 36rpx;
         color: #232322;
         text-align: center;
+        padding: 0 10rpx;
       }
       .text{
         width: 100%;

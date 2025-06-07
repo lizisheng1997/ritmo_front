@@ -247,7 +247,31 @@
         "navigationBarTitleText": "头像裁剪",
         "navigationBarBackgroundColor": "#000000"
       }
-    }
+    },
+    {
+			"path": "pages/homestay/index",
+			"style": {
+        "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/homestay/list",
+			"style": {
+        "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/homestay/details",
+			"style": {
+        "navigationStyle": "custom"
+			}
+		},
+    {
+			"path": "pages/homestay/order",
+			"style": {
+				"navigationBarTitleText": "订单填写"
+			}
+		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
