@@ -5,16 +5,16 @@
     <view class="p0-35">
       <view class="nav flex">
         <image class="icon" src="/@/static/iconLeftBlack.png"></image>
-        <image class="head mr25 mt10" src="/@/static/addHead.png"></image>
-        <text class="name">Jane</text>
+        <image class="head mr25 mt10" :src=" state.avatarUrl ? state.avatarUrl : '/@/static/addHead.png' "></image>
+        <text class="name">{{ state.nickname }}</text>
       </view>
       <!--  -->
       <view class="title flex">
-        <u-input class="input " v-model="state.content" :border="false" :custom-style="{
+        <u-input class="input " v-model="state.title" :border="false" :custom-style="{
           height: '88rpx',
           lineHeight: '88rpx',
         }" placeholder="请输入标题"  :maxlength="30"/>
-        <view class="lent">{{ state.content.length }}/30</view>
+        <view class="lent">{{ state.title.length }}/30</view>
       </view>
       <!--  -->
       <view class="news p35-0">
@@ -22,7 +22,7 @@
       </view>
       <!--  -->
       <view class="">
-        <u-upload :action="state.action" :file-list=" state.fileList" ></u-upload>
+        <u-upload ref="uploadRef" max-count="6" :action="state.action" :file-list=" state.fileList" :header="headers"></u-upload>
       </view>
       <!--  -->
       <view class="select flex">
@@ -40,7 +40,7 @@
         </view>
         <image class="right mt20" src="/@/static/rightAsh.png" @click="routerTo('/pages/community/selectTags')"></image>
       </view>
-      <view class="footerOne" >
+      <view class="footerOne" @click="submit">
         确认发布
       </view>
     </view>
@@ -56,32 +56,93 @@ import { reactive, ref } from 'vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
 import User from '/@/api/user';
+import Community from '/@/api/community';
+const communityApi = new Community();
 const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
-  state.type = query!.type
+  state.id = query!.id ? query!.id : ''
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 88;
-  getInfo()
+  getUserInfo()
+  if(state.id) getInfo();
 });
 // 参数
 const list = [] as any
+const headers = ref({
+    'Authorization': uni.getStorageSync('accessToken')
+      ? `Bearer ${uni.getStorageSync('accessToken')}`
+      : '',
+  })
 const state = reactive({
-  type: 0, // 
-  content: '',
+  id: '',
+  nickname: '',
+  avatarUrl: '',
+  title: '', // 标题
+  content: '', // 内容
+  location: '', // 
+  topicIds: '', // 
+  
   navAllHeight: 0,
   show: false,
-  action: 'http://www.example.com/upload',
+  action: 'https://ritmohub.cn/api/v1/community/upload/images',
   fileList: [
   ]
 })
-const getInfo = () => {
+// 获取用户资料
+const getUserInfo = async() => {
+  await userApi.getUserInfo({}).then((res: any) => {
+    // console.log(res.data);
+    state.nickname = res.data.nickname
+    state.avatarUrl = res.data.avatar_url? res.data.avatar_url : ''
+  })
+}
+const getInfo = async () => {
+  await communityApi.getCommunityListInfo(state.id).then((res: any) => {
+    console.log(res);
+    
+  })
 }
 const confirm = (e: any) => {
   console.log(e);
   
+}
+// 
+const uploadRef = ref()
+const submit = async() => {
+  console.log(uploadRef.value.lists);
+  
+  if( !state.title ) {
+    showTips('请输入标题')
+    return;
+  }
+  if( !state.content ) {
+    showTips('请输入内容')
+    return;
+  }
+  let fileList = uploadRef.value.lists.map((item: any) => {
+    return item.response.data.url
+  })
+  console.log(state)
+  if( state.id ) {
+    await communityApi.getCommunityListPut(state.id, {
+      title: state.title, 
+      content: state.content,
+      files: fileList
+    }).then((res: any) => {
+
+    })
+  } else {
+    await communityApi.getCommunityListAdd({
+      title: state.title, 
+      content: state.content,
+      files: fileList
+    }).then((res: any) => {
+
+    })
+  }
 }
 </script>
 

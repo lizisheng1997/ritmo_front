@@ -109,6 +109,7 @@ const userApi = new User();
 const { t } = useI18n();
 
 onLoad((query?: AnyObject | undefined): void => {
+  state.type = query!.type ? query!.type : 0
   // console.log(query);
   // state.id = query!.id
   getUserInfo();
@@ -196,6 +197,9 @@ const cList = ref([
 					},
 ])
 const state = reactive({
+  type: 0, // 0我的主页  1他人主页
+
+
   languageType: '', //
   selectVip: 1, //
   current: 3, //

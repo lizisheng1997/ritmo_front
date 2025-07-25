@@ -3,7 +3,7 @@
     paddingTop: state.navAllHeight + 'rpx'
   }">
     <view class="nav flex p0-35">
-      <view class="btn">
+      <view class="btn" @click="routerTo(`/pages/community/homepage?type=0`)">
         <image class="icon mr15" src="/@/static/community/nav1.png"></image>
         <text class="text">我的主页</text>
       </view>
@@ -48,13 +48,16 @@ import communityList from '/@/components/communityList.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { communityIndexTabs } from '/@/utils/universalArray';
 import { useI18n } from 'vue-i18n'
-import { onLoad } from '@dcloudio/uni-app';
+import { onLoad, onReachBottom } from '@dcloudio/uni-app';
+import Community from '/@/api/community';
+const communityApi = new Community();
 const { t } = useI18n()
 
 // 引入组件
 onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  getList()
 })
 // 参数
 const cList = ref([
@@ -136,16 +139,42 @@ const cList = ref([
 						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
 					},
 ])
+const list = ref([] as any)
 const state = reactive({
   status: 0, // 
   current: 0,
   navAllHeight: 0,
-  nickname: '', // 名称
-  avatarUrl: '', // 头像
-  userId: '',
-  level: 0, // 0：非会员, 1: 初级会员, 2: 高级会员, 3: 企业会员
-  isNewUser: true, // 是否是新用户
+  page: 20,
+  pageSize: 1,
+
 })
+
+// 获取列表
+const getList = () => {
+  uni.showLoading({
+    title: '加载中'
+  });
+  communityApi
+  .getCommunityList({
+    order_by: 'latest',
+    page: state.page,
+    page_size: state.pageSize
+  })
+  .then((res: any) => {
+    console.log(res.data);
+    list.value = list.value.concat( res.data.items ? res.data.items : [] )
+  })
+  .finally(() => {
+    setTimeout(() => {
+      uni.hideLoading();
+    }, 1500);
+  });
+}
+onReachBottom(() => {
+  state.pageSize++
+  getList()
+  console.log('到底了');
+});
 </script>
 
 <style lang="scss" scoped>
