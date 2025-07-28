@@ -24,6 +24,26 @@ export default class Login extends Request {
       data
     });
   }
+  // 微信登录
+  getWxLogin(data: object) {
+    return this.post({
+      url: '/addons/booking/login/wxLogin',
+      data
+    });
+  }
+  getWechatMobile(data: object) {
+    return this.post({
+      url: '/addons/booking/login/wechatMobileLogin',
+      data
+    });
+  }
+  // app微信登录
+  getWechatAppLogin(data: object) {
+    return this.post({
+      url: '/addons/booking/login/appLogin',
+      data
+    });
+  }
   // 刷新token
   getAuthRefresh(data: object) {
     return this.post({

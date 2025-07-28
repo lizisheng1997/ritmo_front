@@ -3,16 +3,17 @@
     <view class="mask"></view>
     <!--  -->
     <view class="interface">
-      <view class="logo">
+      <view class="logo" style="margin-bottom: 30%;" >
         <image class="imageW100" src="https://ritmohub.cn/static/logo.png"></image>
       </view>
-      <!-- #ifdef APP-PLUS || H5 -->
-      <!-- <view class="phone">132****2336</view>
-      <view class="provider mt30">中国联通提供认证服务</view>
-      <view class="btn btnOne mt50">{{ t('oneLogin') }}</view>
-      <view class="btn btnOne" style="margin-top: 45rpx;" @click="codeLoginTo">{{ t('codeLogin') }}</view> -->
+      <!-- #ifdef MP-WEIXIN -->
+      <button class="btn btnOne" form-type="submit" open-type="getPhoneNumber"
+      @getphonenumber="getWxLogin">{{ t('weChatLogin') }}</button>
       <!-- #endif -->
-      <view class="btn btnOne" style="margin-top: 30%;" @click="codeLoginTo(0)">{{ t('codeLogin') }}</view>
+      <!--  -->
+      <!-- #ifdef APP-PLUS -->
+      <view class="btn btnOne mt35" @click="codeLoginTo(0)">{{ t('codeLogin') }}</view>
+      <!-- #endif -->
       <view class="btn btnCode mt50" @click="codeLoginTo(1)">{{ t('oneLogin') }}</view>
       <!-- #ifdef MP-WEIXIN -->
       <view class="notlogging mt35" @click="switchTab">{{ t('logginginhome') }} 。</view>
@@ -31,13 +32,17 @@
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import textPopup from '/@/components/textPopup.vue'
 import { routerTo, showTips } from '/@/utils/currentFun';
+import { useUserStore } from '/@/store/modules/user';
 import { useI18n } from 'vue-i18n'
 import { onLoad } from '@dcloudio/uni-app';
+import Login from '/@/api/login';
+const loginApi = new Login();
 const { t } = useI18n()
+const user = useUserStore();
 
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
-  // state.intro = query!.intro ? query!.intro : '';
+  state.intro = query!.intro ? query!.intro : '';
 });
 // 参数
 const state = reactive({
@@ -63,6 +68,64 @@ const switchTab = () => {
   uni.switchTab({
           url: '/pages/home/index'
         });
+}
+// 微信登录
+const getWxLogin = (data?: { detail: { code: string; errMsg: string; encryptedData: string; iv: string }; }) => {
+  
+  state.select = true
+  uni.login({
+    provider: 'weixin',
+    onlyAuthorize: true,
+    success: async function (loginRes: { code: string; errMsg: string }) {
+      console.log(loginRes);
+      if( loginRes.errMsg == 'login:ok' ) {
+        // #ifdef MP-WEIXIN
+        if(data) getPhoneNumber(data, loginRes.code)
+        // #endif
+      } else {
+        showTips(t('requestException'))
+      }
+    },
+    fail(result) {
+        console.log(result);
+        
+    },
+  });
+}
+const getPhoneNumber = (data: { detail: { code: string; errMsg: string; encryptedData: string; iv: string }; }, code: string) => {
+  if( data.detail.errMsg == 'getPhoneNumber:fail user deny' ) {
+    return
+  }
+  loginApi.getWechatMobile({
+    encryptedData: data.detail.encryptedData,
+    iv: data.detail.iv,
+    code: code
+  }).then(async (res: any) => {
+    uni.setStorageSync('accessToken', res.data.token);
+    await getAuthUser()
+  }).catch(async (res) => {
+  })
+ 
+}
+
+// 获取用户信息
+const getAuthUser = async() => {
+  await loginApi
+    .getAuthUser()
+    .then((res: any) => {
+      console.log(res);
+      if( res.data.is_new_user ) {
+        routerTo(`/pages/login/information?intro=${state.intro}`)
+      } else {
+        // routerTo(`/pages/home/index`)
+        user.setUserInfo(res.data);
+        setTimeout(() => {
+          uni.reLaunch({
+            url: '/pages/home/index'
+          });
+        }, 1000);
+      }
+    });
 }
 </script>
 

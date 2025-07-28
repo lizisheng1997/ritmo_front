@@ -6,11 +6,13 @@
   "changePassword": "修改密码",
   "mobile":"手机号",
   "codeLogin":"验证码注册/登录",
+  "weChatLogin":"微信登录",
   "userAgreement": "用户协议",
   "privacyPolicy": "隐私政策",
   "Agree": "同意",
   "verificationCode": "验证码登录",
   "verificationDevices": "未注册手机验证后自动登录",
+  "clickingToSend": "请同意绑定微信，否则无法进行注册/登录",
   "SendCode": "发送验证码",
   "Entermobilenumber": "请输入手机号",
   "EntermobilePass": "请输入密码",
@@ -198,6 +200,6 @@
   "Limitedprint": "有限打印",
   "InfinitePrint": "无限打印",
   "SeminarActivity": "研讨活动",
-  "": "",
+  "requestException": "请求异常",
   "": ""
 }

@@ -6,11 +6,13 @@
   "changePassword": "Change Password",
   "mobile": "mobile",
   "codeLogin": "Login with verification code",
+  "weChatLogin": "WeChat Login",
   "userAgreement": "User Agreement",
   "privacyPolicy": "Privacy Policy",
   "Agree": "Agree to",
   "verificationCode": "Login with verification code",
   "verificationDevices": "Login after verification for unregistered devices",
+  "clickingToSend": "Please agree to bind WeChat first, otherwise you cannot proceed with registration/login",
   "SendCode": "Send code",
   "Entermobilenumber": "Enter mobile number",
   "EntermobilePass": "Enter password",
@@ -198,5 +200,6 @@
   "Limitedprint": "Limited print",
   "InfinitePrint": "Infinite Print",
   "SeminarActivity": "Seminar Activity",
+  "requestException": "Request Exception",
   "": ""
 }

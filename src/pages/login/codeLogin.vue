@@ -1,7 +1,9 @@
 <template>
   <view class="content p35">
     <view class="title">{{ state.type ? t('oneLogin') : t('codeLogin') }}</view>
-    <view class="fub mt20" v-if="state.type == 0">{{ t('verificationDevices') }}</view>
+    <view class="fub mt20" v-if="state.type == 0">
+      <view class="">{{ t('verificationDevices') }}</view>
+    </view>
     <!--  -->
     <view class="form flex pb40" >
       <view class="sign" @click=" state.areaShow = true ">
@@ -29,20 +31,13 @@
       没有账号？立即注册
     </view>
     <!--  -->
-    <view class="tips mt50 flex">
-      <image class="icon mr10" src="/@/static/loginSelect.png" v-if="!state.select" @click="state.select = true"></image>
-      <image class="icon mr10" src="/@/static/selectIcon.png" @click="state.select = false" v-else></image>
-      {{ t('Agree') }}RITMOHUB<text class="" @click="openPupup(0)">《{{ t('userAgreement') }}》</text>、<text class="" @click="openPupup(1)">《{{ t('privacyPolicy') }}》</text> 
-    </view>
   </view>
-  <textPopup ref="textPopupRef" @refresh="textPopupRefresh" :isType="0"/>
   <!-- 选择 -->
   <u-select v-model="state.areaShow" :list="selectList"  label-name="value" value-name="value" @confirm="confirm" :confirm-text="t('confirm')" :cancel-text="t('cancel')"></u-select>
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
-import textPopup from '/@/components/textPopup.vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '/@/store/modules/user';
 import { routerTo, showTips } from '/@/utils/currentFun'
@@ -56,6 +51,7 @@ const { t } = useI18n()
 onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   state.type = query!.type ? Number(query!.type) : 0;
+  
 });
 // 参数
 const state = reactive({
@@ -66,34 +62,13 @@ const state = reactive({
   code: '',
   areaCode: '86', // 
   areaShow: false,
-  select: false, // 
 })
 // 
 const submit = () => {
   if( state.phone.length != 11 ) {
     return
   }
-  if( !state.select ) {
-    showTips('请同意协议')
-    return
-  }
-  // #ifdef APP-PLUS || H5
   getLogin()
-  // #endif
-  // #ifdef MP-WEIXIN
-  uni.login({
-    success: function (resLogin: any) {
-      // 登录成功
-      // console.log(resLogin);
-      state.code = resLogin.code
-      getLogin()
-    },
-    fail: function(result) {
-      console.log('--------', result);
-    },
-  });
-  // #endif
-  // 
   
   // console.log(111);
   
@@ -107,7 +82,7 @@ const getLogin = () => {
       area_code: state.areaCode,
       phone: state.phone,
       password: state.password,
-      wxcode: state.code
+      wxcode: ''
     }).then((res: any) => {
       // console.log(res.data.user);
       showTips(res.message)
@@ -128,14 +103,6 @@ const getLogin = () => {
 const confirm = (e: { value: string }[]) => {
   // console.log(e);
   state.areaCode = e[0].value
-}
-// 打开弹窗
-const textPopupRef = ref()
-const openPupup = (type: number) => {
-  textPopupRef.value.openDialog(type)
-}
-const textPopupRefresh = (show: boolean) => {
-  state.select = show
 }
 </script>
 

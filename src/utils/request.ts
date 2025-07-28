@@ -4,8 +4,9 @@ import { showTips } from './currentFun';
 import type { T } from './types';
 
 // 记得全局更换background-image地址
-export const baseUrl = 'https://ritmohub.cn'; // 测试环境
-// export const baseUrl = 'http://47.116.190.37:8002'; // 测试环境
+// export const baseUrl = 'https://ritmohub.cn'; // 测试环境
+export const baseUrl = 'http://47.116.206.96'; // 测试环境
+export const baseUrl1 = 'https://ritmohub.cn'; // 测试环境
 
 // console.log(baseUrl);
 
@@ -13,9 +14,18 @@ export default class Request {
   baseUrl = ''; // 接口地址
   constructor() {}
   request(options: T) {
+    console.log(` ${baseUrl}${ options.url.includes('/v1') ? '/api' : '' }${options.url}`);
+    let newUrl = ''
+    if( options.url.includes('/v1') ) {
+      newUrl = `${baseUrl1}/api${options.url}`
+    } else {
+      newUrl = `${baseUrl}${options.url}`
+    }
     return new Promise((reslove, reject) => {
       uni.request({
-        url: baseUrl+ '/api' + options.url,
+        // url: baseUrl + '/api' + options.url,
+        // url: baseUrl + options.url,
+        url: `${newUrl}`,
         method: options.method,
         data: options.data,
         header: {

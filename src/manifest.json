@@ -24,7 +24,8 @@
             "Payment" : {},
             "VideoPlayer" : {},
             "Barcode" : {},
-            "Camera" : {}
+            "Camera" : {},
+            "OAuth" : {}
         },
         /* 应用发布信息 */
         "distribute" : {
@@ -97,7 +98,7 @@
             "sdkConfigs" : {
                 "oauth" : {
                     "weixin" : {
-                        "appid" : "wx4d896770e08aab0e",
+                        "appid" : "wx9844bc1e46653f7c",
                         "UniversalLinks" : "https://www.ritmohub.cn/app/"
                     }
                 },
