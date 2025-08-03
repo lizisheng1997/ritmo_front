@@ -1,178 +1,138 @@
 <template>
-  <view class="content" :style="{
-    paddingTop: state.navAllHeight + 'rpx'
-  }">
+  <view
+    class="content"
+    :style="{
+      paddingTop: state.navAllHeight + 'rpx'
+    }">
     <view class="nav flex p0-35">
-      <view class="btn" @click="routerTo(`/pages/community/homepage?type=0`)">
-        <image class="icon mr15" src="/@/static/community/nav1.png"></image>
-        <text class="text">我的主页</text>
+      <view
+        class="btn"
+        @click="routerTo(`/pages/community/homepage?type=0`)">
+        <image
+          class="icon mr15"
+          src="/@/static/community/nav1.png"></image>
+        <text class="text">{{ t('MyHomePages') }}</text>
       </view>
       <view class="btn">
-        <image class="icon mr15" src="/@/static/community/nav2.png"></image>
-        <text class="text">回复我的</text>
+        <image
+          class="icon mr15"
+          src="/@/static/community/nav2.png"></image>
+        <text class="text">{{ t('Replytome') }}</text>
         <view class="count">3</view>
       </view>
     </view>
     <!--  -->
     <view class="p0-35">
       <scroll-view
-          class="tabs mt35"
-          scroll-x="true"
-          scroll-left="0"
-          enable-flex="true"
-          style="height: 70rpx">
-            <view class="text pb25" :class=" index == state.current ? 'textAct' : '' " v-for=" (item, index) in communityIndexTabs " @click="state.current = index">{{ item }}</view>
-        </scroll-view>
+        class="tabs mt35"
+        scroll-x="true"
+        scroll-left="0"
+        enable-flex="true"
+        style="height: 70rpx">
+        <view
+          class="text pb25"
+          :class="index == state.current ? 'textAct' : ''"
+          v-for="(item, index) in tabsList"
+          @click="() => {
+            state.current = index
+            reset()
+          }"
+          >{{ item.name }}</view
+        >
+      </scroll-view>
     </view>
     <!--  -->
-    <communityList :list="cList">
-
-    </communityList>
+    <communityList :list="list"> </communityList>
     <!--  -->
-    <view class="add" @click="routerTo('/pages/community/addCommunity')">
-      <image class="icon" src="/@/static/iconAdd.png"> </image>
+    <view
+      class="add"
+      @click="routerTo('/pages/community/addCommunity')">
+      <image
+        class="icon"
+        src="/@/static/iconAdd.png">
+      </image>
     </view>
-    <!-- {
-        "pagePath": "pages/community/index",
-        "iconPath": "static/tabbar/community.png",
-        "selectedIconPath": "static/tabbar/community1.png",		
-        "text": "社区"
-      },		 -->
-     
   </view>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, reactive, ref } from 'vue'
-import communityList from '/@/components/communityList.vue'
+import { defineAsyncComponent, reactive, ref } from 'vue';
+import communityList from '/@/components/communityList.vue';
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { communityIndexTabs } from '/@/utils/universalArray';
-import { useI18n } from 'vue-i18n'
-import { onLoad, onReachBottom } from '@dcloudio/uni-app';
+import { useI18n } from 'vue-i18n';
+import { onLoad, onReachBottom, onShow } from '@dcloudio/uni-app';
 import Community from '/@/api/community';
 const communityApi = new Community();
-const { t } = useI18n()
+const { t } = useI18n();
 
 // 引入组件
 onLoad(() => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
-  getList()
+  
+});
+onShow(() => {
+  reset()
 })
 // 参数
-const cList = ref([
-{
-						price: 35,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 75,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23325_s.jpg'
-					},
-					{
-						price: 385,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 784,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23325_s.jpg'
-					},
-					{
-						price: 7891,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 2341,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 661,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 1654,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 1678,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 924,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 8243,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-])
-const list = ref([] as any)
+const list = ref([] as any);
+const tabsList = ref([] as any);
 const state = reactive({
-  status: 0, // 
+  status: 0, //
   current: 0,
   navAllHeight: 0,
   page: 20,
-  pageSize: 1,
-
-})
-
+  pageSize: 1
+});
+const reset = () => {
+  list.value = []
+  state.pageSize = 1
+  getCommunityCategory()
+}
+// 获取分类
+const getCommunityCategory = () => {
+  communityApi
+    .getCommunityCategory({})
+    .then((res: any) => {
+      // console.log(res.data);
+      tabsList.value = res.data ? res.data : []
+      tabsList.value.unshift({
+        id: 0,
+        name: '全部'
+      });
+      if( res.data?.length ) {
+        getList();
+      }
+    })
+    .finally(() => {
+    });
+}
 // 获取列表
 const getList = () => {
   uni.showLoading({
     title: '加载中'
   });
   communityApi
-  .getCommunityList({
-    order_by: 'latest',
-    page: state.page,
-    page_size: state.pageSize
-  })
-  .then((res: any) => {
-    console.log(res.data);
-    list.value = list.value.concat( res.data.items ? res.data.items : [] )
-  })
-  .finally(() => {
-    setTimeout(() => {
-      uni.hideLoading();
-    }, 1500);
-  });
-}
+    .getCommunityList({
+      category_id: state.current == 0 ? '' : tabsList.value[state.current].id,
+      limit: state.page,
+      page: state.pageSize
+    })
+    .then((res: any) => {
+      // console.log(res.data);
+      list.value = list.value.concat(res.data ? res.data : []);
+      
+    })
+    .finally(() => {
+      setTimeout(() => {
+        uni.hideLoading();
+      }, 1500);
+    });
+};
 onReachBottom(() => {
-  state.pageSize++
-  getList()
+  state.pageSize+=1;
+  getList();
   console.log('到底了');
 });
 </script>
@@ -187,10 +147,10 @@ onReachBottom(() => {
     height: 120rpx;
     line-height: 120rpx;
     border-radius: 20rpx;
-    background-color: #F5F3EF;
+    background-color: #f5f3ef;
     position: relative;
     text-align: center;
-    .icon{
+    .icon {
       display: inline-block;
       width: 50rpx;
       height: 50rpx;
@@ -212,7 +172,7 @@ onReachBottom(() => {
       font-weight: 500;
       color: #ffffff;
       border-radius: 32rpx;
-      background-color: #FF3434;
+      background-color: #ff3434;
     }
   }
   .tabs {
@@ -237,10 +197,9 @@ onReachBottom(() => {
         bottom: 0;
         width: 40rpx;
         height: 8rpx;
-        background-color: #FFCF00;
+        background-color: #ffcf00;
       }
     }
-
   }
 }
 .add {
@@ -249,7 +208,7 @@ onReachBottom(() => {
   bottom: 140rpx;
   width: 100rpx;
   height: 100rpx;
-  background-color: #FFCF00;
+  background-color: #ffcf00;
   border-radius: 50rpx;
   display: flex;
   justify-content: center;

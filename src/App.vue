@@ -31,6 +31,10 @@ export default defineComponent({
     })
     uni.setTabBarItem({
       index: 2,
+      text: type == 'zh' ? '社区' : 'COMMUNITY',
+    })
+    uni.setTabBarItem({
+      index: 3,
       text: type == 'zh' ? '我的' : 'USER',
     })
     // 

@@ -4,8 +4,13 @@
   }">
     <view class="p0-35">
       <view class="nav flex">
-        <image class="icon" src="/@/static/iconLeftBlack.png"></image>
-        <image class="head mr25 mt10" :src=" state.avatarUrl ? state.avatarUrl : '/@/static/addHead.png' "></image>
+        <image class="icon" src="/@/static/iconLeftBlack.png" @click="() => {
+          operatePopupRef.openDialog(t('Doyouwanttosavethedraft'), {
+            id: -1,
+            type: 1
+          });
+        }"></image>
+        <image class="head mr25 mt10" :src=" state.avatarUrl ? state.avatarUrl : '../../static/addHead.png' "></image>
         <text class="name">{{ state.nickname }}</text>
       </view>
       <!--  -->
@@ -13,48 +18,71 @@
         <u-input class="input " v-model="state.title" :border="false" :custom-style="{
           height: '88rpx',
           lineHeight: '88rpx',
-        }" placeholder="请输入标题"  :maxlength="30"/>
+        }" :placeholder="t('Pleaseenteratitle')"  :maxlength="30"/>
         <view class="lent">{{ state.title.length }}/30</view>
       </view>
       <!--  -->
       <view class="news p35-0">
-        <u-input v-model="state.content" type="textarea" :maxlength="1000" :auto-height="false" height="400"/>
+        <u-input v-model="state.content" type="textarea" :maxlength="1000" :auto-height="false" height="400" :placeholder="t('Pleaseenterthecontent')"/>
       </view>
       <!--  -->
       <view class="">
-        <u-upload ref="uploadRef" max-count="6" :action="state.action" :file-list=" state.fileList" :header="headers"></u-upload>
+        <u-upload ref="uploadRef" max-count="6" :action="state.action" :file-list=" state.fileList" :header="headers" :upload-text="t('SelectPicture')" @on-success="uploadSuccess" @on-remove="uploadRemove"></u-upload>
       </view>
       <!--  -->
-      <view class="select flex">
+      <view class="select flex" @click="() => {
+        state.regionShow = true
+      }">
         <view class="left">
           <image class="icon mr15" src="/@/static/community/local.png"></image>
-          <text class="">请选择空间</text>
+          <text class="">{{ state.city ? state.city : t('Pleaseselectcity') }}</text>
         </view>
         <image class="right mt20" src="/@/static/rightAsh.png"></image>
       </view>
       <!--  -->
-      <view class="select flex">
+      <view class="select flex" @click="() => {
+        state.selectShow = true
+      }">
         <view class="left">
           <image class="icon mr15" src="/@/static/community/tags.png"></image>
-          <text class="">请选择标签</text>
+          <text class="">{{ state.categoryName ? state.categoryName : t('Pleaseselecttag') }}</text>
         </view>
-        <image class="right mt20" src="/@/static/rightAsh.png" @click="routerTo('/pages/community/selectTags')"></image>
+        <image class="right mt20" src="/@/static/rightAsh.png"></image>
       </view>
       <view class="footerOne" @click="submit">
-        确认发布
+        {{ t('Confirmrelease') }}
       </view>
     </view>
-    <!-- 选择空间 -->
-    <u-select v-model="state.show" :list="list" @confirm="confirm"></u-select>
+    <!-- 选择城市 -->
+     <u-picker mode="region" v-model="state.regionShow" :isArea="false" @confirm="cityConfirm"></u-picker>
     <!-- 选择标签 -->
+    <u-select v-model="state.selectShow" :list="list" label-name="name" value-name="id" @confirm="confirm"></u-select>
+     <!--  -->
+    <operatePopup
+      ref="operatePopupRef"
+      :isType="1"
+      @refresh="(show, obj) => {
+        if( show ) {
+          if(obj.id == -1) {
+            submitForm('draft')
+          } else {
+            submitForm('normal')
+          }
+        } else {
+          if(obj.id == -1) {
+            routerBack(1)
+          }
+        }
+      }"></operatePopup>
   </view>
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
+import { onHide, onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
-import { routerTo, showTips } from '/@/utils/currentFun';
+import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
+import operatePopup from '/@/components/operatePopup.vue';
 import User from '/@/api/user';
 import Community from '/@/api/community';
 const communityApi = new Community();
@@ -67,10 +95,15 @@ onLoad((query?: AnyObject | undefined): void => {
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 88;
   getUserInfo()
-  if(state.id) getInfo();
+  getCommunityCategory()
+  getCommunityPostDraft()
+  // if(state.id) getInfo();
 });
+onHide(() => {
+  submitForm('draft')
+})
 // 参数
-const list = [] as any
+const list = ref([] as any[])
 const headers = ref({
     'Authorization': uni.getStorageSync('accessToken')
       ? `Bearer ${uni.getStorageSync('accessToken')}`
@@ -82,15 +115,17 @@ const state = reactive({
   avatarUrl: '',
   title: '', // 标题
   content: '', // 内容
-  location: '', // 
-  topicIds: '', // 
+  city: '', // 城市
+  categoryId: '',
+  categoryName: '',
   
   navAllHeight: 0,
-  show: false,
+  selectShow: false,
+  regionShow: false,
   action: 'https://ritmohub.cn/api/v1/community/upload/images',
-  fileList: [
-  ]
+  fileList: [] as any[]
 })
+const operatePopupRef = ref()
 // 获取用户资料
 const getUserInfo = async() => {
   await userApi.getUserInfo({}).then((res: any) => {
@@ -99,50 +134,99 @@ const getUserInfo = async() => {
     state.avatarUrl = res.data.avatar_url? res.data.avatar_url : ''
   })
 }
-const getInfo = async () => {
-  await communityApi.getCommunityListInfo(state.id).then((res: any) => {
-    console.log(res);
-    
+// 获取草稿
+const getCommunityPostDraft = async() => {
+  await communityApi.getCommunityPostDraft({}).then((res: any) => {
+    console.log(res.data);
+    if( res.data ) {
+      state.title = res.data.title
+      state.content = res.data.content
+      state.city = res.data.city
+      state.categoryId = res.data.category_id
+      state.categoryName = res.data.category_name
+      let imgList = res.data.images.split(',')
+      state.fileList = imgList.map((item: string) => {
+        return {
+          url: item
+        }
+      })
+    }
   })
+}
+// 获取分类
+const getCommunityCategory = () => {
+  communityApi
+    .getCommunityCategory({})
+    .then((res: any) => {
+      // console.log(res.data);
+      list.value = res.data
+      
+    })
+    .finally(() => {
+    });
 }
 const confirm = (e: any) => {
   console.log(e);
+  state.categoryId = e[0].value
+  state.categoryName = e[0].label
   
 }
+// 城市回调
+const cityConfirm = (e: any) => {
+  console.log(e);
+  state.city = e.city.name
+}
 // 
+const uploadSuccess = (data: any, index: any, lists: any[]) => {
+  // console.log(lists);
+  state.fileList = lists
+}
+const uploadRemove = (index: any, lists: any[]) => {
+  state.fileList = lists
+}
 const uploadRef = ref()
 const submit = async() => {
   console.log(uploadRef.value.lists);
-  
   if( !state.title ) {
-    showTips('请输入标题')
+    showTips(t('Pleaseenteratitle'))
     return;
   }
   if( !state.content ) {
-    showTips('请输入内容')
+    showTips(t('Pleaseenterthecontent'))
     return;
   }
-  let fileList = uploadRef.value.lists.map((item: any) => {
-    return item.response.data.url
-  })
-  console.log(state)
-  if( state.id ) {
-    await communityApi.getCommunityListPut(state.id, {
-      title: state.title, 
-      content: state.content,
-      files: fileList
-    }).then((res: any) => {
-
-    })
-  } else {
-    await communityApi.getCommunityListAdd({
-      title: state.title, 
-      content: state.content,
-      files: fileList
-    }).then((res: any) => {
-
-    })
+  if( !state.city ) {
+    showTips(t('Pleaseselectcity'))
+    return;
   }
+  if( !state.categoryId ) {
+    showTips(t('Pleaseselecttag'))
+    return;
+  }
+  operatePopupRef.value.openDialog(t('continueoperation'), {
+    id: '',
+    type: 1
+  });
+}
+const submitForm = async(status: string) => {
+  
+  let fileList = state.fileList.map((item: any) => {
+    return item.url
+  })
+  // console.log(state)
+  await communityApi.getCommunityListAdd({
+    title: state.title, 
+    content: state.content,
+    images: fileList.toString(),
+    city: state.city,
+    category_id: state.categoryId,
+    status: status,
+  }).then((res: any) => {
+    showTips(res.msg)
+    setTimeout(() => {
+      routerBack(1)
+    }, 1000);
+  })
 }
 </script>
 

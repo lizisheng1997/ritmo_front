@@ -14,7 +14,6 @@ export default class Request {
   baseUrl = ''; // 接口地址
   constructor() {}
   request(options: T) {
-    console.log(` ${baseUrl}${ options.url.includes('/v1') ? '/api' : '' }${options.url}`);
     let newUrl = ''
     if( options.url.includes('/v1') ) {
       newUrl = `${baseUrl1}/api${options.url}`

@@ -53,7 +53,7 @@
 							<view class="u-line-1">{{ item.name }}</view>
 						</view>
 					</picker-view-column>
-					<picker-view-column v-if="showColumnCom && params && params.area">
+					<picker-view-column v-if="showColumnCom && params && params.area && isArea">
 						<view class="u-column-item" v-for="(item, index) in areas" :key="index">
 							<view class="u-line-1">{{ item.name }}</view>
 						</view>
@@ -300,7 +300,11 @@ export default {
 		blur: {
 			type: [String, Number],
 			default: 0
-		}
+		},
+		isArea: {
+			type: Boolean,
+			default: true
+		},
 	},
 	data() {
 		return {

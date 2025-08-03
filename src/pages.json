@@ -121,12 +121,6 @@
 			}
 		},
     {
-			"path": "pages/community/selectTags",
-			"style": {
-				"navigationBarTitleText": "选择标签"
-			}
-		},
-    {
 			"path": "pages/user/index",
 			"style": {
         "navigationStyle": "custom"

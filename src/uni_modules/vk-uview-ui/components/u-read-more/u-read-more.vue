@@ -156,10 +156,10 @@
 	@import "../../libs/css/style.components.scss";
 
 	.u-content {
-		font-size: 30rpx;
-		color: $u-content-color;
-		line-height: 1.8;
-		text-align: left;
+		// font-size: 30rpx;
+		// color: $u-content-color;
+		// line-height: 1.8;
+		// text-align: left;
 		overflow: hidden;
 
 		&__show-more {
@@ -171,6 +171,7 @@
 		&__showmore-wrap {
 			position: relative;
 			width: 100%;
+			padding-top: 26rpx;
 			padding-bottom: 26rpx;
 			@include vue-flex;
 			align-items: center;

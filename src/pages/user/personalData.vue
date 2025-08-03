@@ -192,7 +192,7 @@ const getUpdateUser = async (url: string) => {
     show_phone: showEmail,
     default_space: defaultSpace
   }).then((res: any) => {
-    console.log(res);
+    // console.log(res);
     showTips(res.message)
     getAuthUser()
   })
