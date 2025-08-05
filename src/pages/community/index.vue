@@ -7,18 +7,18 @@
     <view class="nav flex p0-35">
       <view
         class="btn"
-        @click="routerTo(`/pages/community/homepage?type=0`)">
+         @click="homePage(0)">
         <image
           class="icon mr15"
           src="/@/static/community/nav1.png"></image>
         <text class="text">{{ t('MyHomePages') }}</text>
       </view>
-      <view class="btn">
+      <view class="btn" @click="homePage(3)">
         <image
           class="icon mr15"
           src="/@/static/community/nav2.png"></image>
         <text class="text">{{ t('Replytome') }}</text>
-        <view class="count">3</view>
+        <view class="count">{{ state.count }}</view>
       </view>
     </view>
     <!--  -->
@@ -33,6 +33,7 @@
           class="text pb25"
           :class="index == state.current ? 'textAct' : ''"
           v-for="(item, index) in tabsList"
+          :key="index"
           @click="() => {
             state.current = index
             reset()
@@ -79,6 +80,7 @@ onShow(() => {
 const list = ref([] as any);
 const tabsList = ref([] as any);
 const state = reactive({
+  count: 0,
   status: 0, //
   current: 0,
   navAllHeight: 0,
@@ -121,7 +123,8 @@ const getList = () => {
     })
     .then((res: any) => {
       // console.log(res.data);
-      list.value = list.value.concat(res.data ? res.data : []);
+      state.count = res.data.not_read_count
+      list.value = list.value.concat(res.data.posts ? res.data.posts : []);
       
     })
     .finally(() => {
@@ -130,6 +133,10 @@ const getList = () => {
       }, 1500);
     });
 };
+// 个人中心
+const homePage = (tabsIdx: number) => {
+  routerTo(`/pages/community/homepage?id=undefined&isUser=1&tabsIdx=${tabsIdx}`, true)
+}
 onReachBottom(() => {
   state.pageSize+=1;
   getList();

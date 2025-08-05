@@ -1,29 +1,48 @@
 <template>
   <view class="content membersIntroduction">
     <view class="top">
-      <image class="back" src="/@/static/iconLeftBlack.png" @click="routerBack(1)"></image>
+      <image class="back" src="/@/static/iconLeftBlack.png" @click="routerBack(1)" :style="{
+      top: state.navAllHeight + 'rpx'
+    }"></image>
+      <image class="shield" src="/@/static/community/pingbi.png"
+      @click="
+        () => {
+          operatePopupRef.openDialog(t('Doyouwanttoblockthisuser'), {
+            id: '',
+            type: 1
+          });
+        }
+      "
+      v-if="state.type == 0"></image>
+      <image class="shield" src="/@/static/community/pingbi1.png"
+      @click="
+        () => {
+          shieldListRef.openDialog();
+        }
+      "
+      v-if="state.type == 1"></image>
       <view class="user flex">
         <image
           class="head"
           :src="state.avatarUrl"></image>
         <view class="center">
-          <view class="company flex mt30">
-            <text class="text oneEllipsis">{{ state.nickname }}</text>
+          <view class="company  mt30">
+            <view class="">{{ state.nickname }}</view>
             <image
-              class="icon ml10"
+              class="icon mt8"
               src="https://ritmohub.cn/static/home/vip0.png"
               v-if="state.level == 0"
               style="width: 91rpx"></image>
             <image
-              class="icon ml10"
+              class="icon mt8"
               src="https://ritmohub.cn/static/home/vip1.png"
               v-else-if="state.level == 0"></image>
             <image
-              class="icon ml10"
+              class="icon mt8"
               src="https://ritmohub.cn/static/home/vip2.png"
               v-else-if="state.level == 0"></image>
             <image
-              class="icon ml10"
+              class="icon mt8"
               src="https://ritmohub.cn/static/home/vip3.png"
               v-else-if="state.level == 0"></image>
           </view>
@@ -31,201 +50,251 @@
       </view>
       <!--  -->
       <view class="p0-35">
-        <view class="introduce">后端开发程序猿</view>
-        <view class="cards flex mt25">
-          <text class="card mr35">+86 13209882736</text>
-          <text class="card">derder@gmail.com</text>
+        <view class="introduce">{{ state.intro }}</view>
+        <view class="cards flex mt25" v-if="state.phone || state.email">
+          <text class="card mr35" v-if="state.phone">{{ state.phone }}</text>
+          <text class="card" v-if="state.email">{{ state.email }}</text>
         </view>
-        <view class="space mt25">
-          <text class="text">常驻：</text>
-          杭州·顺丰中心节奏空间
+        <view class="space mt25" v-if="state.spaces">
+          <text class="text">{{ t('permanent') }}：</text>
+          {{ state.spaces }}
         </view>
       </view>
     </view>
     <!--  -->
-    <view class="tabs p0-35">
-      <view class="text pb25" :class=" index == state.current ? 'textAct' : '' " v-for=" (item, index) in communityHomepageTabs " @click="state.current = index">{{ item }}</view>
+    <view class="tabs ">
+      <view class="text pb25" :class=" index == state.current ? 'textAct' : '' " v-for=" (item, index) in state.type ? communityHomepageTabs : ['最新动态'] " :key="index" @click="() => {
+        state.current = index
+        tabsChange()
+      }">{{ item }}</view>
     </view>
     <!--  -->
     <template v-if=" state.current <= 1 ">
-      <communityList :list="cList">
+      <communityList :list="state.list">
 
       </communityList>
     </template>
     <!--  -->
     <template v-if=" state.current == 2 ">
       <view class="myreply p0-35 mt35">
-        <view class="li mb25 pb25">
+        <view class="li mb25 pb25" v-for="item in state.list" :key="item.id">
           <view class="article flex">
-            <image class="banner mr20" src="https://ritmohub.cn/static/addHead.png"></image>
+            <image class="banner mr20" :src="item.post_imagesArr[0]" v-if="item.post_imagesArr?.length"></image>
             <view class="info">
-              <view class="title twoEllipsis">AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了</view>
-              <view class="date mt6">04-21</view>
+              <view class="title twoEllipsis">{{ item.post_title }}</view>
+              <view class="date mt6">{{ item.createtime_text }}</view>
             </view>
           </view>
-          <view class="reply">手麻了人也麻了AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了</view>
-        </view>
-        <view class="li mb25 pb25">
-          <view class="article flex">
-            <image class="banner mr20" src="https://ritmohub.cn/static/addHead.png"></image>
-            <view class="info">
-              <view class="titl twoEllipsise">AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了</view>
-              <view class="date mt6">04-21</view>
-            </view>
-          </view>
-          <view class="reply">
-            <text class="">回复</text>
-            Luxus：真不错👍
-          </view>
+          <view class="reply">{{ item.content }}</view>
         </view>
       </view>
     </template>
     <!--  -->
     <template v-if=" state.current == 3 ">
-      <view class="replymy p0-35 mt35">
+      <view class="replymy p0-35 mt35" v-for="item in state.list" :key="item.id">
         <view class="li mb25 pb25 flex">
-          <image class="head mr20" src="https://ritmohub.cn/static/addHead.png"></image>
+          <image class="head mr20" :src="item.commenter_avatar"></image>
           <view class="info">
-            <view class="name ">Luxus</view>
-            <view class="time mt15">评论了你的动态 3分钟前</view>
-            <view class="text mt15">是的</view>
+            <view class="name ">{{ item.commenter_nickname }}</view>
+            <view class="time mt15">评论了你的动态 {{ item.createtime_text }}</view>
+            <view class="text mt15">{{ item.content }}</view>
           </view>
         </view>
       </view>
     </template>
+      <u-empty
+        :text="t('Nodata')"
+        mode="favor"
+        v-if="!state.list?.length"
+        margin-top="120"
+        icon-size="200"></u-empty>
     <!--  -->
+    <!-- 删除文章 -->
+    <operatePopup
+      ref="operatePopupRef"
+      :isType="1"
+      @refresh="
+        (show, idx) => {
+          if (show) {
+            getAddBlockedProfiles();
+          }
+        }
+      "></operatePopup>
+      <!--  -->
+        <shieldList ref="shieldListRef" @refresh="() => {
+          tabsChange()
+        }"/>
   </view>
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
+import { onLoad, onReachBottom } from '@dcloudio/uni-app';
 import { defineAsyncComponent, reactive, ref } from 'vue';
 import communityList from '/@/components/communityList.vue'
+import operatePopup from '/@/components/operatePopup.vue';
+import shieldList from '/@/components/shieldList.vue';
 import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { communityHomepageTabs } from '/@/utils/universalArray';
 import { useI18n } from 'vue-i18n';
-import User from '/@/api/user';
-const userApi = new User();
+import Community from '/@/api/community';
+const communityApi = new Community();
 const { t } = useI18n();
 
 onLoad((query?: AnyObject | undefined): void => {
-  state.type = query!.type ? query!.type : 0
-  // console.log(query);
-  // state.id = query!.id
+  
+  state.type = query!.isUser;
+  state.current = 0
+  if(state.type) {
+     state.id =
+        uni.getStorageSync('userInfos').id
+  } else {
+    state.id = query!.id;
+  }
+  if( query!.tabsIdx ) {
+    state.current = Number(query!.tabsIdx)
+  }
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight;
   getUserInfo();
-
+  tabsChange()
   state.languageType = uni.getStorageSync('languageType');
 });
 // 参数
-const cList = ref([
-{
-						price: 35,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 75,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23325_s.jpg'
-					},
-					{
-						price: 385,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 784,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23325_s.jpg'
-					},
-					{
-						price: 7891,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 2341,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 661,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 1654,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 1678,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 924,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-					{
-						price: 8243,
-						title: 'AI Agent共学，教大家怎么搭建微信机器人，当大家都搭建成功拉到一个群里后，整个效果太震撼了🚀 手麻了人也麻了',
-						name: '李白',
-            gongsi: '杭州大鱼网络科技有限公司',
-						image: 'http://pic.sc.chinaz.com/Files/pic/pic9/202002/zzpic23327_s.jpg',
-					},
-])
 const state = reactive({
-  type: 0, // 0我的主页  1他人主页
-
-
+  id: '',
+  type: 0, // 1我的主页  0他人主页
+  navAllHeight: 0,
   languageType: '', //
-  selectVip: 1, //
-  current: 3, //
 
+  current: 0, // tabs
   nickname: '', //
   avatarUrl: '', //
-  userId: '', //
   level: 0, //
   tabsIdx: 1,
   expireTime: '',
+  intro: '',
+  phone: '', // 手机号
+  email: '', // 邮箱
+  spaces: '', // 空间
+  page: 1, // 页码
+  pageSize: 20, // 页数
+  list: [] as any[],
   select: false
 });
+const shieldListRef = ref()
 // 获取用户资料
 const getUserInfo = async () => {
-  await userApi.getUserInfo({}).then((res: any) => {
-    console.log(res);
+  await communityApi.getOneProfiles({
+    user_id: state.id
+  }).then((res: any) => {
+    // console.log(res);
     state.nickname = res.data.nickname;
-    state.avatarUrl = res.data.avatar_url? res.data.avatar_url : '';
-    state.userId = res.data.id;
+    state.avatarUrl = res.data.avatar? res.data.avatar : '';
     state.level = res.data.vip_level;
     state.expireTime = res.data.vip_expire_time;
-    
+    state.intro = res.data.bio;
+    state.phone = `+${res.data.area_code} ${res.data.show_email}`
+    state.email = res.data.show_phone
+    state.spaces = res.data.default_space_name
     
   });
 }
-// 提交
+// tabs
+const tabsChange = () => {
+  console.log(state.current);
+  state.page = 1
+  state.list = []
+  switch (state.current) {
+    case 0:
+      getProfiles()
+      break;
+    case 1:
+      getMyCollectsList()
+      break;
+    case 2:
+      getCommentBytype(1)
+      break;
+    case 3:
+      getCommentBytype(2)
+      break;
+  
+  }
+  
+}
+onReachBottom(() => {
+  state.pageSize+=1;
+  switch (state.current) {
+    case 0:
+      getProfiles()
+      break;
+  
+  }
+  console.log('到底了');
+});
+const getProfiles = async() => {
+  if( state.type ) {
+   await communityApi.getCommunityProfiles({
+      page: state.page,
+      limit: state.pageSize
+    }).then((res: any) => {
+      console.log(res.data);
+      state.list = state.list.concat(res.data.postList ? res.data.postList : []);
+    })
+  } else {
+    await communityApi.getOneProfilesPostList({
+      page: state.page,
+      limit: state.pageSize
+    }).then((res: any) => {
+      console.log(res.data);
+      // state.list = state.list.concat(res.data.postList ? res.data.postList : []);
+      
+    })
+  }
+}
+// 收藏的帖子
+const getMyCollectsList = async() => {
+   await communityApi.getMyCollectsList({
+      page: state.page,
+      limit: state.pageSize
+    }).then((res: any) => {
+      let arr = res.data.map((item: any) => {
+        item['avatar'] = item.post_avatar
+        item['vip_level'] = item.post_vip_level
+        item['nickname'] = item.post_nickname
+        item['imagesArr'] = item.post_imagesArr
+        item['view_count'] = item.post_view_count
+        return item
+      })
+      // console.log(arr);
+      state.list = state.list.concat(arr ? arr : []);
+    })
+}
+// 我回复的
+const getCommentBytype = async(type: number) => {
+   await communityApi.getCommentBytype({
+      type,
+      page: state.page,
+      limit: state.pageSize
+    }).then((res: any) => {
+      // console.log(res.data);
+      state.list = state.list.concat(res.data ? res.data : []);
+      
+    })
+
+}
+// 屏蔽用户
+const operatePopupRef = ref()
+const getAddBlockedProfiles = async () => {
+  await communityApi.getAddBlockedProfiles({
+    blocked_user_id: state.id, 
+    reason: '',
+  }).then((res: any) => {
+    showTips(res.msg)
+    setTimeout(() => {
+      routerBack(1)
+    }, 1000);
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -237,14 +306,23 @@ const getUserInfo = async () => {
     position: relative;
     background: linear-gradient(180deg, #FFCF00 0%, #FFF2BA 45%, #FFFFFF 100%);
 
+
     .back {
       display: inline-block;
       width: 68rpx;
       height: 68rpx;
       position: absolute;
       left: 35rpx;
-      top: 8%;
     }
+    .shield {
+      display: inline-block;
+      width: 58rpx;
+      height: 58rpx;
+      position: absolute;
+      right: 35rpx;
+      top: 38%;
+    }
+    
     .introduce {
       font-size: 24rpx;
       font-weight: 400;
@@ -283,7 +361,7 @@ const getUserInfo = async () => {
       line-height: 40rpx;
       color: #898784;
       position: relative;
-      margin-right: 60rpx;
+      margin: 0 30rpx;
     }
     .textAct {
       color: #232322;

@@ -13,7 +13,7 @@
         class="head mr25 mt10"
         :src="
           state.avatar ? state.avatar : '../../static/community/headimg.png'
-        "></image>
+        " @click="homePage"></image>
       <text class="name">{{ state.nickname }}</text>
     </view>
     <!--  -->
@@ -281,22 +281,45 @@
           type="2d"
           id="myCanvas"
           class="cansStyle"
-          style="width: 300px; height: 375px;" />
+          style="width: 300px; height: 375px" />
       </view>
       <view class="footer p35-0">
         <view class="rows flex">
-          <view class="item">
+          <view
+            class="item"
+            @click="downCanvas">
             <image
               class="icon"
               src="/@/static/community/poster.png"></image>
             <view class="text">保存海报</view>
           </view>
-          <view class="item">
+          <!-- #ifdef APP-PLUS -->
+          <view
+            class="item"
+            @click="wxShare">
             <image
               class="icon"
               src="/@/static/community/wechat.png"></image>
             <view class="text">微信</view>
           </view>
+          <!-- #endif -->
+          <!-- #ifdef MP-WEIXIN -->
+          <button
+            class="item"
+            open-type="share"
+            style="
+              display: inline-block;
+              height: 120rpx;
+              line-height: 1;
+              background-color: transparent;
+              border: none;
+            ">
+            <image
+              class="icon"
+              src="/@/static/community/wechat.png"></image>
+            <view class="text">微信</view>
+          </button>
+          <!-- #endif -->
         </view>
         <view class="close mt30 pt20">
           <text
@@ -334,13 +357,12 @@
 </template>
 
 <script setup lang="ts">
-import { onLoad } from '@dcloudio/uni-app';
-import { reactive, ref } from 'vue';
-import share from './share.vue';
+import { onLoad, onShareAppMessage } from '@dcloudio/uni-app';
+import { getCurrentInstance, reactive, ref } from 'vue';
 import operatePopup from '/@/components/operatePopup.vue';
 import addComment from '/@/components/addComment.vue';
 import { useI18n } from 'vue-i18n';
-import { routerBack, showTips } from '/@/utils/currentFun';
+import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import Community from '/@/api/community';
 const communityApi = new Community();
 const { t } = useI18n();
@@ -374,6 +396,7 @@ const state = reactive({
   shareCount: 0, // 转发量
   commentList: [] as any[], // 评论列表
   cdisabled: '',
+  canvasBase64: '',
   show: false
 });
 const operatePopupRef = ref();
@@ -489,15 +512,14 @@ const getLikeOrCollect = (
     });
 };
 
-
 // canvas相关
-const ctx = ref()
+const ctx = ref();
 const openShow = () => {
-  state.show = true
+  state.show = true;
   setTimeout(() => {
-    canvasInit()
+    canvasInit();
   }, 500);
-}
+};
 const canvasInit = () => {
   uni
     .createSelectorQuery()
@@ -505,9 +527,9 @@ const canvasInit = () => {
     // @ts-ignore
     .fields({ node: true, size: true })
     .exec((res) => {
-      if( !res ) {
-        showTips('绘制异常')
-        return
+      if (!res) {
+        showTips('绘制异常');
+        return;
       }
       // console.log(res[0]);
       uni.showLoading({
@@ -524,58 +546,13 @@ const canvasInit = () => {
       let canvasH = canvas.height;
       console.log(canvasW);
       console.log(canvasH);
-      
-      
-      
+
       // 清除画布
-      ctx.value.clearRect(0, 0, canvasW, canvasH)
+      ctx.value.clearRect(0, 0, canvasW, canvasH);
       // 设置填充颜色为红色
       ctx.value.fillStyle = '#ffffff';
       // 填充一个矩形来作为背景
       ctx.value.fillRect(0, 0, canvasW, canvasH);
-      // 绘制banner图
-      uni.downloadFile({
-        url: 'https://ritmohub.cn/static/loginBg.png',
-        success: function(res) {
-          // console.log(res.tempFilePath);
-          const img = canvas.createImage()
-          img.src = res.tempFilePath
-          img.onload = () => {
-            ctx.value.drawImage(img, 0, 0, canvasW, canvasH * 0.66)
-            // 绘制昵称
-            ctx.value.font = '40px Microsoft YaHei';
-            ctx.value.fillStyle = 'black';
-            ctx.value.fillText(state.nickname, 60 * dpr, 251*dpr);
-            ctx.value.save();
-            // 绘制头像
-            uni.downloadFile({
-              url: state.avatar,
-              success: function(res1) {
-                // console.log(res1.tempFilePath);
-                const img1 = canvas.createImage()
-                img1.src = res1.tempFilePath
-                img1.onload = () => {
-                  ctx.value.save();
-                  ctx.value.beginPath();
-                  
-                  ctx.value.arc(30 * dpr, 245 * dpr, 20 * dpr, 0, 2 * Math.PI)
-                  ctx.value.closePath();
-                  ctx.value.clip();
-                  // 计算图片绘制位置（使图片中心对准圆心）
-                  ctx.value.drawImage(img1, 10 * dpr, 225 * dpr, 60 * dpr, 60 * dpr); 
-                  ctx.value.stroke()
-                  ctx.value.restore();
-                  uni.hideLoading();
-                }
-              }, fail(result) {
-                  uni.hideLoading();
-              },
-            });
-          }
-        }, fail(result) {
-                  uni.hideLoading();
-              },
-      });
 
       // 绘制简介
       ctx.value.font = '40px Microsoft YaHei';
@@ -602,24 +579,126 @@ const canvasInit = () => {
         ctx.value.fillText(line, 15 * dpr, y);
       }
       // 绘制公司logo
-      const img2 = canvas.createImage()
-      img2.src = '../../static/logo1.png'
+      const img2 = canvas.createImage();
+      img2.src = '../../static/logo1.png';
       img2.onload = () => {
-        ctx.value.drawImage(img2, 20, 315 * dpr, 40* dpr, 40* dpr)
-      }
+        ctx.value.drawImage(img2, 20, 318 * dpr, 40 * dpr, 40 * dpr);
+      };
       // 绘制公司名称
       ctx.value.font = '38px Microsoft YaHei';
       ctx.value.fillStyle = 'black';
       ctx.value.fillText('Ritmohub', 55 * dpr, canvasH * 0.92);
+      // 绘制banner图
+      uni.downloadFile({
+        url: 'https://ritmohub.cn/static/loginBg.png',
+        success: function (res) {
+          // console.log(res.tempFilePath);
+          const img = canvas.createImage();
+          img.src = res.tempFilePath;
+          img.onload = () => {
+            ctx.value.drawImage(img, 0, 0, canvasW, canvasH * 0.66);
+            // 绘制昵称
+            ctx.value.font = '40px Microsoft YaHei';
+            ctx.value.fillStyle = 'black';
+            ctx.value.fillText(state.nickname, 60 * dpr, 251 * dpr);
+            ctx.value.save();
+            // 绘制头像
+            uni.downloadFile({
+              url: state.avatar,
+              success: function (res1) {
+                // console.log(res1.tempFilePath);
+                const img1 = canvas.createImage();
+                img1.src = res1.tempFilePath;
+                img1.onload = () => {
+                  ctx.value.save();
+                  ctx.value.beginPath();
 
-    })
-  
+                  ctx.value.arc(30 * dpr, 245 * dpr, 20 * dpr, 0, 2 * Math.PI);
+                  ctx.value.closePath();
+                  ctx.value.clip();
+                  // 计算图片绘制位置（使图片中心对准圆心）
+                  ctx.value.drawImage(
+                    img1,
+                    10 * dpr,
+                    225 * dpr,
+                    60 * dpr,
+                    60 * dpr
+                  );
+                  ctx.value.stroke();
+                  ctx.value.restore();
+                  state.canvasBase64 = canvas.toDataURL();
+                  uni.hideLoading();
+                };
+              },
+              fail(result) {
+                uni.hideLoading();
+              }
+            });
+          };
+        },
+        fail(result) {
+          uni.hideLoading();
+        }
+      });
+    });
 };
 const shareClose = () => {
-  ctx.value.clearRect(10, 10, 150, 75)
+  ctx.value.clearRect(10, 10, 150, 75);
+  state.canvasBase64 = '';
   setTimeout(() => {
-    state.show = false 
+    state.show = false;
   });
+};
+// 下载canvas
+const downCanvas = () => {
+  uni.saveImageToPhotosAlbum({
+    // 保存本地
+    filePath: state.canvasBase64,
+    success: (response) => {
+      console.log(response, 'success');
+    },
+    fail: (response) => {
+      console.log(response, 'error');
+    }
+  });
+};
+const wxShare = () => {
+  uni.share({
+    provider: 'weixin',
+    scene: 'WXSceneSession',
+    type: 2,
+    title: state.title,
+    imageUrl: state.imagesArr[0],
+    success: function (res) {
+      getAddShareCount();
+      console.log('success:' + JSON.stringify(res));
+    },
+    fail: function (err) {
+      console.log('fail:' + JSON.stringify(err));
+    }
+  });
+};
+onShareAppMessage(() => {
+  getAddShareCount();
+  return {
+    title: state.title, //标题
+    path: `/pages/community/details?id=${state.id}`, //可以指定动态路径
+    imageUrl: state.imagesArr[0], //分享图
+    desc: state.content
+  };
+});
+const getAddShareCount = () => {
+  communityApi
+    .getAddShareCount({
+      post_id: state.id
+    })
+    .then((res: any) => {
+      getInfo();
+    });
+};
+// 个人中心
+const homePage = () => {
+  routerTo(`/pages/community/homepage?id=${state.id}&isUser=${state.isUser}`, true)
 }
 </script>
 
@@ -808,7 +887,7 @@ const shareClose = () => {
   font-size: 20rpx;
   margin-left: 10rpx;
 }
-// 
+//
 .share {
   position: fixed;
   left: 0;
@@ -842,6 +921,9 @@ const shareClose = () => {
       .item {
         flex: 1;
         text-align: center;
+        &::after {
+          border: none !important;
+        }
         .icon {
           display: inline-block;
           width: 80rpx;

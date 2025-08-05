@@ -74,6 +74,72 @@ export default class Community extends Request {
       data
     });
   }
+  // 添加分享数
+  getAddShareCount(data: object) {
+    return this.post({
+      url: '/api/community/addShareCount',
+      data
+    });
+  }
+  // 查看自己主页
+  getCommunityProfiles(data: object) {
+    return this.post({
+      url: '/api/community/communityProfiles',
+      data
+    });
+  }
+  // 我收藏的帖子
+  getMyCollectsList(data: object) {
+    return this.post({
+      url: '/api/community/myCollectsList',
+      data
+    });
+  }
+  // 查看别人页面
+  getOneProfiles(data: object) {
+    return this.post({
+      url: '/api/community/getOneProfiles',
+      data
+    });
+  }
+  getOneProfilesPostList(data: object) {
+    return this.post({
+      url: '/api/community/getOneProfilesPostList',
+      data
+    });
+  }
+  // 我回复的
+  getCommentBytype(data: object) {
+    return this.post({
+      url: '/api/community/commentBytype',
+      data
+    });
+  }
+  // 屏蔽用户
+  getAddBlockedProfiles(data: object) {
+    return this.post({
+      url: '/api/community/addBlockedProfiles',
+      data
+    });
+  }
+  // 屏蔽列表
+  getBlockedProfilesList(data: object) {
+    return this.post({
+      url: '/api/community/getBlockedProfilesList',
+      data
+    });
+  }
+  // 解除屏蔽
+  getDelBlockedProfiles(data: object) {
+    return this.post({
+      url: '/api/community/delBlockedProfiles',
+      data
+    });
+  }
+
+
+
+
 
 
 }
