@@ -1,51 +1,79 @@
 <template>
-  <view class="content">
-    <view class="position">
+  <view class="content"
+    :style="{
+      paddingTop: state.navAllHeight + 'rpx'
+    }">
+    <view class="position" @click="() => {
+        state.regionShow = true
+      }">
       <image class="back" src="../../static/iconLeftBlack.png"></image>
       <view class="city">
-        丽水
+        {{ state.city }}
         <image class="cityIcon" src="../../static/iconDownBlack.png"></image>
       </view>
+    </view>
+    <view class="position">
       <view class="input">
-        <u-input v-model="state.value" :border="false" placeholder="位置/民宿名/编号" />
+        <u-input v-model="state.keyword" :border="false" :placeholder="t('Pleaseenterkeywords')" />
       </view>
-      <view class="myPlace">
+      <!-- #ifdef MP-WEIXIN -->
+      <view class="myPlace" @click="getLocation">
         <image class="myPlaceIcon" src="../../static/myPlace.png"></image>
-        <view class="text">我的位置</view>
+        <view class="text">{{ t('position') }}</view>
       </view>
+      <!-- #endif -->
     </view>
     <!--  -->
-    <view class="range p25-0">
-      <view class="date">
-        5月9日
-        <view class="week">明天</view>
+    <view class="range p25-0" @click="state.calendarShow = true">
+      <view class="date" :style="{
+        color: state.startDate ? '#000000' : '#c0c4cc'
+      }">
+        {{ state.startDate ? strToFormatDate(state.startDate) : t('Selectdate') }}
+        <view class="week" v-if="state.startWeek">{{ state.startWeek }}</view>
         <view class="icon">-</view>
-        5月9日
-        <view class="week">周二</view>
+        {{ state.endDate ? strToFormatDate(state.endDate) : t('Selectdate') }}
+        <view class="week" v-if="state.endWeek">{{ state.endWeek }}</view>
       </view>
       <view class="day">
-        共4晚
+        {{ t('total1') }}{{ state.day }}{{ t('evening') }}
       </view>
     </view>
     <!--  -->
-    <view class="count p25-0">
-      人数/床数/居室数 <image class="icon ml5" src="../../static/iconDownBlack.png"></image>
+    <view class="count p25-0" @click="homestayHomeFilterRef.openDialog({
+      beds: state.beds,
+      house: state.house,
+      nums: state.nums,
+    })">
+      <text class="">
+        {{ state.beds || state.house || state.nums ? `${state.nums}人/${state.beds}张床/${state.house}间房` : t('peoplebedsbedrooms') }} 
+      </text>
+      <image class="icon ml5" src="../../static/iconDownBlack.png"></image>
     </view>
     <!--  -->
     <view class="tags">
-      <view class="tag tagAct">古堰画乡景区</view>
-      <view class="tag">杨家塘村</view>
-      <view class="tag">仙都景区</view>
+      <view class="tag mr15 mb15" :class=" state.tagIdx.includes(item.id) ? 'tagAct' : '' " v-for="item in state.tagList" :key="item.id" @click=" tagClick(item.id) ">{{ state.type == 'zh' ? item.name : item.name_en }}</view>
     </view>
-    <view class="btn mt35" @click="routerTo(`/pages/homestay/list`)">
-      开始搜索
+    <view class="btn mt35" @click="sumbit">
+      {{ t('search') }}
     </view>
     <!--  -->
     <view class="hot mt25">
-      民宿推荐
-      <image class="icon" src="../../static/rightBlack.png"></image>
+      {{ t('Recommendedhomestays') }}
+      <!-- <image class="icon" src="../../static/rightBlack.png"></image> -->
     </view>
-    <!--  -->
+      <communityList :list="state.communityList"> </communityList>
+      <u-empty
+        :text="t('Nodata')"
+        mode="favor"
+        v-if="!state.communityList?.length"
+        margin-top="120"
+        icon-size="200"></u-empty>
+    <!-- 选择城市 -->
+     <u-picker mode="region" v-model="state.regionShow" :isArea="false" @confirm="cityConfirm"></u-picker>
+    <!-- 日期范围 -->
+     <u-calendar v-model="state.calendarShow" mode="range" :min-date="state.minDate" max-date="2030-12-31" @change="calendarChange"></u-calendar>
+    <!-- 筛选项 -->
+    <homestayHomeFilter ref="homestayHomeFilterRef" :isPrice="0" @refresh="filterChange"/>
   </view>
 </template>
 
@@ -53,16 +81,149 @@
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app';
 import { routerTo, showTips } from '/@/utils/currentFun';
+import communityList from '/@/components/communityList.vue';
+import homestayHomeFilter from '/@/components/homestayHomeFilter.vue';
+import { strToFormatDate } from '/@/utils/currentFun'
 import { useI18n } from 'vue-i18n'
-import Login from '/@/api/login';
-const loginApi = new Login();
+import Homestay from '/@/api/homestay';
+const homestayApi = new Homestay();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
+  state.type = uni.getStorageSync('languageType') ? uni.getStorageSync('languageType') : 'zh'
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  state.minDate = new Date(new Date()).toISOString().split('T')[0]
+  getCondition()
+  getPostListByCity()
 });
 const state = reactive({
-  value: '',
+  type: '', // 语言
+  keyword: '',
+  navAllHeight: 0,
+  regionShow: false,
+  province: '山东省', // 浙江省
+  city: '济南市', // 金华市
+  // 日期范围
+  minDate: '',
+  startDate: '',
+  endDate: '',
+  startWeek: '',
+  endWeek: '',
+  // 
+  day: 0,
+  beds: 0, // 床数
+  house: 0, // 房型
+  nums: 0, // 人数
+  tagIdx: [] as number[],
+  tagList: [] as any[],
+  communityList: [] as any[],
+  calendarShow: false,
 })
+const homestayHomeFilterRef = ref()
+// 城市回调
+const cityConfirm = (e: any) => {
+  console.log(e);
+  state.province = e.province.name
+  state.city = e.city.name
+  getPostListByCity()
+}
+// 获取当前城市
+const getLocation = () => {
+  uni.getLocation({
+    type: 'wgs84', // 坐标系类型，可选wgs84/gcj02
+    altitude: true, // 获取高度信息
+    isHighAccuracy: true, // 高精度定位
+    success: async(res) => {
+      // console.log('经度：' + res.longitude);
+      // console.log('纬度：' + res.latitude);
+      await homestayApi.getStaticAmapRegeo({
+        longitude: res.longitude,
+        latitude: res.latitude,
+      }).then((res: any) => {
+        // console.log(res.data.addressComponent);
+        state.province = res.data.addressComponent.province
+        state.city = res.data.addressComponent.city
+        getPostListByCity()
+      })
+    },
+    fail: (err) => {
+      console.error('获取位置失败：', err);
+    }
+  });
+  
+}
+// 日期范围
+const calendarChange = (e: { startDate: string, endDate: string, startWeek: string, endWeek: string,  }) => {
+  console.log(e);
+  state.startDate = e.startDate
+  state.endDate = e.endDate
+  state.startWeek = e.startWeek
+  state.endWeek = e.endWeek
+  state.day = calculateDaysBetweenDates(state.startDate, state.endDate)
+} 
+const calculateDaysBetweenDates = (startDateStr: string, endDateStr: string) => {
+  // 将字符串转换为日期对象
+    const startDate: any = new Date(startDateStr);
+    const endDate: any = new Date(endDateStr);
+ 
+    // 获取两个日期之间的毫秒差
+    const differenceInMilliseconds = endDate - startDate;
+ 
+    // 将毫秒差转换为天数
+    const days = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+ 
+    // 由于我们想要整数天数，可以使用Math.floor或者Math.ceil（取决于你的需求）
+    return Math.floor(days-1)
+}
+// 根据城市获取关键词
+const getCondition = async() => {
+  await homestayApi.getCondition({}).then((res: any) => {
+    // console.log(res.data.filterList[1].value);
+    let str = res.data.filterList[1].value
+    state.tagList = str.filter((item: { id: number; }) => item.id != 0)
+  })
+}
+// 根据城市获取帖子
+const getPostListByCity = async() => {
+  await homestayApi.getPostListByCity({
+    city: state.city,
+    page: 1,
+    limit: 20,
+  }).then((res: any) => {
+    // console.log(res.data.posts);
+    state.communityList = res.data.posts
+  })
+}
+// 弹窗回调
+const filterChange = (rows: { beds: number; house: number; nums: number; }) => {
+  console.log(rows);
+  state.beds = rows.beds
+  state.house = rows.house
+  state.nums = rows.nums
+}
+// tag标签多选
+const tagClick = (id: number) => {
+  let arrIdx = state.tagIdx.findIndex((item: number) => item == id)
+  if( arrIdx == -1 ) {
+    state.tagIdx.push(id)
+  } else {
+    state.tagIdx.splice(id, 1)
+  }
+}
+// 提交
+const sumbit = () => {
+  // 
+  if( !state.startDate ) {
+    showTips(`${t('Selectdate')}`)
+    return
+  }
+  if( !state.beds || !state.house || !state.nums ) {
+    showTips(`${t('Pleaseselect')}${t('peoplebedsbedrooms')}`)
+    return
+  }
+  routerTo(`/pages/homestay/list?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&tagIdx=${state.tagIdx ? state.tagIdx.toString() : ''}&keyword=${state.keyword}&province=${state.province}&city=${state.city}&startWeek=${state.startWeek}&endWeek=${state.endWeek}`, true)
+}
 </script>
 
 <style >
@@ -87,7 +248,6 @@ page {
       text-align: center;
       height: 38rpx;
       line-height: 38rpx;
-      border-right: 1PX solid #F5F3EF;
       margin: 16rpx 20rpx 0 0;
       font-weight: 600;
       font-size: 36rpx;
@@ -97,6 +257,9 @@ page {
         width: 24rpx;
         height: 28rpx;
       }
+    }
+    .input {
+      width: calc( 100% - 100rpx );
     }
     .myPlace {
       width: 100rpx;
@@ -121,7 +284,7 @@ page {
     border-top: 1PX solid #F5F3EF;
     border-bottom: 1PX solid #F5F3EF;
     .date {
-      width: calc( 100% - 110rpx );
+      width: calc( 100% - 120rpx );
       font-weight: 600;
       font-size: 36rpx;
       view {
@@ -140,7 +303,7 @@ page {
     }
     .day {
       text-align: right;
-      width: 110rpx;
+      width: 125rpx;
       line-height: 54rpx;
     }
   }
@@ -155,15 +318,16 @@ page {
     }
   }
   .tags {
-    display: flex;
+    overflow: hidden;
     .tag {
-      display: inline-block;
+      float: left;
       padding: 0 20rpx;
       line-height: 50rpx;
       font-weight: 400;
       font-size: 24rpx;
       color: #898784;
       border-radius: 5rpx;
+      background: #f1f1f1;
     }
     .tagAct {
       background: #FFC75B29;

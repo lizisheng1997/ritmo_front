@@ -4,10 +4,15 @@
       <view class="hotel mb25">
         <image
           class="banner mr20"
-          src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
+          :src="state.info.images"></image>
         <view class="center">
-          <view class="name mt10">房型一</view>
-          <view class="text">60㎡ · 2室1厅2卫 · 2床 · 可住4人</view>
+          <view class="name mt10">{{ state.info.name }}</view>
+          <view class="text">
+            {{ state.info.area }}㎡ ·{{ state.info.floors }}{{ t('floor') }} ·
+            {{ state.info.types }}{{ t('chamber') }} · {{ state.info.beds
+            }}{{ t('beds') }} · {{ t('Checkin') }}{{ state.info.livenums
+            }}{{ t('people') }}
+          </view>
         </view>
       </view>
       <!--  -->
@@ -18,43 +23,58 @@
           style="display: flex">
           <view class="date mr45">
             <view class="day">
-              5月9日
-              <text class="week">明天</text>
+              {{ strToFormatDate(state.startDate) }}
+              <text class="week">{{ state.startWeek }}</text>
             </view>
             <view class="text"> 入住时间: 14:00以后 </view>
           </view>
           <view class="date">
             <view class="day">
-              5月9日
-              <text class="week">明天</text>
+              {{ strToFormatDate(state.endDate) }}
+              <text class="week">{{ state.endWeek }}</text>
             </view>
             <view class="text"> 离店时间: 12:00以前 </view>
           </view>
         </view>
-        <view class="num"> 共4晚 </view>
+        <view class="num"> 共{{ state.day }}晚 </view>
       </view>
       <!--  -->
       <view class="form">
         <view class="li p15-0">
           <view class="label">房间数 </view>
-          <view class="text"> 1间(每间可入住两人） </view>
+          <view class="text">
+            {{ state.info.types }}{{ t('chamber') }}({{ t('Checkin')
+            }}{{ state.info.livenums }}{{ t('people') }}）
+          </view>
         </view>
         <view class="li p15-0">
           <view class="label">入住人 <text class="icon">*</text></view>
           <view class="input">
-            <u-input
-              v-model="state.value"
-              :border="false"
-              placeholder="每间房填写一位入住人信息" />
+            <input
+              v-model="state.lodgersName"
+              placeholder="每间房填写一位入住人信息"
+              style="
+              " />
           </view>
         </view>
         <view class="li p15-0">
           <view class="label">手机号 <text class="icon">*</text></view>
           <view class="input">
-            <u-input
-              v-model="state.value"
-              :border="false"
+            <input
+              class=""
+              type="number"
+              maxlength="11"
+              v-model="state.lodgersPhone"
               placeholder="用于接受信息和预订" />
+          </view>
+        </view>
+        <view class="li p15-0">
+          <view class="label">备注 </view>
+          <view class="input">
+            <input
+              class=""
+              v-model="state.memo"
+              placeholder="请输入备注"/>
           </view>
         </view>
       </view>
@@ -62,33 +82,30 @@
     <!--  -->
     <view class="priceCrad mt25 p25">
       <view class="price">
-        <view class="label">价格明细</view>
+        <view class="label">{{ t('Pricebreakdown') }}</view>
         <view
           class="text"
           style="color: #ff3434">
-          共
+          {{ t('total') }}
           <text
             class=""
             style="font-size: 26rpx"
             >¥</text
           >
-          1152
+          {{ state.price }}
         </view>
       </view>
-      <view class="li m25-0">
-        <view class="label">房费（¥288*1间*4晚）</view>
+      <view
+        class="li m25-0 pb25"
+        v-for="item in state.houseList"
+        :key="item.id">
+        <view class="label"
+          >入住日期：{{ strToFormatDate(item.day_time_text) }}</view
+        >
         <view
           class="text"
           style="color: #898784"
-          >¥1152</view
-        >
-      </view>
-      <view class="li">
-        <view class="label">促销活动</view>
-        <view
-          class="text"
-          style="color: #ff3434"
-          >-¥10</view
+          >¥{{ item.price }}</view
         >
       </view>
     </view>
@@ -97,30 +114,215 @@
       <view class="left">
         <view class="price">
           <text class="text"> {{ t('total') }} : </text>
-          <text class="num">¥100</text>
+          <text class="num">¥{{ state.price }}</text>
         </view>
       </view>
-      <view class="right">
-       去支付
+      <view
+        class="right"
+        @click="submit">
+        去支付
       </view>
     </view>
+    <!-- 支付 -->
+    <payPopup
+      ref="payPopupRef"
+      :isType="1"
+      @refresh="
+        (show, type, id) => {
+          if (show) {
+            getHouseOrderPay( type, id);
+          }
+        }"></payPopup>
+    <!--  -->
+    <operatePopup
+      ref="operatePopupRef"
+      :isType="1"
+      @refresh="
+        (show, obj) => {
+          if (show) {
+            getHouseOrderAdd();
+          }
+        }
+      "></operatePopup>
   </view>
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue';
-import bottomOperation from '/@/components/bottomOperation.vue';
+import operatePopup from '/@/components/operatePopup.vue';
+import payPopup from '/@/components/payPopup.vue';
+import { getRequestPayment, getRequestWxLogin, strToFormatDate } from '/@/utils/currentFun';
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
-import Login from '/@/api/login';
 import { onLoad } from '@dcloudio/uni-app';
+import Login from '/@/api/login';
+import Homestay from '/@/api/homestay';
+const homestayApi = new Homestay();
 const loginApi = new Login();
 const { t } = useI18n();
 
-onLoad((query?: AnyObject | undefined): void => {});
-const state = reactive({
-  value: ''
+onLoad((query?: AnyObject | undefined): void => {
+  console.log(query);
+  state.type = uni.getStorageSync('languageType')
+    ? uni.getStorageSync('languageType')
+    : 'zh';
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  // @ts-ignore
+  state.terminalPay = getApp().globalData.terminalPay
+  state.id = query!.id;
+  state.houseId = query!.houseId;
+  state.startDate = query!.startDate;
+  state.endDate = query!.endDate;
+  state.startWeek = query!.startWeek;
+  state.endWeek = query!.endWeek;
+
+  state.day = Number(query!.day);
+  state.beds = Number(query!.beds);
+  state.house = Number(query!.house);
+  state.nums = Number(query!.nums);
+  // state.pageType = Number(query!.pageType);
+  if (state.pageType == 0) getInfo();
 });
+// 参数
+const operatePopupRef = ref();
+const payPopupRef = ref()
+const state = reactive({
+  type: '', // 语言
+  pageType: 0, // 0预约进入
+  id: '', // 民宿id
+  houseId: '', // 房间id
+  terminalPay: '',
+  //
+  startDate: '2025-08-13',
+  endDate: '2025-08-20',
+  startWeek: '',
+  endWeek: '',
+  //
+  day: 0,
+  beds: 3, // 床数
+  house: 0, // 房型
+  nums: 2, // 人数
+  info: {
+    name: '',
+    area: 0,
+    floors: 0,
+    types: 0,
+    beds: 0,
+    livenums: 0,
+    images: ''
+  },
+  houseList: [] as any[], // 每一天价格数组
+  price: 0,
+  lodgersName: '', // 入住人
+  lodgersPhone: '', // 手机号
+  memo: '', // 备注
+  orderId: '', // 备注
+});
+// 详情
+const getInfo = async () => {
+  await homestayApi
+    .getHouseBooking({
+      id: state.houseId,
+      start_time: state.startDate,
+      end_time: state.endDate
+    })
+    .then((res: any) => {
+      console.log(res.data.detail);
+      state.info.name =
+        state.type == 'zh' ? res.data.detail.name : res.data.detail.name_en;
+      state.info.area = res.data.detail.area;
+      state.info.floors = res.data.detail.floors;
+      state.info.types = res.data.detail.types;
+      state.info.beds = res.data.detail.beds;
+      state.info.livenums = res.data.detail.livenums;
+      state.info.images = res.data.detail.images[0];
+      calculatePrice(res.data.detail.calendar);
+    });
+};
+// 计算价格
+const calculatePrice = (arr: any[]) => {
+  state.price = 0;
+  state.houseList = [];
+  let sIdx = arr.findIndex((item) => item.day_time_text == state.startDate);
+  let eIdx = arr.findIndex((item) => item.day_time_text == state.endDate);
+  // console.log(sIdx);
+  // console.log(eIdx);
+
+  arr.forEach((item, index) => {
+    if (index >= sIdx && index < eIdx) {
+      state.houseList.push(item);
+      state.price += Number(item.price);
+    }
+  });
+};
+// 支付
+const submit = () => {
+  if (!state.lodgersName) {
+    showTips('请输入入住人');
+    return;
+  }
+  if (!state.lodgersPhone) {
+    showTips('请输入手机号');
+    return;
+  }
+  operatePopupRef.value.openDialog('是否继续支付', {id: -1});
+};
+const getHouseOrderAdd = async() => {
+  await homestayApi.getHouseOrderAdd({
+    id: state.houseId,
+    platform: state.terminalPay == 'wechat' ? 'miniapp' : 'APP',
+    memo: state.memo,
+    nums: state.nums,
+    start_time: state.startDate,
+    end_time: state.endDate,
+    lodgers_name: state.lodgersName,
+    lodgers_phone: state.lodgersPhone,
+  }).then((res: any) => {
+    // console.log(res);
+    payPopupRef.value.openDialog(res.data.id);
+  })
+};
+// 
+const getHouseOrderPay = async(type: string, orderId: string) => {
+  console.log(type, orderId);
+  
+  await homestayApi.getHouseOrderPay({
+    id: orderId,
+    paytype: type == 'wxpay' ? 'wechat' : type == 'alipay' ? 'alipay' : 'stripe',
+    method: state.terminalPay == 'wechat' ? 'miniapp' : 'app',
+  }).then((res: any) => {
+    // console.log(res);
+    getRequestPayment(type, res.data).then((res) => {
+      setTimeout(() => {
+        uni.reLaunch({
+          url: '/pages/user/index'
+        })
+      }, 1500);
+    }).catch((err) => {
+      console.log(err);
+      
+      
+    })
+  }).catch((err) => {
+      console.log(err);
+      if( err.code == 509 ) {
+        getRequestWxLogin().then((res) => {
+          loginApi.getWxLogin({
+            code: res,
+            nickName: uni.getStorageSync('userInfos').nickname,
+            avatarUrl: uni.getStorageSync('userInfos').avatar_url
+          }).then( (res: any) => {
+            setTimeout(() => {
+              getHouseOrderPay(type, orderId)
+            }, 500);
+          }).catch( (res) => {
+          })
+        })
+      }
+
+  })
+}
 </script>
 
 <style>
@@ -130,6 +332,7 @@ page {
 </style>
 <style lang="scss" scoped>
 .content {
+  padding-bottom: 230rpx;
   .hotelCard {
     box-shadow: 0px 4px 10px 0px #c4c1c1;
     background-color: #ffffff;
@@ -207,6 +410,17 @@ page {
             color: #ff0000;
           }
         }
+        .input {
+          height: 70rpx;
+          line-height: 70rpx;
+          width: calc( 100% - 160rpx );
+          input {
+            display: inline-block;
+            width: 100%;
+            height: 70rpx;
+            line-height: 70rpx;
+          }
+        }
         .text {
           font-weight: 500;
           font-size: 32rpx;
@@ -237,6 +451,10 @@ page {
     .li {
       display: flex;
       justify-content: space-between;
+      border-bottom: 1px solid #f1f1f1;
+      &:last-child {
+        border-bottom: none;
+      }
       .label {
         font-weight: 500;
         font-size: 28rpx;

@@ -199,6 +199,12 @@
 			}
 		},
     {
+			"path": "pages/user/homestayOrder",
+			"style": {
+				"navigationBarTitleText": ""
+			}
+		},
+    {
 			"path": "pages/user/myReservation",
 			"style": {
 				"navigationBarTitleText": ""

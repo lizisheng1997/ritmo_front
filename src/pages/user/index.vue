@@ -106,6 +106,15 @@
           <image class="icon" src="/@/static/rightAsh.png"></image>
         </view>
       </view>
+      <view class="li flex" @click="routerTo(`/pages/user/homestayOrder`, true)">
+        <view class="left">
+          <image class="icon" src="https://ritmohub.cn/static/user/menu5.png"></image>
+          {{ t('homestayOrder') }}
+        </view>
+        <view class="right">
+          <image class="icon" src="/@/static/rightAsh.png"></image>
+        </view>
+      </view>
       <view class="li flex" @click="routerTo(`/pages/user/myOrder?type=${ state.isInstitution ? 1 : 0 }`, true)">
         <view class="left">
           <image class="icon" src="https://ritmohub.cn/static/user/menu5.png"></image>

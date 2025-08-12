@@ -1,50 +1,78 @@
 <template>
   <view class="content">
-    <view class="homestayBanner">
-      <image class="image" src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
+    <view
+      class="homestayBanner"
+      v-if="state.images?.length">
+      <swiper
+        circular
+        indicator-dots
+        autoplay
+        style="height: 680rpx">
+        <swiper-item
+          v-for="(item, index) in state.images"
+          :key="index">
+          <image
+            :src="item"
+            style="width: 100%; height: 100%; display: inline-block"></image>
+        </swiper-item>
+        <view
+          class="count"
+          v-if="state.images.length >= 6"
+          >+{{ state.images.length }}</view
+        >
+      </swiper>
       <view class="swiper p10">
-        <image class="item" src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
-        <image class="item" src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
-        <image class="item" src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
-        <image class="item" src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
-        <image class="item" src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
-        <view class="count">+6</view>
+        <image
+          class="item"
+          :src="item"
+          v-for="(item, index) in state.images"
+          :key="index"></image>
+        <view
+          class="count"
+          v-if="state.images.length >= 6"
+          >+{{ state.images.length }}</view
+        >
       </view>
     </view>
     <!--  -->
     <view class="homestayCard p25">
       <view class="homestay">
-        <view class="name">飞茑集民宿（松阳店）</view>
-        <view class="details">
+        <view class="name">{{ state.name }}</view>
+        <!-- <view class="details">
           详情
           <image class="icon" src="../../static/rightBlack.png"></image>
-        </view>
+        </view> -->
       </view>
       <!--  -->
       <view class="evaluate mt25">
         <view class="div">
-          <image class="icon" src="../../static/community/starAct.png"></image>
-          <text class="num">4.9</text>
-          <text class="text">
-            “房间很干净,服务很好,风景很不错...”
+          <image
+            class="icon"
+            src="../../static/community/nav2.png"></image>
+          <text class="text mt5">
+            {{ state.intro }}
           </text>
         </view>
-        <view class="details ">
+        <!-- <view class="details ">
           285人已评价
           <image class="icon" src="../../static/rightBlack.png"></image>
-        </view>
+        </view> -->
       </view>
       <!--  -->
-      <view class="address mt35">
+      <view class="address mt15">
         <view class="text mt10">
-          民宿地址民宿地址民宿地址民宿地址民宿地址民宿地址
+          {{ state.address }}
         </view>
         <view class="btns">
           <view class="btn">
-            <u-icon name="phone-fill" color="#FFCF00"></u-icon>
+            <u-icon
+              name="phone-fill"
+              color="#FFCF00"
+              @click="makePhoneCall(state.phone)"></u-icon>
           </view>
           <view class="btn ml15">
-            <u-icon name="tags-fill" color="#FFCF00"></u-icon>
+            <u-icon name="star" color="#FFCF00" v-if="!state.isCollect" @click="getOptionCollect"></u-icon>
+            <u-icon name="star-fill" color="#FFCF00" v-else-if="state.isCollect" @click="getOptionCollect"></u-icon>
           </view>
         </view>
       </view>
@@ -53,78 +81,307 @@
     <view class="listCard p10">
       <view class="date p0-25">
         <view class="left">
-          <text class="text">5月9日</text>
-          <text class="day">明天</text>
-          <text class="count m0-25">4晚</text>
-          <text class="text">5月13日</text>
-          <text class="day">周二</text>
+          <text class="text">{{ strToFormatDate(state.startDate) }}</text>
+          <text class="day">{{ state.startWeek }}</text>
+          <text class="count m0-25"
+            >{{ calculateDaysBetweenDates(state.startDate, state.endDate)
+            }}{{ t('evening') }}</text
+          >
+          <text class="text">{{ strToFormatDate(state.endDate) }}</text>
+          <text class="day">{{ state.endWeek }}</text>
         </view>
-        <view class="hotel">1间·1人</view>
+        <view class="hotel"
+          >{{ state.house }}{{ t('rooms') }}·{{ state.nums
+          }}{{ t('people') }}</view
+        >
       </view>
       <view class="div">
-        <view class="li  p10">
-          <image class="banner" src="https://ritmohub.cn/uploads/homepage/en/en_carousel_1743043442.png"></image>
+        <view
+          class="li p10"
+          v-for="item in state.houseList"
+          :key="item.id">
+          <image
+            class="banner"
+            :src="item.images[0]"
+            v-if="item.images?.length"></image>
           <view class="center">
             <view class="name">
-              房型1
+              {{ state.type == 'zh' ? item.name : item.name_en }}
             </view>
             <view class="city m10-0">
-              60㎡ · 2室1厅2卫 · 2床 · 可住4人
+              {{ item.area }}㎡ ·{{ item.floors }}{{ t('floor') }} ·
+              {{ item.types }}{{ t('chamber') }} · {{ item.beds
+              }}{{ t('beds') }} · {{ t('Checkin') }}{{ item.livenums
+              }}{{ t('people') }}
             </view>
-            <view class="tags mt10">
-              <view class="tag">影音房</view>
-              <view class="tag">影音房</view>
-              <view class="tag">影音房</view>
+            <view
+              class="tags mt10"
+              v-if="item.tag_names?.length">
+              <view
+                class="tag"
+                v-for="(s, i) in item.tag_names"
+                :key="i"
+                >{{ state.type == 'zh' ? s : item.tag_names_en[i] }}</view
+              >
             </view>
             <view class="price">
               <text class="unit">￥</text>
-              <text class="num">388</text>
-              <text class="text">起</text>
-              <text class="btn ml25"  @click="routerTo(`/pages/homestay/order`)">订</text>
+              <text class="num">{{ item.house_price }}</text>
+              <text class="text">{{ t('rise') }}</text>
+              <text
+                class="btn ml25"
+                @click="
+                  () => {
+                    operatePopupRef.openDialog(t('submitanappointment'), {
+                      id: item.id
+                    });
+                  }
+                "
+                >{{ t('reserve') }}</text
+              >
             </view>
           </view>
         </view>
       </view>
     </view>
     <!--  -->
-    <view class="hotelTitle mt35 ml35">
-      房屋概况
+    <view class="tabs flex p20">
+      <view
+        class="text pb25"
+        :class="index == state.current ? 'textAct' : ''"
+        v-for="(item, index) in list"
+        :key="index"
+        @click="tabsClick(index)"
+        >{{ item }}</view
+      >
     </view>
-    <view class="introduceCard p25 ">
-      <view class="text">
-        融合自然与现代，位于风景秀丽的山间，周围绿树环绕，空气清新，是远离城市喧嚣、享受静谧时光的理想之地。
+    <view
+      class="introduceCard pb35"
+      v-if="state.current == 0 || state.current == 1">
+      <view
+        class="text"
+        v-if="state.current == 0">
+        <rich-text :nodes="state.content"></rich-text>
+        <view class="title mt30">房东信息</view>
+        <view class="card mt20">
+          <image class="head mr20" src="../../static/community/headimg.png"></image>
+          <view class="cardInfo mt8">
+            <view class="name">{{ state.owner }}</view>
+            <view class="mt5" style="color: #999;">{{ state.city }}</view>
+          </view>
+          <view class="btn mt20"
+              @click="makePhoneCall(state.ownerPhone)">联系房东</view>
+        </view>
       </view>
-      <view class="title m15-0">设施/服务</view>
-      <view class="text">
-        投影投影投影投影投影投影投影投影
+      <view
+        class="text"
+        v-if="state.current == 1">
+        <rich-text :nodes="state.fuwusheshi"></rich-text>
       </view>
     </view>
+    <div class="" v-if="state.current == 2">
+      <communityList :list="state.communityList"> </communityList>
+      
+      <u-empty
+        :text="t('Nodata')"
+        mode="favor"
+        v-if="!state.communityList?.length"
+        margin-top="80"
+        icon-size="200"></u-empty>
+    </div>
     <!--  -->
+    <operatePopup
+      ref="operatePopupRef"
+      :isType="1"
+      @refresh="
+        (show, obj) => {
+          if (show) {
+            orderTo(obj.id);
+          }
+        }
+      "></operatePopup>
   </view>
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, reactive, ref } from 'vue'
-import bottomOperation from '/@/components/bottomOperation.vue'
+import { defineAsyncComponent, reactive, ref } from 'vue';
+import { onLoad, onShow } from '@dcloudio/uni-app';
+import operatePopup from '/@/components/operatePopup.vue';
+import { strToFormatDate } from '/@/utils/currentFun'
 import { routerTo, showTips } from '/@/utils/currentFun';
-import { useI18n } from 'vue-i18n'
-import Login from '/@/api/login';
-import { onLoad } from '@dcloudio/uni-app';
-const loginApi = new Login();
-const { t } = useI18n()
+import { useI18n } from 'vue-i18n';
+import Homestay from '/@/api/homestay';
+const homestayApi = new Homestay();
+const { t } = useI18n();
 
 onLoad((query?: AnyObject | undefined): void => {
+  console.log(query);
+  state.type = uni.getStorageSync('languageType')
+    ? uni.getStorageSync('languageType')
+    : 'zh';
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  state.id = query!.id;
+  state.startDate = query!.startDate;
+  state.endDate = query!.endDate;
+  state.startWeek = query!.startWeek;
+  state.endWeek = query!.endWeek;
+
+  state.keyword = query!.keyword;
+  state.price = query!.price;
+  state.beds = Number(query!.beds);
+  state.house = Number(query!.house);
+  state.nums = Number(query!.nums);
 });
-// 
+onShow(() => {
+  getInfo();
+});
+// 参数
+let list = [t('HouseOverview'), t('FacilitiesServices'), t('RelatedPosts')];
+const operatePopupRef = ref();
+const state = reactive({
+  type: '', // 语言
+  id: '',
+  navAllHeight: 0,
+  // 日期范围
+  startDate: '',
+  endDate: '',
+  startWeek: '',
+  endWeek: '',
+  //
+  keyword: '',
+  price: '0-3000',
+  day: 0,
+  beds: 0, // 床数
+  house: 0, // 房型
+  nums: 0, // 人数
+  // 详情
+  images: [] as string[],
+  name: '',
+  city: '',
+  address: '',
+  phone: '',
+  intro: '',
+  content: '',
+  fuwusheshi: '',
+  owner: '',
+  ownerPhone: '',
+  isCollect: false,
+  current: 0,
+  houseList: [] as any[],
+  communityList: [] as any[],
+});
+// 详情
+const getInfo = async () => {
+  await homestayApi
+    .getStoreDetail({
+      id: state.id
+    })
+    .then((res: any) => {
+      console.log(res.data);
+      state.images = res.data.images;
+      state.name = state.type == 'zh' ? res.data.name : res.data.name_en;
+      state.city = res.data.city;
+      state.address =
+        state.type == 'zh' ? res.data.address : res.data.address_en;
+      state.intro = state.type == 'zh' ? res.data.intro : res.data.intro_en;
+      state.content =
+        state.type == 'zh' ? res.data.content : res.data.content_en;
+      state.phone = res.data.phone;
+      state.fuwusheshi = res.data.fuwusheshi;
+      state.isCollect = res.data.isCollect
+      state.owner = res.data.owner
+      state.ownerPhone = res.data.owner_phone
+      getHouseList();
+    });
+};
+// 获取房间列表
+const getHouseList = async () => {
+  await homestayApi
+    .getHouseList({
+      store_id: state.id,
+      calendar: `${state.startDate}/${state.endDate}`,
+      beds: state.beds,
+      keyword: state.keyword,
+      price: state.price,
+      house: state.house,
+      nums: state.nums,
+      limit: 20,
+      page: 1
+    })
+    .then((res: any) => {
+      console.log(res.data.data);
+      state.houseList = res.data.data;
+    });
+};
+const makePhoneCall = (phone: string) => {
+  uni.makePhoneCall({
+    phoneNumber: phone
+  });
+};
+const calculateDaysBetweenDates = (
+  startDateStr: string,
+  endDateStr: string
+) => {
+  // 将字符串转换为日期对象
+  const startDate: any = new Date(startDateStr);
+  const endDate: any = new Date(endDateStr);
+
+  // 获取两个日期之间的毫秒差
+  const differenceInMilliseconds = endDate - startDate;
+
+  // 将毫秒差转换为天数
+  const days = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+  // 由于我们想要整数天数，可以使用Math.floor或者Math.ceil（取决于你的需求）
+  return Math.floor(days - 1);
+};
+// 提交
+const orderTo = async(id: string) => {
+  routerTo(
+    `/pages/homestay/order?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&startWeek=${state.startWeek}&endWeek=${state.endWeek}&day=${state.day}&id=${state.id}&houseId=${id}&type=0`,
+    true
+  );
+};
+// tabs
+const tabsClick = (idx: number) => {
+  state.current = idx
+  if( state.current == 2) {
+    getPostListByCity()
+  }
+}
+// 根据城市获取帖子
+const getPostListByCity = async() => {
+  await homestayApi.getPostListByCity({
+    city: state.city,
+    page: 1,
+    limit: 20,
+  }).then((res: any) => {
+    // console.log(res.data.posts);
+    state.communityList = res.data.posts
+  })
+}
+// 收藏
+const getOptionCollect = async() => {
+  await homestayApi.getOptionCollect({
+    type: 1,
+    source_id: state.id,
+  }).then((res: any) => {
+    // console.log(res.data.posts);
+    showTips(res.data.msg)
+    getInfo()
+  })
+}
 </script>
 
-<style >
+<style>
 page {
   background-color: #f5f3ef;
 }
 </style>
 <style lang="scss" scoped>
 .content {
+  padding-bottom: 80rpx;
   .homestayBanner {
     width: 100%;
     height: 680rpx;
@@ -137,11 +394,11 @@ page {
     .swiper {
       position: absolute;
       left: 37rpx;
-      top: 390rpx;
+      top: 420rpx;
       display: flex;
       justify-content: space-between;
       width: 670rpx;
-      background-color: #FFFFFF;
+      background-color: #ffffff;
       border-radius: 16rpx;
       .item {
         display: inline-block;
@@ -161,12 +418,12 @@ page {
         font-weight: 500;
         font-size: 28rpx;
         text-align: center;
-        color: #FFFFFF;
+        color: #ffffff;
       }
     }
   }
   .homestayCard {
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     border-radius: 48rpx 0 48rpx 48rpx;
     margin-top: -60rpx;
     position: relative;
@@ -210,8 +467,7 @@ page {
         .num {
           font-weight: 500;
           font-size: 24rpx;
-          color: #FFCF00;
-
+          color: #ffcf00;
         }
         .text {
           display: inline-block;
@@ -243,9 +499,6 @@ page {
         line-height: 36rpx;
         color: #232322;
         width: 500rpx;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
       }
       .btns {
         display: flex;
@@ -262,10 +515,10 @@ page {
     }
   }
   .listCard {
-    margin: 10rpx;
+    margin: 35rpx 10rpx 10rpx;
     border-radius: 12rpx;
     box-shadow: 0px 4px 10px 0px #c4c1c1;
-    background-color: #FFFFFF;
+    background-color: #ffffff;
     .date {
       display: flex;
       justify-content: space-between;
@@ -282,7 +535,6 @@ page {
           font-weight: 500;
           font-size: 28rpx;
           color: #232322;
-
         }
         .count {
           font-weight: 500;
@@ -292,7 +544,7 @@ page {
           line-height: 18rpx;
           text-align: center;
           border-radius: 18rpx;
-          border: 1PX solid #232322;
+          border: 1px solid #232322;
           vertical-align: middle;
           margin-top: -10rpx;
         }
@@ -312,7 +564,7 @@ page {
           margin-right: 25rpx;
         }
         .center {
-          width: calc( 100% - 210rpx );
+          width: calc(100% - 210rpx);
           .name {
             font-weight: 600;
             font-size: 28rpx;
@@ -330,13 +582,12 @@ page {
               display: inline-block;
               padding: 10rpx 8rpx;
               border-radius: 5rpx;
-              background-color: #F5F3EF;
+              background-color: #f5f3ef;
               color: #898784;
               font-weight: 400;
               font-size: 16rpx;
               line-height: 1;
               margin-right: 15rpx;
-
             }
           }
           .price {
@@ -344,13 +595,12 @@ page {
             .unit {
               font-weight: 500;
               font-size: 20rpx;
-              color: #E93516;
-
+              color: #e93516;
             }
             .num {
               font-weight: 500;
               font-size: 36rpx;
-              color: #E93516;
+              color: #e93516;
             }
             .text {
               font-weight: 500;
@@ -362,7 +612,7 @@ page {
               width: 70rpx;
               line-height: 60rpx;
               text-align: center;
-              background-color: #FFCF00;
+              background-color: #ffcf00;
               border-radius: 16rpx;
               font-weight: 600;
               font-size: 28rpx;
@@ -370,33 +620,74 @@ page {
             }
           }
         }
-
       }
     }
   }
-  .hotelTitle {
-    font-weight: 600;
-    font-size: 40rpx;
-    line-height: 44rpx;
-    color: #232322;
-  }
   .introduceCard {
-    margin: 20rpx 10rpx 10rpx;
-    border-radius: 12rpx;
-    box-shadow: 0px 4px 10px 0px #c4c1c1;
-    background-color: #FFFFFF;
+    margin: 0 10rpx 0;
     .title {
       font-weight: 600;
       font-size: 32rpx;
       line-height: 44rpx;
       color: #232322;
     }
+    .card {
+      overflow: hidden;
+      .head {
+        float: left;
+        width: 100rpx;
+        height: 100rpx;
+        border-radius: 70rpx;
+      }
+      .cardInfo {
+        float: left;
+        .name {
+          font-size: 28rpx;
+        }
+      }
+      .btn {
+        float: right;
+        width: 160rpx;
+        line-height: 56rpx;
+        text-align: center;
+        border-radius: 16rpx;
+        background: #FFCF00;
+        color: #232322;
+      }
+    }
     .text {
+      padding: 20rpx 20rpx 30rpx;
       font-weight: 500;
       font-size: 24rpx;
       line-height: 36rpx;
       color: #232322;
+      border-radius: 12rpx;
+      box-shadow: 0px 4px 10px 0px #c4c1c1;
+      background-color: #ffffff;
+    }
+  }
+}
 
+.tabs {
+  border-bottom: 1px solid #f5f3ef;
+  .text {
+    font-size: 32rpx;
+    font-weight: 400;
+    line-height: 40rpx;
+    color: #898784;
+    position: relative;
+    margin-right: 60rpx;
+  }
+  .textAct {
+    color: #232322;
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40rpx;
+      height: 8rpx;
+      background-color: #ffcf00;
     }
   }
 }

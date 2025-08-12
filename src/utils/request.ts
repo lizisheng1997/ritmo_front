@@ -48,7 +48,12 @@ export default class Request {
           } else if( res.data.code == 200 ) {
             reslove(res.data);
           } else {
-            showTips(res.data.message)
+            if( options.url.includes('/v1') ) {
+              showTips(res.data.message)
+            } else {
+              showTips(res.data.msg)
+            }
+            
             reject(res.data);
           }
         },

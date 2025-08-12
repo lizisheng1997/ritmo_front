@@ -1,4 +1,6 @@
 import { baseUrl } from './request';
+import Login from '../api/login';
+// 
 // 成功提示
 export const showTips = (title: string) => {
   uni.showToast({
@@ -163,15 +165,17 @@ export const getRequestPayment = (
   // const appId = terminalPay === 'ios' ? 'appId' : 'appid';
   // console.log(obj);
 
+      console.log(obj);
   return new Promise((resolve, reject) => {
     if (provider == 'wxpay') {
+      
       uni.requestPayment({
         provider,
         // orderInfo: obj,
         // @ts-ignore
-        appid: obj.appid, // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
+        appid: obj.appId, // 微信开放平台 - 应用 - AppId，注意和微信小程序、公众号 AppId 可能不一致
         timeStamp: obj.timeStamp, // 时间戳（单位：秒）
-        package: 'prepay_id=' + obj.package, // 固定值
+        package: obj.package, // 固定值
         paySign: obj.paySign, //签名
         signType: obj.signType, // 签名算法，这里用的 MD5/RSA 签名
         nonceStr: obj.nonceStr,
@@ -218,3 +222,35 @@ export const getRequestPayment = (
     }
   });
 };
+// 微信重新授权
+export const getRequestWxLogin = () => {
+  // const loginApi = new Login();
+  // console.log(Login());
+  return new Promise((resolve, reject) => {
+    uni.login({
+      provider: 'weixin',
+      onlyAuthorize: true,
+      success: function (loginRes: { code: string; errMsg: string }) {
+        console.log(loginRes);
+        if( loginRes.errMsg == 'login:ok' ) {
+          resolve(loginRes.code)
+        } else {
+          reject(false)
+          showTips('授权失败')
+        }
+      },
+      fail(result) {
+        reject(false)
+          console.log(result);
+      },
+    });
+  })
+};
+// 格式转换  xxxx-xx-xx 月日
+export const strToFormatDate  = (inputDate: string) => {
+  const parts = inputDate.split('-');
+  if (parts.length === 3) {
+    return `${parts[1].padStart(2, '0')}月${parts[2].padStart(2, '0')}日`;
+  }
+  return inputDate; // 如果格式不正确，返回原字符串
+}
