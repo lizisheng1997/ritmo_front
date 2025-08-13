@@ -434,8 +434,8 @@ const getHouseOrderPay = async (type: string, orderId: string) => {
       method: state.terminalPay == 'wechat' ? 'miniapp' : 'app'
     })
     .then((res: any) => {
-      console.log(res);
-      getRequestPayment(type, res.data)
+      // console.log(res);
+      getRequestPayment(type, state.terminalPay == 'wechat' ? res.data : JSON.parse(res.data), state.terminalPay)
         .then((res) => {
           setTimeout(() => {
             uni.reLaunch({

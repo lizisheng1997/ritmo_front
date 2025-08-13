@@ -8,7 +8,7 @@
         @click="routerBack(1)"></image>
       <view class="city ml15">
         <view
-          class="cityName pl15"
+          class="cityName pl15 mt5"
           @click="
             () => {
               state.regionShow = true;
