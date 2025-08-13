@@ -102,8 +102,8 @@ const state = reactive({
   keyword: '',
   navAllHeight: 0,
   regionShow: false,
-  province: '山东省', // 浙江省
-  city: '济南市', // 金华市
+  province: '浙江省', // 省
+  city: '丽水市', // 市
   // 日期范围
   minDate: '',
   startDate: '',
@@ -202,10 +202,6 @@ const sumbit = () => {
   // 
   if( !state.startDate ) {
     showTips(`${t('Selectdate')}`)
-    return
-  }
-  if( !state.beds || !state.house || !state.nums ) {
-    showTips(`${t('Pleaseselect')}${t('peoplebedsbedrooms')}`)
     return
   }
   routerTo(`/pages/homestay/list?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&tagIdx=${state.tagIdx ? state.tagIdx.toString() : ''}&keyword=${state.keyword}&province=${state.province}&city=${state.city}`, true)

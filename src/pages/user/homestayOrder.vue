@@ -1,7 +1,7 @@
 <template>
   <view class="content">
     <!--  -->
-    <u-tabs :list="tabsList" :is-scroll="false" v-model="state.status" active-color="#ffcf00" @change="tabsChange"></u-tabs>
+    <u-tabs :list="tabsList" v-model="state.status" active-color="#ffcf00" @change="tabsChange"></u-tabs>
     <view class="list mt25 p0-35">
       <view
         class="li p10 mb25"
@@ -14,16 +14,16 @@
         <view class="center">
           <view class="name"> {{ state.type == 'zh' ? item.house.name : item.name_en }} </view>
           <view class="city m10-0">
-            订单编号：{{ item.orderid }}
+            {{ t('OrderNo') }}：{{ item.orderid }}
           </view>
           <view class="city m10-0">
-            下单时间：{{ item.leave_time_text }}
+            {{ t('Ordertime') }}：{{ item.leave_time_text }}
           </view>
           <view class="city m10-0">
-            订单金额：<text class="" style="color: #e93516;font-weight: 500;">￥{{ item.amount }}</text>
+            {{ t('orderamount') }}：<text class="" style="color: #e93516;font-weight: 500;">￥{{ item.amount }}</text>
           </view>
           <view class="city footer">
-            <text class="">订单类型：{{ item.type_text }}</text>
+            <text class="">{{ t('ordertype') }}：{{ item.type_text }}</text>
             <text class="btn">{{ state.type == 'zh' ? item.status_text : item.status }}</text>
           </view>
         </view>
@@ -59,13 +59,13 @@ onShow(() => {
 })
 // 参数 
 const tabsList = ref([
-  { name: '全部', key: '0' },
-  { name: '未支付', key: 'created' },
-  { name: '已支付', key: 'paid' },
-  { name: '已取消', key: 'canceled' },
-  { name: '已入住', key: 'checkined' },
-  { name: '退款中', key: 'refunding' },
-  { name: '已完成', key: 'finished' },
+  { name: t('Orderall'), key: 'all' },
+  { name: t('Ordercreated'), key: 'created' },
+  { name: t('Orderpaid'), key: 'paid' },
+  { name: t('Ordercanceled'), key: 'canceled' },
+  { name: t('Ordercheckined'), key: 'checkined' },
+  { name: t('Orderrefunding'), key: 'refunding' },
+  { name: t('Orderfinished'), key: 'finished' },
 ])
 const state = reactive({
   type: '',

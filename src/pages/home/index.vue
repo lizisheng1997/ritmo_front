@@ -31,7 +31,7 @@
       <!-- @click="switchTab(2)" -->
       <view class="item" @click="routerTo(`/pages/homestay/index`)">
         <image class="icon" src="/@/static/home/reserves3.png"></image>
-        <view class="title mt20">{{ t('Officereservation') }}</view>
+        <view class="title mt20">{{ t('homestays') }}</view>
         <!-- textColor -->
         <!-- <view class="text p0-10 oneEllipsis mt10 textColor">{{ t('Notyetopen') }}</view> -->
       </view>

@@ -36,46 +36,46 @@
             <view class="text"> 离店时间: 12:00以前 </view>
           </view>
         </view>
-        <view class="num"> 共{{ state.day }}晚 </view>
+        <view class="num"> {{ t('total1') }}{{ state.day }}{{ t('evening') }} </view>
       </view>
       <!--  -->
       <view class="form">
         <view class="li p15-0">
-          <view class="label">房间数 </view>
+          <view class="label">{{ t('Numberrooms') }} </view>
           <view class="text">
             {{ state.info.types }}{{ t('chamber') }}({{ t('Checkin')
             }}{{ state.info.livenums }}{{ t('people') }}）
           </view>
         </view>
         <view class="li p15-0">
-          <view class="label">入住人 <text class="icon">*</text></view>
+          <view class="label">{{ t('Guestsstaying') }} <text class="icon">*</text></view>
           <view class="input">
             <input
               v-model="state.lodgersName"
-              placeholder="每间房填写一位入住人信息"
+              :placeholder="t('Guestinformation')"
               :disabled=" state.pageType == 1 ? state.orderInfo.status != 'created' ? true : false : false "
               style="" />
           </view>
         </view>
         <view class="li p15-0">
-          <view class="label">手机号 <text class="icon">*</text></view>
+          <view class="label">{{ t('phonenumber') }} <text class="icon">*</text></view>
           <view class="input">
             <input
               class=""
               type="number"
               maxlength="11"
               v-model="state.lodgersPhone"
-              placeholder="用于接受信息和预订"
+              :placeholder="t('Usedforcontacting')"
               :disabled=" state.pageType == 1 ? state.orderInfo.status != 'created' ? true : false : false " />
           </view>
         </view>
         <view class="li p15-0">
-          <view class="label">备注 </view>
+          <view class="label">{{ t('remarks') }} </view>
           <view class="input">
             <input
               class=""
               v-model="state.memo"
-              placeholder="请输入备注"
+              :placeholder="`${t('Enter')}${t('remarks')}`"
               :disabled=" state.pageType == 1 ? state.orderInfo.status != 'created' ? true : false : false " />
           </view>
         </view>
@@ -86,22 +86,22 @@
       class="priceCrad mt25 p25"
       v-if="state.pageType == 1">
       <view class="price">
-        <view class="label">订单信息</view>
+        <view class="label">{{ t('OrderingInformation') }}</view>
       </view>
       <view class="li p15-0">
-        <view class="label">订单号 </view>
+        <view class="label">{{ t('OrderNo') }} </view>
         <view class="text">
           {{ state.orderInfo.orderId }}
         </view>
       </view>
       <view class="li p15-0">
-        <view class="label">下单时间 </view>
+        <view class="label">{{ t('Ordertime') }} </view>
         <view class="text">
           {{ state.orderInfo.createtime }}
         </view>
       </view>
       <view class="li p15-0">
-        <view class="label">订单状态 </view>
+        <view class="label">{{ t('orderstatus') }} </view>
         <view class="text">
           {{ state.orderInfo.typeText }}
         </view>
@@ -128,7 +128,7 @@
         v-for="item in state.houseList"
         :key="item.id">
         <view class="label"
-          >入住日期：{{ strToFormatDate(item.day_time_text) }}</view
+          >{{ t('Checkindate') }}：{{ strToFormatDate(item.day_time_text) }}</view
         >
         <view
           class="text"
@@ -153,7 +153,7 @@
           class="right"
           @click="
             () => {
-              operatePopupRef.openDialog('是否取消订单', {
+              operatePopupRef.openDialog(t('Doyouwanttocanceltheorder'), {
                 id: state.orderId,
                 type: 1
               });
@@ -176,7 +176,7 @@
           class="right"
           @click="
             () => {
-              operatePopupRef.openDialog('是否申请退款', {
+              operatePopupRef.openDialog(t('Doyouwanttoapplyforarefund'), {
                 id: state.orderId,
                 type: 2
               });
@@ -184,7 +184,7 @@
           "
           style="background-color: #ff3434; color: #ffffff"
           v-if="state.pageType == 1 && state.orderInfo.status == 'paid'">
-          申请退款
+          {{ t('refund') }}
         </view>
       </view>
     </view>
@@ -393,14 +393,14 @@ const calculatePrice = (arr: any[]) => {
 // 支付
 const submit = () => {
   if (!state.lodgersName) {
-    showTips('请输入入住人');
+    showTips(`${t('Enter')}${t('Guestsstaying')}`);
     return;
   }
   if (!state.lodgersPhone) {
-    showTips('请输入手机号');
+    showTips(t('Entermobilenumber'));
     return;
   }
-  operatePopupRef.value.openDialog('是否继续支付', { id: -1, type: 0 });
+  operatePopupRef.value.openDialog(t('Doyouwanttocontinuepaying'), { id: -1, type: 0 });
 };
 const getHouseOrderAdd = async () => {
   await homestayApi
@@ -472,7 +472,7 @@ const getOrderCancel = async () => {
     })
     .then((res: any) => {
       // console.log(res);
-      showTips(res.data.msg)
+      showTips(res.msg)
       setTimeout(() => {
         routerBack(1)
       }, 1500);
@@ -486,7 +486,7 @@ const getOrderCheckout = async () => {
     })
     .then((res: any) => {
       // console.log(res);
-      showTips(res.data.msg)
+      showTips(res.msg)
       setTimeout(() => {
         routerBack(1)
       }, 1500);

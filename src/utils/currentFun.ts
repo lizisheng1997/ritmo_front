@@ -1,5 +1,5 @@
 import { baseUrl } from './request';
-import Login from '../api/login';
+import i18n from '/@/locales/index';
 //
 // 成功提示
 export const showTips = (title: string) => {
@@ -274,25 +274,34 @@ export const calculateDaysBetweenDates = (
 };
 // 年月日转星期
 export const calculateDatesToWeek = (str: string) => {
+  const { t } = i18n.global;
   const inputDate = new Date(str);
-    const today = new Date();
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1);
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
 
-    const normalizeDate = (date: Date) => {
-      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
-    };
+  const normalizeDate = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  };
 
-    const normalizedInput = normalizeDate(inputDate);
-    const normalizedToday = normalizeDate(today);
-    const normalizedTomorrow = normalizeDate(tomorrow);
+  const normalizedInput = normalizeDate(inputDate);
+  const normalizedToday = normalizeDate(today);
+  const normalizedTomorrow = normalizeDate(tomorrow);
 
-    if (normalizedInput.getTime() === normalizedToday.getTime()) {
-      return '今天';
-    } else if (normalizedInput.getTime() === normalizedTomorrow.getTime()) {
-      return '明天';
-    } else {
-      const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-      return weekdays[inputDate.getDay()];
-    }
+  if (normalizedInput.getTime() === normalizedToday.getTime()) {
+    return t('today');
+  } else if (normalizedInput.getTime() === normalizedTomorrow.getTime()) {
+    return t('tomor');
+  } else {
+    const weekdays = [
+      t('sun'),
+      t('mon'),
+      t('tues'),
+      t('wed'),
+      t('thur'),
+      t('fri'),
+      t('satur')
+    ];
+    return weekdays[inputDate.getDay()];
+  }
 };

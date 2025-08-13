@@ -78,8 +78,8 @@
       </view>
     </view>
     <!--  -->
-    <view class="listCard p10">
-      <view class="date p0-25">
+    <view class="listCard">
+      <view class="date p0-20">
         <view class="left">
           <text class="text">{{ strToFormatDate(state.startDate) }}</text>
           <text class="day">{{ state.startWeek }}</text>
@@ -90,14 +90,16 @@
           <text class="text">{{ strToFormatDate(state.endDate) }}</text>
           <text class="day">{{ state.endWeek }}</text>
         </view>
-        <view class="hotel"
-          >{{ state.house }}{{ t('rooms') }}·{{ state.nums
-          }}{{ t('people') }}</view
-        >
+        <view class="hotel">
+          <text class="" v-if="state.house">{{ state.house }}{{ t('rooms') }}</text>
+          <text class="" v-if="state.house && state.nums">·</text>
+          <text class="" v-if="state.nums">{{ state.nums }}{{ t('people') }}</text>
+          
+        </view>
       </view>
-      <view class="div">
+      <view class="div ">
         <view
-          class="li p10"
+          class="li  mt20"
           v-for="item in state.houseList"
           :key="item.id">
           <image
@@ -137,7 +139,7 @@
                     });
                   }
                 "
-                >{{ t('reserve') }}</text
+                >{{ t('reserve1') }}</text
               >
             </view>
           </view>
@@ -162,7 +164,7 @@
         class="text"
         v-if="state.current == 0">
         <rich-text :nodes="state.content"></rich-text>
-        <view class="title mt30">房东信息</view>
+        <view class="title mt30">{{ t('Landlordinformation') }}</view>
         <view class="card mt20">
           <image class="head mr20" src="../../static/community/headimg.png"></image>
           <view class="cardInfo mt8">
@@ -170,7 +172,7 @@
             <view class="mt5" style="color: #999;">{{ state.city }}</view>
           </view>
           <view class="btn mt20"
-              @click="makePhoneCall(state.ownerPhone)">联系房东</view>
+              @click="makePhoneCall(state.ownerPhone)">{{ t('contactlandlord') }}</view>
         </view>
       </view>
       <view
@@ -225,7 +227,7 @@ onLoad((query?: AnyObject | undefined): void => {
   state.startDate = query!.startDate;
   state.endDate = query!.endDate;
   state.startWeek = calculateDatesToWeek(query!.startDate);
-  state.endWeek = calculateDatesToWeek(query!.startDate);
+  state.endWeek = calculateDatesToWeek(query!.endDate);
 
   state.keyword = query!.keyword;
   state.price = query!.price;
@@ -250,7 +252,7 @@ const state = reactive({
   endWeek: '',
   //
   keyword: '',
-  price: '0-3000',
+  price: '',
   day: 0,
   beds: 0, // 床数
   house: 0, // 房型
@@ -350,8 +352,8 @@ const getOptionCollect = async() => {
     type: 1,
     source_id: state.id,
   }).then((res: any) => {
-    // console.log(res.data.posts);
-    showTips(res.data.msg)
+    // console.log(res);
+    showTips(res.msg)
     getInfo()
   })
 }
@@ -502,6 +504,7 @@ page {
     border-radius: 12rpx;
     box-shadow: 0px 4px 10px 0px #c4c1c1;
     background-color: #ffffff;
+    padding: 30rpx 10rpx;
     .date {
       display: flex;
       justify-content: space-between;
@@ -539,6 +542,8 @@ page {
     .div {
       .li {
         display: flex;
+        border-top: 1PX solid #F5F3EF;
+        padding: 20rpx 10rpx 0;
         .banner {
           display: inline-block;
           width: 180rpx;

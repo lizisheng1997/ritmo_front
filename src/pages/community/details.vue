@@ -1,6 +1,7 @@
 <template>
   <view
     class="content"
+    :class=" state.show ? 'hidden' : '' "
     :style="{ paddingTop: state.navAllHeight + 'rpx' }">
     <view
       class="nav flex"
@@ -707,6 +708,10 @@ const homePage = () => {
 </script>
 
 <style lang="scss" scoped>
+.hidden {
+  height: 100vh;
+  overflow: hidden !important;
+}
 .content {
   background-color: #ffffff;
   .nav {

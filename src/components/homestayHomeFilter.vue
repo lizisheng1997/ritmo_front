@@ -131,7 +131,7 @@ const props = defineProps({
 const state = reactive({
   list: [1, 2, 3, 4, 5],
   num: '',
-  price: [0, 3000], // 价格区间
+  price: [0, 5000], // 价格区间
   beds: 0, // 床数
   bedsIpt: '',
   house: 0, // 房型
@@ -149,7 +149,7 @@ const openDialog = (rows: {
 }) => {
   // console.log(rows)
   if (props.isPrice) {
-    state.price = rows.price ? rows.price : [0, 3000];
+    state.price = rows.price ? rows.price : [0, 5000];
   }
   state.beds = rows.beds <= 5 ? rows.beds : 0;
   state.bedsIpt = rows.beds > 5 ? rows.beds.toString() : '';
@@ -180,7 +180,7 @@ const sumbit = (type: number) => {
     }
   }
 
-  state.price = type ? state.price : [0, 3000];
+  state.price = type ? state.price : [0, 5000];
   state.beds = type ? (state.bedsIpt ? Number(state.bedsIpt) : state.beds) : 0;
   state.house = type
     ? state.houseIpt

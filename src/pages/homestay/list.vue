@@ -211,7 +211,7 @@ const state = reactive({
   beds: 0, // 床数
   house: 0, // 房型
   nums: 0, // 人数
-  price: [0, 3000] as number[],
+  price: [0, 5000] as number[],
   tagIds: '',
   regionShow: false,
   calendarShow: false,
@@ -325,7 +325,7 @@ onReachBottom(() => {
 
 // 提交
 const detailsTo = (id: string) => {
-  routerTo(`/pages/homestay/details?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&id=${id}&keyword=${state.keyword}&price=${  state.price?.length ? `${state.price[0]}-${state.price[1]}`  : '' }`, true)
+  routerTo(`/pages/homestay/details?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&id=${id}&keyword=${state.keyword}&price=${  `${state.price[0]}-${state.price[1]}` }`, true)
 }
 </script>
 
