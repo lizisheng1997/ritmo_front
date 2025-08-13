@@ -159,7 +159,7 @@
 import { defineAsyncComponent, reactive, ref } from 'vue';
 import homestayHomeFilter from '/@/components/homestayHomeFilter.vue';
 import homestayHomeTags from '/@/components/homestayHomeTags.vue';
-import { routerTo, showTips, routerBack } from '/@/utils/currentFun';
+import { routerTo, showTips, routerBack, calculateDatesToWeek } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
 import { onLoad, onReachBottom } from '@dcloudio/uni-app';
 import Homestay from '/@/api/homestay';
@@ -181,8 +181,8 @@ onLoad((query?: AnyObject | undefined): void => {
   state.minDate = new Date(new Date()).toISOString().split('T')[0];
   state.startDate = query!.startDate;
   state.endDate = query!.endDate;
-  state.startWeek = query!.startWeek;
-  state.endWeek = query!.endWeek;
+  state.startWeek = calculateDatesToWeek(query!.startDate);
+  state.endWeek = calculateDatesToWeek(query!.startDate);
   state.province = query!.province;
   state.city = query!.city;
 
@@ -241,8 +241,8 @@ const calendarChange = (e: {
   console.log(e);
   state.startDate = e.startDate;
   state.endDate = e.endDate;
-  state.startWeek = e.startWeek
-  state.endWeek = e.endWeek
+  state.startWeek = calculateDatesToWeek(e.startDate)
+  state.endWeek = calculateDatesToWeek(e.endDate)
   clearSearch()
 };
 // 弹窗回调
@@ -325,7 +325,7 @@ onReachBottom(() => {
 
 // 提交
 const detailsTo = (id: string) => {
-  routerTo(`/pages/homestay/details?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&id=${id}&startWeek=${state.startWeek}&endWeek=${state.endWeek}&keyword=${state.keyword}&price=${  state.price?.length ? `${state.price[0]}-${state.price[1]}`  : '' }`, true)
+  routerTo(`/pages/homestay/details?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&id=${id}&keyword=${state.keyword}&price=${  state.price?.length ? `${state.price[0]}-${state.price[1]}`  : '' }`, true)
 }
 </script>
 

@@ -495,6 +495,10 @@ const getLikeOrCollect = (
   likeStatus: string,
   commentId?: string
 ) => {
+  if( uni.getStorageSync('userInfos').id == state.userId  ) {
+    showTips('不能操作自己的帖子')
+    return
+  }
   communityApi
     .getAddOrCannalLikeOrCollect({
       post_id: state.id,

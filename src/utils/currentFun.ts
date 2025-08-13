@@ -1,6 +1,6 @@
 import { baseUrl } from './request';
 import Login from '../api/login';
-// 
+//
 // 成功提示
 export const showTips = (title: string) => {
   uni.showToast({
@@ -165,10 +165,9 @@ export const getRequestPayment = (
   // const appId = terminalPay === 'ios' ? 'appId' : 'appid';
   // console.log(obj);
 
-      console.log(obj);
+  console.log(obj);
   return new Promise((resolve, reject) => {
     if (provider == 'wxpay') {
-      
       uni.requestPayment({
         provider,
         // orderInfo: obj,
@@ -232,25 +231,68 @@ export const getRequestWxLogin = () => {
       onlyAuthorize: true,
       success: function (loginRes: { code: string; errMsg: string }) {
         console.log(loginRes);
-        if( loginRes.errMsg == 'login:ok' ) {
-          resolve(loginRes.code)
+        if (loginRes.errMsg == 'login:ok') {
+          resolve(loginRes.code);
         } else {
-          reject(false)
-          showTips('授权失败')
+          reject(false);
+          showTips('授权失败');
         }
       },
       fail(result) {
-        reject(false)
-          console.log(result);
-      },
+        reject(false);
+        console.log(result);
+      }
     });
-  })
+  });
 };
 // 格式转换  xxxx-xx-xx 月日
-export const strToFormatDate  = (inputDate: string) => {
+export const strToFormatDate = (inputDate: string) => {
   const parts = inputDate.split('-');
   if (parts.length === 3) {
     return `${parts[1].padStart(2, '0')}月${parts[2].padStart(2, '0')}日`;
   }
   return inputDate; // 如果格式不正确，返回原字符串
-}
+};
+// 根据开始日期结束日期 获取中间的天数
+export const calculateDaysBetweenDates = (
+  startDateStr: string,
+  endDateStr: string
+) => {
+  // 将字符串转换为日期对象
+  const startDate: any = new Date(startDateStr);
+  const endDate: any = new Date(endDateStr);
+
+  // 获取两个日期之间的毫秒差
+  const differenceInMilliseconds = endDate - startDate;
+
+  // 将毫秒差转换为天数
+  const days = differenceInMilliseconds / (1000 * 60 * 60 * 24);
+
+  // 由于我们想要整数天数，可以使用Math.floor或者Math.ceil（取决于你的需求）
+
+  return Math.floor(days);
+};
+// 年月日转星期
+export const calculateDatesToWeek = (str: string) => {
+  const inputDate = new Date(str);
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
+    const normalizeDate = (date: Date) => {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    };
+
+    const normalizedInput = normalizeDate(inputDate);
+    const normalizedToday = normalizeDate(today);
+    const normalizedTomorrow = normalizeDate(tomorrow);
+
+    if (normalizedInput.getTime() === normalizedToday.getTime()) {
+      return '今天';
+    } else if (normalizedInput.getTime() === normalizedTomorrow.getTime()) {
+      return '明天';
+    } else {
+      const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+      return weekdays[inputDate.getDay()];
+    }
+};

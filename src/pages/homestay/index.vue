@@ -61,7 +61,7 @@
       {{ t('Recommendedhomestays') }}
       <!-- <image class="icon" src="../../static/rightBlack.png"></image> -->
     </view>
-      <communityList :list="state.communityList"> </communityList>
+      <communityList :list="state.communityList" :isRouter="0"> </communityList>
       <u-empty
         :text="t('Nodata')"
         mode="favor"
@@ -80,7 +80,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, reactive, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app';
-import { routerTo, showTips } from '/@/utils/currentFun';
+import { calculateDatesToWeek, calculateDaysBetweenDates, routerTo, showTips } from '/@/utils/currentFun';
 import communityList from '/@/components/communityList.vue';
 import homestayHomeFilter from '/@/components/homestayHomeFilter.vue';
 import { strToFormatDate } from '/@/utils/currentFun'
@@ -158,24 +158,10 @@ const calendarChange = (e: { startDate: string, endDate: string, startWeek: stri
   console.log(e);
   state.startDate = e.startDate
   state.endDate = e.endDate
-  state.startWeek = e.startWeek
-  state.endWeek = e.endWeek
+  state.startWeek = calculateDatesToWeek(e.startDate)
+  state.endWeek = calculateDatesToWeek(e.endDate)
   state.day = calculateDaysBetweenDates(state.startDate, state.endDate)
 } 
-const calculateDaysBetweenDates = (startDateStr: string, endDateStr: string) => {
-  // 将字符串转换为日期对象
-    const startDate: any = new Date(startDateStr);
-    const endDate: any = new Date(endDateStr);
- 
-    // 获取两个日期之间的毫秒差
-    const differenceInMilliseconds = endDate - startDate;
- 
-    // 将毫秒差转换为天数
-    const days = differenceInMilliseconds / (1000 * 60 * 60 * 24);
- 
-    // 由于我们想要整数天数，可以使用Math.floor或者Math.ceil（取决于你的需求）
-    return Math.floor(days-1)
-}
 // 根据城市获取关键词
 const getCondition = async() => {
   await homestayApi.getCondition({}).then((res: any) => {
@@ -222,7 +208,7 @@ const sumbit = () => {
     showTips(`${t('Pleaseselect')}${t('peoplebedsbedrooms')}`)
     return
   }
-  routerTo(`/pages/homestay/list?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&tagIdx=${state.tagIdx ? state.tagIdx.toString() : ''}&keyword=${state.keyword}&province=${state.province}&city=${state.city}&startWeek=${state.startWeek}&endWeek=${state.endWeek}`, true)
+  routerTo(`/pages/homestay/list?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&tagIdx=${state.tagIdx ? state.tagIdx.toString() : ''}&keyword=${state.keyword}&province=${state.province}&city=${state.city}`, true)
 }
 </script>
 

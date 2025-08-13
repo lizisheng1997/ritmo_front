@@ -81,6 +81,27 @@ export default class Homestay extends Request {
       data
     });
   }
+  // 订单详情
+  getOrderDetails(data: object) {
+    return this.post({
+      url: '/addons/booking/order/detail',
+      data
+    });
+  }
+  // 取消订单
+  getOrderCancel(data: object) {
+    return this.post({
+      url: '/addons/booking/order/cancel',
+      data
+    });
+  }
+  // 申请退款
+  getOrderCheckout(data: object) {
+    return this.post({
+      url: '/addons/booking/order/orderCheckout',
+      data
+    });
+  }
 
 
 

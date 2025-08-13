@@ -68,13 +68,20 @@ const props = defineProps({
     type: Array,
     default:() => []
   }, 
+  // 是否能跳转
+  isRouter: {
+    type: Number,
+    default:() => 1
+  }
 })
 const newList = ref([] as any[])
 // 收藏
 const emits = defineEmits([])
 const homePage = (id: string, userId: string) => {
-  let type = uni.getStorageSync('userInfos').id == userId ? 1 : 0;
-  routerTo(`/pages/community/homepage?id=${id}&isUser=${type}`, true)
+  if( props.isRouter == 1 ) {
+    let type = uni.getStorageSync('userInfos').id == userId ? 1 : 0;
+    routerTo(`/pages/community/homepage?id=${id}&isUser=${type}`, true)
+  }
 }
 </script>
 

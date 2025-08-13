@@ -70,7 +70,7 @@
     </view>
     <!--  -->
     <template v-if=" state.current <= 1 ">
-      <communityList :list="state.list">
+      <communityList :list="state.list" :isRouter=" state.current == 0 ? 0 : 1 ">
 
       </communityList>
     </template>

@@ -53,8 +53,8 @@
             <input
               v-model="state.lodgersName"
               placeholder="每间房填写一位入住人信息"
-              style="
-              " />
+              :disabled=" state.pageType == 1 ? state.orderInfo.status != 'created' ? true : false : false "
+              style="" />
           </view>
         </view>
         <view class="li p15-0">
@@ -65,7 +65,8 @@
               type="number"
               maxlength="11"
               v-model="state.lodgersPhone"
-              placeholder="用于接受信息和预订" />
+              placeholder="用于接受信息和预订"
+              :disabled=" state.pageType == 1 ? state.orderInfo.status != 'created' ? true : false : false " />
           </view>
         </view>
         <view class="li p15-0">
@@ -74,8 +75,35 @@
             <input
               class=""
               v-model="state.memo"
-              placeholder="请输入备注"/>
+              placeholder="请输入备注"
+              :disabled=" state.pageType == 1 ? state.orderInfo.status != 'created' ? true : false : false " />
           </view>
+        </view>
+      </view>
+    </view>
+    <!--  -->
+    <view
+      class="priceCrad mt25 p25"
+      v-if="state.pageType == 1">
+      <view class="price">
+        <view class="label">订单信息</view>
+      </view>
+      <view class="li p15-0">
+        <view class="label">订单号 </view>
+        <view class="text">
+          {{ state.orderInfo.orderId }}
+        </view>
+      </view>
+      <view class="li p15-0">
+        <view class="label">下单时间 </view>
+        <view class="text">
+          {{ state.orderInfo.createtime }}
+        </view>
+      </view>
+      <view class="li p15-0">
+        <view class="label">订单状态 </view>
+        <view class="text">
+          {{ state.orderInfo.typeText }}
         </view>
       </view>
     </view>
@@ -117,10 +145,47 @@
           <text class="num">¥{{ state.price }}</text>
         </view>
       </view>
+      <!--  -->
       <view
-        class="right"
-        @click="submit">
-        去支付
+        class=""
+        style="display: flex">
+        <view
+          class="right"
+          @click="
+            () => {
+              operatePopupRef.openDialog('是否取消订单', {
+                id: state.orderId,
+                type: 1
+              });
+            }
+          "
+          style="margin-right: 25rpx; background-color: #999999"
+          v-if="state.pageType == 1 && state.orderInfo.status == 'created'">
+          取消订单
+        </view>
+        <view
+          class="right"
+          @click="submit"
+          v-if="
+            state.pageType == 0 ||
+            (state.pageType == 1 && state.orderInfo.status == 'created')
+          ">
+          去支付
+        </view>
+        <view
+          class="right"
+          @click="
+            () => {
+              operatePopupRef.openDialog('是否申请退款', {
+                id: state.orderId,
+                type: 2
+              });
+            }
+          "
+          style="background-color: #ff3434; color: #ffffff"
+          v-if="state.pageType == 1 && state.orderInfo.status == 'paid'">
+          申请退款
+        </view>
       </view>
     </view>
     <!-- 支付 -->
@@ -130,9 +195,10 @@
       @refresh="
         (show, type, id) => {
           if (show) {
-            getHouseOrderPay( type, id);
+            getHouseOrderPay(type, id);
           }
-        }"></payPopup>
+        }
+      "></payPopup>
     <!--  -->
     <operatePopup
       ref="operatePopupRef"
@@ -140,7 +206,17 @@
       @refresh="
         (show, obj) => {
           if (show) {
-            getHouseOrderAdd();
+            if (obj.type == 0) {
+              if (state.pageType == 1) {
+                payPopupRef.openDialog(state.orderId);
+              } else {
+                getHouseOrderAdd();
+              }
+            } else if (obj.type == 1) {
+              getOrderCancel()
+            } else if (obj.type == 2) {
+              getOrderCheckout()
+            }
           }
         }
       "></operatePopup>
@@ -151,8 +227,15 @@
 import { defineAsyncComponent, reactive, ref } from 'vue';
 import operatePopup from '/@/components/operatePopup.vue';
 import payPopup from '/@/components/payPopup.vue';
-import { getRequestPayment, getRequestWxLogin, strToFormatDate } from '/@/utils/currentFun';
-import { routerTo, showTips } from '/@/utils/currentFun';
+import {
+  calculateDaysBetweenDates,
+  getRequestPayment,
+  getRequestWxLogin,
+  routerBack,
+  strToFormatDate,
+  showTips,
+  calculateDatesToWeek
+} from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
 import { onLoad } from '@dcloudio/uni-app';
 import Login from '/@/api/login';
@@ -168,34 +251,38 @@ onLoad((query?: AnyObject | undefined): void => {
     : 'zh';
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  state.pageType = Number(query!.type);
   // @ts-ignore
-  state.terminalPay = getApp().globalData.terminalPay
-  state.id = query!.id;
-  state.houseId = query!.houseId;
-  state.startDate = query!.startDate;
-  state.endDate = query!.endDate;
-  state.startWeek = query!.startWeek;
-  state.endWeek = query!.endWeek;
+  state.terminalPay = getApp().globalData.terminalPay;
+  if (state.pageType == 0) {
+    state.id = query!.id;
+    state.houseId = query!.houseId;
+    state.startDate = query!.startDate;
+    state.endDate = query!.endDate;
+    state.startWeek = query!.startWeek;
+    state.endWeek = query!.endWeek;
 
-  state.day = Number(query!.day);
-  state.beds = Number(query!.beds);
-  state.house = Number(query!.house);
-  state.nums = Number(query!.nums);
-  // state.pageType = Number(query!.pageType);
-  if (state.pageType == 0) getInfo();
+    state.day = Number(query!.day);
+    state.beds = Number(query!.beds);
+    state.house = Number(query!.house);
+    state.nums = Number(query!.nums);
+  } else {
+    state.orderId = query!.orderId;
+  }
+  getInfo();
 });
 // 参数
 const operatePopupRef = ref();
-const payPopupRef = ref()
+const payPopupRef = ref();
 const state = reactive({
   type: '', // 语言
-  pageType: 0, // 0预约进入
+  pageType: 0, // 0预约进入 1订单进入
   id: '', // 民宿id
   houseId: '', // 房间id
   terminalPay: '',
   //
-  startDate: '2025-08-13',
-  endDate: '2025-08-20',
+  startDate: '',
+  endDate: '',
   startWeek: '',
   endWeek: '',
   //
@@ -212,33 +299,80 @@ const state = reactive({
     livenums: 0,
     images: ''
   },
+  orderInfo: {
+    orderId: '',
+    typeText: '',
+    createtime: '',
+    status: ''
+  },
   houseList: [] as any[], // 每一天价格数组
   price: 0,
   lodgersName: '', // 入住人
   lodgersPhone: '', // 手机号
   memo: '', // 备注
-  orderId: '', // 备注
+  orderId: '' //
 });
 // 详情
 const getInfo = async () => {
-  await homestayApi
-    .getHouseBooking({
-      id: state.houseId,
-      start_time: state.startDate,
-      end_time: state.endDate
-    })
-    .then((res: any) => {
-      console.log(res.data.detail);
-      state.info.name =
-        state.type == 'zh' ? res.data.detail.name : res.data.detail.name_en;
-      state.info.area = res.data.detail.area;
-      state.info.floors = res.data.detail.floors;
-      state.info.types = res.data.detail.types;
-      state.info.beds = res.data.detail.beds;
-      state.info.livenums = res.data.detail.livenums;
-      state.info.images = res.data.detail.images[0];
-      calculatePrice(res.data.detail.calendar);
-    });
+  if (state.pageType == 0) {
+    await homestayApi
+      .getHouseBooking({
+        id: state.houseId,
+        start_time: state.startDate,
+        end_time: state.endDate
+      })
+      .then((res: any) => {
+        console.log(res.data.detail);
+        state.info.name =
+          state.type == 'zh' ? res.data.detail.name : res.data.detail.name_en;
+        state.info.area = res.data.detail.area;
+        state.info.floors = res.data.detail.floors;
+        state.info.types = res.data.detail.types;
+        state.info.beds = res.data.detail.beds;
+        state.info.livenums = res.data.detail.livenums;
+        state.info.images = res.data.detail.images[0];
+        calculatePrice(res.data.detail.calendar);
+      });
+  } else {
+    await homestayApi
+      .getOrderDetails({
+        id: state.orderId
+      })
+      .then((res: any) => {
+        console.log(res.data);
+        state.info.name =
+          state.type == 'zh'
+            ? res.data.source_data.name
+            : res.data.source_data.name_en;
+        state.info.area = res.data.source_data.area;
+        state.info.floors = res.data.source_data.floors;
+        state.info.types = res.data.source_data.types;
+        state.info.beds = res.data.source_data.beds;
+        state.info.livenums = res.data.source_data.livenums;
+        state.info.images = res.data.source_data.images[0];
+
+        state.orderInfo.orderId = res.data.orderid;
+        state.orderInfo.typeText = res.data.status_text;
+        state.orderInfo.createtime = res.data.createtime_text;
+        state.orderInfo.status = res.data.status;
+
+        state.lodgersName = res.data.lodgers_name;
+        state.lodgersPhone = res.data.lodgers_phone;
+        state.memo = res.data.memo;
+
+        state.houseList = [];
+        state.price = res.data.amount;
+
+        state.id = res.data.source_data.store_id;
+        state.houseId = res.data.source_data.id;
+        state.startDate = res.data.checkin_time_text.substring(0, 10);
+        state.endDate = res.data.leave_time_text.substring(0, 10);
+        state.startWeek = calculateDatesToWeek(state.startDate)
+        state.endWeek = calculateDatesToWeek(state.endDate)
+
+        state.day = calculateDaysBetweenDates(state.startDate, state.endDate);
+      });
+  }
 };
 // 计算价格
 const calculatePrice = (arr: any[]) => {
@@ -266,63 +400,98 @@ const submit = () => {
     showTips('请输入手机号');
     return;
   }
-  operatePopupRef.value.openDialog('是否继续支付', {id: -1});
+  operatePopupRef.value.openDialog('是否继续支付', { id: -1, type: 0 });
 };
-const getHouseOrderAdd = async() => {
-  await homestayApi.getHouseOrderAdd({
-    id: state.houseId,
-    platform: state.terminalPay == 'wechat' ? 'miniapp' : 'APP',
-    memo: state.memo,
-    nums: state.nums,
-    start_time: state.startDate,
-    end_time: state.endDate,
-    lodgers_name: state.lodgersName,
-    lodgers_phone: state.lodgersPhone,
-  }).then((res: any) => {
-    // console.log(res);
-    payPopupRef.value.openDialog(res.data.id);
-  })
-};
-// 
-const getHouseOrderPay = async(type: string, orderId: string) => {
-  console.log(type, orderId);
-  
-  await homestayApi.getHouseOrderPay({
-    id: orderId,
-    paytype: type == 'wxpay' ? 'wechat' : type == 'alipay' ? 'alipay' : 'stripe',
-    method: state.terminalPay == 'wechat' ? 'miniapp' : 'app',
-  }).then((res: any) => {
-    // console.log(res);
-    getRequestPayment(type, res.data).then((res) => {
-      setTimeout(() => {
-        uni.reLaunch({
-          url: '/pages/user/index'
-        })
-      }, 1500);
-    }).catch((err) => {
-      console.log(err);
-      
-      
+const getHouseOrderAdd = async () => {
+  await homestayApi
+    .getHouseOrderAdd({
+      id: state.houseId,
+      platform: state.terminalPay == 'wechat' ? 'miniapp' : 'APP',
+      memo: state.memo,
+      nums: state.nums,
+      start_time: state.startDate,
+      end_time: state.endDate,
+      lodgers_name: state.lodgersName,
+      lodgers_phone: state.lodgersPhone
     })
-  }).catch((err) => {
-      console.log(err);
-      if( err.code == 509 ) {
-        getRequestWxLogin().then((res) => {
-          loginApi.getWxLogin({
-            code: res,
-            nickName: uni.getStorageSync('userInfos').nickname,
-            avatarUrl: uni.getStorageSync('userInfos').avatar_url
-          }).then( (res: any) => {
-            setTimeout(() => {
-              getHouseOrderPay(type, orderId)
-            }, 500);
-          }).catch( (res) => {
-          })
-        })
-      }
+    .then((res: any) => {
+      // console.log(res);
+      payPopupRef.value.openDialog(res.data.id);
+    });
+};
+//
+const getHouseOrderPay = async (type: string, orderId: string) => {
+  console.log(type, orderId);
 
-  })
-}
+  await homestayApi
+    .getHouseOrderPay({
+      id: orderId,
+      paytype:
+        type == 'wxpay' ? 'wechat' : type == 'alipay' ? 'alipay' : 'stripe',
+      method: state.terminalPay == 'wechat' ? 'miniapp' : 'app'
+    })
+    .then((res: any) => {
+      // console.log(res);
+      getRequestPayment(type, res.data)
+        .then((res) => {
+          setTimeout(() => {
+            uni.reLaunch({
+              url: '/pages/user/index'
+            });
+          }, 1500);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+      if (err.code == 509) {
+        getRequestWxLogin().then((res) => {
+          loginApi
+            .getWxLogin({
+              code: res,
+              nickName: uni.getStorageSync('userInfos').nickname,
+              avatarUrl: uni.getStorageSync('userInfos').avatar_url
+            })
+            .then((res: any) => {
+              setTimeout(() => {
+                getHouseOrderPay(type, orderId);
+              }, 500);
+            })
+            .catch((res) => {});
+        });
+      }
+    });
+};
+// 取消订单
+const getOrderCancel = async () => {
+  await homestayApi
+    .getOrderCancel({
+      id: state.orderId,
+    })
+    .then((res: any) => {
+      // console.log(res);
+      showTips(res.data.msg)
+      setTimeout(() => {
+        routerBack(1)
+      }, 1500);
+    });
+};
+// 申请退款
+const getOrderCheckout = async () => {
+  await homestayApi
+    .getOrderCheckout({
+      id: state.orderId,
+    })
+    .then((res: any) => {
+      // console.log(res);
+      showTips(res.data.msg)
+      setTimeout(() => {
+        routerBack(1)
+      }, 1500);
+    });
+};
 </script>
 
 <style>
@@ -413,7 +582,7 @@ page {
         .input {
           height: 70rpx;
           line-height: 70rpx;
-          width: calc( 100% - 160rpx );
+          width: calc(100% - 160rpx);
           input {
             display: inline-block;
             width: 100%;
@@ -489,7 +658,7 @@ page {
       }
     }
     .right {
-      width: 200rpx;
+      width: 160rpx;
       height: 80rpx;
       line-height: 80rpx;
       text-align: center;

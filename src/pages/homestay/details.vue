@@ -180,7 +180,7 @@
       </view>
     </view>
     <div class="" v-if="state.current == 2">
-      <communityList :list="state.communityList"> </communityList>
+      <communityList :list="state.communityList" :isRouter="0"> </communityList>
       
       <u-empty
         :text="t('Nodata')"
@@ -207,7 +207,7 @@
 import { defineAsyncComponent, reactive, ref } from 'vue';
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import operatePopup from '/@/components/operatePopup.vue';
-import { strToFormatDate } from '/@/utils/currentFun'
+import { strToFormatDate, calculateDaysBetweenDates, calculateDatesToWeek } from '/@/utils/currentFun'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
 import Homestay from '/@/api/homestay';
@@ -224,8 +224,8 @@ onLoad((query?: AnyObject | undefined): void => {
   state.id = query!.id;
   state.startDate = query!.startDate;
   state.endDate = query!.endDate;
-  state.startWeek = query!.startWeek;
-  state.endWeek = query!.endWeek;
+  state.startWeek = calculateDatesToWeek(query!.startDate);
+  state.endWeek = calculateDatesToWeek(query!.startDate);
 
   state.keyword = query!.keyword;
   state.price = query!.price;
@@ -318,23 +318,6 @@ const makePhoneCall = (phone: string) => {
   uni.makePhoneCall({
     phoneNumber: phone
   });
-};
-const calculateDaysBetweenDates = (
-  startDateStr: string,
-  endDateStr: string
-) => {
-  // 将字符串转换为日期对象
-  const startDate: any = new Date(startDateStr);
-  const endDate: any = new Date(endDateStr);
-
-  // 获取两个日期之间的毫秒差
-  const differenceInMilliseconds = endDate - startDate;
-
-  // 将毫秒差转换为天数
-  const days = differenceInMilliseconds / (1000 * 60 * 60 * 24);
-
-  // 由于我们想要整数天数，可以使用Math.floor或者Math.ceil（取决于你的需求）
-  return Math.floor(days - 1);
 };
 // 提交
 const orderTo = async(id: string) => {
