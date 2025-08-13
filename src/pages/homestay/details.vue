@@ -324,7 +324,7 @@ const makePhoneCall = (phone: string) => {
 // 提交
 const orderTo = async(id: string) => {
   routerTo(
-    `/pages/homestay/order?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&startWeek=${state.startWeek}&endWeek=${state.endWeek}&day=${state.day}&id=${state.id}&houseId=${id}&type=0`,
+    `/pages/homestay/order?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&id=${state.id}&houseId=${id}&type=0`,
     true
   );
 };

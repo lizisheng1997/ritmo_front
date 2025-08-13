@@ -29,7 +29,10 @@
             type: 1
           });
         }
-      "></image>
+      "
+        :style="{
+          top: state.navAllHeight + 15 + 'rpx'
+        }"></image>
     <swiper
       class="swiper"
       circular
@@ -370,8 +373,14 @@ const { t } = useI18n();
 
 onLoad((query?: AnyObject | undefined): void => {
   state.id = query!.id;
+  // #ifdef MP-WEIXIN
   // @ts-ignore
-  state.navAllHeight = getApp().globalData.navAllHeight + 88;
+  state.navAllHeight = getApp().globalData.navAllHeight + 90;
+  // #endif
+  // #ifdef APP-PLUS
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight;
+  // #endif
 
   getInfo();
 });
@@ -747,7 +756,6 @@ const homePage = () => {
   .delete {
     position: fixed;
     right: 35rpx;
-    top: 200rpx;
     z-index: 99999;
     display: inline-block;
     width: 50rpx;

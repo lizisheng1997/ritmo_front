@@ -93,7 +93,7 @@ onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   state.id = query!.id ? query!.id : ''
   // @ts-ignore
-  state.navAllHeight = getApp().globalData.navAllHeight + 88;
+  state.navAllHeight = getApp().globalData.navAllHeight;
   getUserInfo()
   getCommunityCategory()
   getCommunityPostDraft()
@@ -144,7 +144,7 @@ const getCommunityPostDraft = async() => {
       state.city = res.data.city
       state.categoryId = res.data.category_id
       state.categoryName = res.data.category_name
-      let imgList = res.data.images.split(',')
+      let imgList = res.data.images ? res.data.images.split(',') : []
       state.fileList = imgList.map((item: string) => {
         return {
           url: item

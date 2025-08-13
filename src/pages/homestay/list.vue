@@ -1,9 +1,6 @@
 <template>
   <view
-    class="content"
-    :style="{
-      paddingTop: state.navAllHeight + 'rpx'
-    }">
+    class="content">
     <view class="position p0-35">
       <image
         class="back"
@@ -22,7 +19,7 @@
         <view
           class="date ml25"
           @click="state.calendarShow = true">
-          <view class="mt5">
+          <view class="mt10">
             <text class="text">住</text>
             <text class="" style="color: #ffcf00;">{{ state.startDate.substring(5, 10) }}</text>
           </view>
@@ -325,6 +322,10 @@ onReachBottom(() => {
 
 // 提交
 const detailsTo = (id: string) => {
+  if( !state.nums ) {
+    showTips(`${t('Pleaseselect')}${t('Numberofpeople')}`)
+    return
+  }
   routerTo(`/pages/homestay/details?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&id=${id}&keyword=${state.keyword}&price=${  `${state.price[0]}-${state.price[1]}` }`, true)
 }
 </script>

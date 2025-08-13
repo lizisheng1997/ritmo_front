@@ -1,8 +1,5 @@
 <template>
-  <view class="content"
-    :style="{
-      paddingTop: state.navAllHeight + 'rpx'
-    }">
+  <view class="content">
     <view class="position" @click="() => {
         state.regionShow = true
       }">
@@ -226,7 +223,6 @@ page {
       margin-top: 8rpx;
     }
     .city {
-      width: 140rpx;
       text-align: center;
       height: 38rpx;
       line-height: 38rpx;

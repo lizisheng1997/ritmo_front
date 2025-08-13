@@ -88,12 +88,6 @@ const sumbit = (show: boolean) => {
   
   if( show && state.type != 'stripe' ) {
     // 
-    // #ifdef APP-PLUS
-    if( state.type == 'wxpay') {
-      showTips('暂不支持微信支付')
-      return
-    }
-    // #endif
     // #ifdef MP-WEIXIN
     
     if( state.type == 'stripe') {

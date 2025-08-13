@@ -259,13 +259,13 @@ onLoad((query?: AnyObject | undefined): void => {
     state.houseId = query!.houseId;
     state.startDate = query!.startDate;
     state.endDate = query!.endDate;
-    state.startWeek = query!.startWeek;
-    state.endWeek = query!.endWeek;
 
-    state.day = Number(query!.day);
     state.beds = Number(query!.beds);
     state.house = Number(query!.house);
     state.nums = Number(query!.nums);
+    state.day = calculateDaysBetweenDates(state.startDate, state.endDate);
+    state.startWeek = calculateDatesToWeek(state.startDate)
+    state.endWeek = calculateDatesToWeek(state.endDate)
   } else {
     state.orderId = query!.orderId;
   }
@@ -314,6 +314,8 @@ const state = reactive({
 });
 // 详情
 const getInfo = async () => {
+  state.price = 0;
+  state.houseList = [];
   if (state.pageType == 0) {
     await homestayApi
       .getHouseBooking({
@@ -331,7 +333,11 @@ const getInfo = async () => {
         state.info.beds = res.data.detail.beds;
         state.info.livenums = res.data.detail.livenums;
         state.info.images = res.data.detail.images[0];
-        calculatePrice(res.data.detail.calendar);
+        if( !res.data.detail.calendar?.length ) {
+          state.price =  res.data.detail.price;
+        } else {
+          calculatePrice(res.data.detail.calendar);
+        }
       });
   } else {
     await homestayApi
@@ -376,8 +382,6 @@ const getInfo = async () => {
 };
 // 计算价格
 const calculatePrice = (arr: any[]) => {
-  state.price = 0;
-  state.houseList = [];
   let sIdx = arr.findIndex((item) => item.day_time_text == state.startDate);
   let eIdx = arr.findIndex((item) => item.day_time_text == state.endDate);
   // console.log(sIdx);
@@ -406,7 +410,7 @@ const getHouseOrderAdd = async () => {
   await homestayApi
     .getHouseOrderAdd({
       id: state.houseId,
-      platform: state.terminalPay == 'wechat' ? 'miniapp' : 'APP',
+      platform: state.terminalPay == 'wechat' ? 'miniapp' : 'app',
       memo: state.memo,
       nums: state.nums,
       start_time: state.startDate,
@@ -422,7 +426,6 @@ const getHouseOrderAdd = async () => {
 //
 const getHouseOrderPay = async (type: string, orderId: string) => {
   console.log(type, orderId);
-
   await homestayApi
     .getHouseOrderPay({
       id: orderId,
@@ -431,7 +434,7 @@ const getHouseOrderPay = async (type: string, orderId: string) => {
       method: state.terminalPay == 'wechat' ? 'miniapp' : 'app'
     })
     .then((res: any) => {
-      // console.log(res);
+      console.log(res);
       getRequestPayment(type, res.data)
         .then((res) => {
           setTimeout(() => {

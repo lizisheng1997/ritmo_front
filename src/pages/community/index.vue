@@ -69,9 +69,14 @@ const { t } = useI18n();
 
 // 引入组件
 onLoad(() => {
+  // #ifdef MP-WEIXIN
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
-  
+  // #endif
+  // #ifdef APP-PLUS
+  // @ts-ignore
+  state.navAllHeight = getApp().globalData.navAllHeight;
+  // #endif
 });
 onShow(() => {
   reset()
