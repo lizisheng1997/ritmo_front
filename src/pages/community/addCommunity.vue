@@ -99,9 +99,6 @@ onLoad((query?: AnyObject | undefined): void => {
   getCommunityPostDraft()
   // if(state.id) getInfo();
 });
-onHide(() => {
-  submitForm('draft')
-})
 // 参数
 const list = ref([] as any[])
 const headers = ref({

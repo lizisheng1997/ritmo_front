@@ -383,10 +383,10 @@ const collectListTo = () => {
 };
 // 提交
 const detailsTo = (id: string) => {
-  if (!state.nums) {
-    showTips(`${t('Pleaseselect')}${t('Numberofpeople')}`);
-    return;
-  }
+  // if (!state.nums) {
+  //   showTips(`${t('Pleaseselect')}${t('Numberofpeople')}`);
+  //   return;
+  // }
   routerTo(
     `/pages/homestay/details?startDate=${state.startDate}&endDate=${
       state.endDate

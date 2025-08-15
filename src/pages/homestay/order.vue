@@ -332,6 +332,7 @@ const getInfo = async () => {
         state.info.types = res.data.detail.types;
         state.info.beds = res.data.detail.beds;
         state.info.livenums = res.data.detail.livenums;
+        if( !state.nums ) state.nums =  res.data.detail.livenums;
         state.info.images = res.data.detail.images[0];
         if( !res.data.detail.calendar?.length ) {
           state.price =  res.data.detail.price;
