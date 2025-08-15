@@ -129,5 +129,12 @@ export default class User extends Request {
       url: `/v1/users/orders`,
     });
   }
+  // 获取套餐
+  getVipConfigList( data: object) {
+    return this.post({
+      url: `/api/config/getVipConfigList`,
+      data
+    });
+  }
 
 }

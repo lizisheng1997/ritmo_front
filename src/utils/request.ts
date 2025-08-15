@@ -5,7 +5,7 @@ import type { T } from './types';
 
 // 记得全局更换background-image地址
 // export const baseUrl = 'https://ritmohub.cn'; // 测试环境
-export const baseUrl = 'http://47.116.206.96'; // 测试环境
+export const baseUrl = 'https://hc.ritmohub.cn'; // 测试环境
 export const baseUrl1 = 'https://ritmohub.cn'; // 测试环境
 
 // console.log(baseUrl);

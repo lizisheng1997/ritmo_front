@@ -102,6 +102,13 @@ export default class Homestay extends Request {
       data
     });
   }
+  // 收藏列表
+  getCollectList(data: object) {
+    return this.post({
+      url: '/addons/booking/collect/collectList',
+      data
+    });
+  }
 
 
 

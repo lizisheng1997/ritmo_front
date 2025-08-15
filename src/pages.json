@@ -257,7 +257,13 @@
     {
 			"path": "pages/homestay/list",
 			"style": {
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "民宿列表"
+			}
+		},
+    {
+			"path": "pages/homestay/collectList",
+			"style": {
+        "navigationBarTitleText": "收藏列表"
 			}
 		},
     {

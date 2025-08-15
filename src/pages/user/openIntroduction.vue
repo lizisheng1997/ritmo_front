@@ -74,13 +74,13 @@
           <view
             class="text"
             :class="state.tabsIdx == 1 ? 'textAct' : ''"
-            @click="state.tabsIdx = 1"
+            @click="state.tabsIdx = 1, getVipConfigList()"
             >{{ t('PrimarySpace') }}</view
           >
           <view
             class="text"
             :class="state.tabsIdx == 2 ? 'textAct' : ''"
-            @click="state.tabsIdx = 2"
+            @click="state.tabsIdx = 2, getVipConfigList()"
             >{{ t('AdvancedSpace') }}</view
           >
         </view>
@@ -214,14 +214,27 @@
         scroll-left="0"
         :enable-flex="true"
         style="height: 240rpx">
-        <template v-if="state.tabsIdx == 1">
+          <view
+            class="card mr35"
+            :class="state.selectVip == item.id ? 'cardAct' : ''"
+            @click="state.selectVip = item.id"
+            v-for="item in basicListNew"
+            :key="item.id">
+            <view class="name mt35">{{ state.type == 'zh' ? item.level_name : item.level_name_en }}</view>
+            <view class="price mt20">
+              <text style="font-size: 24rpx">￥</text>
+              {{ item.price }}
+            </view>
+            <view class="fub mt20">{{ t('Daily') }}{{ priceToFixed(item.price , item.days) }}{{ t('RMB') }}</view>
+          </view>
+        <!-- <template v-if="state.tabsIdx == 1">
+          
           <view
             class="card mr35"
             :class="state.selectVip == item.key ? 'cardAct' : ''"
             @click="state.selectVip = item.key"
             v-for="item in basicList"
             :key="item.key">
-            <!-- <view class="hot">推荐</view> -->
             <view class="name mt35">{{ state.type == 'zh' ? item.name : item.ename }}</view>
             <view class="price mt20">
               <text style="font-size: 28rpx">￥</text>
@@ -237,7 +250,6 @@
             @click="state.selectVip = item.key"
             v-for="item in premiumList"
             :key="item.key">
-            <!-- <view class="hot">推荐</view> -->
             <view class="name mt35">{{ state.type == 'zh' ? item.name : item.ename }}</view>
             <view class="price mt20">
               <text style="font-size: 28rpx">￥</text>
@@ -245,7 +257,7 @@
             </view>
             <view class="fub mt20">{{ t('Daily') }}{{ item.day }}{{ t('RMB') }}</view>
           </view>
-        </template>
+        </template> -->
       </scroll-view>
     </view>
     <!--  -->
@@ -401,10 +413,11 @@ onLoad((query?: AnyObject | undefined): void => {
   // console.log(query);
   // state.id = query!.id
   getUserInfo();
-
+  getVipConfigList()
   state.languageType = uni.getStorageSync('languageType');
 });
 // 参数
+const basicListNew = ref([] as any[])
 // 初级套餐
 const basicList = ref([
   { key: 1, name: '月卡', ename: 'Monthly', price: 399, day: 13.3, fub: 'month' },
@@ -433,6 +446,19 @@ const state = reactive({
   //
   isInstitution: false // 是否是机构
 });
+// 获取套餐
+const getVipConfigList = async() => {
+  await userApi.getVipConfigList({
+    level: state.tabsIdx
+  }).then((res: any) => {
+    console.log(res.data);
+    basicListNew.value = res.data
+  });
+}
+const priceToFixed = (price: number, days: number) => {
+  let num = price / days
+  return num.toFixed(2)
+}
 // 获取用户资料
 const getUserInfo = async () => {
   await userApi.getUserInfo({}).then((res: any) => {
@@ -465,12 +491,7 @@ const submit = () => {
 const getPay = (show: boolean, type: string, id: string) => {
   if (show) {
     // console.log(type);
-    let obj: any = {}
-    if( state.tabsIdx == 1 ) {
-      obj = basicList.value.find((item: {key: number}) => item.key ==  state.selectVip)
-    } else {
-      obj = premiumList.value.find((item: {key: number}) => item.key ==  state.selectVip)
-    }
+    let obj: any = basicListNew.value.find((item: {id: number}) => item.id ==  state.selectVip)
 
     userApi.getOrdersAdd({
       vip_level: state.tabsIdx,
@@ -630,7 +651,7 @@ const getVipOrdersPay = (id: string, type: string, obj: string) => {
         color: #232322;
       }
       .price {
-        font-size: 48rpx;
+        font-size: 36rpx;
         font-weight: 700;
         line-height: 60rpx;
         color: #232322;
