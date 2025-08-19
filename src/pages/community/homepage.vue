@@ -19,7 +19,10 @@
             });
           }
         "
-        v-if="state.type == 0"></image>
+        v-if="state.type == 0"
+        :style="{
+          top: state.navAllHeight + 120 + 'rpx'
+        }"></image>
       <image
         class="shield"
         src="/@/static/community/pingbi1.png"
@@ -193,16 +196,14 @@ const communityApi = new Community();
 const { t } = useI18n();
 
 onLoad((query?: AnyObject | undefined): void => {
-  state.type = query!.isUser;
+  state.type = Number(query!.isUser);
   state.current = 0;
-  if (state.type) {
-    state.id = uni.getStorageSync('userInfos').id;
-  } else {
-    state.id = query!.id;
-  }
+  state.id = query!.id;
   if (query!.tabsIdx) {
     state.current = Number(query!.tabsIdx);
   }
+  console.log(query);
+  
    // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight;
   getUserInfo();
@@ -245,8 +246,8 @@ const getUserInfo = async () => {
       state.level = res.data.vip_level;
       state.expireTime = res.data.vip_expire_time;
       state.intro = res.data.bio;
-      state.phone = `+${res.data.area_code} ${res.data.show_email}`;
-      state.email = res.data.show_phone;
+      state.phone = `+${res.data.area_code} ${res.data.show_phone}`;
+      state.email = res.data.show_email;
       state.spaces = res.data.default_space_name;
     });
 };
@@ -296,11 +297,12 @@ const getProfiles = async () => {
     await communityApi
       .getOneProfilesPostList({
         page: state.page,
-        limit: state.pageSize
+        limit: state.pageSize,
+        user_id: state.id
       })
       .then((res: any) => {
-        console.log(res.data);
-        // state.list = state.list.concat(res.data.postList ? res.data.postList : []);
+        // console.log(res.data);
+        state.list = state.list.concat(res.data.postList ? res.data.postList : []);
       });
   }
 };
@@ -333,7 +335,7 @@ const getCommentBytype = async (type: number) => {
       limit: state.pageSize
     })
     .then((res: any) => {
-      // console.log(res.data);
+      console.log(res.data);
       state.list = state.list.concat(res.data ? res.data : []);
     });
 };
@@ -372,8 +374,8 @@ const getAddBlockedProfiles = async () => {
     }
     .shield {
       display: inline-block;
-      width: 58rpx;
-      height: 58rpx;
+      width: 45rpx;
+      height: 45rpx;
       position: absolute;
       right: 35rpx;
     }
@@ -393,6 +395,7 @@ const getAddBlockedProfiles = async () => {
         color: #232322;
         border-radius: 10rpx;
         background-color: #ffffff;
+        opacity: 0.8;
       }
     }
     .space {

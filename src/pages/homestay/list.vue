@@ -15,7 +15,7 @@
         <view
           class="date ml25"
           @click="state.calendarShow = true">
-          <view class="mt10">
+          <view class="" style="margin-top: 4rpx;">
             <text class="text">住</text>
             <text
               class=""

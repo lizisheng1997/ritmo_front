@@ -505,10 +505,10 @@ const getLikeOrCollect = (
   likeStatus: string,
   commentId?: string
 ) => {
-  if( uni.getStorageSync('userInfos').id == state.userId  ) {
-    showTips('不能操作自己的帖子')
-    return
-  }
+  // if( uni.getStorageSync('userInfos').id == state.userId  ) {
+  //   showTips('不能操作自己的帖子')
+  //   return
+  // }
   communityApi
     .getAddOrCannalLikeOrCollect({
       post_id: state.id,
@@ -712,7 +712,7 @@ const getAddShareCount = () => {
 };
 // 个人中心
 const homePage = () => {
-  routerTo(`/pages/community/homepage?id=${state.id}&isUser=${state.isUser}`, true)
+  routerTo(`/pages/community/homepage?id=${state.userId}&isUser=${state.isUser}`, true)
 }
 </script>
 

@@ -60,7 +60,7 @@
       </view>
       <!--  -->
       <view class="address mt15">
-        <view class="text mt10">
+        <view class="text mt10" style="font-size: 24rpx;">
           {{ state.address }}
         </view>
         <view class="btns">
@@ -105,7 +105,8 @@
           <image
             class="banner"
             :src="item.images[0]"
-            v-if="item.images?.length"></image>
+            v-if="item.images?.length"
+            @click="previewImg(item.images, 0)"></image>
           <view class="center">
             <view class="name">
               {{ state.type == 'zh' ? item.name : item.name_en }}
@@ -356,7 +357,13 @@ const getOptionCollect = async() => {
     showTips(res.msg)
     getInfo()
   })
-}
+}// 预览图片
+const previewImg = (images: string[], index: number) => {
+  uni.previewImage({
+    urls: images,
+    current: index
+  });
+};
 </script>
 
 <style>
@@ -378,22 +385,22 @@ page {
     }
     .swiper {
       position: absolute;
-      left: 37rpx;
-      top: 420rpx;
+      left: 87rpx;
+      top: 450rpx;
       display: flex;
       justify-content: space-between;
-      width: 670rpx;
+      width: 580rpx;
       background-color: #ffffff;
       border-radius: 16rpx;
       .item {
         display: inline-block;
-        width: 116rpx;
-        height: 116rpx;
+        width: 96rpx;
+        height: 96rpx;
         border-radius: 8rpx;
       }
       .count {
-        width: 116rpx;
-        line-height: 116rpx;
+        width: 96rpx;
+        line-height: 96rpx;
         border-radius: 8rpx;
         position: absolute;
         right: 10rpx;

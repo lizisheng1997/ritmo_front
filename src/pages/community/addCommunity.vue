@@ -78,7 +78,7 @@
 </template>
 
 <script setup lang="ts">
-import { onHide, onLoad } from '@dcloudio/uni-app';
+import { onHide, onLoad, onUnload } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 import { routerBack, routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n'
@@ -175,7 +175,7 @@ const cityConfirm = (e: any) => {
 }
 // 
 const uploadSuccess = (data: any, index: any, lists: any[]) => {
-  // console.log(lists);
+  console.log(lists);
   state.fileList = lists
 }
 const uploadRemove = (index: any, lists: any[]) => {
@@ -208,7 +208,7 @@ const submit = async() => {
 const submitForm = async(status: string) => {
   
   let fileList = state.fileList.map((item: any) => {
-    return item.url
+    return item.response.data.url
   })
   // console.log(state)
   await communityApi.getCommunityListAdd({

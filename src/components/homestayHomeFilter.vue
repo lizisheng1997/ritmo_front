@@ -45,7 +45,7 @@
                 type="number"
                 border
                 placeholder="自定义"
-                :height="45"
+                class="homestayHomeInput"
                 @focus="state.beds = 0" />
             </view>
           </view>
@@ -67,7 +67,7 @@
                 type="number"
                 border
                 placeholder="自定义"
-                :height="45"
+                class="homestayHomeInput"
                 @focus="state.house = 0" />
             </view>
           </view>
@@ -89,7 +89,7 @@
                 type="number"
                 border
                 placeholder="自定义"
-                :height="45"
+                class="homestayHomeInput"
                 @focus="state.nums = 0" />
             </view>
           </view>
@@ -226,6 +226,7 @@ const sumbit = (type: number) => {
       .input {
         display: inline-block;
         width: 140rpx;
+        vertical-align: middle;
       }
     }
   }

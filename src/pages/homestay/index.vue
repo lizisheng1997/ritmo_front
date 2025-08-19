@@ -1,12 +1,15 @@
 <template>
   <view class="content">
-    <view class="position" @click="() => {
+    <view class="p0-35">
+    <view class="position">
+      <image class="back" src="../../static/iconLeftBlack.png"></image>
+      <view class="city" @click="() => {
         state.regionShow = true
       }">
-      <image class="back" src="../../static/iconLeftBlack.png"></image>
-      <view class="city">
         {{ state.city }}
-        <image class="cityIcon" src="../../static/iconDownBlack.png"></image>
+        <image class="cityIcon" src="../../static/iconDownBlack.png" @click="() => {
+        state.regionShow = true
+      }"></image>
       </view>
     </view>
     <view class="position">
@@ -57,6 +60,7 @@
     <view class="hot mt25">
       {{ t('Recommendedhomestays') }}
       <!-- <image class="icon" src="../../static/rightBlack.png"></image> -->
+    </view>
     </view>
       <communityList :list="state.communityList" :isRouter="0"> </communityList>
       <u-empty
@@ -212,7 +216,7 @@ page {
 </style>
 <style lang="scss" scoped>
 .content {
-  padding: 88rpx 35rpx 0 35rpx;
+  padding-top: 88rpx ;
   .position {
     display: flex;
     padding-bottom: 25rpx;

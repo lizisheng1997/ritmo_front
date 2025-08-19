@@ -23,7 +23,7 @@
 						<view class="right">
               <image class="icon" src="/@/static/community/collect.png" v-if=" item.is_like == 0 "></image>
               <image class="icon" src="/@/static/community/collect1.png" v-else></image>
-              <view class="count">{{ item.view_count }}</view>
+              <view class="count">{{ item.like_count }}</view>
             </view>
 					</view>
 				</view>
@@ -47,7 +47,7 @@
 						<view class="right">
               <image class="icon" src="/@/static/community/collect.png" v-if=" item.is_like == 0 "></image>
               <image class="icon" src="/@/static/community/collect1.png" v-else></image>
-              <view class="count">{{ item.view_count }}</view>
+              <view class="count">{{ item.like_count }}</view>
             </view>
 					</view>
 				</view>
@@ -79,8 +79,9 @@ const newList = ref([] as any[])
 const emits = defineEmits([])
 const homePage = (id: string, userId: string) => {
   if( props.isRouter == 1 ) {
-    let type = uni.getStorageSync('userInfos').id == userId ? 1 : 0;
-    routerTo(`/pages/community/homepage?id=${id}&isUser=${type}`, true)
+    let myUserId = uni.getStorageSync('userInfos').id
+    let type = myUserId == userId ? 1 : 0;
+    routerTo(`/pages/community/homepage?id=${userId}&isUser=${type}`, true)
   }
 }
 </script>

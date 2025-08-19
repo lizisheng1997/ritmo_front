@@ -140,7 +140,8 @@ const getList = () => {
 };
 // 个人中心
 const homePage = (tabsIdx: number) => {
-  routerTo(`/pages/community/homepage?id=undefined&isUser=1&tabsIdx=${tabsIdx}`, true)
+  let myUserId = uni.getStorageSync('userInfos').id
+  routerTo(`/pages/community/homepage?id=${myUserId}&isUser=1&tabsIdx=${tabsIdx}`, true)
 }
 onReachBottom(() => {
   state.pageSize+=1;
