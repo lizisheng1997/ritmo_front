@@ -137,6 +137,13 @@ export default class Community extends Request {
     });
   }
 
+  // 门店列表
+  getStoreTitleList(data: object) {
+    return this.post({
+      url: '/api/community/getStoreTitleList',
+      data
+    });
+  }
 
 
 

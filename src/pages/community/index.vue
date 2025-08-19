@@ -18,7 +18,7 @@
           class="icon mr15"
           src="/@/static/community/nav2.png"></image>
         <text class="text">{{ t('Replytome') }}</text>
-        <view class="count">{{ state.count }}</view>
+        <view class="count" v-if=" state.count != 0 ">{{ state.count }}</view>
       </view>
     </view>
     <!--  -->

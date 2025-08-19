@@ -40,13 +40,15 @@ export default defineComponent({
     // 
     const systemInfo = uni.getSystemInfoSync();
     // console.log('----', systemInfo)
-    if (systemInfo.platform === 'android' || systemInfo.platform === 'ios') {
+    // #ifdef APP-PLUS | H5
       // @ts-ignore
       this.globalData.terminalPay = systemInfo.platform;
-    } else {
+    // #endif
+
+    // #ifdef MP-WEIXIN
       // @ts-ignore
       this.globalData.terminalPay = 'wechat';
-    }
+    // #endif
   },
   onShow: function () {
     // console.log('App Launch')

@@ -26,7 +26,8 @@
           class="item"
           :src="item"
           v-for="(item, index) in state.images"
-          :key="index"></image>
+          :key="index"
+          @click="previewImg(state.images, index)"></image>
         <view
           class="count"
           v-if="state.images.length >= 6"
@@ -210,6 +211,7 @@
 import { defineAsyncComponent, reactive, ref } from 'vue';
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import operatePopup from '/@/components/operatePopup.vue';
+import communityList from '/@/components/communityList.vue';
 import { strToFormatDate, calculateDaysBetweenDates, calculateDatesToWeek } from '/@/utils/currentFun'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
@@ -342,8 +344,10 @@ const getPostListByCity = async() => {
     city: state.city,
     page: 1,
     limit: 20,
+    store_id: state.id,
+
   }).then((res: any) => {
-    // console.log(res.data.posts);
+    console.log(res.data.posts);
     state.communityList = res.data.posts
   })
 }

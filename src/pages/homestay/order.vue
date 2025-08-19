@@ -254,6 +254,8 @@ onLoad((query?: AnyObject | undefined): void => {
   state.pageType = Number(query!.type);
   // @ts-ignore
   state.terminalPay = getApp().globalData.terminalPay;
+  console.log('123123', state.terminalPay);
+  
   if (state.pageType == 0) {
     state.id = query!.id;
     state.houseId = query!.houseId;

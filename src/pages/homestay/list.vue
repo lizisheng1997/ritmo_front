@@ -13,7 +13,7 @@
           >{{ state.city }}</view
         >
         <view
-          class="date ml25"
+          class="date ml25 mt5"
           @click="state.calendarShow = true">
           <view class="" style="margin-top: 4rpx;">
             <text class="text">住</text>

@@ -177,6 +177,7 @@ const getPostListByCity = async() => {
     city: state.city,
     page: 1,
     limit: 20,
+    store_id: ''
   }).then((res: any) => {
     // console.log(res.data.posts);
     state.communityList = res.data.posts
@@ -191,11 +192,12 @@ const filterChange = (rows: { beds: number; house: number; nums: number; }) => {
 }
 // tag标签多选
 const tagClick = (id: number) => {
+  
   let arrIdx = state.tagIdx.findIndex((item: number) => item == id)
   if( arrIdx == -1 ) {
     state.tagIdx.push(id)
   } else {
-    state.tagIdx.splice(id, 1)
+    state.tagIdx.splice(arrIdx, 1)
   }
 }
 // 提交

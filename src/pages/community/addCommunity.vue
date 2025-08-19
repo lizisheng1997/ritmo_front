@@ -49,6 +49,16 @@
         </view>
         <image class="right mt20" src="/@/static/rightAsh.png"></image>
       </view>
+      <!--  -->
+      <view class="select flex" @click="() => {
+        state.storeShow = true
+      }">
+        <view class="left">
+          <image class="icon mr15" src="/@/static/community/tags.png"></image>
+          <text class="">{{ state.storeName ? state.storeName : t('Pleaseselecthomestay') }}</text>
+        </view>
+        <image class="right mt20" src="/@/static/rightAsh.png"></image>
+      </view>
       <view class="footerOne" @click="submit">
         {{ t('Confirmrelease') }}
       </view>
@@ -57,6 +67,8 @@
      <u-picker mode="region" v-model="state.regionShow" :isArea="false" @confirm="cityConfirm"></u-picker>
     <!-- 选择标签 -->
     <u-select v-model="state.selectShow" :list="list" label-name="name" value-name="id" @confirm="confirm"></u-select>
+    <!-- 选择民宿 -->
+    <u-select v-model="state.storeShow" :list="storeList" label-name="name" value-name="id" @confirm="storeConfirm"></u-select>
      <!--  -->
     <operatePopup
       ref="operatePopupRef"
@@ -90,6 +102,9 @@ const userApi = new User();
 const { t } = useI18n()
 
 onLoad((query?: AnyObject | undefined): void => {
+  state.languageType = uni.getStorageSync('languageType')
+    ? uni.getStorageSync('languageType')
+    : 'zh';
   // console.log(query);
   state.id = query!.id ? query!.id : ''
   // @ts-ignore
@@ -97,16 +112,19 @@ onLoad((query?: AnyObject | undefined): void => {
   getUserInfo()
   getCommunityCategory()
   getCommunityPostDraft()
+  getStoreTitleList()
   // if(state.id) getInfo();
 });
 // 参数
 const list = ref([] as any[])
+const storeList = ref([] as any[])
 const headers = ref({
     'Authorization': uni.getStorageSync('accessToken')
       ? `Bearer ${uni.getStorageSync('accessToken')}`
       : '',
   })
 const state = reactive({
+  languageType: '',
   id: '',
   nickname: '',
   avatarUrl: '',
@@ -115,10 +133,13 @@ const state = reactive({
   city: '', // 城市
   categoryId: '',
   categoryName: '',
+  storeId: '',
+  storeName: '',
   
   navAllHeight: 0,
   selectShow: false,
   regionShow: false,
+  storeShow: false,
   action: 'https://ritmohub.cn/api/v1/community/upload/images',
   fileList: [] as any[]
 })
@@ -141,6 +162,8 @@ const getCommunityPostDraft = async() => {
       state.city = res.data.city
       state.categoryId = res.data.category_id
       state.categoryName = res.data.category_name
+      state.categoryId = res.data.store_arr.id
+      state.storeName = res.data.store_arr.name
       let imgList = res.data.images ? res.data.images.split(',') : []
       state.fileList = imgList.map((item: string) => {
         return {
@@ -162,6 +185,21 @@ const getCommunityCategory = () => {
     .finally(() => {
     });
 }
+// 获取门店列表
+const getStoreTitleList = () => {
+  communityApi
+    .getStoreTitleList({
+      page: 1,
+      limit: 999,
+      search: ''
+    })
+    .then((res: any) => {
+      // console.log(res.data);/
+      storeList.value = res.data.data
+    })
+    .finally(() => {
+    });
+}
 const confirm = (e: any) => {
   console.log(e);
   state.categoryId = e[0].value
@@ -172,6 +210,12 @@ const confirm = (e: any) => {
 const cityConfirm = (e: any) => {
   console.log(e);
   state.city = e.city.name
+}
+// 民宿回调
+const storeConfirm = (e: any) => {
+  console.log(e);
+  state.storeId = e[0].value
+  state.storeName = e[0].label
 }
 // 
 const uploadSuccess = (data: any, index: any, lists: any[]) => {
@@ -218,6 +262,7 @@ const submitForm = async(status: string) => {
     city: state.city,
     category_id: state.categoryId,
     status: status,
+    store_id: state.storeId
   }).then((res: any) => {
     showTips(res.msg)
     setTimeout(() => {

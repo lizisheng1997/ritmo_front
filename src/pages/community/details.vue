@@ -43,7 +43,7 @@
         v-for="(item, index) in state.imagesArr"
         :key="index"
         style="display: flex; justify-content: center; align-items: center">
-        <image :src="item"></image>
+        <image :src="item" mode="aspectFit"></image>
       </swiper-item>
     </swiper>
     <!--  -->
@@ -903,6 +903,8 @@ const homePage = () => {
   font-style: Medium;
   font-size: 20rpx;
   margin-left: 10rpx;
+  vertical-align: middle;
+  margin-top: -4rpx;
 }
 //
 .share {

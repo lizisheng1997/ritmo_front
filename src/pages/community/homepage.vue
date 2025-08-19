@@ -38,7 +38,9 @@
       <view class="user flex">
         <image
           class="head"
-          :src="state.avatarUrl"></image>
+          :src="state.avatarUrl
+                      ? state.avatarUrl
+                      : '../../static/community/headimg.png'"></image>
         <view class="center">
           <view class="company mt30">
             <view class="">{{ state.nickname }}</view>
@@ -118,7 +120,7 @@
         <view
           class="li mb25 pb25"
           v-for="item in state.list"
-          :key="item.id">
+          :key="item.id" @click="routerTo(`/pages/community/details?id=${item.post_id}`, true)">
           <view class="article flex">
             <image
               class="banner mr20"
@@ -139,7 +141,7 @@
         class="replymy p0-35 mt35"
         v-for="item in state.list"
         :key="item.id">
-        <view class="li mb25 pb25 flex">
+        <view class="li mb25 pb25 flex" @click="routerTo(`/pages/community/details?id=${item.post_id}`, true)">
           <image
             class="head mr20"
             :src="item.commenter_avatar"></image>
