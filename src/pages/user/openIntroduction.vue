@@ -495,7 +495,7 @@ const getPay = (show: boolean, type: string, id: string) => {
 
     userApi.getOrdersAdd({
       vip_level: state.tabsIdx,
-      duration_type: obj.fub,
+      duration_type: obj.status,
       amount: obj.price,
     }).then((resOne: any) => {
       // showTips(resOne.message)

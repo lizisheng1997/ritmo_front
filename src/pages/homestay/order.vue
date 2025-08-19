@@ -229,7 +229,7 @@ import operatePopup from '/@/components/operatePopup.vue';
 import payPopup from '/@/components/payPopup.vue';
 import {
   calculateDaysBetweenDates,
-  getRequestPayment,
+  getRequestPaymentNew,
   getRequestWxLogin,
   routerBack,
   strToFormatDate,
@@ -436,7 +436,7 @@ const getHouseOrderPay = async (type: string, orderId: string) => {
     })
     .then((res: any) => {
       // console.log(res);
-      getRequestPayment(type, state.terminalPay == 'wechat' ? res.data : JSON.parse(res.data), state.terminalPay)
+      getRequestPaymentNew(type, state.terminalPay == 'wechat' ? res.data : JSON.parse(res.data), state.terminalPay)
         .then((res) => {
           setTimeout(() => {
             uni.reLaunch({
