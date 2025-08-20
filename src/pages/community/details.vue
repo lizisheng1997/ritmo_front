@@ -66,7 +66,7 @@
       <view
         class="comment"
         v-if="state.commentList?.length">
-        <view class="title mt25">评论</view>
+        <view class="title mt25">{{ t('Comment1') }}</view>
         <view class="list">
           <view
             class="li m35-0"
@@ -170,7 +170,7 @@
                     </view>
                     <view class="fub mt10">
                       <view class="">
-                        <text class="">回复</text>
+                        <text class="">{{ t('reply') }}</text>
                         <text
                           class=""
                           style="
@@ -438,7 +438,7 @@ const getInfo = async () => {
       state.likeCount = res.data.like_count;
       state.shareCount = res.data.share_count;
       state.createtime = res.data.createtime_text;
-      state.category = res.data.category_name;
+      state.category = state.languageType == 'zh' ? res.data.category_name : res.data.category_name_en;
       getCommunityCommentList();
     });
 };

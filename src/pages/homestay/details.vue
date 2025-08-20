@@ -86,7 +86,7 @@
           <text class="day">{{ state.startWeek }}</text>
           <text class="count m0-25"
             >{{ calculateDaysBetweenDates(state.startDate, state.endDate)
-            }}{{ t('evening') }}</text
+            }} {{ t('evening') }}</text
           >
           <text class="text">{{ strToFormatDate(state.endDate) }}</text>
           <text class="day">{{ state.endWeek }}</text>
@@ -537,7 +537,8 @@ page {
           font-weight: 500;
           font-size: 18rpx;
           color: #232322;
-          width: 40rpx;
+          // width: 40rpx;
+          padding: 0 10rpx;
           line-height: 18rpx;
           text-align: center;
           border-radius: 18rpx;

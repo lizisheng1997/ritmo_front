@@ -35,7 +35,7 @@
         <view class="week" v-if="state.endWeek">{{ state.endWeek }}</view>
       </view>
       <view class="day">
-        {{ state.day }}{{ t('evening') }}
+        {{ state.day }} {{ t('evening') }}
       </view>
     </view>
     <!--  -->

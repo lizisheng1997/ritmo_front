@@ -6,7 +6,7 @@
     width="630"
     :mask-close-able="false">
     <view class="popup p35">
-      <view class="title"> {{ t('Pleaseselect') }}{{ t('tags') }} </view>
+      <view class="title"> {{ t('Pleaseselect') }} {{ t('tags') }} </view>
       <view class="form">
         <view class="item mt25">
           <view class="tagName"> {{ t('tags') }} </view>

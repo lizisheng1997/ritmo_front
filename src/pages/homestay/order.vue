@@ -8,10 +8,10 @@
         <view class="center">
           <view class="name mt10">{{ state.info.name }}</view>
           <view class="text">
-            {{ state.info.area }}㎡ ·{{ state.info.floors }}{{ t('floor') }} ·
-            {{ state.info.types }}{{ t('chamber') }} · {{ state.info.beds
-            }}{{ t('beds') }} · {{ t('Checkin') }}{{ state.info.livenums
-            }}{{ t('people') }}
+            {{ state.info.area }}㎡ ·{{ state.info.floors }} {{ t('floor') }} ·
+            {{ state.info.types }} {{ t('chamber') }} · {{ state.info.beds
+            }} {{ t('beds') }} · {{ t('Checkin') }}{{ state.info.livenums
+            }} {{ t('people') }}
           </view>
         </view>
       </view>
