@@ -42,7 +42,7 @@ export default class Community extends Request {
   // 删除帖子
   getCommunityPostDelt(data: object) {
     return this.post({
-      url: '/api/community/communityPostDelt',
+      url: '/api/community/communityPostDel',
       data
     });
   }

@@ -35,7 +35,7 @@
         <view class="week" v-if="state.endWeek">{{ state.endWeek }}</view>
       </view>
       <view class="day">
-        {{ t('total1') }}{{ state.day }}{{ t('evening') }}
+        {{ state.day }}{{ t('evening') }}
       </view>
     </view>
     <!--  -->
@@ -70,9 +70,9 @@
         margin-top="120"
         icon-size="200"></u-empty>
     <!-- 选择城市 -->
-     <u-picker mode="region" v-model="state.regionShow" :isArea="false" @confirm="cityConfirm"></u-picker>
+    <u-picker mode="region" v-model="state.regionShow" :isArea="false" @confirm="cityConfirm"></u-picker>
     <!-- 日期范围 -->
-     <u-calendar v-model="state.calendarShow" mode="range" :min-date="state.minDate" max-date="2030-12-31" @change="calendarChange"></u-calendar>
+     <u-calendar v-model="state.calendarShow" mode="range" :min-date="state.minDate" max-date="2030-12-31" @change="calendarChange" :toolTip="t('Selectdate') " :start-text="t('start')" :end-text="t('end')" :confirmText="t('confirm')"></u-calendar>
     <!-- 筛选项 -->
     <homestayHomeFilter ref="homestayHomeFilterRef" :isPrice="0" @refresh="filterChange"/>
   </view>

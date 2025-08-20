@@ -26,25 +26,25 @@
               {{ strToFormatDate(state.startDate) }}
               <text class="week">{{ state.startWeek }}</text>
             </view>
-            <view class="text"> 入住时间: 14:00以后 </view>
+            <view class="text"> {{ t('Checkinbefore') }}: 14:00{{ state.type == 'zh' ? '以后' : '' }} </view>
           </view>
           <view class="date">
             <view class="day">
               {{ strToFormatDate(state.endDate) }}
               <text class="week">{{ state.endWeek }}</text>
             </view>
-            <view class="text"> 离店时间: 12:00以前 </view>
+            <view class="text"> {{ t('Checkoutbefore') }}: 12:00{{ state.type == 'zh' ? '以前' : '' }} </view>
           </view>
         </view>
-        <view class="num"> {{ t('total1') }}{{ state.day }}{{ t('evening') }} </view>
+        <view class="num"> {{ state.day }} {{ t('evening') }} </view>
       </view>
       <!--  -->
       <view class="form">
         <view class="li p15-0">
           <view class="label">{{ t('Numberrooms') }} </view>
           <view class="text">
-            {{ state.info.types }}{{ t('chamber') }}({{ t('Checkin')
-            }}{{ state.info.livenums }}{{ t('people') }}）
+            {{ state.info.types }} {{ t('chamber') }}({{ t('Checkin')
+            }} {{ state.info.livenums }} {{ t('people') }}）
           </view>
         </view>
         <view class="li p15-0">
@@ -58,7 +58,7 @@
           </view>
         </view>
         <view class="li p15-0">
-          <view class="label">{{ t('phonenumber') }} <text class="icon">*</text></view>
+          <view class="label">{{ t('Phone1') }} <text class="icon">*</text></view>
           <view class="input">
             <input
               class=""
@@ -161,7 +161,7 @@
           "
           style="margin-right: 25rpx; background-color: #999999"
           v-if="state.pageType == 1 && state.orderInfo.status == 'created'">
-          取消订单
+          {{ t('Cancel1') }}
         </view>
         <view
           class="right"
@@ -170,7 +170,7 @@
             state.pageType == 0 ||
             (state.pageType == 1 && state.orderInfo.status == 'created')
           ">
-          去支付
+          {{ t('payment') }}
         </view>
         <view
           class="right"
@@ -249,12 +249,16 @@ onLoad((query?: AnyObject | undefined): void => {
   state.type = uni.getStorageSync('languageType')
     ? uni.getStorageSync('languageType')
     : 'zh';
+  
+  uni.setNavigationBarTitle({
+    title: t('Fillintheorder')
+  });
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
   state.pageType = Number(query!.type);
   // @ts-ignore
   state.terminalPay = getApp().globalData.terminalPay;
-  console.log('123123', state.terminalPay);
+  // console.log('123123', state.terminalPay);
   
   if (state.pageType == 0) {
     state.id = query!.id;
@@ -478,7 +482,7 @@ const getOrderCancel = async () => {
     })
     .then((res: any) => {
       // console.log(res);
-      showTips(res.msg)
+      showTips( state.type == 'zh' ? '订单取消成功' : 'success')
       setTimeout(() => {
         routerBack(1)
       }, 1500);
@@ -492,7 +496,7 @@ const getOrderCheckout = async () => {
     })
     .then((res: any) => {
       // console.log(res);
-      showTips(res.msg)
+      showTips( state.type == 'zh' ? '退款申请成功' : 'success')
       setTimeout(() => {
         routerBack(1)
       }, 1500);

@@ -3,7 +3,7 @@
     <view class="popup p35">
       <u-input v-model="state.content" type="textarea" border :placeholder="` ${ state.text ? state.text  : t('Pleaseentercomment')} `" />
       <view class="btn">
-        <text class="" @click="sumbit">发送评论</text>
+        <text class="" @click="sumbit">{{ t('Send') }}</text>
       </view>
     </view>
   </u-popup>
@@ -49,7 +49,7 @@ const sumbit = () => {
     content: state.content
 
   }).then((res: any) => {
-    showTips(res.msg)
+    showTips(uni.getStorageSync('languageType') == 'zh' ? '已成功发送评论' : 'success')
     setTimeout(() => {
       emit('refresh',  state.idx)
       reset()

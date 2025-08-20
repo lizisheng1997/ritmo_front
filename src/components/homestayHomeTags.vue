@@ -9,7 +9,7 @@
       <view class="title"> {{ t('Pleaseselect') }}{{ t('tags') }} </view>
       <view class="form">
         <view class="item mt25">
-          <view class="tagName"> 标签 </view>
+          <view class="tagName"> {{ t('tags') }} </view>
           <view class="tags mt15">
             <text
               class="tag mb15"

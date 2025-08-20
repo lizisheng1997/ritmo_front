@@ -96,7 +96,10 @@
         :class="index == state.current ? 'textAct' : ''"
         v-for="(item, index) in state.type
           ? communityHomepageTabs
-          : ['最新动态']"
+          : [ {
+            name: '最新动态',
+            name_en: 'Latest Update',
+          } ]"
         :key="index"
         @click="
           () => {
@@ -104,7 +107,7 @@
             tabsChange();
           }
         "
-        >{{ item }}</view
+        >{{ state.languageType == 'zh' ? item.name : item.name_en }}</view
       >
     </view>
     <!--  -->
@@ -148,7 +151,7 @@
           <view class="info">
             <view class="name">{{ item.commenter_nickname }}</view>
             <view class="time mt15"
-              >评论了你的动态 {{ item.createtime_text }}</view
+              >{{ t('Commentyourupdates') }} {{ item.createtime_text }}</view
             >
             <view class="text mt15">{{ item.content }}</view>
           </view>
@@ -350,7 +353,7 @@ const getAddBlockedProfiles = async () => {
       reason: ''
     })
     .then((res: any) => {
-      showTips(res.msg);
+      showTips(uni.getStorageSync('languageType') == 'zh' ? '操作成功' : 'success')
       setTimeout(() => {
         routerBack(1);
       }, 1000);

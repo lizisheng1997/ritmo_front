@@ -169,7 +169,7 @@
       min-year="2025"
       :min-date="state.oldDate"
       max-date="2025-12-31"
-      @change="calendarChange"></u-calendar>
+      @change="calendarChange" :confirmText="t('confirm')" :toolTip="t('Selectdate') "></u-calendar>
   </view>
 </template>
 

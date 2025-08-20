@@ -155,7 +155,7 @@
       mode="range"
       :min-date="state.minDate"
       max-date="2030-12-31"
-      @change="calendarChange"></u-calendar>
+      @change="calendarChange" :toolTip="t('Selectdate') " :start-text="t('start')" :end-text="t('end')" :confirmText="t('confirm')"></u-calendar>
     <!-- 筛选项 -->
     <homestayHomeFilter
       ref="homestayHomeFilterRef"
@@ -175,14 +175,15 @@
     <u-select
       v-model="state.sortshow"
       :list="state.sortList"
+      :confirm-text="t('confirm')"
+      :cancel-text="t('cancel')"
       @confirm="sortconfirm"
       @cancel="
         () => {
           state.orderby = '';
           clearSearch();
         }
-      "
-      cancel-text="清空"></u-select>
+      "></u-select>
   </view>
 </template>
 

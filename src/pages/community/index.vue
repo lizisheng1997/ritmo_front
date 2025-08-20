@@ -38,7 +38,7 @@
             state.current = index
             reset()
           }"
-          >{{ item.name }}</view
+          >{{ state.type == 'zh' ? item.name : item.name_en }}</view
         >
       </scroll-view>
     </view>
@@ -69,6 +69,9 @@ const { t } = useI18n();
 
 // 引入组件
 onLoad(() => {
+  state.type = uni.getStorageSync('languageType')
+    ? uni.getStorageSync('languageType')
+    : 'zh';
   // #ifdef MP-WEIXIN
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
@@ -85,6 +88,7 @@ onShow(() => {
 const list = ref([] as any);
 const tabsList = ref([] as any);
 const state = reactive({
+  type: '',
   count: 0,
   status: 0, //
   current: 0,
@@ -106,7 +110,8 @@ const getCommunityCategory = () => {
       tabsList.value = res.data ? res.data : []
       tabsList.value.unshift({
         id: 0,
-        name: '全部'
+        name: '全部',
+        name_en: 'All'
       });
       if( res.data?.length ) {
         getList();

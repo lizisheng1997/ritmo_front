@@ -358,7 +358,7 @@ const getOptionCollect = async() => {
     source_id: state.id,
   }).then((res: any) => {
     // console.log(res);
-    showTips(res.msg)
+     showTips( state.type == 'zh' ? '收藏成功' : 'success')
     getInfo()
   })
 }// 预览图片
@@ -608,7 +608,7 @@ page {
             }
             .btn {
               display: inline-block;
-              width: 70rpx;
+              padding: 0 10rpx;
               line-height: 60rpx;
               text-align: center;
               background-color: #ffcf00;

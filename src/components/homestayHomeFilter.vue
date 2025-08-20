@@ -7,13 +7,13 @@
     :mask-close-able="false">
     <view class="popup p35">
       <view class="title">
-        {{ t('Pleaseselect') }}{{ t('peoplebedsbedrooms') }}
+        {{ t('Pleaseselect') }} {{ t('peoplebedsbedrooms') }}
       </view>
       <view class="form">
         <view
           class="item mt25"
           v-if="props.isPrice">
-          <view class="tagName"> 价格区间 </view>
+          <view class="tagName"> {{ t('Pricerange') }} </view>
           <view
             class="tags mt15"
             v-if="state.isShow">
@@ -29,7 +29,7 @@
           </view>
         </view>
         <view class="item mt25">
-          <view class="tagName"> 床数 </view>
+          <view class="tagName"> {{ t('beds1') }} </view>
           <view class="tags mt15">
             <text
               class="tag"
@@ -37,21 +37,21 @@
               v-for="item in state.list"
               :key="item"
               @click="state.beds = item"
-              >{{ item }}床</text
+              >{{ item }}{{ state.type == 'zh' ? '床' : '' }}</text
             >
             <view class="input">
               <u-input
                 v-model="state.bedsIpt"
                 type="number"
                 border
-                placeholder="自定义"
+                :placeholder="t('Custom')"
                 class="homestayHomeInput"
                 @focus="state.beds = 0" />
             </view>
           </view>
         </view>
         <view class="item mt25">
-          <view class="tagName"> 居室数 </view>
+          <view class="tagName"> {{ t('Bedrooms') }} </view>
           <view class="tags mt15">
             <text
               class="tag"
@@ -59,21 +59,21 @@
               v-for="item in state.list"
               :key="item"
               @click="state.house = item"
-              >{{ item }}室</text
+              >{{ item }}{{ state.type == 'zh' ? '室' : '' }}</text
             >
             <view class="input">
               <u-input
                 v-model="state.houseIpt"
                 type="number"
                 border
-                placeholder="自定义"
+                :placeholder="t('Custom')"
                 class="homestayHomeInput"
                 @focus="state.house = 0" />
             </view>
           </view>
         </view>
         <view class="item mt25">
-          <view class="tagName"> 人数 </view>
+          <view class="tagName"> {{ t('Numberofpeople') }} </view>
           <view class="tags mt15">
             <text
               class="tag"
@@ -81,14 +81,14 @@
               v-for="item in state.list"
               :key="item"
               @click="state.nums = item"
-              >{{ item }}人</text
+              >{{ item }}{{ state.type == 'zh' ? '人' : '' }}</text
             >
             <view class="input">
               <u-input
                 v-model="state.numsIpt"
                 type="number"
                 border
-                placeholder="自定义"
+                :placeholder="t('Custom')"
                 class="homestayHomeInput"
                 @focus="state.nums = 0" />
             </view>
@@ -129,6 +129,7 @@ const props = defineProps({
 });
 // 参数
 const state = reactive({
+  type: '',
   list: [1, 2, 3, 4, 5],
   num: '',
   price: [0, 5000], // 价格区间
@@ -147,6 +148,9 @@ const openDialog = (rows: {
   nums: number;
   price: any[];
 }) => {
+  state.type = uni.getStorageSync('languageType')
+    ? uni.getStorageSync('languageType')
+    : 'zh';
   // console.log(rows)
   if (props.isPrice) {
     state.price = rows.price ? rows.price : [0, 5000];

@@ -70,7 +70,22 @@ export const communityIndexTabs = [
   '服务', '设施', '周边', '周边1', '周边2', '周边3', '周边4'
 ]
 export const communityHomepageTabs = [
-  '我的动态', '我的收藏', '我回复的', '回复我的'
+  {
+    name: '我的动态',
+    name_en: 'Update',
+  },
+  {
+    name: '我的收藏',
+    name_en: 'Collection',
+  },
+  {
+    name: '我回复的',
+    name_en: 'Reply',
+  },
+  {
+    name: '回复我的',
+    name_en: 'Replied',
+  },
 ]
 
 export const userRecordList = [

@@ -90,7 +90,7 @@
       mode="range"
       :min-date="state.minDate"
       max-date="2030-12-31"
-      @change="calendarChange"></u-calendar>
+      @change="calendarChange" :toolTip="t('Selectdate') " :start-text="t('start')" :end-text="t('end')" :confirmText="t('confirm')"></u-calendar>
   </view>
 </template>
 

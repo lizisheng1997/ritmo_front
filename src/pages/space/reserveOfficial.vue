@@ -41,7 +41,7 @@
       提交
     </view>
     <!-- 选择日期 -->
-    <u-calendar v-model="state.calendarShow" mode="date" :change-year="false" min-year="2025" :min-date="state.oldDate" max-date="2030-12-31" @change="calendarChange"></u-calendar>
+    <u-calendar v-model="state.calendarShow" mode="date" :change-year="false" min-year="2025" :min-date="state.oldDate" max-date="2030-12-31" @change="calendarChange" :confirmText="t('confirm')" :toolTip="t('Selectdate') "></u-calendar>
     <!--  -->
     <u-select v-model="state.selectShow" :list="list" @confirm="confirm"></u-select>
   </view>

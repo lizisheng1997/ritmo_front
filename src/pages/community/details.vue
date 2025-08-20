@@ -373,6 +373,9 @@ const { t } = useI18n();
 
 onLoad((query?: AnyObject | undefined): void => {
   state.id = query!.id;
+  state.languageType = uni.getStorageSync('languageType')
+    ? uni.getStorageSync('languageType')
+    : 'zh';
   // #ifdef MP-WEIXIN
   // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight + 90;
@@ -386,6 +389,7 @@ onLoad((query?: AnyObject | undefined): void => {
 });
 // 参数
 const state = reactive({
+  languageType: '',  
   type: 0, //
   navAllHeight: 0,
   id: '',
@@ -481,7 +485,7 @@ const deleteArticle = () => {
       post_id: state.id
     })
     .then((res: any) => {
-      showTips(res.msg);
+      showTips( state.languageType == 'zh' ? ' 删除成功' : 'success')
       setTimeout(() => {
         routerBack(1);
       }, 1000);
@@ -517,7 +521,7 @@ const getLikeOrCollect = (
       like_status: likeStatus
     })
     .then((res: any) => {
-      showTips(res.msg);
+      showTips( state.languageType == 'zh' ? '操作成功' : 'success')
       if (idx == -1) {
         getInfo();
       } else {
@@ -531,6 +535,8 @@ const ctx = ref();
 const openShow = () => {
   state.show = true;
   setTimeout(() => {
+    
+    getAddShareCount();
     canvasInit();
   }, 500);
 };
@@ -684,7 +690,6 @@ const wxShare = () => {
     title: state.title,
     imageUrl: state.imagesArr[0],
     success: function (res) {
-      getAddShareCount();
       console.log('success:' + JSON.stringify(res));
     },
     fail: function (err) {
@@ -693,7 +698,6 @@ const wxShare = () => {
   });
 };
 onShareAppMessage(() => {
-  getAddShareCount();
   return {
     title: state.title, //标题
     path: `/pages/community/details?id=${state.id}`, //可以指定动态路径
@@ -894,7 +898,8 @@ const homePage = () => {
 .nameCard {
   display: inline-block;
   background-color: #d7d4cf !important;
-  width: 55rpx;
+  // width: 55rpx;
+  padding: 0 10rpx;
   line-height: 32rpx;
   text-align: center;
   border-radius: 4rpx;

@@ -264,7 +264,7 @@ const submitForm = async(status: string) => {
     status: status,
     store_id: state.storeId
   }).then((res: any) => {
-    showTips(res.msg)
+      showTips( state.languageType == 'zh' ? ' 发布成功' : 'success')
     setTimeout(() => {
       routerBack(1)
     }, 1000);

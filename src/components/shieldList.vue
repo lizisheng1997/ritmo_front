@@ -62,7 +62,7 @@ const getDelBlockedProfiles = async(id: string) => {
     blocked_user_id: id
   }).then((res: any) => {
 
-    showTips(res.msg)
+    showTips(uni.getStorageSync('languageType') == 'zh' ? '操作成功' : 'success')
     state.isShow = false
     setTimeout(() => {
       emit('refresh')
