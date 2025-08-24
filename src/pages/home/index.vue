@@ -87,7 +87,7 @@
     <view class="list">
       <swiper class="swiper mt15" circular indicator-dots autoplay >
         <swiper-item  v-for="(item, index) in state.bannerList" :key="index">
-          <image class="imageW100" :src="item.image_url"></image>
+          <image class="imageW100" :src="item.image_url" @click="communityTo()"></image>
         </swiper-item>
       </swiper>
       <!-- <template v-for="(item, index) in state.imagesList" :key="index">
@@ -194,6 +194,13 @@ const switchTab = (tabsIdx: number) => {
   uni.setStorageSync('spaceTabsIdx', tabsIdx);
   uni.switchTab({
     url: `/pages/space/index`
+  })
+}
+
+
+const communityTo = () => {
+  uni.switchTab({
+    url: `/pages/community/index`
   })
 }
 </script>

@@ -52,7 +52,7 @@
       <!--  -->
       <view class="select flex" @click="() => {
         state.storeShow = true
-      }">
+      }" v-if="state.categoryName">
         <view class="left">
           <image class="icon mr15" src="/@/static/community/tags.png"></image>
           <text class="">{{ state.storeName ? state.storeName : t('Pleaseselecthomestay') }}</text>
@@ -204,6 +204,8 @@ const confirm = (e: any) => {
   console.log(e);
   state.categoryId = e[0].value
   state.categoryName = e[0].label
+  state.storeId = ''
+  state.storeName = ''
   
 }
 // 城市回调

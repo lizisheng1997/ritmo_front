@@ -280,6 +280,12 @@
         src="https://ritmohub.cn/static/null.png"
         v-if="!productList?.length"></u-empty>
     </view>
+    <view class="rhLoading" v-if="state.loading">
+      <image
+        class="icon"
+        src="https://ritmohub.cn/static/user/rhloading.gif">
+      </image>
+    </view>
     <!--  -->
     <selectSpace
       ref="selectSpaceRef"
@@ -349,6 +355,8 @@ const state = reactive({
     services: [] as any[],
     images: [] as string[]
   },
+  loading: false,
+
   page: 1, // 页码
   pageSize: 99, // 页数
 
@@ -439,9 +447,7 @@ const tabsChange = (index: number) => {
 };
 // 获取列表
 const getAllList = () => {
-  uni.showLoading({
-    title: '加载中'
-  });
+  state.loading = true
   if (state.tabsIdx == 0) {
     spaceApi
       .getSpaceWorkspaces(state.id, {
@@ -457,7 +463,7 @@ const getAllList = () => {
       })
       .finally(() => {
         setTimeout(() => {
-          uni.hideLoading();
+          state.loading = false
         }, 1500);
       });
   } else if (state.tabsIdx == 1) {
@@ -475,7 +481,9 @@ const getAllList = () => {
         productList.value = res.data.items;
       })
       .finally(() => {
-        uni.hideLoading();
+        setTimeout(() => {
+          state.loading = false
+        }, 1500);
       });
   } else if (state.tabsIdx == 2) {
     spaceApi
@@ -490,7 +498,9 @@ const getAllList = () => {
         productList.value = res.data.items;
       })
       .finally(() => {
-        uni.hideLoading();
+        setTimeout(() => {
+          state.loading = false
+        }, 1500);
       });
   } else if (state.tabsIdx == 3) {
     spaceApi
@@ -505,7 +515,9 @@ const getAllList = () => {
         productList.value = res.data.items;
       })
       .finally(() => {
-        uni.hideLoading();
+        setTimeout(() => {
+          state.loading = false
+        }, 1500);
       });
   } else if (state.tabsIdx == 4) {
     spaceApi
@@ -520,7 +532,9 @@ const getAllList = () => {
         productList.value = res.data.items;
       })
       .finally(() => {
-        uni.hideLoading();
+        setTimeout(() => {
+          state.loading = false
+        }, 1500);
       });
   }
 };

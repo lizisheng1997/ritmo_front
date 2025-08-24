@@ -38,9 +38,11 @@
       <view class="user flex">
         <image
           class="head"
-          :src="state.avatarUrl
-                      ? state.avatarUrl
-                      : '../../static/community/headimg.png'"></image>
+          :src="
+            state.avatarUrl
+              ? state.avatarUrl
+              : '../../static/community/headimg.png'
+          "></image>
         <view class="center">
           <view class="company mt30">
             <view class="">{{ state.nickname }}</view>
@@ -96,10 +98,12 @@
         :class="index == state.current ? 'textAct' : ''"
         v-for="(item, index) in state.type
           ? communityHomepageTabs
-          : [ {
-            name: '最新动态',
-            name_en: 'Latest Update',
-          } ]"
+          : [
+              {
+                name: '最新动态',
+                name_en: 'Latest Update'
+              }
+            ]"
         :key="index"
         @click="
           () => {
@@ -123,7 +127,10 @@
         <view
           class="li mb25 pb25"
           v-for="item in state.list"
-          :key="item.id" @click="routerTo(`/pages/community/details?id=${item.post_id}`, true)">
+          :key="item.id"
+          @click="
+            routerTo(`/pages/community/details?id=${item.post_id}`, true)
+          ">
           <view class="article flex">
             <image
               class="banner mr20"
@@ -144,7 +151,11 @@
         class="replymy p0-35 mt35"
         v-for="item in state.list"
         :key="item.id">
-        <view class="li mb25 pb25 flex" @click="routerTo(`/pages/community/details?id=${item.post_id}`, true)">
+        <view
+          class="li mb25 pb25 flex"
+          @click="
+            routerTo(`/pages/community/details?id=${item.post_id}`, true)
+          ">
           <image
             class="head mr20"
             :src="item.commenter_avatar"></image>
@@ -208,12 +219,14 @@ onLoad((query?: AnyObject | undefined): void => {
     state.current = Number(query!.tabsIdx);
   }
   console.log(query);
-  
-   // @ts-ignore
+
+  // @ts-ignore
   state.navAllHeight = getApp().globalData.navAllHeight;
   getUserInfo();
   tabsChange();
-  state.languageType = uni.getStorageSync('languageType');
+  state.languageType = uni.getStorageSync('languageType')
+    ? uni.getStorageSync('languageType')
+    : 'zh';
 });
 // 参数
 const state = reactive({
@@ -276,15 +289,6 @@ const tabsChange = () => {
       break;
   }
 };
-onReachBottom(() => {
-  state.pageSize += 1;
-  switch (state.current) {
-    case 0:
-      getProfiles();
-      break;
-  }
-  console.log('到底了');
-});
 const getProfiles = async () => {
   if (state.type) {
     await communityApi
@@ -307,7 +311,9 @@ const getProfiles = async () => {
       })
       .then((res: any) => {
         // console.log(res.data);
-        state.list = state.list.concat(res.data.postList ? res.data.postList : []);
+        state.list = state.list.concat(
+          res.data.postList ? res.data.postList : []
+        );
       });
   }
 };
@@ -353,12 +359,32 @@ const getAddBlockedProfiles = async () => {
       reason: ''
     })
     .then((res: any) => {
-      showTips(uni.getStorageSync('languageType') == 'zh' ? '操作成功' : 'success')
+      showTips(
+        uni.getStorageSync('languageType') == 'zh' ? '操作成功' : 'success'
+      );
       setTimeout(() => {
         routerBack(1);
       }, 1000);
     });
 };
+onReachBottom(() => {
+  state.page += 1;
+  switch (state.current) {
+    case 0:
+      getProfiles();
+      break;
+    case 1:
+      getMyCollectsList();
+      break;
+    case 2:
+      getCommentBytype(1);
+      break;
+    case 3:
+      getCommentBytype(2);
+      break;
+  }
+  console.log('到底了');
+});
 </script>
 
 <style lang="scss" scoped>
@@ -393,14 +419,11 @@ const getAddBlockedProfiles = async () => {
     }
     .cards {
       .card {
-        padding: 0 10rpx;
         font-size: 20rpx;
         font-weight: 400;
         line-height: 48rpx;
         color: #232322;
         border-radius: 10rpx;
-        background-color: #ffffff;
-        opacity: 0.8;
       }
     }
     .space {

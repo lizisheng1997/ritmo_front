@@ -212,7 +212,7 @@ import { defineAsyncComponent, reactive, ref } from 'vue';
 import { onLoad, onShow } from '@dcloudio/uni-app';
 import operatePopup from '/@/components/operatePopup.vue';
 import communityList from '/@/components/communityList.vue';
-import { strToFormatDate, calculateDaysBetweenDates, calculateDatesToWeek } from '/@/utils/currentFun'
+import { strToFormatDate, calculateDaysBetweenDates, calculateDatesToWeek, routerBack } from '/@/utils/currentFun'
 import { routerTo, showTips } from '/@/utils/currentFun';
 import { useI18n } from 'vue-i18n';
 import Homestay from '/@/api/homestay';
@@ -298,6 +298,12 @@ const getInfo = async () => {
       state.owner = res.data.owner
       state.ownerPhone = res.data.owner_phone
       getHouseList();
+    }).catch((err) => {
+      console.log(err);
+      setTimeout(() => {
+        routerBack(1)
+      }, 1500);
+      
     });
 };
 // 获取房间列表
@@ -467,10 +473,7 @@ page {
         }
         .text {
           display: inline-block;
-          width: 360rpx;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          width: calc(100% - 66rpx);
           font-size: 28rpx;
           line-height: 36rpx;
         }

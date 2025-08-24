@@ -2,37 +2,38 @@
   <view
     class="content"
     :class=" state.show ? 'hidden' : '' "
-    :style="{ paddingTop: state.navAllHeight + 'rpx' }">
+    :style="{ paddingTop: state.navAllHeight-90 + 'rpx' }">
     <view
-      class="nav flex"
-      :style="{ paddingTop: state.navAllHeight + 'rpx' }">
-      <image
-        class="icon"
+      class="nav "
+      :style="{ paddingTop: state.navAllHeight-90 + 'rpx' }">
+     <div class="">
+       <image
+        class="icon "
         src="/@/static/iconLeftBlack.png"
         @click="routerBack(1)"></image>
+      <view class="head mr25 ">
       <image
-        class="head mr25 mt10"
+        class=""
         :src="
           state.avatar ? state.avatar : '../../static/community/headimg.png'
         " @click="homePage"></image>
+      </view>
       <text class="name">{{ state.nickname }}</text>
+     </div>
+      <image
+        class="delete"
+        src="/@/static/community/delete.png"
+        v-if="state.isUser"
+        @click="
+          () => {
+            operatePopupRef.openDialog(t('deletearticle'), {
+              id: '',
+              type: 1
+            });
+          }
+        "></image>
     </view>
     <!--  -->
-    <image
-      class="delete"
-      src="/@/static/community/delete.png"
-      v-if="state.isUser"
-      @click="
-        () => {
-          operatePopupRef.openDialog(t('deletearticle'), {
-            id: '',
-            type: 1
-          });
-        }
-      "
-        :style="{
-          top: state.navAllHeight + 15 + 'rpx'
-        }"></image>
     <swiper
       class="swiper"
       circular
@@ -56,10 +57,20 @@
           {{ state.content }}
         </view>
         <view
-          class="mt20"
-          style="display: flex; justify-content: space-between">
-          <view class="date">#{{ state.category }}#</view>
-          <view class="date">{{ state.createtime }} {{ state.city }}</view>
+          class="mt20">
+          <view class="date">
+            <text class="">#{{ state.category }}#</text>
+            <text class="ml30" v-if="state.storeName">#{{ state.storeName }}#</text>
+          </view>
+        </view>
+        <view
+          class="mt10"
+          style="text-align: right;">
+          <view class="date">
+            {{ state.createtime }} 
+            <text class="ml10">（{{ state.city }}）</text>
+
+          </view>
         </view>
       </view>
       <!--  -->
@@ -85,7 +96,7 @@
                   >{{ item.nickname }}
                   <text
                     class="nameCard"
-                    v-if="state.isUser"
+                    v-if=" item.user_id == state.userId"
                     >{{ t('author') }}</text
                   >
                 </view>
@@ -164,7 +175,7 @@
                       {{ s.nickname }}
                       <text
                         class="nameCard"
-                        v-if="state.isUser"
+                        v-if="s.user_id == state.userId"
                         >{{ t('author') }}</text
                       >
                     </view>
@@ -411,6 +422,8 @@ const state = reactive({
   commentList: [] as any[], // 评论列表
   cdisabled: '',
   canvasBase64: '',
+  storeId: '',
+  storeName: '',
   show: false
 });
 const operatePopupRef = ref();
@@ -428,10 +441,16 @@ const getInfo = async () => {
       state.title = res.data.title;
       state.content = res.data.content;
       state.city = res.data.city;
+      state.storeId =  res.data.store_id ? res.data.store_arr.id : '';
+      state.storeName =  res.data.store_id ? state.languageType == 'zh' ? res.data.store_arr.name : res.data.store_arr.name_en : '';
       state.userId = res.data.user_id;
 
       state.isUser =
         uni.getStorageSync('userInfos').id == res.data.user_id ? 1 : 0;
+      // console.log(state.isUser);
+      // console.log(uni.getStorageSync('userInfos').id);
+      // console.log(res.data.user_id);
+      
       state.isCollect = res.data.is_collect;
       state.collectCount = res.data.collect_count;
       state.isLike = res.data.is_like;
@@ -736,19 +755,28 @@ const homePage = () => {
     z-index: 99999;
     width: 100%;
     background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
     .icon {
       display: inline-block;
-      width: 48rpx;
-      height: 48rpx;
+      width: 58rpx;
+      height: 58rpx;
       vertical-align: middle;
-      margin: 20rpx 35rpx 0 0;
+      margin: 0 25rpx 0 15rpx;
     }
     .head {
       display: inline-block;
-      width: 64rpx;
-      height: 64rpx;
-      border-radius: 64rpx;
+      width: 82rpx;
+      height: 82rpx;
+      border-radius: 82rpx;
       vertical-align: middle;
+      overflow: hidden;
+      border: 1PX solid #f1f1f1;
+      image {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+      }
     }
     .name {
       display: inline-block;
@@ -758,12 +786,14 @@ const homePage = () => {
     }
   }
   .delete {
-    position: fixed;
-    right: 35rpx;
-    z-index: 99999;
+    // position: fixed;
+    // right: 35rpx;
     display: inline-block;
     width: 50rpx;
     height: 50rpx;
+    vertical-align: middle;
+    margin-right: 200rpx;
+    margin-top: 20rpx;
   }
   .swiper {
     height: 740rpx;

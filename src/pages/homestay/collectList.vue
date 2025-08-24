@@ -17,11 +17,14 @@
           class="date ml25"
           @click="state.calendarShow = true">
           <view class="mt10">
-            <text class="text">住</text>
+            <text class="text" :style="{
+              display: 'inline-block',
+              paddingRight: state.type == 'zh' ? 0 : '24rpx' 
+            }">{{ t('In') }}</text>
             <text class="" style="color: #ffcf00;">{{ state.startDate.substring(5, 10) }}</text>
           </view>
           <view class="">
-            <text class="text">离</text>
+            <text class="text">{{ t('Out') }}</text>
             <text class="" style="color: #ffcf00;">{{ state.endDate.substring(5, 10) }}</text>
           </view>
         </view>
@@ -48,25 +51,25 @@
           class="banner"
           :src="item.store.images[0]"></image>
         <view class="center">
-          <view class="name"> {{ item.store.name }} </view>
+          <view class="name"> {{ state.type == 'zh' ? item.store.name : item.store.name_en }} </view>
           <view class="city m10-0">
             <image
               class="icon"
               src="../../static/address.png"></image>
-            {{ item.store.address }}
+            {{ state.type == 'zh' ? item.store.address : item.store.address_en }}
           </view>
           <view class="evaluate">
             <image
               class="icon"
               src="../../static/community/nav2.png"></image>
-            <text class="text">{{ item.store.intro }}</text>
+            <text class="text">{{ state.type == 'zh' ? item.store.intro : item.store.intro_en }}</text>
           </view>
           <view class="tags mt10" v-if="item.tag_list">
             <view class="tag" v-for="i in item.tag_list" :key="i.id">{{ state.type == 'zh' ? i.name : i.name_en }}</view>
           </view>
           <view class="price">
             <text class="unit">￥</text>
-            <text class="num">{{ item.house_price }}</text>
+            <text class="num">{{ item.house.price }}</text>
             <text class="text">{{ t('rise') }}</text>
           </view>
         </view>

@@ -2,25 +2,8 @@
   <view
     class="content"
     :style="{
-      paddingTop: state.navAllHeight + 'rpx'
+      paddingTop: state.navAllHeight - 30 + 'rpx'
     }">
-    <view class="nav flex p0-35">
-      <view
-        class="btn"
-         @click="homePage(0)">
-        <image
-          class="icon mr15"
-          src="/@/static/community/nav1.png"></image>
-        <text class="text">{{ t('MyHomePages') }}</text>
-      </view>
-      <view class="btn" @click="homePage(3)">
-        <image
-          class="icon mr15"
-          src="/@/static/community/nav2.png"></image>
-        <text class="text">{{ t('Replytome') }}</text>
-        <view class="count" v-if=" state.count != 0 ">{{ state.count }}</view>
-      </view>
-    </view>
     <!--  -->
     <view class="p0-35">
       <scroll-view
@@ -46,11 +29,34 @@
     <communityList :list="list"> </communityList>
     <!--  -->
     <view
-      class="add"
+      class="po home1"
+         @click="homePage(0)">
+      <image
+        class="icon"
+        src="/@/static/community/nav1.png">
+      </image>
+    </view>
+    <view
+      class="po home2"
+       @click="homePage(3)">
+      <image
+        class="icon"
+        src="/@/static/community/nav2.png">
+      </image>
+      <view class="count" v-if=" state.count != 0 ">{{ state.count }}</view>
+    </view>
+    <view
+      class="po add"
       @click="routerTo('/pages/community/addCommunity')">
       <image
         class="icon"
         src="/@/static/iconAdd.png">
+      </image>
+    </view>
+    <view class="rhLoading" v-if="state.loading">
+      <image
+        class="icon"
+        src="https://ritmohub.cn/static/user/rhloading.gif">
       </image>
     </view>
   </view>
@@ -93,6 +99,7 @@ const state = reactive({
   status: 0, //
   current: 0,
   navAllHeight: 0,
+  loading: false,
   page: 20,
   pageSize: 1
 });
@@ -122,9 +129,7 @@ const getCommunityCategory = () => {
 }
 // 获取列表
 const getList = () => {
-  uni.showLoading({
-    title: '加载中'
-  });
+  state.loading = true
   communityApi
     .getCommunityList({
       category_id: state.current == 0 ? '' : tabsList.value[state.current].id,
@@ -139,7 +144,7 @@ const getList = () => {
     })
     .finally(() => {
       setTimeout(() => {
-        uni.hideLoading();
+        state.loading = false
       }, 1500);
     });
 };
@@ -157,42 +162,6 @@ onReachBottom(() => {
 
 <style lang="scss" scoped>
 .content {
-  .nav {
-    justify-content: space-between;
-  }
-  .btn {
-    width: 320rpx;
-    height: 120rpx;
-    line-height: 120rpx;
-    border-radius: 20rpx;
-    background-color: #f5f3ef;
-    position: relative;
-    text-align: center;
-    .icon {
-      display: inline-block;
-      width: 50rpx;
-      height: 50rpx;
-      vertical-align: middle;
-    }
-    .text {
-      font-size: 28rpx;
-      font-weight: 600;
-      color: #232322;
-    }
-    .count {
-      position: absolute;
-      right: 45rpx;
-      top: 25rpx;
-      width: 32rpx;
-      line-height: 32rpx;
-      text-align: center;
-      font-size: 20rpx;
-      font-weight: 500;
-      color: #ffffff;
-      border-radius: 32rpx;
-      background-color: #ff3434;
-    }
-  }
   .tabs {
     width: 100%;
     white-space: nowrap;
@@ -220,10 +189,9 @@ onReachBottom(() => {
     }
   }
 }
-.add {
+.po {
   position: fixed;
   right: 35rpx;
-  bottom: 140rpx;
   width: 100rpx;
   height: 100rpx;
   background-color: #ffcf00;
@@ -231,10 +199,34 @@ onReachBottom(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0px 4rpx 12rpx 2rpx rgba(0, 0, 0, .36), 0px 4rpx 10rpx rgba(0, 0, 0, .52);
   .icon {
     display: inline-block;
-    width: 40rpx;
-    height: 40rpx;
+    width: 50rpx;
+    height: 50rpx;
   }
 }
+.home1 {
+  bottom: 340rpx;
+}
+.home2 {
+  bottom: 200rpx;
+    .count {
+      position: absolute;
+      right: 18rpx;
+      top: 18rpx;
+      width: 32rpx;
+      line-height: 32rpx;
+      text-align: center;
+      font-size: 20rpx;
+      font-weight: 500;
+      color: #ffffff;
+      border-radius: 32rpx;
+      background-color: #ff3434;
+    }
+}
+.add {
+  bottom: 70rpx;
+}
+
 </style>

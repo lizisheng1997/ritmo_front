@@ -16,7 +16,10 @@
           class="date ml25 mt5"
           @click="state.calendarShow = true">
           <view class="" style="margin-top: 4rpx;">
-            <text class="text">住</text>
+            <text class="text" :style="{
+              display: 'inline-block',
+              paddingRight: state.type == 'zh' ? 0 : '24rpx' 
+            }">{{ t('In') }}</text>
             <text
               class=""
               style="color: #ffcf00"
@@ -24,7 +27,7 @@
             >
           </view>
           <view class="">
-            <text class="text">离</text>
+            <text class="text">{{ t('Out') }}</text>
             <text
               class=""
               style="color: #ffcf00"
@@ -219,6 +222,8 @@ onLoad((query?: AnyObject | undefined): void => {
 
   state.keyword = query!.keyword;
   state.tagIds = query!.tagIdx;
+  state.longitude = query!.longitude;
+  state.latitude = query!.latitude;
 
   state.beds = Number(query!.beds);
   state.house = Number(query!.house);
@@ -234,6 +239,8 @@ const state = reactive({
   keyword: '',
   province: '', // 浙江省
   city: '', // 金华市
+  longitude: '' as number | string,
+  latitude: '' as number | string,
   // 日期范围
   minDate: '',
   startDate: '',
@@ -297,13 +304,13 @@ const getCondition = async () => {
   await homestayApi.getCondition({}).then((res: any) => {
     // console.log(res.data.orderList);
     state.sortList = [
-      {
-        value: 'comment',
-        label:
-          state.type == 'zh'
-            ? res.data.orderList['comment']
-            : res.data.orderList_en['comment']
-      },
+      // {
+      //   value: 'comment',
+      //   label:
+      //     state.type == 'zh'
+      //       ? res.data.orderList['comment']
+      //       : res.data.orderList_en['comment']
+      // },
       {
         value: 'distance',
         label:
@@ -361,6 +368,8 @@ const getStoreList = async () => {
       price: state.price?.length ? `${state.price[0]}-${state.price[1]}` : '',
       tag: state.tagIds,
       orderby: state.orderby,
+      longitude: state.longitude,
+      latitude: state.latitude,
       limit: state.page,
       page: state.pageSize
     })

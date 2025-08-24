@@ -1,6 +1,5 @@
 <template>
   <view class="content">
-    <view class="p0-35">
     <view class="position">
       <image class="back" src="../../static/iconLeftBlack.png"></image>
       <view class="city" @click="() => {
@@ -12,16 +11,15 @@
       }"></image>
       </view>
     </view>
+    <view class="p0-35">
     <view class="position">
       <view class="input">
         <u-input v-model="state.keyword" :border="false" :placeholder="t('Pleaseenterkeywords')" />
       </view>
-      <!-- #ifdef MP-WEIXIN -->
       <view class="myPlace" @click="getLocation">
         <image class="myPlaceIcon" src="../../static/myPlace.png"></image>
         <view class="text">{{ t('position') }}</view>
       </view>
-      <!-- #endif -->
     </view>
     <!--  -->
     <view class="range p25-0" @click="state.calendarShow = true">
@@ -105,6 +103,8 @@ const state = reactive({
   regionShow: false,
   province: '浙江省', // 省
   city: '丽水市', // 市
+  longitude: '' as number | string,
+  latitude: '' as number | string,
   // 日期范围
   minDate: '',
   startDate: '',
@@ -136,8 +136,10 @@ const getLocation = () => {
     altitude: true, // 获取高度信息
     isHighAccuracy: true, // 高精度定位
     success: async(res) => {
-      // console.log('经度：' + res.longitude);
-      // console.log('纬度：' + res.latitude);
+      console.log('经度：' + res.longitude);
+      console.log('纬度：' + res.latitude);
+      state.longitude = res.longitude
+      state.latitude = res.latitude
       await homestayApi.getStaticAmapRegeo({
         longitude: res.longitude,
         latitude: res.latitude,
@@ -145,6 +147,7 @@ const getLocation = () => {
         // console.log(res.data.addressComponent);
         state.province = res.data.addressComponent.province
         state.city = res.data.addressComponent.city
+        state.keyword = `${res.data.addressComponent.city}`
         getPostListByCity()
       })
     },
@@ -207,7 +210,7 @@ const sumbit = () => {
     showTips(`${t('Selectdate')}`)
     return
   }
-  routerTo(`/pages/homestay/list?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&tagIdx=${state.tagIdx ? state.tagIdx.toString() : ''}&keyword=${state.keyword}&province=${state.province}&city=${state.city}`, true)
+  routerTo(`/pages/homestay/list?startDate=${state.startDate}&endDate=${state.endDate}&beds=${state.beds}&house=${state.house}&nums=${state.nums}&tagIdx=${state.tagIdx ? state.tagIdx.toString() : ''}&keyword=${state.keyword}&province=${state.province}&city=${state.city}&longitude=${state.longitude}&latitude=${state.latitude}`, true)
 }
 </script>
 
